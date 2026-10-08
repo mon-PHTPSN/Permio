@@ -1,0 +1,32 @@
+{
+  "name": "permio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Recipient-bound, privacy-preserving attestations on Monad",
+  "scripts": {
+    "compile": "hardhat build",
+    "typecheck": "tsc --noEmit",
+    "test": "hardhat test nodejs",
+    "check": "npm run typecheck && npm run compile && npm test",
+    "node": "hardhat node",
+    "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
+    "deploy:testnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadTestnet",
+    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-ignition": "^3.1.8",
+    "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
+    "@types/node": "^22.20.1",
+    "hardhat": "^3.14.0",
+    "typescript": "~7.0.2",
+    "viem": "^2.55.19"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.4.0",
+    "dotenv": "^17.4.2"
+  }
+}
