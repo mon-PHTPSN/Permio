@@ -13,6 +13,9 @@ information-flow boundaries, Compact circuits, Monad attestation schemas, and
 delivery sequence, is available as a
 [`semantic HTML reading edition`](docs/alice-bob-clara-architecture.html) and
 [`canonical Markdown source`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md).
+Edit only the Markdown source, then run `npm run docs:build` to regenerate the
+HTML. `npm run docs:check` and the complete `npm run check` command reject stale
+generated HTML.
 
 ## Current scope
 
@@ -121,6 +124,8 @@ Permio 正在为 Monad 应用构建绑定接收方的隐私保护证明。当前
 证明模式和交付顺序，提供
 [`语义化 HTML 阅读版`](docs/alice-bob-clara-architecture.html)和
 [`规范 Markdown 源文件`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md)。
+只编辑 Markdown 源文件，然后运行 `npm run docs:build` 重新生成 HTML。
+`npm run docs:check` 和完整的 `npm run check` 命令会拒绝过期的 HTML 生成文件。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

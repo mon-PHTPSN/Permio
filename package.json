@@ -5,10 +5,12 @@
   "type": "module",
   "description": "Recipient-bound, privacy-preserving attestations on Monad",
   "scripts": {
+    "docs:build": "node scripts/build-docs.mjs",
+    "docs:check": "node scripts/build-docs.mjs --check",
     "compile": "hardhat build",
     "typecheck": "tsc --noEmit",
     "test": "hardhat test nodejs",
-    "check": "npm run typecheck && npm run compile && npm test",
+    "check": "npm run docs:check && npm run typecheck && npm run compile && npm test",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
     "deploy:testnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadTestnet",
@@ -22,6 +24,7 @@
     "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
     "@types/node": "^22.20.1",
     "hardhat": "^3.14.0",
+    "marked": "^16.4.2",
     "typescript": "~7.0.2",
     "viem": "^2.55.19"
   },

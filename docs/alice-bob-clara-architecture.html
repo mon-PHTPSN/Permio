@@ -1,9 +1,16 @@
 <!doctype html>
+<!--
+  GENERATED FILE — DO NOT EDIT DIRECTLY.
+  Source: docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md
+  Source SHA-256: 51874727ec46e0d66b2649edbe46fe27219b0c2e2c1c4fc08b51a3ec44e3b017
+  Regenerate with: npm run docs:build
+-->
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio composite architecture for Alice, Bob, and Clara across Midnight and Monad">
+  <meta name="source-sha256" content="51874727ec46e0d66b2649edbe46fe27219b0c2e2c1c4fc08b51a3ec44e3b017">
   <title>Permio Alice Bob Clara Composite Architecture</title>
   <script type="application/ld+json">
   {
@@ -11,10 +18,9 @@
     "@type": "TechArticle",
     "name": "Permio Alice Bob Clara Composite Architecture",
     "dateModified": "2026-10-09",
-    "version": "1.0",
+    "version": "1.1",
     "inLanguage": ["en", "zh-CN"],
-    "about": ["Midnight", "Monad", "zero knowledge proofs", "recipient-bound attestations"],
-    "keywords": ["Permio", "Compact", "EIP-712", "privacy", "attestation", "information flow"]
+    "about": ["Midnight", "Monad", "zero-knowledge proofs", "recipient-bound attestations"]
   }
   </script>
   <style>
@@ -28,14 +34,10 @@
       --border: light-dark(#d5dde4, #30363d);
       --midnight: light-dark(#5b3fd3, #a792ff);
       --monad: light-dark(#2867b2, #70b7ff);
-      --private: light-dark(#8a3c62, #ff9dc6);
-      --public: light-dark(#1c704d, #62d99b);
-      --warning: light-dark(#8a5a00, #f2c35f);
       --code: light-dark(#f2f5f7, #0d1117);
       --shadow: light-dark(0 12px 30px rgba(31, 45, 61, .08), none);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
     }
-
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.62; }
@@ -43,491 +45,1283 @@
     code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
     code { font-size: .92em; }
     pre {
-      margin: 1rem 0;
-      padding: 1rem 1.1rem;
-      border: 1px solid var(--border);
-      border-radius: .65rem;
-      background: var(--code);
-      overflow-x: auto;
-      white-space: pre-wrap;
+      margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--border);
+      border-radius: .65rem; background: var(--code); overflow-x: auto;
     }
-
-    .shell { display: grid; grid-template-columns: 17rem minmax(0, 1fr); min-height: 100vh; }
+    .shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
     nav {
-      position: sticky;
-      top: 0;
-      height: 100vh;
-      overflow-y: auto;
-      padding: 1.6rem 1.25rem;
-      background: var(--surface);
-      border-right: 1px solid var(--border);
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.6rem 1.25rem;
+      background: var(--surface); border-right: 1px solid var(--border);
     }
     nav strong { display: block; margin-bottom: .25rem; font-size: 1.1rem; }
     nav small { color: var(--muted); }
     nav ul { list-style: none; margin: 1.4rem 0 0; padding: 0; }
     nav li { margin: .15rem 0; }
-    nav a { display: block; padding: .42rem .55rem; border-radius: .4rem; color: var(--muted); text-decoration: none; }
+    nav a {
+      display: block; padding: .42rem .55rem; border-radius: .4rem;
+      color: var(--muted); text-decoration: none;
+    }
     nav a:hover, nav a:focus { color: var(--text); background: var(--surface-2); }
-
     main { min-width: 0; }
     header, article { width: min(72rem, calc(100% - 3rem)); margin-inline: auto; }
-    header { padding: 4rem 0 2rem; }
-    header .eyebrow { color: var(--midnight); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
-    h1 { max-width: 18ch; margin: .55rem 0 1rem; font-size: clamp(2.2rem, 5vw, 4.6rem); line-height: 1.02; letter-spacing: -.045em; }
-    header p { max-width: 54rem; color: var(--muted); font-size: 1.08rem; }
-    .meta { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: 1.3rem; }
-    .tag { padding: .25rem .55rem; border: 1px solid var(--border); border-radius: 999px; color: var(--muted); font-size: .82rem; }
-
-    article { padding-bottom: 5rem; }
+    header { padding: 4rem 0 2rem; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      color: var(--midnight); font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; font-size: .78rem;
+    }
+    h1 { margin: .55rem 0 1rem; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1.04; letter-spacing: -.04em; }
+    header p { max-width: 58rem; color: var(--muted); font-size: 1.08rem; }
+    article { padding: 1rem 0 5rem; }
     section { scroll-margin-top: 1rem; margin: 3.5rem 0; }
-    h2 { margin: 0 0 1rem; font-size: clamp(1.6rem, 3vw, 2.35rem); line-height: 1.15; letter-spacing: -.025em; }
+    h2 { margin: 0 0 1rem; font-size: clamp(1.55rem, 3vw, 2.3rem); line-height: 1.16; letter-spacing: -.025em; }
     h3 { margin: 1.8rem 0 .65rem; font-size: 1.18rem; }
-    p { max-width: 78ch; }
-    .lede { font-size: 1.13rem; color: var(--muted); }
-
-    .decision {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin: 1.4rem 0;
+    article > h1 { margin-top: 4rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+    p { max-width: 82ch; }
+    blockquote {
+      margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
+      border-left: 4px solid var(--midnight); background: var(--surface-2);
     }
-    .card { padding: 1.15rem; border: 1px solid var(--border); border-radius: .8rem; background: var(--surface); box-shadow: var(--shadow); }
-    .card h3 { margin-top: 0; }
-    .card p:last-child { margin-bottom: 0; }
-    .midnight { border-top: 4px solid var(--midnight); }
-    .bridge { border-top: 4px solid var(--warning); }
-    .monad { border-top: 4px solid var(--monad); }
-
-    .actors { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .actor-name { font-size: 1.4rem; font-weight: 750; }
-    .actor-role { color: var(--muted); }
-    .actor-private { color: var(--private); }
-    .actor-public { color: var(--public); }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(5, minmax(8rem, 1fr));
-      gap: .65rem;
-      align-items: stretch;
-      margin: 1.3rem 0;
-    }
-    .flow-step { position: relative; padding: 1rem; border: 1px solid var(--border); border-radius: .7rem; background: var(--surface); }
-    .flow-step:not(:last-child)::after { content: "→"; position: absolute; right: -.6rem; top: 50%; transform: translate(50%, -50%); z-index: 1; color: var(--muted); background: var(--bg); padding: .1rem; font-weight: 700; }
-    .flow-step b { display: block; margin-bottom: .25rem; }
-    .flow-step span { color: var(--muted); font-size: .9rem; }
-
-    .table-wrap { overflow-x: auto; margin: 1rem 0 1.4rem; }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
     table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
-    th, td { padding: .72rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
-    th { background: var(--surface-2); font-weight: 700; }
-    td ul { margin: 0; padding-left: 1.1rem; }
-
-    .sequence { counter-reset: step; list-style: none; padding: 0; max-width: 60rem; }
-    .sequence li { position: relative; margin-left: 1.15rem; padding: 0 0 1.3rem 2rem; border-left: 2px solid var(--border); }
-    .sequence li::before { counter-increment: step; content: counter(step); position: absolute; left: -1.05rem; top: -.1rem; display: grid; place-items: center; width: 2rem; height: 2rem; border-radius: 50%; background: var(--surface); border: 2px solid var(--midnight); font-weight: 700; }
-    .sequence li:last-child { border-left-color: transparent; }
-
-    .privacy-key { display: flex; flex-wrap: wrap; gap: 1rem; margin: .75rem 0; color: var(--muted); font-size: .88rem; }
-    .dot { display: inline-block; width: .72rem; height: .72rem; margin-right: .3rem; border-radius: 50%; }
-    .dot.private { background: var(--private); }
-    .dot.public { background: var(--public); }
-
-    .state-line { display: flex; flex-wrap: wrap; gap: .45rem; align-items: center; margin: 1rem 0; }
-    .state { padding: .48rem .7rem; border: 1px solid var(--border); border-radius: .45rem; background: var(--surface); font-size: .86rem; }
-    .arrow { color: var(--muted); }
-
-    .warning { padding-left: 1rem; border-left: 4px solid var(--warning); color: var(--muted); }
-    .bilingual { border-top: 1px solid var(--border); padding-top: 2.5rem; }
-    footer { padding: 2rem 0; border-top: 1px solid var(--border); color: var(--muted); font-size: .9rem; }
-
-    @media (max-width: 900px) {
-      .shell { grid-template-columns: 1fr; }
-      nav { position: static; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
-      nav ul { display: flex; flex-wrap: wrap; gap: .25rem; }
-      .decision, .actors { grid-template-columns: 1fr; }
-      .flow { grid-template-columns: 1fr; }
-      .flow-step:not(:last-child)::after { content: "↓"; right: 50%; top: auto; bottom: -.62rem; transform: translate(50%, 50%); }
+    th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); }
+    hr { margin: 4rem 0; border: 0; border-top: 1px solid var(--border); }
+    footer {
+      width: min(72rem, calc(100% - 3rem)); margin: 0 auto 3rem; padding-top: 1.2rem;
+      color: var(--muted); border-top: 1px solid var(--border); font-size: .88rem;
     }
-
+    @media (max-width: 880px) {
+      .shell { display: block; }
+      nav { position: static; width: auto; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+      nav ul { columns: 2; }
+      header { padding-top: 2.5rem; }
+    }
+    @media (max-width: 560px) {
+      nav ul { columns: 1; }
+      header, article, footer { width: min(100% - 1.5rem, 72rem); }
+      th, td { min-width: 9rem; }
+    }
     @media print {
+      :root { color-scheme: light; }
       nav { display: none; }
       .shell { display: block; }
-      header, article { width: auto; margin: 0 1.3cm; }
-      .card, table { box-shadow: none; break-inside: avoid; }
-      a { color: inherit; text-decoration: none; }
+      header, article, footer { width: 100%; }
+      section { break-inside: avoid-page; }
+      a { color: inherit; }
     }
   </style>
 </head>
 <body>
-<div class="shell">
-  <nav aria-label="Document navigation">
-    <strong>Permio architecture</strong>
-    <small>Decision document v1.0</small>
-    <ul>
-      <li><a href="#decision">1. Decision</a></li>
-      <li><a href="#actors">2. Actors</a></li>
-      <li><a href="#topology">3. Topology</a></li>
-      <li><a href="#flows">4. Information flows</a></li>
-      <li><a href="#circuits">5. ZK circuits</a></li>
-      <li><a href="#attestations">6. Monad attestations</a></li>
-      <li><a href="#gateway">7. Gateway lifecycle</a></li>
-      <li><a href="#stack">8. Stack and chains</a></li>
-      <li><a href="#security">9. Security</a></li>
-      <li><a href="#delivery">10. Delivery plan</a></li>
-      <li><a href="#chinese">中文摘要</a></li>
-    </ul>
-  </nav>
+  <div class="shell">
+    <nav aria-label="Architecture sections">
+      <strong>Permio architecture</strong>
+      <small>Generated from canonical Markdown</small>
+      <ul>
+          <li><a href="#1-decision">1 Decision</a></li>
+          <li><a href="#2-concrete-scenario-and-actors">2 Concrete scenario and actors</a></li>
+          <li><a href="#3-chain-and-component-responsibilities">3 Chain and component responsibilities</a></li>
+          <li><a href="#4-composite-topology">4 Composite topology</a></li>
+          <li><a href="#5-end-to-end-information-flow">5 End-to-end information flow</a></li>
+          <li><a href="#6-zk-circuit-design">6 ZK circuit design</a></li>
+          <li><a href="#7-monad-attestation-design">7 Monad attestation design</a></li>
+          <li><a href="#8-gateway-validation-and-state-machine">8 Gateway validation and state machine</a></li>
+          <li><a href="#9-technology-stack">9 Technology stack</a></li>
+          <li><a href="#10-network-plan">10 Network plan</a></li>
+          <li><a href="#11-target-repository-structure">11 Target repository structure</a></li>
+          <li><a href="#12-threat-model-and-controls">12 Threat model and controls</a></li>
+          <li><a href="#13-acceptance-tests-for-the-three-actors">13 Acceptance tests for the three actors</a></li>
+          <li><a href="#14-current-implementation-and-required-changes">14 Current implementation and required changes</a></li>
+          <li><a href="#15-delivery-sequence">15 Delivery sequence</a></li>
+          <li><a href="#16-official-references">16 Official references</a></li>
+          <li><a href="#permio-alice-bob-clara-复合架构">Permio Alice Bob Clara 复合架构</a></li>
+          <li><a href="#1-架构决策">1 架构决策</a></li>
+          <li><a href="#2-具体场景与角色">2 具体场景与角色</a></li>
+          <li><a href="#3-组件职责与隐私边界">3 组件职责与隐私边界</a></li>
+          <li><a href="#4-完整信息流">4 完整信息流</a></li>
+          <li><a href="#5-zk-电路设计">5 ZK 电路设计</a></li>
+          <li><a href="#6-monad-证明设计">6 Monad 证明设计</a></li>
+          <li><a href="#7-网关与状态机">7 网关与状态机</a></li>
+          <li><a href="#8-技术栈与链">8 技术栈与链</a></li>
+          <li><a href="#9-密钥分离">9 密钥分离</a></li>
+          <li><a href="#10-目标仓库结构">10 目标仓库结构</a></li>
+          <li><a href="#11-安全控制与验收">11 安全控制与验收</a></li>
+          <li><a href="#12-当前状态与交付顺序">12 当前状态与交付顺序</a></li>
+          <li><a href="#13-官方参考">13 官方参考</a></li>
+      </ul>
+    </nav>
+    <main>
+      <header>
+        <div class="eyebrow">Midnight × Monad</div>
+        <h1>Permio Alice Bob Clara Composite Architecture</h1>
+        <p>A complete bilingual architecture for the Alice, Bob, and Clara scenario, including information flows, zero-knowledge circuits, public attestations, trust boundaries, and delivery sequencing.</p>
+      </header>
+      <article>
+<p>Status: architecture decision and implementation plan<br>Date: 9 October 2026<br>Scope: Midnight privacy proofs plus Monad recipient-bound attestations</p>
+<section aria-labelledby="1-decision">
+<h2 id="1-decision">1 Decision</h2>
 
-  <main>
-    <header>
-      <div class="eyebrow">Composite architecture · 9 October 2026</div>
-      <h1>A private fact proved once and consumed only where intended</h1>
-      <p>Concrete architecture for Alice the merchant, Bob the purchaser, and Clara the regulator across Midnight and Monad. The design defines every private input, public output, commitment, nullifier, recipient view, bridge step, key, and finality boundary.</p>
-      <div class="meta">
-        <span class="tag">Midnight Compact</span>
-        <span class="tag">Monad EVM</span>
-        <span class="tag">EIP-712</span>
-        <span class="tag">Recipient-bound</span>
-        <span class="tag">No global identity</span>
-      </div>
-    </header>
+<p>Permio will use a two-chain architecture with a deliberately narrow bridge:</p>
+<ul>
+<li>Midnight is the private credential, policy, and zero-knowledge execution layer.</li>
+<li>Monad is the public, EVM-composable trust-consumption layer.</li>
+<li>A gateway verifies finalized Midnight public outputs and signs an EIP-712
+attestation for one schema, purpose, recipient, and expiry window.</li>
+<li>A recipient or neutral relayer submits the attestation to Monad. Bob never
+needs to use a reusable Monad wallet.</li>
+</ul>
+<p>The bridge is an MVP trust boundary, not a trustless light client. Monad trusts
+an authorized gateway verifier key to have checked the correct Midnight network,
+contract, transaction, and public state. That limitation must remain visible in
+the product and demo.</p>
+<p>The architecture deliberately does not publish the same generic
+<code>InformationFlow</code> commitment on both chains. Monad receives a context-specific
+receipt, not a duplicate timestamp. A public cross-chain reference proves that
+one Monad receipt came from one Midnight action, but no field may link Bob&#39;s
+review, support, and regulatory actions to each other.</p>
+</section>
+<section aria-labelledby="2-concrete-scenario-and-actors">
+<h2 id="2-concrete-scenario-and-actors">2 Concrete scenario and actors</h2>
 
-    <article>
-      <section id="decision">
-        <h2>1. Architecture decision</h2>
-        <p class="lede">Permio uses two chains because they solve different problems. Midnight proves narrowly scoped facts about private records. Monad makes those approved results easy for an EVM application to consume. A purpose-built gateway is the explicit MVP trust boundary.</p>
-        <div class="decision">
-          <div class="card midnight">
-            <h3>Midnight</h3>
-            <p>Verifies credential provenance and control, rating range, support-window policy, scoped uniqueness, selected-record integrity, and recipient-bound bridge authorization.</p>
-          </div>
-          <div class="card bridge">
-            <h3>Permio gateway</h3>
-            <p>Reads finalized public Midnight results only, applies a versioned schema policy, derives a Monad-specific nullifier, and signs an EIP-712 attestation.</p>
-          </div>
-          <div class="card monad">
-            <h3>Monad</h3>
-            <p>Verifies the gateway signature, recipient, purpose, expiry, and replay scope, then exposes a standard EVM receipt to one intended application or recipient.</p>
-          </div>
-        </div>
-        <p class="warning"><strong>Trust statement.</strong> The first version is not a trustless cross-chain light client. Monad trusts an authorized gateway verifier to have checked the correct Midnight network, contract, transaction, and public state.</p>
-      </section>
+<p>The first composite scenario uses the fixture already exercised by the Midnight
+three-actor circuit test.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Actor</th>
+<th>Real-world role</th>
+<th>Private authority</th>
+<th>Public role</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Alice</td>
+<td><code>Alice Audio</code>, merchant, issuer, and support decision maker</td>
+<td>Issuer signing key, order record, support decision reason</td>
+<td>Midnight issuer ID and public key; merchant application or support contract on Monad</td>
+</tr>
+<tr>
+<td>Bob</td>
+<td>Purchaser, reviewer, support claimant, and bridge authorizer</td>
+<td>Purchase credential, holder secret, order ID, exact purchase date, selected evidence</td>
+<td>Rating and review text; no public universal identity</td>
+</tr>
+<tr>
+<td>Clara</td>
+<td>Approved regulator and recipient of an escalation</td>
+<td>Case workspace and any evidence Bob explicitly discloses</td>
+<td>Recipient identifier on Midnight and recipient address or case contract on Monad</td>
+</tr>
+</tbody></table></div>
+<p>These names are fixture labels, not protocol roles. The product must not encode
+&quot;Alice&quot;, &quot;Bob&quot;, or &quot;Clara&quot; as a permanent identity class.</p>
+<h3 id="fixture-values">Fixture values</h3>
 
-      <section id="actors">
-        <h2>2. Alice Bob Clara scenario</h2>
-        <div class="actors">
-          <div class="card">
-            <div class="actor-name">Alice</div>
-            <div class="actor-role">Alice Audio · merchant and issuer</div>
-            <p class="actor-private"><strong>Private:</strong> issuer key, order database, support decision reason.</p>
-            <p class="actor-public"><strong>Public:</strong> Midnight issuer ID and public key; merchant support recipient on Monad.</p>
-          </div>
-          <div class="card">
-            <div class="actor-name">Bob</div>
-            <div class="actor-role">Purchaser and proof holder</div>
-            <p class="actor-private"><strong>Private:</strong> credential, holder secret, order ID, purchase day, selected evidence.</p>
-            <p class="actor-public"><strong>Public:</strong> only the review content he approves. Bob has no Monad address in the protocol.</p>
-          </div>
-          <div class="card">
-            <div class="actor-name">Clara</div>
-            <div class="actor-role">Approved regulator</div>
-            <p class="actor-private"><strong>Private:</strong> case vault and Bob-authorized evidence package.</p>
-            <p class="actor-public"><strong>Public:</strong> case-specific recipient ID and Monad recipient address or contract.</p>
-          </div>
-        </div>
-        <h3>Deterministic fixture</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Record</th><th>Value</th><th>Visibility</th></tr></thead>
-            <tbody>
-              <tr><td>Merchant and product</td><td><code>alice-audio</code> · <code>H1</code></td><td>Public business data</td></tr>
-              <tr><td>Order and credential</td><td><code>ORDER-BOB-001</code> · <code>CREDENTIAL-BOB-001</code></td><td>Private</td></tr>
-              <tr><td>Review</td><td>4 · Clear sound and comfortable fit.</td><td>Public after Bob approves</td></tr>
-              <tr><td>Support</td><td><code>CASE-BOB-001</code> · replacement request</td><td>Bob and Alice</td></tr>
-              <tr><td>Decision</td><td>Rejected · Inspection evidence is required.</td><td>Bob and Alice; commitment public</td></tr>
-              <tr><td>Regulation</td><td><code>REG-BOB-001</code> · consumer complaint assessment</td><td>Bob and Clara; limited Alice dispute view</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Value</th>
+<th>Classification</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Merchant</td>
+<td><code>alice-audio</code></td>
+<td>Public business identifier</td>
+</tr>
+<tr>
+<td>Product</td>
+<td><code>H1</code></td>
+<td>Public product identifier</td>
+</tr>
+<tr>
+<td>Order</td>
+<td><code>ORDER-BOB-001</code></td>
+<td>Private; disclosed only for fulfillment or authorized regulation</td>
+</tr>
+<tr>
+<td>Credential</td>
+<td><code>CREDENTIAL-BOB-001</code></td>
+<td>Private</td>
+</tr>
+<tr>
+<td>Holder secret</td>
+<td>Bob-generated random secret</td>
+<td>Private to Bob&#39;s wallet or vault</td>
+</tr>
+<tr>
+<td>Review</td>
+<td>Rating <code>4</code>; <code>Clear sound and comfortable fit.</code></td>
+<td>Public after Bob approves publication</td>
+</tr>
+<tr>
+<td>Support case</td>
+<td><code>CASE-BOB-001</code></td>
+<td>Bob and Alice only until escalation</td>
+</tr>
+<tr>
+<td>Support decision</td>
+<td>Rejected; <code>Inspection evidence is required.</code></td>
+<td>Bob and Alice; committed on Midnight</td>
+</tr>
+<tr>
+<td>Regulatory case</td>
+<td><code>REG-BOB-001</code></td>
+<td>Bob and Clara; Alice receives only the lawful dispute view</td>
+</tr>
+<tr>
+<td>Regulatory purpose</td>
+<td><code>consumer complaint assessment</code></td>
+<td>Clara-visible and commitment-bound</td>
+</tr>
+</tbody></table></div>
+<p>The proof establishes credential provenance, credential control, policy
+eligibility, scoped uniqueness, selected-record integrity, and authorization.
+It does not establish that Bob&#39;s opinion or allegation is true.</p>
+</section>
+<section aria-labelledby="3-chain-and-component-responsibilities">
+<h2 id="3-chain-and-component-responsibilities">3 Chain and component responsibilities</h2>
 
-      <section id="topology">
-        <h2>3. Composite topology</h2>
-        <div class="privacy-key"><span><i class="dot private"></i>private data boundary</span><span><i class="dot public"></i>public verifiable output</span></div>
-        <div class="flow" aria-label="Composite architecture flow">
-          <div class="flow-step"><b>Alice issuer</b><span>Signs Bob's private purchase credential and later signs the support decision.</span></div>
-          <div class="flow-step"><b>Bob device</b><span>Encrypted private state, disclosure preview, Midnight wallet, local proof server.</span></div>
-          <div class="flow-step"><b>Midnight</b><span>Compact circuit verifies policy and publishes only scoped values.</span></div>
-          <div class="flow-step"><b>Gateway</b><span>Observes finalized public output and signs a recipient-bound EIP-712 payload.</span></div>
-          <div class="flow-step"><b>Monad recipient</b><span>Registry exposes an EVM receipt to Alice's app or Clara's case.</span></div>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Component</th><th>Receives</th><th>Must never receive</th></tr></thead>
-            <tbody>
-              <tr><td>Bob private state</td><td>Credential, holder secret, proof preparation records</td><td>Alice issuer secret; gateway key</td></tr>
-              <tr><td>Local proof server</td><td>Witness data required to generate the proof</td><td>Long-lived wallet or issuer private keys</td></tr>
-              <tr><td>Midnight ledger</td><td>Issuer keys, scoped nullifiers, commitments, counters</td><td>Plain order, credential, secret, date, review, reason</td></tr>
-              <tr><td>Gateway</td><td>Finalized Midnight transaction and public contract state</td><td>Credential, holder secret, plaintext evidence</td></tr>
-              <tr><td>Monad registry</td><td>Typed attestation and gateway signature</td><td>Bob identity or any private Midnight input</td></tr>
-              <tr><td>Clara case vault</td><td>Exact encrypted evidence Bob selected</td><td>Other reviews, credentials, or merchant-wide history</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Responsibility</th>
+<th>Must not receive</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Bob client and Midnight private state</td>
+<td>Hold credential and holder secret, preview disclosures, prepare proof calls</td>
+<td>Alice issuer secret; gateway verifier key</td>
+</tr>
+<tr>
+<td>Alice issuer service</td>
+<td>Issue signed credentials and sign support decisions</td>
+<td>Bob holder secret; Bob review identity</td>
+</tr>
+<tr>
+<td>Local proof server</td>
+<td>Build Midnight proofs for the calling client</td>
+<td>Long-lived wallet or issuer private keys</td>
+</tr>
+<tr>
+<td>Midnight Compact contract</td>
+<td>Verify credential, policy, uniqueness, decisions, and case-bound bridges</td>
+<td>Plain order ID, credential ID, holder secret, exact purchase date, review text, decision reason</td>
+</tr>
+<tr>
+<td>Midnight public ledger</td>
+<td>Store issuer keys, context nullifiers, action commitments, and counters</td>
+<td>Private source records and cross-context universal identifiers</td>
+</tr>
+<tr>
+<td>Permio gateway</td>
+<td>Confirm Midnight network, contract, transaction, and public output; sign typed attestations</td>
+<td>Credential, holder secret, plaintext order, review text, support reason</td>
+</tr>
+<tr>
+<td>Monad registry</td>
+<td>Verify gateway signature, recipient, purpose, expiry, and replay scope</td>
+<td>Bob identity or any private Midnight input</td>
+</tr>
+<tr>
+<td>Public application store</td>
+<td>Serve Bob-approved review content and public metadata</td>
+<td>Purchase credential, order, holder secret</td>
+</tr>
+<tr>
+<td>Clara case vault</td>
+<td>Store the evidence package Bob authorized for Clara</td>
+<td>Other reviews, unrelated credentials, merchant-wide history</td>
+</tr>
+</tbody></table></div>
+<p>Midnight&#39;s proof server sees witness data while generating a proof, so it must
+run on Bob&#39;s controlled device or a trusted local environment. It is not a
+generic hosted Permio service.</p>
+</section>
+<section aria-labelledby="4-composite-topology">
+<h2 id="4-composite-topology">4 Composite topology</h2>
 
-      <section id="flows">
-        <h2>4. Complete information flows</h2>
+<pre><code class="language-mermaid">flowchart LR
+  subgraph AliceDomain[&quot;Alice merchant domain&quot;]
+    Orders[(Order database)]
+    Issuer[Credential issuer]
+    Support[Support console]
+    AliceKey[Issuer signing key]
+  end
 
-        <h3>4.1 Credential issuance</h3>
-        <ol class="sequence">
-          <li>A contract authority registers Alice's dedicated Jubjub issuer public key as Midnight issuer <code>1</code>.</li>
-          <li>Bob's client generates a random holder secret <code>s_B</code> and sends Alice only its holder binding.</li>
-          <li>Alice signs the private purchase credential containing merchant, product, purchase day, order, credential, and holder binding.</li>
-          <li>Bob stores the credential and <code>s_B</code> in encrypted account-scoped Midnight private state. No per-purchase chain transaction is required.</li>
-        </ol>
+  subgraph BobDevice[&quot;Bob controlled device&quot;]
+    Web[Permio web client]
+    Vault[(Encrypted private state)]
+    Proof[Local Midnight proof server]
+    BobWallet[Midnight wallet]
+  end
 
-        <h3>4.2 Reputation</h3>
-        <ol class="sequence">
-          <li>Bob authors exactly two fields: rating and free-form review text.</li>
-          <li>The UI previews the public view, hidden credential fields, recipient, purpose, and new linkage.</li>
-          <li><code>publishReview</code> verifies Alice's signature, Bob's holder binding, rating range, and unused review scope.</li>
-          <li>Midnight discloses only a review-scoped nullifier and review commitment.</li>
-          <li>The public review store publishes Bob-approved content. An optional Monad receipt certifies eligibility and uniqueness, never opinion truth.</li>
-        </ol>
+  subgraph MidnightNetwork[&quot;Midnight&quot;]
+    Compact[InformationFlow Compact contract]
+    Indexer[Public indexer]
+  end
 
-        <h3>4.3 Customer support</h3>
-        <ol class="sequence">
-          <li>Bob previews Alice as recipient and four predicates: Alice-issued credential, H1 product, age at most 30 days, and unused entitlement.</li>
-          <li><code>openSupportCase</code> verifies the credential, date range, and a support-specific nullifier distinct from the review nullifier.</li>
-          <li>The gateway observes the confirmed public result and signs <code>PERMIO_SUPPORT_ELIGIBLE_V1</code> for Alice's support address or contract.</li>
-          <li>A neutral relayer registers it on Monad. Alice calls <code>isValidFor</code> before advancing the case.</li>
-          <li>Alice signs a structured support decision. The target V2 circuit verifies her signature without requiring Bob's holder secret again.</li>
-        </ol>
+  subgraph BridgeDomain[&quot;Permio attestation gateway&quot;]
+    Observer[Finality and state observer]
+    Policy[Attestation policy]
+    VerifierKey[Gateway verifier key]
+    Outbox[(Idempotent outbox)]
+  end
 
-        <h3>4.4 Regulatory escalation</h3>
-        <ol class="sequence">
-          <li>Bob selects the exact review snapshot, support case, and Alice decision.</li>
-          <li>The preview names Clara, the case, purpose, records, policy version, expiry, and every newly disclosed link.</li>
-          <li>Bob explicitly authorizes <code>authorizeRegulatoryBridgeV2</code>.</li>
-          <li>The circuit privately proves that the selected records derive from the same credential and publishes one Clara-, case-, purpose-, evidence-, and policy-bound bridge.</li>
-          <li>Bob separately encrypts the selected plaintext evidence to Clara's case key. The ZK bridge proves linkage; it does not transport the evidence.</li>
-          <li>The gateway issues <code>PERMIO_REGULATORY_BRIDGE_V1</code> on Monad. Alice gains no review-to-Bob link as a side effect.</li>
-        </ol>
-      </section>
+  subgraph MonadNetwork[&quot;Monad&quot;]
+    Registry[RecipientBoundAttestationRegistry]
+    Consumer[Recipient application or contract]
+  end
 
-      <section id="circuits">
-        <h2>5. Zero knowledge circuit design</h2>
-        <p>All protocol hashes use explicit, versioned domain separation. Any incompatible encoding change creates a new domain version.</p>
-        <pre aria-label="Nullifier and commitment definitions">holderBinding = H("permio:holder:v1", s_B)
+  subgraph ClaraDomain[&quot;Clara regulator domain&quot;]
+    CaseVault[(Case evidence vault)]
+  end
 
-N_review = H("permio:review-nullifier:v1",
-             s_B, credentialId, merchantId, productId)
+  Orders --&gt; Issuer
+  AliceKey --&gt; Issuer
+  Issuer --&gt;|signed private credential| Vault
+  Web --&gt; Vault
+  Web --&gt; Proof
+  BobWallet --&gt; Web
+  Proof --&gt;|zero knowledge proof| Compact
+  Compact --&gt; Indexer
+  Indexer --&gt;|finalized public outputs only| Observer
+  Observer --&gt; Policy
+  Policy --&gt; VerifierKey
+  Policy --&gt; Outbox
+  Outbox --&gt;|EIP-712 attestation| Registry
+  Registry --&gt; Consumer
+  Web --&gt;|authorized encrypted evidence| CaseVault
+  Registry --&gt;|recipient-bound receipt| CaseVault
+  Support --&gt;|signed decision| Web
+</code></pre>
+</section>
+<section aria-labelledby="5-end-to-end-information-flow">
+<h2 id="5-end-to-end-information-flow">5 End-to-end information flow</h2>
 
-N_support = H("permio:support-nullifier:v1",
-              s_B, credentialId, merchantId, productId)
+<h3 id="5-1-issuer-registration">5.1 Issuer registration</h3>
 
-C_review = H("permio:review-record:v1",
-             merchantId, productId, N_review,
-             rating, H(reviewText), publishedAt)
+<ol>
+<li>The contract authority approves Alice as credential issuer <code>issuerId = 1</code>.</li>
+<li>Alice generates a dedicated Jubjub issuer key for Midnight credentials.</li>
+<li><code>registerCredentialIssuer</code> proves knowledge of the contract authority secret
+and writes Alice&#39;s issuer public key to Midnight public state.</li>
+<li>The issuer secret remains in Alice&#39;s encrypted service keystore. It is not the
+Monad gateway verifier key and not the Monad relayer key.</li>
+</ol>
+<p>Public result: issuer ID and issuer public key.<br>Private result: Alice retains the issuer secret.</p>
+<h3 id="5-2-purchase-and-private-credential-issuance">5.2 Purchase and private credential issuance</h3>
 
-C_support = H("permio:support-record:v1",
-              merchantId, productId, N_support,
-              caseId, remedy, policyVersion, openedAt)
+<ol>
+<li>Alice records Bob&#39;s H1 purchase in her private order system.</li>
+<li>Bob&#39;s client generates a fresh holder secret <code>s_B</code> and sends only its holder
+binding to Alice.</li>
+<li>Alice signs a <code>PurchaseCredential</code> containing the issuer ID, merchant hash,
+product hash, purchase day, order hash, credential hash, and holder binding.</li>
+<li>Bob stores the signed credential and <code>s_B</code> in encrypted account-scoped
+Midnight private state.</li>
+</ol>
+<p>No blockchain transaction is required for every purchase. Midnight learns the
+credential only as a private circuit input when Bob later uses it.</p>
+<h3 id="5-3-reputation-flow">5.3 Reputation flow</h3>
 
-C_decision = H("permio:support-decision:v2",
-               N_support, C_support, outcome,
-               reasonCommitment, decidedAt, policyVersion)
+<ol>
+<li>Bob enters exactly two authored fields: rating and free-form review text.</li>
+<li>The client shows a preview: public content, public metadata, public recipient,
+purpose, and all hidden fields.</li>
+<li>Bob calls <code>publishReview</code> with the private credential, Alice&#39;s credential
+signature, and <code>s_B</code>.</li>
+<li>The circuit verifies Alice&#39;s registered issuer key, signature, Bob&#39;s holder
+binding, rating range, and unused review nullifier.</li>
+<li>Midnight discloses only <code>reviewNullifier</code> and <code>reviewCommitment</code> and updates
+public state.</li>
+<li>The public review store saves rating, review text, merchant, product, and
+publication time. It can prove that these fields match the Midnight action
+commitment.</li>
+<li>If an EVM review application needs composability, the gateway issues
+<code>PERMIO_REVIEW_ELIGIBLE_UNIQUE_V1</code> to that application contract on Monad.</li>
+</ol>
+<p>The Monad receipt certifies eligibility and uniqueness. It does not certify the
+truth of the review and contains no Bob address.</p>
+<h3 id="5-4-support-eligibility-flow">5.4 Support eligibility flow</h3>
+
+<ol>
+<li>Bob selects the H1 credential and requests replacement.</li>
+<li>The client previews Alice as recipient and the predicates to reveal:
+Alice-issued credential, H1 product, purchase age at most 30 days, and unused
+support entitlement.</li>
+<li>Bob calls <code>openSupportCase</code> with private credential data, <code>s_B</code>, current day,
+case commitment, remedy, policy version, and opening time.</li>
+<li>Midnight verifies the credential, range rule, and context-specific support
+nullifier, then stores only the support nullifier and commitment.</li>
+<li>The gateway waits for a stable Midnight result and signs
+<code>PERMIO_SUPPORT_ELIGIBLE_V1</code> for Alice&#39;s support address or contract.</li>
+<li>A neutral relayer submits the attestation to Monad. Alice&#39;s support system
+calls <code>isValidFor</code> before opening or advancing the case.</li>
+</ol>
+<p>This is the first production vertical slice because it gives both chains a
+necessary and testable role with the smallest disclosure surface.</p>
+<h3 id="5-5-alice-s-support-decision">5.5 Alice's support decision</h3>
+
+<p>Alice signs a structured decision containing the support nullifier, support
+commitment, outcome, reason commitment, decision timestamp, and policy version.</p>
+<p>The current imported Midnight circuit should be revised before integration.
+Today, <code>recordSupportDecision</code> requires Bob&#39;s full credential and holder secret
+again. The target <code>recordSupportDecisionV2</code> instead accepts:</p>
+<pre><code class="language-text">issuerId
+supportNullifier
+supportCommitment
+outcome
+reasonCommitment
+decidedAt
+policyVersion
+merchantSignature
+</code></pre>
+<p>The circuit will check that the support commitment already exists, verify the
+decision signature against Alice&#39;s registered issuer key, prevent a second
+decision for the same support nullifier, and publish only the decision
+commitment. Alice therefore never needs Bob&#39;s holder secret.</p>
+<h3 id="5-6-regulatory-escalation-flow">5.6 Regulatory escalation flow</h3>
+
+<ol>
+<li>Bob selects the exact review snapshot, support case, and Alice decision.</li>
+<li>The interface shows Clara, <code>REG-BOB-001</code>, the investigation purpose, policy
+version, selected records, newly created linkage, and expiry or case scope.</li>
+<li>Bob explicitly authorizes the bridge.</li>
+<li><code>authorizeRegulatoryBridge</code> privately re-derives Bob&#39;s review and support
+nullifiers, checks the selected commitments and decision, and creates a
+bridge bound to Clara, the case, purpose, evidence set, and policy version.</li>
+<li>Bob encrypts the selected plaintext evidence to Clara&#39;s case key. The ZK
+bridge proves linkage; it is not the transport for the plaintext evidence.</li>
+<li>The gateway issues <code>PERMIO_REGULATORY_BRIDGE_V1</code> to Clara&#39;s Monad address or
+case contract.</li>
+<li>Clara verifies the Midnight references, the Monad receipt, and the encrypted
+evidence. Alice receives no proof linking Bob to his public review unless a
+separate authorized rule explicitly permits that view.</li>
+</ol>
+</section>
+<section aria-labelledby="6-zk-circuit-design">
+<h2 id="6-zk-circuit-design">6 ZK circuit design</h2>
+
+<p><code>H</code> below is a protocol-defined Compact hash with explicit domain separation.
+Every incompatible encoding change requires a new versioned domain.</p>
+<h3 id="6-1-credential-primitives">6.1 Credential primitives</h3>
+
+<pre><code class="language-text">holderBinding = H(&quot;permio:holder:v1&quot;, s_B)
+
+credentialMessage = H(
+  &quot;permio:credential:v1&quot;,
+  issuerId,
+  merchantId,
+  productId,
+  purchaseDay,
+  orderId,
+  credentialId,
+  holderBinding
+)
+
+credentialSignature = SchnorrSign(AliceIssuerSecret, credentialMessage)
+</code></pre>
+<h3 id="6-2-context-separated-nullifiers-and-commitments">6.2 Context-separated nullifiers and commitments</h3>
+
+<pre><code class="language-text">N_review = H(
+  &quot;permio:review-nullifier:v1&quot;,
+  s_B, credentialId, merchantId, productId
+)
+
+C_review = H(
+  &quot;permio:review-record:v1&quot;,
+  merchantId, productId, N_review,
+  rating, H(&quot;permio:review-text:v1&quot;, reviewText), publishedAt
+)
+
+N_support = H(
+  &quot;permio:support-nullifier:v1&quot;,
+  s_B, credentialId, merchantId, productId
+)
+
+C_support = H(
+  &quot;permio:support-record:v1&quot;,
+  merchantId, productId, N_support,
+  caseId, requestedRemedy, policyVersion, openedAt
+)
+
+C_decision = H(
+  &quot;permio:support-decision:v2&quot;,
+  N_support, C_support, outcome,
+  reasonCommitment, decidedAt, policyVersion
+)
 
 evidenceSetHash = H(C_review, C_support, C_decision)
 
-K_bridge = H("permio:regulatory-bridge-key:v2",
-             Clara, regulatorCase, purpose,
-             evidenceSetHash, policyVersion)
+K_bridge = H(
+  &quot;permio:regulatory-bridge-key:v2&quot;,
+  claraRecipientId, regulatorCaseId, purposeHash,
+  evidenceSetHash, policyVersion
+)
 
-C_bridge = H("permio:regulatory-bridge-record:v2",
-             K_bridge, s_B, evidenceSetHash,
-             authorizedAt, policyVersion)</pre>
-        <p><code>N_review</code> and <code>N_support</code> are intentionally different. The private holder secret inside <code>C_bridge</code> prevents a public observer from recomputing the cross-context linkage from public records.</p>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Circuit</th><th>Private inputs</th><th>Verified rule</th><th>Disclosed output</th></tr></thead>
-            <tbody>
-              <tr><td><code>registerCredentialIssuer</code></td><td>Authority secret</td><td>Authority matches; issuer unused</td><td>Issuer ID and public key</td></tr>
-              <tr><td><code>publishReview</code></td><td>Credential, signature, holder secret</td><td>Provenance, control, rating 1-5, unique review scope</td><td>Review nullifier and commitment</td></tr>
-              <tr><td><code>openSupportCase</code></td><td>Credential, signature, holder secret, purchase day</td><td>Age ≤ 30 days; unique support scope</td><td>Support nullifier and commitment</td></tr>
-              <tr><td><code>recordSupportDecisionV2</code></td><td>Alice decision signature</td><td>Known support commitment; issuer signature; one decision</td><td>Decision commitment</td></tr>
-              <tr><td><code>authorizeRegulatoryBridgeV2</code></td><td>Credential, signature, holder secret, record openings</td><td>Same credential; exact records; exact recipient/case/purpose</td><td>Bridge key and commitment</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p class="warning"><strong>Required circuit correction.</strong> The imported V1 <code>recordSupportDecision</code> currently asks for Bob's credential and holder secret again. V2 must verify Alice's decision directly against an existing support commitment so Alice never receives Bob's secret.</p>
-      </section>
+C_bridge = H(
+  &quot;permio:regulatory-bridge-record:v2&quot;,
+  K_bridge, s_B, evidenceSetHash, authorizedAt, policyVersion
+)
+</code></pre>
+<p><code>N_review</code> and <code>N_support</code> must never be equal. <code>K_bridge</code> is recipient-, case-,
+purpose-, evidence-, and policy-bound. The holder secret in <code>C_bridge</code> prevents
+an observer from recomputing the cross-context linkage from public records.</p>
+<h3 id="6-3-circuit-catalogue">6.3 Circuit catalogue</h3>
 
-      <section id="attestations">
-        <h2>6. Monad attestation design</h2>
-        <p>The existing <code>RecipientBoundAttestationRegistry</code> is shared by all schemas. EIP-712 binds every signature to the exact data shape, Monad chain ID, and registry address.</p>
-        <pre>Attestation {
-  schemaId
-  midnightNetworkIdHash
-  midnightContractIdHash
-  midnightTransactionIdHash
-  actionCommitment
-  scopedNullifier
-  purposeHash
-  recipient
-  issuedAt
-  expiresAt
-}</pre>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Schema</th><th>Recipient</th><th>Lifetime</th><th>Meaning</th></tr></thead>
-            <tbody>
-              <tr><td><code>PERMIO_REVIEW_ELIGIBLE_UNIQUE_V1</code></td><td>Review application contract</td><td>Product policy, up to 365 days</td><td>An eligible holder created one review in scope</td></tr>
-              <tr><td><code>PERMIO_SUPPORT_ELIGIBLE_V1</code></td><td>Alice support address or contract</td><td>15-minute consumption window</td><td>The private purchase satisfies the active support policy</td></tr>
-              <tr><td><code>PERMIO_REGULATORY_BRIDGE_V1</code></td><td>Clara or a case contract</td><td>Case duration, policy capped</td><td>The named recipient may rely on the exact selected bridge</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <h3>Monad-specific relay nullifier</h3>
-        <pre>N_monad = H("permio:monad-relay:v1",
-            midnightScopedNullifier,
-            schemaId, purposeHash, recipient,
-            monadChainId, registryAddress)</pre>
-        <p>Monad does not copy the raw Midnight nullifier. The derived value cannot be replayed on another EVM chain or registry. A Midnight transaction hash remains an intentional provenance link between one source action and one receipt; hashing public data is not secrecy.</p>
-      </section>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Circuit</th>
+<th>Private inputs</th>
+<th>Public checks and state</th>
+<th>Disclosed result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>registerCredentialIssuer</code></td>
+<td>Authority secret</td>
+<td>Issuer ID unused; authority commitment matches</td>
+<td>Issuer ID and public key</td>
+</tr>
+<tr>
+<td><code>publishReview</code></td>
+<td>Credential, issuer signature, holder secret</td>
+<td>Issuer authorized; holder controls credential; rating 1-5; review scope unused</td>
+<td>Review nullifier and commitment</td>
+</tr>
+<tr>
+<td><code>openSupportCase</code></td>
+<td>Credential, issuer signature, holder secret, purchase day</td>
+<td>Purchase not in future; age &lt;= 30 days; support scope unused</td>
+<td>Support nullifier and commitment</td>
+</tr>
+<tr>
+<td><code>recordSupportDecisionV2</code></td>
+<td>Alice merchant signature; plaintext reason remains off-chain</td>
+<td>Existing support commitment; issuer signature valid; no prior decision</td>
+<td>Decision commitment</td>
+</tr>
+<tr>
+<td><code>authorizeRegulatoryBridgeV2</code></td>
+<td>Credential, signature, holder secret, selected record openings</td>
+<td>All selected commitments exist and derive from the same credential; exact bridge key unused</td>
+<td>Bridge key and commitment</td>
+</tr>
+</tbody></table></div>
+<p>All exported values and ledger writes are intentional disclosures. Compact&#39;s
+compiler must reject any witness-derived value that reaches public state without
+an explicit disclosure.</p>
+</section>
+<section aria-labelledby="7-monad-attestation-design">
+<h2 id="7-monad-attestation-design">7 Monad attestation design</h2>
 
-      <section id="gateway">
-        <h2>7. Gateway validation and lifecycle</h2>
-        <ol>
-          <li>Match the configured Midnight network and exact Compact contract.</li>
-          <li>Fetch the transaction and public contract state from the indexer.</li>
-          <li>Require the expected action and configured confirmation threshold.</li>
-          <li>Check that the public nullifier or bridge key maps to the expected commitment.</li>
-          <li>Apply the versioned schema policy and recipient allow-list.</li>
-          <li>Derive <code>N_monad</code>, sign EIP-712, and persist an idempotent outbox row.</li>
-          <li>Submit through a separate relayer, wait for Monad finality, and save the receipt.</li>
-        </ol>
-        <div class="state-line" aria-label="Cross-chain transaction state machine">
-          <span class="state">Draft</span><span class="arrow">→</span>
-          <span class="state">Policy approved</span><span class="arrow">→</span>
-          <span class="state">Proving</span><span class="arrow">→</span>
-          <span class="state">Midnight submitted</span><span class="arrow">→</span>
-          <span class="state">Midnight confirmed</span><span class="arrow">→</span>
-          <span class="state">Attestation signed</span><span class="arrow">→</span>
-          <span class="state">Monad submitted</span><span class="arrow">→</span>
-          <span class="state">Monad finalized</span><span class="arrow">→</span>
-          <span class="state">Consumed or revoked</span>
-        </div>
-        <p>The outbox idempotency key binds the Midnight network, contract, transaction, schema, purpose, recipient, Monad registry, and chain ID. No witness input is serialized into a gateway job, log, trace, error report, or Monad transaction.</p>
-      </section>
+<p>The existing <code>RecipientBoundAttestationRegistry</code> remains the single Monad
+contract for all three schemas.</p>
+<pre><code class="language-solidity">struct Attestation {
+    bytes32 schemaId;
+    bytes32 midnightNetworkIdHash;
+    bytes32 midnightContractIdHash;
+    bytes32 midnightTransactionIdHash;
+    bytes32 actionCommitment;
+    bytes32 scopedNullifier;
+    bytes32 purposeHash;
+    address recipient;
+    uint64 issuedAt;
+    uint64 expiresAt;
+}
+</code></pre>
+<h3 id="7-1-schema-registry">7.1 Schema registry</h3>
 
-      <section id="stack">
-        <h2>8. Technology stack and chains</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Layer</th><th>Selected stack</th><th>Reason</th></tr></thead>
-            <tbody>
-              <tr><td>Application</td><td>TypeScript strict mode; Node.js 22.13+; Vite; modular monolith</td><td>Matches both existing repositories and keeps one hackathon deployment</td></tr>
-              <tr><td>Persistence</td><td>SQLite; encrypted private columns; append-only outbox</td><td>Restartable local demo with deterministic submission recovery</td></tr>
-              <tr><td>Midnight</td><td>Compact; Midnight.js 4.1.x; Wallet SDK; local proof server</td><td>Private inputs, generated proofs, account-scoped private state</td></tr>
-              <tr><td>Monad</td><td>Solidity 0.8.31; Osaka EVM; Hardhat 3; Ignition; viem 2.40+; OpenZeppelin</td><td>Official current Monad-compatible EVM toolchain</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Stage</th><th>Midnight</th><th>Monad</th></tr></thead>
-            <tbody>
-              <tr><td>Unit and integration</td><td>Generated Compact runtime</td><td>Hardhat simulated chain</td></tr>
-              <tr><td>Local end-to-end</td><td>Midnight Local Dev</td><td>Local Hardhat node</td></tr>
-              <tr><td>Hackathon demo</td><td>Preprod plus Bob-controlled proof server</td><td>Monad Testnet · chain ID 10143</td></tr>
-              <tr><td>Future production</td><td>Midnight Mainnet</td><td>Monad Mainnet · chain ID 143</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p>Endpoints are environment configuration, not protocol constants. Monad receipts become product-final at <code>Finalized</code>. A consumer making an irreversible financial decision should wait for Monad's more conservative <code>Verified</code> state-root status.</p>
-      </section>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Schema</th>
+<th>Recipient</th>
+<th align="right">Recommended lifetime</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>PERMIO_REVIEW_ELIGIBLE_UNIQUE_V1</code></td>
+<td>Review application contract</td>
+<td align="right">365 days or product-defined</td>
+<td>An eligible credential holder created one review in the defined scope</td>
+</tr>
+<tr>
+<td><code>PERMIO_SUPPORT_ELIGIBLE_V1</code></td>
+<td>Alice support contract or address</td>
+<td align="right">15 minutes for consumption</td>
+<td>The private purchase satisfies the current support policy</td>
+</tr>
+<tr>
+<td><code>PERMIO_REGULATORY_BRIDGE_V1</code></td>
+<td>Clara address or case contract</td>
+<td align="right">Case duration, capped by policy</td>
+<td>The selected Midnight bridge is valid for this recipient, case, and purpose</td>
+</tr>
+</tbody></table></div>
+<p><code>schemaId</code> is the hash of the exact versioned schema string. <code>purposeHash</code> is a
+hash of a canonical purpose, not arbitrary user text.</p>
+<h3 id="7-2-relay-nullifier">7.2 Relay nullifier</h3>
 
-      <section id="security">
-        <h2>9. Security model</h2>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Threat</th><th>Control</th><th>Acceptance test</th></tr></thead>
-            <tbody>
-              <tr><td>Cross-context linkage</td><td>Separate nullifier domains; no Bob address; no shared generic commitment</td><td>Review and support receipts share no stable Bob-derived value</td></tr>
-              <tr><td>Recipient or purpose substitution</td><td>Bind both in Midnight policy, relay nullifier, and EIP-712</td><td>One-byte change invalidates registration</td></tr>
-              <tr><td>Replay</td><td>Midnight nullifier maps plus Monad scope map</td><td>Second use fails on both chains</td></tr>
-              <tr><td>Gateway compromise</td><td>Verifier rotation, short expiry, revocation, separate relayer key</td><td>Unauthorized, expired, or revoked receipt is invalid</td></tr>
-              <tr><td>Proof-server disclosure</td><td>Bob-controlled local proof server and no witness logging</td><td>Network and log inspection finds no witness beyond local boundary</td></tr>
-              <tr><td>Alice identifies Bob's review</td><td>No review identifier in support view</td><td>Support information cannot resolve a public review</td></tr>
-              <tr><td>Stale policy</td><td>Commit policy version in support, decision, and bridge</td><td>Mismatched versions fail</td></tr>
-              <tr><td>Finality race</td><td>Explicit lifecycle states and confirmation thresholds</td><td>UI never labels a receipt final too early</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <h3>Key separation</h3>
-        <p>The Midnight contract authority, Alice issuer, Bob holder secret, Bob Midnight wallet, gateway verifier, Monad relayer, Monad registry owner, and Clara case decryption key are distinct authorities. No key is reused across those roles.</p>
-      </section>
+<p>Monad must not copy the raw Midnight nullifier. The gateway derives a
+chain-specific relay nullifier:</p>
+<pre><code class="language-text">N_monad = H(
+  &quot;permio:monad-relay:v1&quot;,
+  midnightScopedNullifier,
+  schemaId,
+  purposeHash,
+  recipient,
+  monadChainId,
+  registryAddress
+)
+</code></pre>
+<p>This prevents the Monad value from becoming a reusable identifier on another
+EVM chain or registry. The Midnight transaction reference still creates an
+intentional link between one source action and one receipt. Hashing a public
+transaction ID is provenance compression, not secrecy.</p>
+<h3 id="7-3-submission-and-finality">7.3 Submission and finality</h3>
 
-      <section id="delivery">
-        <h2>10. Implementation plan</h2>
-        <ol class="sequence">
-          <li><strong>Freeze protocols.</strong> Version the three schema IDs, purpose vocabulary, canonical encodings, relay nullifier, and V2 circuit domains in tests.</li>
-          <li><strong>Fix the privacy boundary.</strong> Implement <code>recordSupportDecisionV2</code> so Alice never needs Bob's secret.</li>
-          <li><strong>Port Midnight modules.</strong> Move selected Compact sources, adapters, transaction service, and three-actor fixtures into Permio.</li>
-          <li><strong>Build support first.</strong> Implement the public-output observer, schema policy, signer, persistent outbox, and Monad publisher for support only.</li>
-          <li><strong>Prove locally.</strong> Run Midnight Local Dev to Hardhat end-to-end, including replay, substitution, restart, and failure recovery.</li>
-          <li><strong>Deploy publicly.</strong> Publish the registry to Monad Testnet and the Compact contract to Midnight Preprod; record versions and addresses.</li>
-          <li><strong>Complete all contexts.</strong> Add review and regulatory schemas through the same registry and gateway.</li>
-          <li><strong>Integrate the product.</strong> Port the account-first UI, explicit disclosure previews, and two-chain lifecycle receipts.</li>
-        </ol>
-        <h3>Current implementation map</h3>
-        <div class="table-wrap">
-          <table>
-            <thead><tr><th>Capability</th><th>Status</th><th>Next action</th></tr></thead>
-            <tbody>
-              <tr><td>InformationFlow domain and app</td><td>Implemented in legacy repository</td><td>Port selected modules after interfaces are frozen</td></tr>
-              <tr><td>Three-actor Midnight circuits</td><td>Implemented and locally tested</td><td>Add V2 decision and bridge domains</td></tr>
-              <tr><td>Monad recipient-bound registry</td><td>Implemented and tested in Permio</td><td>Add schema package and publisher</td></tr>
-              <tr><td>Cross-chain gateway</td><td>Missing</td><td>Build observer, signer, outbox, and publisher</td></tr>
-              <tr><td>Dual-chain test</td><td>Missing</td><td>Local test first, then Preprod/Testnet smoke test</td></tr>
-              <tr><td>Unified product UI</td><td>Partially implemented in legacy repository</td><td>Port preview and lifecycle screens</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
+<ul>
+<li>The gateway verifier key signs the EIP-712 payload but does not pay gas.</li>
+<li>A separate relayer or recipient submits the transaction.</li>
+<li>The UI may show a pending receipt after inclusion, but marks it final only
+after Monad <code>Finalized</code> status.</li>
+<li>An off-chain consumer making an irreversible financial decision should use
+the more conservative <code>Verified</code> state-root status.</li>
+<li>A duplicate registration is idempotent only when the existing attestation ID
+and all fields match; otherwise it is a replay failure.</li>
+</ul>
+</section>
+<section aria-labelledby="8-gateway-validation-and-state-machine">
+<h2 id="8-gateway-validation-and-state-machine">8 Gateway validation and state machine</h2>
 
-      <section id="chinese" class="bilingual" lang="zh-CN">
-        <h2>中文架构摘要</h2>
-        <p class="lede">Permio 使用 Midnight 证明私有事实，使用 Monad 向指定应用或接收方提供可组合的公开收据。网关是 MVP 阶段明示的信任边界，只能读取已经确认的 Midnight 公开输出，不能获得 Bob 的凭证、持有人秘密或明文证据。</p>
-        <h3>角色</h3>
-        <p>Alice 是商家、购买凭证签发者和客服决定者；Bob 是购买者、评价者、客服申请者和跨上下文桥接授权者；Clara 是监管接收方。这些名字只是场景标签，系统不创建全局公开身份。</p>
-        <h3>信息流</h3>
-        <p>Bob 生成持有人秘密，Alice 只签署其绑定值所在的私有购买凭证。Bob 在 Midnight 上分别生成评价和客服证明，两者使用不同的域分离空值标识。Alice 的客服决定由 Alice 独立签名，V2 电路不得再次要求 Bob 的秘密。监管升级时，Bob 明确选择评价、客服和决定，授权一个只对 Clara、指定案件、用途、证据集合和策略版本有效的桥接，并单独把明文证据加密给 Clara。</p>
-        <h3>两条链</h3>
-        <p>Midnight 账本只公开签发者公钥、限定范围空值标识和动作承诺。网关核对 Midnight 网络、合约、交易和公开状态后，签署 EIP-712 证明。Monad 注册表检查验证者、接收方、用途、有效期和重复使用，并向 Alice 的客服应用或 Clara 的案件提供标准 EVM 收据。Bob 不需要 Monad 地址或交易。</p>
-        <h3>第一实施切片</h3>
-        <p>先完成客服资格：Bob 在 Midnight 上证明购买不超过 30 天且权益未使用；网关签发短期的 <code>PERMIO_SUPPORT_ELIGIBLE_V1</code>；中立中继器在 Monad 上注册；Alice 的客服系统用 <code>isValidFor</code> 验证。随后再通过同一注册表增加评价和监管模式。</p>
-      </section>
+<p>The gateway consumes only public Midnight data.</p>
+<p>Validation sequence:</p>
+<ol>
+<li>Match the configured Midnight network and exact contract address.</li>
+<li>Fetch the transaction and contract state from the Midnight indexer.</li>
+<li>Require the expected circuit action and stable confirmation.</li>
+<li>Check that the returned nullifier or bridge key maps to the expected action
+commitment in contract state.</li>
+<li>Apply the versioned schema policy and recipient allow-list.</li>
+<li>Derive <code>N_monad</code>, build the EIP-712 payload, and sign it.</li>
+<li>Persist the signed payload in an outbox before submission.</li>
+<li>Submit through the relayer, wait for Monad finality, and record the receipt.</li>
+</ol>
+<pre><code class="language-mermaid">stateDiagram-v2
+  [*] --&gt; Draft
+  Draft --&gt; PolicyApproved
+  PolicyApproved --&gt; Proving
+  Proving --&gt; MidnightSubmitted
+  MidnightSubmitted --&gt; MidnightConfirmed
+  MidnightConfirmed --&gt; AttestationSigned
+  AttestationSigned --&gt; MonadSubmitted
+  MonadSubmitted --&gt; MonadFinalized
+  MonadFinalized --&gt; Consumed
+  MonadFinalized --&gt; Revoked
+  Proving --&gt; Failed
+  MidnightSubmitted --&gt; Failed
+  MonadSubmitted --&gt; Failed
+  Failed --&gt; PolicyApproved: safe retry
+</code></pre>
+<p>The outbox idempotency key is:</p>
+<pre><code class="language-text">H(midnightNetwork, midnightContract, midnightTxId,
+  schemaId, purposeHash, recipient, registryAddress, monadChainId)
+</code></pre>
+<p>Private proof inputs are never serialized into the gateway job, logs, tracing,
+error reports, or Monad submission.</p>
+</section>
+<section aria-labelledby="9-technology-stack">
+<h2 id="9-technology-stack">9 Technology stack</h2>
 
-      <section id="references">
-        <h2>Official references</h2>
-        <ul>
-          <li><a href="https://docs.midnight.network/guides/build-a-private-smart-contract">Midnight private contract guide</a></li>
-          <li><a href="https://docs.midnight.network/guides/deploy-and-operate">Midnight deployment and providers</a></li>
-          <li><a href="https://docs.midnight.network/relnotes/network">Midnight environments and endpoints</a></li>
-          <li><a href="https://docs.monad.xyz/developer-essentials/summary">Monad deployment summary</a></li>
-          <li><a href="https://docs.monad.xyz/guides/deploy-smart-contract/hardhat">Monad Hardhat guide</a></li>
-          <li><a href="https://docs.monad.xyz/developer-essentials/testnet">Monad Testnet information</a></li>
-        </ul>
-      </section>
+<h3 id="9-1-application-and-domain">9.1 Application and domain</h3>
 
+<ul>
+<li>TypeScript with strict mode and Node.js 22.13 or newer.</li>
+<li>A modular monolith for the hackathon: web/API orchestration, policy, storage,
+and job state in one deployable application, with explicit interfaces for the
+proof client and attestation gateway.</li>
+<li>SQLite for local and demo persistence, with encrypted private columns and an
+append-only submission outbox.</li>
+<li>Web Crypto or Node crypto for SHA-256, AES-256-GCM, and local key wrapping.</li>
+<li>Vite for the browser bundle. Keep the current account-first interface and
+remove scenario-runner controls from the product UI.</li>
+</ul>
+<h3 id="9-2-midnight">9.2 Midnight</h3>
+
+<ul>
+<li>Compact source compiled into generated contract, prover, verifier, and ZKIR
+artifacts. Generated output is compiler-managed and never edited manually.</li>
+<li>Midnight.js 4.1.x provider composition: encrypted account-scoped private
+state, indexer public data, ZK artifact provider, local proof provider,
+wallet provider, and transaction submission provider.</li>
+<li>Wallet SDK for a synchronized, DUST-capable wallet.</li>
+<li>Local development against Midnight Local Dev; shared demo against Preprod.</li>
+<li>Proof server on the user&#39;s controlled machine because it sees witness data.</li>
+</ul>
+<h3 id="9-3-monad">9.3 Monad</h3>
+
+<ul>
+<li>Solidity 0.8.31 targeting <code>evmVersion: &quot;osaka&quot;</code>.</li>
+<li>Hardhat 3 with Ignition deployments.</li>
+<li><code>viem</code> 2.40 or newer for RPC, EIP-712 typing, events, and receipts.</li>
+<li>OpenZeppelin Contracts for <code>Ownable</code>, <code>EIP712</code>, and <code>ECDSA</code>.</li>
+<li>Monad Testnet for the hackathon; Monad Mainnet is explicitly out of MVP
+deployment scope.</li>
+</ul>
+<h3 id="9-4-keys-and-roles">9.4 Keys and roles</h3>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Holder</th>
+<th>Capability</th>
+<th>Separation requirement</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Midnight contract authority</td>
+<td>Deployment governance</td>
+<td>Register issuer keys and future circuit governance</td>
+<td>Not used for daily issuance or relay</td>
+</tr>
+<tr>
+<td>Alice issuer key</td>
+<td>Alice service</td>
+<td>Sign purchase credentials and support decisions</td>
+<td>Not used as Monad verifier or relayer</td>
+</tr>
+<tr>
+<td>Bob holder secret</td>
+<td>Bob private state</td>
+<td>Prove credential control and derive scoped values</td>
+<td>Never leaves Bob/proof boundary</td>
+</tr>
+<tr>
+<td>Bob Midnight wallet</td>
+<td>Bob wallet</td>
+<td>Balance and submit Midnight transactions</td>
+<td>Not an application subject identifier</td>
+</tr>
+<tr>
+<td>Gateway verifier key</td>
+<td>Permio gateway</td>
+<td>Sign EIP-712 attestations</td>
+<td>Cannot spend relayer funds or issue credentials</td>
+</tr>
+<tr>
+<td>Monad relayer key</td>
+<td>Relayer</td>
+<td>Pay gas and submit attestations</td>
+<td>Cannot create a valid attestation</td>
+</tr>
+<tr>
+<td>Monad registry owner</td>
+<td>Deployment governance or multisig</td>
+<td>Rotate verifiers and administer contract</td>
+<td>Separate from verifier and relayer</td>
+</tr>
+<tr>
+<td>Clara case key</td>
+<td>Clara</td>
+<td>Decrypt the selected evidence package</td>
+<td>Not used as a global customer identifier</td>
+</tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="10-network-plan">
+<h2 id="10-network-plan">10 Network plan</h2>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Stage</th>
+<th>Midnight</th>
+<th>Monad</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Unit and integration</td>
+<td>Generated Compact runtime</td>
+<td>Hardhat simulated network</td>
+<td>Deterministic tests without wallets or external RPCs</td>
+</tr>
+<tr>
+<td>Local end-to-end</td>
+<td>Midnight Local Dev node, indexer, and proof server</td>
+<td>Local Hardhat node</td>
+<td>Full two-chain failure and retry testing</td>
+</tr>
+<tr>
+<td>Hackathon demo</td>
+<td>Midnight Preprod plus Bob-controlled proof server</td>
+<td>Monad Testnet, chain ID 10143</td>
+<td>Public contract addresses and explorer-verifiable receipts</td>
+</tr>
+<tr>
+<td>Future production</td>
+<td>Midnight Mainnet with supported provider endpoints</td>
+<td>Monad Mainnet, chain ID 143</td>
+<td>Outside the MVP; requires key governance, monitoring, and audit</td>
+</tr>
+</tbody></table></div>
+<p>Public network endpoints are configuration, not protocol constants. They must be
+read from environment-specific configuration and rechecked before deployment.</p>
+</section>
+<section aria-labelledby="11-target-repository-structure">
+<h2 id="11-target-repository-structure">11 Target repository structure</h2>
+
+<p>Permio should become one npm-workspace monorepo while remaining a modular
+monolith at runtime:</p>
+<pre><code class="language-text">Permio/
+  apps/
+    web/                       browser UI and disclosure previews
+    api/                       sessions, policy, persistence, public API
+  packages/
+    domain/                    InformationFlow, canonicalization, commitments
+    midnight-contracts/        Compact sources and compiler-managed output
+    midnight-client/           adapters, wallet, providers, transaction service
+    attestation-schema/        schema IDs, EIP-712 types, validation
+    monad-contracts/           Solidity registry, tests, Ignition deployment
+    gateway/                   Midnight observer, signer, outbox, Monad publisher
+    fixtures/                  Alice Bob Clara deterministic test data
+  test/
+    privacy/
+    cross-chain/
+    live/
+  docs/
+  infra/
+    local/                     local stack configuration without secrets
+</code></pre>
+<p>Until migration begins, the existing Solidity package may remain at repository
+root. The first restructuring step should preserve its tests and Git history.</p>
+</section>
+<section aria-labelledby="12-threat-model-and-controls">
+<h2 id="12-threat-model-and-controls">12 Threat model and controls</h2>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Threat</th>
+<th>Control</th>
+<th>Required test</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Cross-context linkage</td>
+<td>Separate nullifier domains; no Bob address on Monad; no shared generic commitment</td>
+<td>Review and support receipts share no stable Bob-derived field</td>
+</tr>
+<tr>
+<td>Recipient substitution</td>
+<td>Recipient included in Midnight bridge, relay nullifier, and EIP-712 signature</td>
+<td>Change recipient and signature verification fails</td>
+</tr>
+<tr>
+<td>Purpose substitution</td>
+<td>Canonical versioned purpose hash in both policy and signature</td>
+<td>Change purpose and registration fails</td>
+</tr>
+<tr>
+<td>Replay</td>
+<td>Midnight nullifier maps plus Monad scope map and attestation ID</td>
+<td>Second use fails on both chains</td>
+</tr>
+<tr>
+<td>Gateway forgery</td>
+<td>Authorized verifier allow-list, rotation, revocation, audit log</td>
+<td>Unauthorized signer rejected</td>
+</tr>
+<tr>
+<td>Gateway compromise</td>
+<td>Separate verifier/relayer keys; short expiry; owner revocation</td>
+<td>Revoked or expired receipt becomes invalid</td>
+</tr>
+<tr>
+<td>Proof-server disclosure</td>
+<td>Local controlled proof server; no hosted witness logging</td>
+<td>Network/log inspection finds no private input outside local boundary</td>
+</tr>
+<tr>
+<td>Merchant learns Bob&#39;s review</td>
+<td>No review nullifier or review-to-Bob bridge in support view</td>
+<td>Alice cannot correlate support case with public review</td>
+</tr>
+<tr>
+<td>Content tampering</td>
+<td>Versioned commitments for review text and decision reason</td>
+<td>One-byte change breaks verification</td>
+</tr>
+<tr>
+<td>Stale policy</td>
+<td>Policy version committed in support, decision, and bridge</td>
+<td>Mismatched policy version rejected</td>
+</tr>
+<tr>
+<td>Finality race</td>
+<td>Explicit Midnight confirmation and Monad Finalized/Verified states</td>
+<td>UI does not mark final before configured threshold</td>
+</tr>
+<tr>
+<td>Secret leakage</td>
+<td>Redacted logs, ignored environment files, key-specific processes</td>
+<td>Repository and API/DOM scans contain no secrets</td>
+</tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="13-acceptance-tests-for-the-three-actors">
+<h2 id="13-acceptance-tests-for-the-three-actors">13 Acceptance tests for the three actors</h2>
+
+<ol>
+<li>Alice registers as issuer without gaining access to Bob&#39;s holder secret.</li>
+<li>Alice signs one H1 credential; altering any credential field invalidates it.</li>
+<li>Bob publishes one valid review; a second review in the same scope fails.</li>
+<li>The public sees rating, text, verified status, and permitted metadata only.</li>
+<li>Bob opens support within 30 days; the support nullifier differs from the
+review nullifier.</li>
+<li>Alice verifies the support receipt but cannot identify Bob&#39;s public review.</li>
+<li>Alice signs a decision without receiving Bob&#39;s holder secret.</li>
+<li>Bob previews and authorizes a bridge for Clara and <code>REG-BOB-001</code>.</li>
+<li>Clara verifies the exact review, support, decision, chronology, and bridge.</li>
+<li>Reusing Clara&#39;s bridge for another address, case, purpose, or evidence set
+fails.</li>
+<li>The gateway can create a Monad receipt from finalized public Midnight state
+without access to any witness input.</li>
+<li>The Monad registry rejects an unauthorized signer, duplicate scope,
+recipient substitution, expiry, and revocation.</li>
+<li>The relayer address is visible, but Bob has no Monad transaction or address
+in the workflow.</li>
+<li>Restarting the application preserves prepared, submitted, and confirmed
+states and never resubmits a different attestation under the same idempotency
+key.</li>
+</ol>
+</section>
+<section aria-labelledby="14-current-implementation-and-required-changes">
+<h2 id="14-current-implementation-and-required-changes">14 Current implementation and required changes</h2>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Capability</th>
+<th>Current location</th>
+<th>Status</th>
+<th>Next change</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>InformationFlow domain and application</td>
+<td><code>information-flow</code> repository</td>
+<td>Implemented</td>
+<td>Port selected modules after architecture interfaces stabilize</td>
+</tr>
+<tr>
+<td>Three-actor Midnight circuits</td>
+<td><code>information-flow/contracts/information-flow.compact</code></td>
+<td>Implemented and locally tested</td>
+<td>Create V2 decision and bridge domains; rerun full Compact checks</td>
+</tr>
+<tr>
+<td>Midnight transaction service and gateway</td>
+<td><code>information-flow/src</code></td>
+<td>Implemented</td>
+<td>Add durable outbox and public-output observer contract</td>
+</tr>
+<tr>
+<td>Recipient-bound Monad registry</td>
+<td><code>Permio/contracts</code></td>
+<td>Implemented and tested</td>
+<td>Add versioned schema package and publisher</td>
+</tr>
+<tr>
+<td>Cross-chain gateway</td>
+<td>Not implemented</td>
+<td>Missing</td>
+<td>Build read-only Midnight verifier, EIP-712 signer, and Monad publisher</td>
+</tr>
+<tr>
+<td>Dual-chain end-to-end test</td>
+<td>Not implemented</td>
+<td>Missing</td>
+<td>Add local Midnight plus Hardhat test, then Preprod plus Testnet smoke test</td>
+</tr>
+<tr>
+<td>Product UI integration</td>
+<td><code>information-flow/web</code></td>
+<td>Partially implemented</td>
+<td>Port preview and lifecycle UI; show both chain receipts and trust label</td>
+</tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="15-delivery-sequence">
+<h2 id="15-delivery-sequence">15 Delivery sequence</h2>
+
+<ol>
+<li>Freeze the three schema IDs, purpose vocabulary, canonical encodings, and
+V2 circuit domains in tests.</li>
+<li>Refactor <code>recordSupportDecisionV2</code> so Alice does not need Bob&#39;s secret.</li>
+<li>Port the Midnight contract, adapters, transaction service, and three-actor
+tests into the Permio workspace layout.</li>
+<li>Implement the support-only gateway path and durable outbox.</li>
+<li>Run a local dual-chain test: Midnight Local Dev proof to Hardhat registry.</li>
+<li>Deploy the registry to Monad Testnet and the Compact contract to Midnight
+Preprod; record addresses and compiler versions.</li>
+<li>Complete the support demo, including recipient substitution and replay
+failures.</li>
+<li>Add review and regulatory schemas through the same registry and gateway.</li>
+<li>Port the account-first UI and add explicit disclosure previews and two-chain
+lifecycle receipts.</li>
+<li>Perform privacy, key-separation, restart, and live-chain acceptance tests.</li>
+</ol>
+</section>
+<section aria-labelledby="16-official-references">
+<h2 id="16-official-references">16 Official references</h2>
+
+<ul>
+<li><a href="https://docs.midnight.network/guides/build-a-private-smart-contract">Midnight private contract guide</a></li>
+<li><a href="https://docs.midnight.network/guides/deploy-and-operate">Midnight deployment and provider guide</a></li>
+<li><a href="https://docs.midnight.network/relnotes/network">Midnight environments and endpoints</a></li>
+<li><a href="https://docs.midnight.network/api-reference/midnight-js">Midnight.js API</a></li>
+<li><a href="https://docs.monad.xyz/developer-essentials/summary">Monad deployment summary</a></li>
+<li><a href="https://docs.monad.xyz/guides/deploy-smart-contract/hardhat">Monad Hardhat deployment guide</a></li>
+<li><a href="https://docs.monad.xyz/developer-essentials/testnet">Monad Testnet information</a></li>
+</ul>
+<hr>
+</section>
+<h1 id="permio-alice-bob-clara-复合架构">Permio Alice Bob Clara 复合架构</h1>
+
+<p>状态：架构决策与实施计划<br>日期：2026 年 10 月 9 日<br>范围：Midnight 隐私证明与 Monad 接收方绑定证明</p>
+<section aria-labelledby="1-架构决策">
+<h2 id="1-架构决策">1 架构决策</h2>
+
+<p>Permio 采用双链架构，并使用一个范围严格受限的桥接层：Midnight 是私有凭证、策略和
+零知识执行层；Monad 是公开且可由 EVM 应用组合使用的信任消费层；网关只验证已经最终
+确认的 Midnight 公开输出，并为一个模式、用途、接收方和有效期签署 EIP-712 证明；
+接收方或中立中继器把证明提交到 Monad，Bob 不需要使用可重复识别的 Monad 钱包。</p>
+<p>该桥接是 MVP 的明确信任边界，不是无需信任的轻客户端。Monad 信任获授权的网关验证者
+已经检查了正确的 Midnight 网络、合约、交易和公开状态。产品与演示必须准确展示这一限制。</p>
+<p>系统不会把同一个通用 <code>InformationFlow</code> 承诺同时发布到两条链。Monad 收到的是特定
+上下文的收据，而不是重复时间戳。一条公开跨链引用可以证明某个 Monad 收据来自某个
+Midnight 动作，但任何字段都不得把 Bob 的评价、客服和监管动作彼此关联起来。</p>
+</section>
+<section aria-labelledby="2-具体场景与角色">
+<h2 id="2-具体场景与角色">2 具体场景与角色</h2>
+
+<p>Alice 代表 <code>Alice Audio</code>，是商家、购买凭证签发者和客服决定者；Bob 是购买者、评价者、
+客服申请者和监管桥接授权者；Clara 是获批准的监管接收方。这些名字只是测试标签，不是
+协议中的永久身份类别。</p>
+<p>Alice 持有签发密钥、订单记录和客服决定原因；Bob 持有购买凭证、持有人秘密、订单号、
+精确购买日期和他选择的证据；Clara 持有案件工作区以及 Bob 明确披露的材料。公开数据只
+包括 Alice 的 Midnight 签发者 ID 与公钥、Bob 主动公开的评分和评价文本，以及 Clara
+在监管桥接中的接收方标识。系统绝不创建 Bob 的全局公开身份。</p>
+<p>固定场景使用 <code>alice-audio</code>、产品 <code>H1</code>、私有订单 <code>ORDER-BOB-001</code>、私有凭证
+<code>CREDENTIAL-BOB-001</code>、评分 <code>4</code>、评价文本 <code>Clear sound and comfortable fit.</code>、
+客服案件 <code>CASE-BOB-001</code>、拒绝理由 <code>Inspection evidence is required.</code>、监管案件
+<code>REG-BOB-001</code> 和用途 <code>consumer complaint assessment</code>。</p>
+<p>证明只建立凭证来源、凭证控制权、策略资格、限定范围的唯一性、所选记录完整性和授权，
+不证明 Bob 的观点或指控为真。</p>
+</section>
+<section aria-labelledby="3-组件职责与隐私边界">
+<h2 id="3-组件职责与隐私边界">3 组件职责与隐私边界</h2>
+
+<p>Bob 的客户端和 Midnight 私有状态保存凭证与持有人秘密、预览披露并准备证明调用。Alice
+的签发服务签署购买凭证与客服决定，但不能接收 Bob 的持有人秘密或评价身份。本地证明
+服务器为调用者生成 Midnight 证明；它会看到 witness 数据，因此必须运行在 Bob 控制的
+设备或可信本地环境中，不能成为普通托管的 Permio 服务。</p>
+<p>Midnight Compact 合约验证凭证、策略、唯一性、客服决定和案件绑定桥接。公开账本只存储
+签发者公钥、上下文限定的空值标识、动作承诺和计数器，不存储明文订单号、凭证号、持有人
+秘密、精确购买日期、评价文本或客服理由。</p>
+<p>Permio 网关只读取已确认的 Midnight 公开数据，核对网络、合约、交易和公开状态，然后
+签署类型化证明。Monad 注册表验证网关签名、接收方、用途、有效期和防重放范围，不能接收
+Bob 的身份或任何 Midnight 私有输入。Clara 的案件保险库只保存 Bob 为该案件授权的加密
+证据，不得获得其他评价、无关凭证或商家完整历史。</p>
+</section>
+<section aria-labelledby="4-完整信息流">
+<h2 id="4-完整信息流">4 完整信息流</h2>
+
+<h3 id="4-1-签发者注册与购买凭证">4.1 签发者注册与购买凭证</h3>
+
+<p>合约治理方批准 Alice 成为 <code>issuerId = 1</code> 的凭证签发者，并把她的 Jubjub 公钥登记到
+Midnight 公开状态。Alice 的签发私钥保存在加密服务密钥库中，不得与 Monad 网关验证者
+密钥或中继器密钥复用。</p>
+<p>Bob 的客户端生成新的持有人秘密 <code>s_B</code>，只把持有人绑定值发送给 Alice。Alice 对包含
+签发者 ID、商家哈希、产品哈希、购买日、订单哈希、凭证哈希和持有人绑定值的
+<code>PurchaseCredential</code> 签名。Bob 将签名凭证和 <code>s_B</code> 存入按账户隔离的加密 Midnight
+私有状态。每笔购买不需要立即写链；只有 Bob 使用凭证时，凭证才作为私有电路输入出现。</p>
+<h3 id="4-2-评价流程">4.2 评价流程</h3>
+
+<p>Bob 只填写评分和自由文本两个字段，并在提交前看到公开内容、元数据、接收方、用途和所有
+隐藏字段。<code>publishReview</code> 使用私有凭证、Alice 的签名和 <code>s_B</code> 验证签发者、持有人控制权、
+评分范围和未使用的评价空值标识。Midnight 只公开 <code>reviewNullifier</code> 与
+<code>reviewCommitment</code>。公共评价存储保存 Bob 已批准公开的评分、文本、商家、产品和时间。</p>
+<p>如果 EVM 评价应用需要组合使用该事实，网关向该应用合约签发
+<code>PERMIO_REVIEW_ELIGIBLE_UNIQUE_V1</code>。Monad 收据只证明资格与唯一性，不证明评价内容
+真实，也不包含 Bob 地址。</p>
+<h3 id="4-3-客服资格流程">4.3 客服资格流程</h3>
+
+<p>Bob 选择 H1 凭证并请求换货。界面预览 Alice 是接收方，并只披露以下谓词：凭证由 Alice
+签发、产品为 H1、购买不超过 30 天、客服权益未使用。<code>openSupportCase</code> 使用私有凭证、
+<code>s_B</code>、当前日期、案件承诺、补救方式、策略版本和开启时间。Midnight 验证规则后只保存
+客服空值标识和承诺。</p>
+<p>网关等待 Midnight 结果稳定后，为 Alice 的客服地址或合约签署
+<code>PERMIO_SUPPORT_ELIGIBLE_V1</code>。中立中继器将证明提交到 Monad，Alice 的客服系统在
+创建或推进案件前调用 <code>isValidFor</code>。这是第一条生产纵向切片，因为它以最小披露面积为
+两条链提供了不可替代且可测试的职责。</p>
+<h3 id="4-4-alice-的客服决定">4.4 Alice 的客服决定</h3>
+
+<p>Alice 对客服空值标识、客服承诺、结果、理由承诺、决定时间和策略版本组成的结构化决定
+签名。当前 Midnight 电路要求再次提供 Bob 的完整凭证和持有人秘密，集成前必须修正。</p>
+<p>目标 <code>recordSupportDecisionV2</code> 只接收签发者 ID、客服空值标识、客服承诺、结果、理由
+承诺、决定时间、策略版本和 Alice 的签名。电路检查客服承诺已经存在，用 Alice 登记的
+签发者公钥验证决定签名，阻止同一客服空值标识的第二个决定，并只公开决定承诺。因此
+Alice 永远不需要 Bob 的持有人秘密。</p>
+<h3 id="4-5-监管升级流程">4.5 监管升级流程</h3>
+
+<p>Bob 选择精确的评价快照、客服案件和 Alice 的决定。界面显示 Clara、<code>REG-BOB-001</code>、
+调查用途、策略版本、所选记录、新建关联以及过期或案件范围。Bob 明确授权后，
+<code>authorizeRegulatoryBridgeV2</code> 私下重新派生评价和客服空值标识，核对所选承诺与决定，
+并生成绑定 Clara、案件、用途、证据集合和策略版本的桥接。</p>
+<p>Bob 使用 Clara 的案件密钥加密所选明文证据。ZK 桥接证明关联关系，但不负责传输明文。
+网关向 Clara 的 Monad 地址或案件合约签发 <code>PERMIO_REGULATORY_BRIDGE_V1</code>。Clara 验证
+Midnight 引用、Monad 收据和加密证据。除非另有一条独立且明确授权的规则允许，Alice
+不会获得把 Bob 与公开评价关联起来的证明。</p>
+</section>
+<section aria-labelledby="5-zk-电路设计">
+<h2 id="5-zk-电路设计">5 ZK 电路设计</h2>
+
+<p>所有哈希都使用具有显式域分离的版本化 Compact 协议编码。持有人绑定为
+<code>H(&quot;permio:holder:v1&quot;, s_B)</code>。评价空值标识使用评价专用域以及 <code>s_B</code>、凭证 ID、商家和
+产品；客服空值标识使用不同的客服专用域和相同私有来源，因此两者绝不能相等。</p>
+<p>评价承诺绑定商家、产品、评价空值标识、评分、评价文本哈希和发布时间。客服承诺绑定商家、
+产品、客服空值标识、案件、补救方式、策略版本和开启时间。客服决定承诺绑定客服空值标识、
+客服承诺、结果、理由承诺、决定时间和策略版本。</p>
+<p>证据集合哈希绑定评价、客服和决定承诺。桥接键使用 V2 域并绑定 Clara、监管案件、用途、
+证据集合和策略版本；桥接承诺还包含 Bob 的持有人秘密，使公开观察者无法从公开记录重新
+计算跨上下文关联。</p>
+<p>电路目录包括：登记签发者的 <code>registerCredentialIssuer</code>；验证签发者、持有人控制权、评分
+和一次性评价的 <code>publishReview</code>；验证 30 天规则与一次性客服权益的 <code>openSupportCase</code>；
+不再需要 Bob 秘密的 <code>recordSupportDecisionV2</code>；以及验证同一凭证、精确证据集合和指定
+接收方的 <code>authorizeRegulatoryBridgeV2</code>。所有导出返回值和账本写入都必须是明确披露。</p>
+</section>
+<section aria-labelledby="6-monad-证明设计">
+<h2 id="6-monad-证明设计">6 Monad 证明设计</h2>
+
+<p>现有 <code>RecipientBoundAttestationRegistry</code> 继续作为三个模式共用的唯一 Monad 合约。
+EIP-712 载荷绑定模式 ID、Midnight 网络/合约/交易引用哈希、动作承诺、限定范围空值标识、
+用途哈希、接收方、签发时间和过期时间。EIP-712 域还绑定 Monad 链 ID 和注册表地址。</p>
+<p>评价模式的接收方是评价应用合约，建议有效期为一年或由产品策略决定；客服模式的接收方是
+Alice 的客服合约或地址，建议使用 15 分钟的消费窗口；监管模式的接收方是 Clara 的地址
+或案件合约，有效期受案件策略约束。</p>
+<p>Monad 不直接复制 Midnight 原始空值标识。网关以 Midnight 空值标识、模式、用途、接收方、
+Monad 链 ID 和注册表地址派生链专用 <code>N_monad</code>。这样该值不能在另一个 EVM 链或注册表中
+复用。Midnight 交易引用仍然有意建立一个来源动作与一个收据之间的关联；对公开交易 ID
+做哈希只是压缩来源，不提供保密性。</p>
+<p>网关验证者密钥只签名，不支付 gas；独立中继器或接收方提交交易。界面可在交易被包含后
+显示等待状态，但只能在 Monad 达到 <code>Finalized</code> 后标记完成。会据此执行不可逆财务操作的
+链下消费者应等待更保守的 <code>Verified</code> 状态根确认。</p>
+</section>
+<section aria-labelledby="7-网关与状态机">
+<h2 id="7-网关与状态机">7 网关与状态机</h2>
+
+<p>网关依次核对 Midnight 网络和合约地址、获取交易与合约状态、确认预期电路动作与稳定状态、
+验证空值标识或桥接键映射到正确承诺、应用版本化模式策略和接收方白名单、派生
+<code>N_monad</code>、签署 EIP-712、先写入幂等 outbox，再提交到 Monad 并等待最终确认。</p>
+<p>生命周期为：草稿、策略批准、证明中、Midnight 已提交、Midnight 已确认、证明已签署、
+Monad 已提交、Monad 已最终确认、已消费或已撤销。证明、Midnight 提交和 Monad 提交失败
+可以从安全检查点重试。幂等键绑定 Midnight 网络、合约、交易、模式、用途、接收方、
+Monad 注册表和链 ID。</p>
+<p>任何私有证明输入都不得序列化进网关任务、日志、链路追踪、错误报告或 Monad 交易。</p>
+</section>
+<section aria-labelledby="8-技术栈与链">
+<h2 id="8-技术栈与链">8 技术栈与链</h2>
+
+<p>应用层使用严格模式 TypeScript 与 Node.js 22.13 以上版本。黑客松阶段采用模块化单体：
+Web/API 编排、策略、存储和任务状态属于一个可部署应用，但证明客户端和证明网关之间使用
+明确接口。SQLite 用于本地与演示持久化，私有列加密，并使用只追加提交 outbox。浏览器
+使用 Vite，保留账户优先界面，不在产品 UI 中恢复场景运行器。</p>
+<p>Midnight 使用 Compact 源码以及编译器生成的 contract、prover、verifier 和 ZKIR 产物；
+生成目录不得手工编辑。Midnight.js 4.1.x 组合按账户隔离的加密私有状态、Indexer、ZK
+产物提供器、本地证明提供器、钱包和交易提交能力。钱包必须同步并具备 DUST。开发使用
+Midnight Local Dev，公开演示使用 Preprod，并始终把证明服务器放在用户控制环境中。</p>
+<p>Monad 使用 Solidity 0.8.31、<code>evmVersion: &quot;osaka&quot;</code>、Hardhat 3、Ignition、<code>viem &gt;= 2.40</code>
+和 OpenZeppelin Contracts。黑客松部署目标是链 ID <code>10143</code> 的 Monad Testnet；链 ID
+<code>143</code> 的 Monad Mainnet 明确不属于 MVP 部署范围。</p>
+<p>环境矩阵为：单元测试使用生成的 Compact runtime 与 Hardhat 模拟链；本地端到端使用
+Midnight Local Dev 与本地 Hardhat 节点；黑客松演示使用 Midnight Preprod、Bob 控制的
+证明服务器和 Monad Testnet；未来生产环境才考虑 Midnight Mainnet 与 Monad Mainnet。
+公开 RPC 端点属于配置而不是协议常量，部署前必须重新核对。</p>
+</section>
+<section aria-labelledby="9-密钥分离">
+<h2 id="9-密钥分离">9 密钥分离</h2>
+
+<p>Midnight 合约治理密钥只登记签发者和执行未来治理；Alice 签发密钥只签署购买凭证和客服
+决定；Bob 持有人秘密只用于证明控制权和派生限定范围值；Bob 的 Midnight 钱包只平衡与
+提交 Midnight 交易，不能成为产品中的主体标识；网关验证者密钥只签署 EIP-712；Monad
+中继器密钥只支付 gas；Monad 注册表所有者负责轮换验证者；Clara 案件密钥只解密选定证据。
+这些密钥不得复用。</p>
+</section>
+<section aria-labelledby="10-目标仓库结构">
+<h2 id="10-目标仓库结构">10 目标仓库结构</h2>
+
+<p>Permio 最终成为一个 npm workspace 单仓库，包含 <code>apps/web</code>、<code>apps/api</code>、领域包、Midnight
+合约包与客户端包、证明模式包、Monad 合约包、网关包、固定测试数据、隐私/跨链/实时测试
+以及本地基础设施配置。运行时仍保持模块化单体，仅把具有独立密钥和信任边界的网关作为
+可分离进程。</p>
+<p>在正式迁移之前，现有 Solidity 包可以继续位于仓库根目录。第一次目录重构必须保留测试
+和 Git 历史。</p>
+</section>
+<section aria-labelledby="11-安全控制与验收">
+<h2 id="11-安全控制与验收">11 安全控制与验收</h2>
+
+<p>系统必须通过以下核心验收：评价与客服证明没有稳定的 Bob 派生公共字段；更换接收方、用途、
+案件或证据集合会使验证失败；两条链都阻止重复使用；未授权网关签名被拒绝；过期或撤销的
+Monad 收据无效；证明服务器之外的网络与日志中不出现私有输入；Alice 无法把 Bob 的客服
+案件与公开评价关联；修改评价或决定内容会破坏承诺；策略版本不匹配会被拒绝；界面不会在
+配置的最终性阈值之前显示完成；仓库、API 和 DOM 不包含秘密。</p>
+<p>三角色旅程的完成条件是：Alice 注册签发者并签发 H1 凭证；Bob 成功发布一次评价且重复
+评价失败；Bob 在 30 天内开启客服且客服空值标识不同于评价空值标识；Alice 在不获得 Bob
+秘密的情况下签署决定；Bob 预览并授权 Clara 的监管桥接；Clara 验证精确的评价、客服、
+决定、时间顺序和桥接；网关只根据已最终确认的 Midnight 公开状态创建 Monad 收据；Monad
+拒绝未授权签名、重复范围、接收方替换、过期和撤销；Bob 在整个流程中没有 Monad 交易或
+地址；应用重启后仍能安全恢复全部提交状态。</p>
+</section>
+<section aria-labelledby="12-当前状态与交付顺序">
+<h2 id="12-当前状态与交付顺序">12 当前状态与交付顺序</h2>
+
+<p>旧 <code>information-flow</code> 仓库已经实现领域模型、三角色 Midnight 电路、适配器、交易服务和
+部分产品 UI。新的 Permio 仓库已经实现并测试 Monad 的接收方绑定注册表。缺少的是实际
+跨链网关、持久化 outbox、双链端到端测试和整合后的产品界面。</p>
+<p>实施顺序为：先冻结三个模式 ID、用途词汇、规范编码和 V2 电路域；重构
+<code>recordSupportDecisionV2</code>；把必要 Midnight 模块和三角色测试迁入 Permio；实现仅客服
+场景的网关与 outbox；完成 Midnight Local Dev 到 Hardhat 的双链测试；把 Monad 合约部署
+到 Testnet、Compact 合约部署到 Preprod；完成客服演示和失败路径；再通过同一注册表添加
+评价与监管模式；最后迁移账户优先 UI，并完成隐私、密钥分离、重启恢复和实时链验收。</p>
+</section>
+<section aria-labelledby="13-官方参考">
+<h2 id="13-官方参考">13 官方参考</h2>
+
+<ul>
+<li><a href="https://docs.midnight.network/guides/build-a-private-smart-contract">Midnight 私有合约指南</a></li>
+<li><a href="https://docs.midnight.network/guides/deploy-and-operate">Midnight 部署和提供器指南</a></li>
+<li><a href="https://docs.midnight.network/relnotes/network">Midnight 环境与端点</a></li>
+<li><a href="https://docs.midnight.network/api-reference/midnight-js">Midnight.js API</a></li>
+<li><a href="https://docs.monad.xyz/developer-essentials/summary">Monad 部署摘要</a></li>
+<li><a href="https://docs.monad.xyz/guides/deploy-smart-contract/hardhat">Monad Hardhat 部署指南</a></li>
+<li><a href="https://docs.monad.xyz/developer-essentials/testnet">Monad Testnet 信息</a></li>
+</ul>
+</section>
+      </article>
       <footer>
-        Canonical technical source: <code>ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md</code>. This HTML is the semantic reading and presentation edition.
+        Generated from <code>docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md</code>.
+        Source SHA-256: <code>51874727ec46e0d66b2649edbe46fe27219b0c2e2c1c4fc08b51a3ec44e3b017</code>.
       </footer>
-    </article>
-  </main>
-</div>
+    </main>
+  </div>
 </body>
 </html>
