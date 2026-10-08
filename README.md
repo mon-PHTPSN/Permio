@@ -8,6 +8,12 @@ results derived from private proofs.
 This is a clean implementation for Monad Metropolis Track 4: Trust, Identity &
 AI Infrastructure.
 
+The detailed two-chain design, including the Alice, Bob, and Clara scenario,
+information-flow boundaries, Compact circuits, Monad attestation schemas, and
+delivery sequence, is available as a
+[`semantic HTML reading edition`](docs/alice-bob-clara-architecture.html) and
+[`canonical Markdown source`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md).
+
 ## Current scope
 
 The first vertical slice is a Solidity registry for short-lived attestations.
@@ -110,6 +116,11 @@ Apache-2.0. See `LICENSE`.
 Permio 正在为 Monad 应用构建绑定接收方的隐私保护证明。当前仓库首先实现 Monad
 信任消费层；之后会加入 Midnight 适配器，提供由私有证明派生、范围严格受限的公开结果。
 这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
+
+完整的双链方案，包括 Alice、Bob、Clara 场景、信息流边界、Compact 电路、Monad
+证明模式和交付顺序，提供
+[`语义化 HTML 阅读版`](docs/alice-bob-clara-architecture.html)和
+[`规范 Markdown 源文件`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md)。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的
