@@ -3,13 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
   "description": "Recipient-bound, privacy-preserving attestations on Monad",
   "scripts": {
     "docs:build": "node scripts/build-docs.mjs",
     "docs:check": "node scripts/build-docs.mjs --check",
     "compile": "hardhat build",
     "typecheck": "tsc --noEmit",
-    "test": "hardhat test nodejs",
+    "test:protocol": "npm test --workspace @permio/protocol",
+    "test:contracts": "hardhat test nodejs",
+    "test": "npm run test:protocol && npm run test:contracts",
     "check": "npm run docs:check && npm run typecheck && npm run compile && npm test",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",

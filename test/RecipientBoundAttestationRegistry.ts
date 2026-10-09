@@ -1,28 +1,18 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
 
+import {
+  ATTESTATION_PRIMARY_TYPE,
+  ATTESTATION_TYPES,
+  ATTESTATION_TYPEHASH,
+  PURPOSE_HASHES,
+  RECEIPT_LIFETIMES_SECONDS,
+  SCHEMA_IDS,
+  hashUtf8,
+  recipientBoundAttestationDomain,
+  type RecipientBoundAttestation,
+} from "@permio/protocol";
 import { network } from "hardhat";
-import { keccak256, stringToHex, type Address, type Hex } from "viem";
-
-const SIGNING_DOMAIN = "Permio Recipient-Bound Attestation Registry";
-const SIGNATURE_VERSION = "1";
-
-const attestationTypes = {
-  Attestation: [
-    { name: "schemaId", type: "bytes32" },
-    { name: "midnightNetworkIdHash", type: "bytes32" },
-    { name: "midnightContractIdHash", type: "bytes32" },
-    { name: "midnightTransactionIdHash", type: "bytes32" },
-    { name: "actionCommitment", type: "bytes32" },
-    { name: "scopedNullifier", type: "bytes32" },
-    { name: "purposeHash", type: "bytes32" },
-    { name: "recipient", type: "address" },
-    { name: "issuedAt", type: "uint64" },
-    { name: "expiresAt", type: "uint64" },
-  ],
-} as const;
-
-const hash = (value: string): Hex => keccak256(stringToHex(value));
 
 describe("RecipientBoundAttestationRegistry", async function () {
   const { viem } = await network.getOrCreate();
@@ -41,32 +31,24 @@ describe("RecipientBoundAttestationRegistry", async function () {
     ]);
   });
 
-  async function createAttestation(overrides: Partial<{
-    schemaId: Hex;
-    midnightNetworkIdHash: Hex;
-    midnightContractIdHash: Hex;
-    midnightTransactionIdHash: Hex;
-    actionCommitment: Hex;
-    scopedNullifier: Hex;
-    purposeHash: Hex;
-    recipient: Address;
-    issuedAt: bigint;
-    expiresAt: bigint;
-  }> = {}) {
+  async function createAttestation(
+    overrides: Partial<RecipientBoundAttestation> = {},
+  ) {
     const block = await publicClient.getBlock();
     return {
-      schemaId: hash("permio.support-eligibility.v1"),
-      midnightNetworkIdHash: hash("midnight-undeployed"),
-      midnightContractIdHash: hash("information-flow-contract"),
-      midnightTransactionIdHash: hash("midnight-transaction-1"),
-      actionCommitment: hash("support-action-commitment-1"),
-      scopedNullifier: hash("support-nullifier-1"),
-      purposeHash: hash("replacement-support"),
+      schemaId: SCHEMA_IDS.supportEligibility,
+      midnightNetworkIdHash: hashUtf8("midnight-undeployed"),
+      midnightContractIdHash: hashUtf8("information-flow-contract"),
+      midnightTransactionIdHash: hashUtf8("midnight-transaction-1"),
+      actionCommitment: hashUtf8("support-action-commitment-1"),
+      scopedNullifier: hashUtf8("support-nullifier-1"),
+      purposeHash: PURPOSE_HASHES.supportReplacement,
       recipient: recipient.account.address,
       issuedAt: block.timestamp,
-      expiresAt: block.timestamp + 3_600n,
+      expiresAt:
+        block.timestamp + RECEIPT_LIFETIMES_SECONDS.supportEligibility,
       ...overrides,
-    };
+    } satisfies RecipientBoundAttestation;
   }
 
   async function signAttestation(
@@ -75,14 +57,12 @@ describe("RecipientBoundAttestationRegistry", async function () {
   ) {
     return signer.signTypedData({
       account: signer.account,
-      domain: {
-        name: SIGNING_DOMAIN,
-        version: SIGNATURE_VERSION,
-        chainId: await publicClient.getChainId(),
-        verifyingContract: registry.address,
-      },
-      types: attestationTypes,
-      primaryType: "Attestation",
+      domain: recipientBoundAttestationDomain(
+        await publicClient.getChainId(),
+        registry.address,
+      ),
+      types: ATTESTATION_TYPES,
+      primaryType: ATTESTATION_PRIMARY_TYPE,
       message: attestation,
     });
   }
@@ -108,6 +88,10 @@ describe("RecipientBoundAttestationRegistry", async function () {
     );
   });
 
+  it("uses the exact protocol package EIP-712 type hash", async function () {
+    assert.equal(await registry.read.ATTESTATION_TYPEHASH(), ATTESTATION_TYPEHASH);
+  });
+
   it("rejects a recipient substitution after signing", async function () {
     const attestation = await createAttestation();
     const signature = await signAttestation(attestation);
@@ -126,8 +110,8 @@ describe("RecipientBoundAttestationRegistry", async function () {
     await registry.write.registerAttestation([first, await signAttestation(first)]);
 
     const replay = await createAttestation({
-      midnightTransactionIdHash: hash("midnight-transaction-2"),
-      actionCommitment: hash("support-action-commitment-2"),
+      midnightTransactionIdHash: hashUtf8("midnight-transaction-2"),
+      actionCommitment: hashUtf8("support-action-commitment-2"),
     });
 
     await assert.rejects(

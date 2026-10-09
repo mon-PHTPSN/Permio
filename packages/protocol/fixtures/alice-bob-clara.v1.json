@@ -1,0 +1,40 @@
+{
+  "fixtureVersion": "alice-bob-clara.v1",
+  "warning": "TEST DATA ONLY. NEVER USE THESE VALUES AS A WALLET SEED, PRIVATE KEY, CREDENTIAL, OR PRODUCTION IDENTIFIER.",
+  "actors": {
+    "alice": {
+      "merchantId": "alice-audio",
+      "role": "merchant-issuer-support-decision-maker"
+    },
+    "bob": {
+      "role": "credential-holder-reviewer-support-claimant-bridge-authorizer",
+      "holderSecret": {
+        "value": "0x4242424242424242424242424242424242424242424242424242424242424242",
+        "classification": "TEST_ONLY_PRIVATE_NON_PRODUCTION"
+      }
+    },
+    "clara": {
+      "recipientId": "clara-regulator",
+      "role": "approved-regulatory-recipient"
+    }
+  },
+  "purchase": {
+    "productId": "H1",
+    "orderId": "ORDER-BOB-001",
+    "credentialId": "CREDENTIAL-BOB-001"
+  },
+  "review": {
+    "rating": 4,
+    "text": "Clear sound and comfortable fit."
+  },
+  "support": {
+    "caseId": "CASE-BOB-001",
+    "remedy": "replacement",
+    "decision": "rejected",
+    "decisionReason": "Inspection evidence is required."
+  },
+  "regulatory": {
+    "caseId": "REG-BOB-001",
+    "purpose": "permio.regulatory.consumer-complaint-assessment.v1"
+  }
+}

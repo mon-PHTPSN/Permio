@@ -1,0 +1,57 @@
+{
+  "vectorVersion": "permio.hash-vectors.v1",
+  "schemas": {
+    "supportEligibility": "0xf634d6a1e20685da3e0459c54a05f0d8d707704d06f9c3654c2950ad46fa10b3",
+    "reviewEligibleUnique": "0xf7dba319b23cb766829c1f7bf057769158cd0c16335aa045da4ea0d6a7551ecb",
+    "regulatoryBridge": "0x6e4ab67f7d910c32474dcdf5ca51edd8f9325c336e52d491c4aaf6e6e3b4a46b"
+  },
+  "purposes": {
+    "supportReplacement": "0x43846892c0c038d29184d5a3d458af69ba224c7407a906380450e5d5dafeec10",
+    "reviewPublication": "0xe19824d8d2a4157bd01193b98244769ec9e5478df9f742ba80da84ef2172e699",
+    "regulatoryComplaintAssessment": "0x2b3a208e9a9a0e1729d2018d5782b1f031201aa3eb2aed17c141c32a47bdd38c"
+  },
+  "commitmentDomains": {
+    "reviewNullifier": "0xb5b4cfd577000b6f84c8b3d7fc9b06a8d4c4d0d9e5b02a8e878e118716be30e0",
+    "supportNullifier": "0x5681fbb1ce0dd5fa62dda6964591019005a49f45242cd29e7a7cd7244d123cd9",
+    "supportDecision": "0x1357f1dafb3523a3161c4152aed1018f8588c65e240f7937ca2089c08ae36a0c",
+    "evidenceSet": "0xe291e15660bdd7dbad533e7e3566ce3322b21e32f0478d20a8a74b32e1122d9e",
+    "regulatoryBridge": "0x3876a12f96371aa0ab15ede8bf19fa9eaf393ca6685fb039f69116b79fb73687",
+    "relayNullifier": "0xe7cb7e2248c5326b0659ef76887f8af53dbd10977535fb6c31b8a14973979151"
+  },
+  "eip712": {
+    "primaryType": "Attestation",
+    "fields": [
+      { "name": "schemaId", "type": "bytes32" },
+      { "name": "midnightNetworkIdHash", "type": "bytes32" },
+      { "name": "midnightContractIdHash", "type": "bytes32" },
+      { "name": "midnightTransactionIdHash", "type": "bytes32" },
+      { "name": "actionCommitment", "type": "bytes32" },
+      { "name": "scopedNullifier", "type": "bytes32" },
+      { "name": "purposeHash", "type": "bytes32" },
+      { "name": "recipient", "type": "address" },
+      { "name": "issuedAt", "type": "uint64" },
+      { "name": "expiresAt", "type": "uint64" }
+    ],
+    "typeString": "Attestation(bytes32 schemaId,bytes32 midnightNetworkIdHash,bytes32 midnightContractIdHash,bytes32 midnightTransactionIdHash,bytes32 actionCommitment,bytes32 scopedNullifier,bytes32 purposeHash,address recipient,uint64 issuedAt,uint64 expiresAt)",
+    "typeHash": "0x359723f6ff6882d9e79ab6eb347dc4204c3499ed30d91c50d712aac02eaec5e3"
+  },
+  "canonicalEncoding": {
+    "version": "permio:canonical:v1",
+    "domain": "permio:test-vector:v1",
+    "sequenceAbC": {
+      "fields": ["ab", "c"],
+      "encodedHex": "0x00000004000000137065726d696f3a63616e6f6e6963616c3a7631000000157065726d696f3a746573742d766563746f723a76310000000261620000000163",
+      "keccak256": "0xa4c550949c0fa15e3b69ad11c83813b25dc8c6c4211b1442e7e0398971706120"
+    },
+    "sequenceABc": {
+      "fields": ["a", "bc"],
+      "encodedHex": "0x00000004000000137065726d696f3a63616e6f6e6963616c3a7631000000157065726d696f3a746573742d766563746f723a76310000000161000000026263",
+      "keccak256": "0x751502d56950dd6770cf2b1e02b714ef69275c9c96f601ffaa646717b6f409f4"
+    },
+    "emptyThenX": {
+      "fields": ["", "x"],
+      "encodedHex": "0x00000004000000137065726d696f3a63616e6f6e6963616c3a7631000000157065726d696f3a746573742d766563746f723a7631000000000000000178",
+      "keccak256": "0x7e06710f39c0d5c158bdbf95f4981e1e8784629fbcd06cc3d4b7cd755ff5311d"
+    }
+  }
+}
