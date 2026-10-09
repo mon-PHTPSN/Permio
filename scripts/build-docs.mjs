@@ -7,16 +7,36 @@ import { marked } from "marked";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "..");
-const sourcePath = path.join(
-  repositoryRoot,
-  "docs",
-  "ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md",
-);
-const outputPath = path.join(
-  repositoryRoot,
-  "docs",
-  "alice-bob-clara-architecture.html",
-);
+const documentDefinitions = [
+  {
+    source: "docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md",
+    output: "docs/alice-bob-clara-architecture.html",
+    description:
+      "Permio composite architecture for Alice, Bob, and Clara across Midnight and Monad",
+    summary:
+      "A complete bilingual architecture for the Alice, Bob, and Clara scenario, including information flows, zero-knowledge circuits, public attestations, trust boundaries, and delivery sequencing.",
+    about: [
+      "Midnight",
+      "Monad",
+      "zero-knowledge proofs",
+      "recipient-bound attestations",
+    ],
+  },
+  {
+    source: "docs/DETERMINISTIC_MILESTONES.md",
+    output: "docs/deterministic-milestones.html",
+    description:
+      "Permio deterministic implementation milestones and binary acceptance gates",
+    summary:
+      "A bilingual execution contract that fixes milestone order, artifacts, privacy invariants, tests, evidence, and binary completion gates for the Permio build.",
+    about: [
+      "Midnight",
+      "Monad",
+      "software milestones",
+      "acceptance tests",
+    ],
+  },
+];
 
 const checkOnly = process.argv.includes("--check");
 
@@ -105,7 +125,7 @@ function wrapSections(renderedMarkdown) {
   return openedSection ? `${withSections}</section>` : withSections;
 }
 
-function generateHtml(source) {
+function generateHtml(source, definition) {
   const normalizedSource = source.replaceAll("\r\n", "\n");
   const sourceHash = createHash("sha256")
     .update(normalizedSource)
@@ -126,7 +146,7 @@ function generateHtml(source) {
   return `<!doctype html>
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
-  Source: docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md
+  Source: ${definition.source}
   Source SHA-256: ${sourceHash}
   Regenerate with: npm run docs:build
 -->
@@ -134,7 +154,7 @@ function generateHtml(source) {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Permio composite architecture for Alice, Bob, and Clara across Midnight and Monad">
+  <meta name="description" content="${escapeHtml(definition.description)}">
   <meta name="source-sha256" content="${sourceHash}">
   <title>${escapeHtml(title)}</title>
   <script type="application/ld+json">
@@ -145,7 +165,7 @@ function generateHtml(source) {
     "dateModified": "2026-10-09",
     "version": "1.1",
     "inLanguage": ["en", "zh-CN"],
-    "about": ["Midnight", "Monad", "zero-knowledge proofs", "recipient-bound attestations"]
+    "about": ${JSON.stringify(definition.about)}
   }
   </script>
   <style>
@@ -249,13 +269,13 @@ function generateHtml(source) {
       <header>
         <div class="eyebrow">Midnight × Monad</div>
         <h1>${escapeHtml(title)}</h1>
-        <p>A complete bilingual architecture for the Alice, Bob, and Clara scenario, including information flows, zero-knowledge circuits, public attestations, trust boundaries, and delivery sequencing.</p>
+        <p>${escapeHtml(definition.summary)}</p>
       </header>
       <article>
 ${article}
       </article>
       <footer>
-        Generated from <code>docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md</code>.
+        Generated from <code>${escapeHtml(definition.source)}</code>.
         Source SHA-256: <code>${sourceHash}</code>.
       </footer>
     </main>
@@ -265,28 +285,34 @@ ${article}
 `;
 }
 
-const source = await readFile(sourcePath, "utf8");
-const generated = generateHtml(source);
+for (const definition of documentDefinitions) {
+  const sourcePath = path.join(repositoryRoot, definition.source);
+  const outputPath = path.join(repositoryRoot, definition.output);
+  const source = await readFile(sourcePath, "utf8");
+  const generated = generateHtml(source, definition);
 
-if (checkOnly) {
-  let existing;
-  try {
-    existing = await readFile(outputPath, "utf8");
-  } catch {
-    console.error("Generated architecture HTML is missing. Run: npm run docs:build");
-    process.exitCode = 1;
-    process.exit();
-  }
+  if (checkOnly) {
+    let existing;
+    try {
+      existing = await readFile(outputPath, "utf8");
+    } catch {
+      console.error(
+        `Generated HTML is missing for ${definition.source}. Run: npm run docs:build`,
+      );
+      process.exitCode = 1;
+      continue;
+    }
 
-  if (existing.replaceAll("\r\n", "\n") !== generated) {
-    console.error(
-      "Generated architecture HTML is stale. Run: npm run docs:build",
-    );
-    process.exitCode = 1;
+    if (existing.replaceAll("\r\n", "\n") !== generated) {
+      console.error(
+        `Generated HTML is stale for ${definition.source}. Run: npm run docs:build`,
+      );
+      process.exitCode = 1;
+    } else {
+      console.log(`Generated HTML is current for ${definition.source}.`);
+    }
   } else {
-    console.log("Generated architecture HTML is current.");
+    await writeFile(outputPath, generated, "utf8");
+    console.log(`Generated ${path.relative(repositoryRoot, outputPath)}`);
   }
-} else {
-  await writeFile(outputPath, generated, "utf8");
-  console.log(`Generated ${path.relative(repositoryRoot, outputPath)}`);
 }

@@ -17,6 +17,12 @@ Edit only the Markdown source, then run `npm run docs:build` to regenerate the
 HTML. `npm run docs:check` and the complete `npm run check` command reject stale
 generated HTML.
 
+Implementation is governed by the
+[`deterministic milestone specification`](docs/DETERMINISTIC_MILESTONES.md),
+also available as a generated
+[`HTML milestone edition`](docs/deterministic-milestones.html). Each milestone
+has fixed artifacts, privacy invariants, negative tests, and a binary exit gate.
+
 ## Current scope
 
 The first vertical slice is a Solidity registry for short-lived attestations.
@@ -126,6 +132,10 @@ Permio 正在为 Monad 应用构建绑定接收方的隐私保护证明。当前
 [`规范 Markdown 源文件`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md)。
 只编辑 Markdown 源文件，然后运行 `npm run docs:build` 重新生成 HTML。
 `npm run docs:check` 和完整的 `npm run check` 命令会拒绝过期的 HTML 生成文件。
+
+实施过程由[`确定性里程碑规范`](docs/DETERMINISTIC_MILESTONES.md)约束，并提供自动生成的
+[`HTML 里程碑版本`](docs/deterministic-milestones.html)。每个里程碑都规定了固定产物、
+隐私不变量、负向测试和二元退出门槛。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

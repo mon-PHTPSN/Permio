@@ -1,0 +1,1017 @@
+<!doctype html>
+<!--
+  GENERATED FILE — DO NOT EDIT DIRECTLY.
+  Source: docs/DETERMINISTIC_MILESTONES.md
+  Source SHA-256: 993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6
+  Regenerate with: npm run docs:build
+-->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
+  <meta name="source-sha256" content="993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6">
+  <title>Permio Deterministic Milestones</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "name": "Permio Deterministic Milestones",
+    "dateModified": "2026-10-09",
+    "version": "1.1",
+    "inLanguage": ["en", "zh-CN"],
+    "about": ["Midnight","Monad","software milestones","acceptance tests"]
+  }
+  </script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f4f6f8, #0d1117);
+      --surface: light-dark(#ffffff, #161b22);
+      --surface-2: light-dark(#edf3f7, #1f2630);
+      --text: light-dark(#17202a, #e6edf3);
+      --muted: light-dark(#52616f, #9ba8b4);
+      --border: light-dark(#d5dde4, #30363d);
+      --midnight: light-dark(#5b3fd3, #a792ff);
+      --monad: light-dark(#2867b2, #70b7ff);
+      --code: light-dark(#f2f5f7, #0d1117);
+      --shadow: light-dark(0 12px 30px rgba(31, 45, 61, .08), none);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.62; }
+    a { color: var(--monad); }
+    code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { font-size: .92em; }
+    pre {
+      margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--border);
+      border-radius: .65rem; background: var(--code); overflow-x: auto;
+    }
+    .shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.6rem 1.25rem;
+      background: var(--surface); border-right: 1px solid var(--border);
+    }
+    nav strong { display: block; margin-bottom: .25rem; font-size: 1.1rem; }
+    nav small { color: var(--muted); }
+    nav ul { list-style: none; margin: 1.4rem 0 0; padding: 0; }
+    nav li { margin: .15rem 0; }
+    nav a {
+      display: block; padding: .42rem .55rem; border-radius: .4rem;
+      color: var(--muted); text-decoration: none;
+    }
+    nav a:hover, nav a:focus { color: var(--text); background: var(--surface-2); }
+    main { min-width: 0; }
+    header, article { width: min(72rem, calc(100% - 3rem)); margin-inline: auto; }
+    header { padding: 4rem 0 2rem; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      color: var(--midnight); font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; font-size: .78rem;
+    }
+    h1 { margin: .55rem 0 1rem; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1.04; letter-spacing: -.04em; }
+    header p { max-width: 58rem; color: var(--muted); font-size: 1.08rem; }
+    article { padding: 1rem 0 5rem; }
+    section { scroll-margin-top: 1rem; margin: 3.5rem 0; }
+    h2 { margin: 0 0 1rem; font-size: clamp(1.55rem, 3vw, 2.3rem); line-height: 1.16; letter-spacing: -.025em; }
+    h3 { margin: 1.8rem 0 .65rem; font-size: 1.18rem; }
+    article > h1 { margin-top: 4rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+    p { max-width: 82ch; }
+    blockquote {
+      margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
+      border-left: 4px solid var(--midnight); background: var(--surface-2);
+    }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
+    th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); }
+    hr { margin: 4rem 0; border: 0; border-top: 1px solid var(--border); }
+    footer {
+      width: min(72rem, calc(100% - 3rem)); margin: 0 auto 3rem; padding-top: 1.2rem;
+      color: var(--muted); border-top: 1px solid var(--border); font-size: .88rem;
+    }
+    @media (max-width: 880px) {
+      .shell { display: block; }
+      nav { position: static; width: auto; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+      nav ul { columns: 2; }
+      header { padding-top: 2.5rem; }
+    }
+    @media (max-width: 560px) {
+      nav ul { columns: 1; }
+      header, article, footer { width: min(100% - 1.5rem, 72rem); }
+      th, td { min-width: 9rem; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      nav { display: none; }
+      .shell { display: block; }
+      header, article, footer { width: 100%; }
+      section { break-inside: avoid-page; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav aria-label="Architecture sections">
+      <strong>Permio architecture</strong>
+      <small>Generated from canonical Markdown</small>
+      <ul>
+          <li><a href="#1-purpose-and-completion-rule">1 Purpose and completion rule</a></li>
+          <li><a href="#2-fixed-protocol-decisions">2 Fixed protocol decisions</a></li>
+          <li><a href="#3-milestone-dependency-chain">3 Milestone dependency chain</a></li>
+          <li><a href="#4-m0-repository-baseline">4 M0 — Repository baseline</a></li>
+          <li><a href="#5-m1-protocol-and-workspace-freeze">5 M1 — Protocol and workspace freeze</a></li>
+          <li><a href="#6-m2-midnight-v2-contract-and-proofs">6 M2 — Midnight V2 contract and proofs</a></li>
+          <li><a href="#7-m3-midnight-client-adapters-and-recoverable-state">7 M3 — Midnight client, adapters, and recoverable state</a></li>
+          <li><a href="#8-m4-gateway-policy-and-durable-monad-outbox">8 M4 — Gateway, policy, and durable Monad outbox</a></li>
+          <li><a href="#9-m5-local-dual-chain-support-vertical-slice">9 M5 — Local dual-chain support vertical slice</a></li>
+          <li><a href="#10-m6-midnight-preprod-and-monad-testnet-support-deployment">10 M6 — Midnight Preprod and Monad Testnet support deployment</a></li>
+          <li><a href="#11-m7-reputation-context">11 M7 — Reputation context</a></li>
+          <li><a href="#12-m8-clara-regulatory-bridge-and-evidence-package">12 M8 — Clara regulatory bridge and evidence package</a></li>
+          <li><a href="#13-m9-account-first-product-ui">13 M9 — Account-first product UI</a></li>
+          <li><a href="#14-m10-hackathon-release-candidate">14 M10 — Hackathon release candidate</a></li>
+          <li><a href="#15-cross-milestone-rules">15 Cross-milestone rules</a></li>
+          <li><a href="#permio-确定性里程碑">Permio 确定性里程碑</a></li>
+          <li><a href="#1-目标与完成规则">1 目标与完成规则</a></li>
+          <li><a href="#2-固定协议决策">2 固定协议决策</a></li>
+          <li><a href="#3-依赖顺序">3 依赖顺序</a></li>
+          <li><a href="#4-m0-仓库基线">4 M0 — 仓库基线</a></li>
+          <li><a href="#5-m1-协议与工作区冻结">5 M1 — 协议与工作区冻结</a></li>
+          <li><a href="#6-m2-midnight-v2-合约与证明">6 M2 — Midnight V2 合约与证明</a></li>
+          <li><a href="#7-m3-midnight-客户端-适配器与可恢复状态">7 M3 — Midnight 客户端、适配器与可恢复状态</a></li>
+          <li><a href="#8-m4-网关-策略与持久化-monad-outbox">8 M4 — 网关、策略与持久化 Monad outbox</a></li>
+          <li><a href="#9-m5-本地双链客服纵向切片">9 M5 — 本地双链客服纵向切片</a></li>
+          <li><a href="#10-m6-midnight-preprod-与-monad-testnet-客服部署">10 M6 — Midnight Preprod 与 Monad Testnet 客服部署</a></li>
+          <li><a href="#11-m7-评价上下文">11 M7 — 评价上下文</a></li>
+          <li><a href="#12-m8-clara-监管桥接与证据包">12 M8 — Clara 监管桥接与证据包</a></li>
+          <li><a href="#13-m9-账户优先产品界面">13 M9 — 账户优先产品界面</a></li>
+          <li><a href="#14-m10-黑客松发布候选版本">14 M10 — 黑客松发布候选版本</a></li>
+          <li><a href="#15-跨里程碑规则">15 跨里程碑规则</a></li>
+      </ul>
+    </nav>
+    <main>
+      <header>
+        <div class="eyebrow">Midnight × Monad</div>
+        <h1>Permio Deterministic Milestones</h1>
+        <p>A bilingual execution contract that fixes milestone order, artifacts, privacy invariants, tests, evidence, and binary completion gates for the Permio build.</p>
+      </header>
+      <article>
+<p>Status: implementation contract<br>Date: 9 October 2026<br>Scope: Alice, Bob, and Clara composite flow across Midnight and Monad</p>
+<section aria-labelledby="1-purpose-and-completion-rule">
+<h2 id="1-purpose-and-completion-rule">1 Purpose and completion rule</h2>
+
+<p>This document converts the composite architecture into a sequential execution
+contract. A milestone is complete only when every named artifact exists, every
+acceptance test passes, every privacy invariant is demonstrated, and its
+acceptance record is committed. Partial behavior, screenshots without machine
+evidence, and an implementation that merely resembles the target do not count.</p>
+<p>&quot;Deterministic&quot; means the observable result is fixed: schemas, public fields,
+private fields, state transitions, file locations, failure behavior, and test
+evidence are prescribed. Internal code organization inside a named module may
+vary only when it does not change those outputs.</p>
+<p>Milestones are strictly ordered. Work may be researched in advance, but code
+for milestone <code>M(n+1)</code> must not be merged into <code>main</code> before <code>M(n)</code> has a
+passing acceptance record. A milestone has exactly four states:</p>
+<ul>
+<li><code>NOT_STARTED</code>: no implementation has been accepted.</li>
+<li><code>IN_PROGRESS</code>: implementation exists but at least one exit condition fails.</li>
+<li><code>BLOCKED</code>: an external dependency prevents a required exit condition.</li>
+<li><code>COMPLETE</code>: all exit conditions pass at one recorded commit.</li>
+</ul>
+<p>The acceptance record for milestone <code>MN</code> is
+<code>docs/evidence/MN/acceptance.json</code>. It contains the milestone ID, Git commit,
+tool versions, commands, test result summaries, deployment identifiers when
+applicable, and SHA-256 hashes of non-Git evidence. It contains no private
+witness, mnemonic, credential, signing key, cookie, or personal data.</p>
+</section>
+<section aria-labelledby="2-fixed-protocol-decisions">
+<h2 id="2-fixed-protocol-decisions">2 Fixed protocol decisions</h2>
+
+<p>The following values are locked in <code>M1</code> and reused without aliases:</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Meaning</th>
+<th>Exact canonical value</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Support schema string</td>
+<td><code>permio.support-eligibility.v1</code></td>
+</tr>
+<tr>
+<td>Review schema string</td>
+<td><code>permio.review-eligible-unique.v1</code></td>
+</tr>
+<tr>
+<td>Regulatory schema string</td>
+<td><code>permio.regulatory-bridge.v1</code></td>
+</tr>
+<tr>
+<td>Replacement-support purpose</td>
+<td><code>permio.support.replacement.v1</code></td>
+</tr>
+<tr>
+<td>Review-publication purpose</td>
+<td><code>permio.review.publish.v1</code></td>
+</tr>
+<tr>
+<td>Complaint-assessment purpose</td>
+<td><code>permio.regulatory.consumer-complaint-assessment.v1</code></td>
+</tr>
+<tr>
+<td>Support receipt lifetime</td>
+<td><code>900</code> seconds</td>
+</tr>
+<tr>
+<td>Review receipt lifetime</td>
+<td><code>31536000</code> seconds</td>
+</tr>
+<tr>
+<td>Regulatory receipt lifetime</td>
+<td><code>604800</code> seconds</td>
+</tr>
+<tr>
+<td>Local Midnight network label</td>
+<td><code>midnight-local-dev</code></td>
+</tr>
+<tr>
+<td>Public Midnight network label</td>
+<td><code>midnight-preprod</code></td>
+</tr>
+<tr>
+<td>Local Monad chain ID</td>
+<td>Hardhat chain ID reported by the local node</td>
+</tr>
+<tr>
+<td>Public Monad chain ID</td>
+<td><code>10143</code></td>
+</tr>
+<tr>
+<td>EIP-712 domain name</td>
+<td><code>Permio Recipient-Bound Attestation Registry</code></td>
+</tr>
+<tr>
+<td>EIP-712 domain version</td>
+<td><code>1</code></td>
+</tr>
+</tbody></table></div>
+<p>On Monad, schema IDs and purpose hashes are <code>keccak256</code> of the exact UTF-8
+strings above. A relay nullifier is derived from the Midnight scoped nullifier,
+schema ID, purpose hash, recipient, Monad chain ID, and registry address. The
+raw Midnight nullifier is never copied into a Monad transaction.</p>
+</section>
+<section aria-labelledby="3-milestone-dependency-chain">
+<h2 id="3-milestone-dependency-chain">3 Milestone dependency chain</h2>
+
+<pre><code class="language-text">M0 Baseline
+  -&gt; M1 Protocol freeze
+  -&gt; M2 Midnight V2 contract
+  -&gt; M3 Midnight client and state
+  -&gt; M4 Gateway and durable outbox
+  -&gt; M5 Local support vertical slice
+  -&gt; M6 Public support deployment
+  -&gt; M7 Reputation context
+  -&gt; M8 Regulatory context
+  -&gt; M9 Account-first product UI
+  -&gt; M10 Release candidate
+</code></pre>
+<p>The support path is deliberately completed locally and on public test networks
+before review and regulation are added. This proves that both chains perform a
+necessary function before the project expands horizontally.</p>
+</section>
+<section aria-labelledby="4-m0-repository-baseline">
+<h2 id="4-m0-repository-baseline">4 M0 — Repository baseline</h2>
+
+<p>Status: <code>COMPLETE</code> at baseline commit <code>b25b005</code>.</p>
+<h3 id="required-result">Required result</h3>
+
+<ul>
+<li><code>RecipientBoundAttestationRegistry.sol</code> implements recipient-, purpose-,
+schema-, expiry-, and verifier-bound EIP-712 receipts.</li>
+<li>Hardhat tests cover valid relayed registration, recipient substitution,
+scoped replay, unauthorized verifier, and revocation.</li>
+<li>The Alice–Bob–Clara architecture has canonical Markdown and generated HTML.</li>
+<li><code>npm run check</code> rejects stale generated HTML and runs typecheck, contract
+compilation, and tests.</li>
+</ul>
+<h3 id="exit-gate">Exit gate</h3>
+
+<p><code>npm run check</code> passes with exactly the existing five registry behaviors, the
+working tree is clean, and no deployment key or private fixture is committed.</p>
+<h3 id="non-goals">Non-goals</h3>
+
+<p>M0 does not claim that a Midnight proof has been verified, that a gateway
+exists, or that the registry is deployed to Monad Testnet.</p>
+</section>
+<section aria-labelledby="5-m1-protocol-and-workspace-freeze">
+<h2 id="5-m1-protocol-and-workspace-freeze">5 M1 — Protocol and workspace freeze</h2>
+
+<p>Status: <code>NOT_STARTED</code>. This is the next implementation milestone.</p>
+<h3 id="objective">Objective</h3>
+
+<p>Create one versioned protocol package that every Compact circuit, TypeScript
+service, test, and Solidity client must consume. Remove duplicate hand-written
+schema and purpose constants.</p>
+<h3 id="required-artifacts">Required artifacts</h3>
+
+<ul>
+<li><code>packages/protocol/package.json</code></li>
+<li><code>packages/protocol/src/schema.ts</code></li>
+<li><code>packages/protocol/src/canonical-encoding.ts</code></li>
+<li><code>packages/protocol/src/eip712.ts</code></li>
+<li><code>packages/protocol/fixtures/alice-bob-clara.v1.json</code></li>
+<li><code>packages/protocol/fixtures/hash-vectors.v1.json</code></li>
+<li><code>packages/protocol/test/protocol.test.ts</code></li>
+<li>npm workspace configuration at the repository root</li>
+<li><code>docs/evidence/M1/acceptance.json</code></li>
+</ul>
+<p>The fixture contains public placeholder values only. Bob&#39;s holder secret is a
+deterministic test-only byte string clearly labeled as non-production and must
+never match a Midnight Local Dev example mnemonic.</p>
+<h3 id="binary-acceptance-gate">Binary acceptance gate</h3>
+
+<ol>
+<li>The three schema hashes and three purpose hashes equal the committed vector
+values on Windows and Ubuntu.</li>
+<li>EIP-712 type fields and ordering exactly match the Solidity type hash.</li>
+<li>Length-delimited canonical encoding distinguishes ambiguous concatenations.</li>
+<li>Review, support, decision, evidence, bridge, and relay-nullifier domains are
+pairwise distinct.</li>
+<li>Existing registry tests import protocol constants rather than redefining
+them.</li>
+<li><code>npm run check</code> passes from a clean <code>npm ci</code> installation.</li>
+</ol>
+<h3 id="rejection-conditions">Rejection conditions</h3>
+
+<p>M1 fails if two packages define the same protocol string independently, if a
+test computes its expected value from the same function under test, or if an
+encoding change can occur without incrementing a version.</p>
+</section>
+<section aria-labelledby="6-m2-midnight-v2-contract-and-proofs">
+<h2 id="6-m2-midnight-v2-contract-and-proofs">6 M2 — Midnight V2 contract and proofs</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M1</code>.</p>
+<h3 id="objective-2">Objective</h3>
+
+<p>Port the minimum Midnight contract into Permio and implement the corrected
+support decision and regulatory bridge circuits. Alice must never need Bob&#39;s
+holder secret to record a support decision.</p>
+<h3 id="required-artifacts-2">Required artifacts</h3>
+
+<ul>
+<li><code>packages/midnight-contract/contracts/permio.compact</code></li>
+<li>compiler-managed output under <code>packages/midnight-contract/managed/</code></li>
+<li><code>packages/midnight-contract/test/issuer.test.ts</code></li>
+<li><code>packages/midnight-contract/test/review.test.ts</code></li>
+<li><code>packages/midnight-contract/test/support.test.ts</code></li>
+<li><code>packages/midnight-contract/test/regulatory-bridge.test.ts</code></li>
+<li><code>packages/midnight-contract/test/privacy-boundary.test.ts</code></li>
+<li>recorded Compact compiler and devtool versions</li>
+<li><code>docs/evidence/M2/acceptance.json</code></li>
+</ul>
+<p>The contract exports exactly these circuits:</p>
+<ol>
+<li><code>registerCredentialIssuer</code></li>
+<li><code>publishReview</code></li>
+<li><code>openSupportCase</code></li>
+<li><code>recordSupportDecisionV2</code></li>
+<li><code>authorizeRegulatoryBridgeV2</code></li>
+</ol>
+<h3 id="public-and-private-boundary">Public and private boundary</h3>
+
+<p>Public state may contain issuer IDs and public keys, context-specific
+nullifiers, versioned action commitments, bridge commitments, and counters. It
+must not contain plaintext order IDs, credential IDs, holder secrets, exact
+purchase dates, review text, decision reasons, regulatory evidence, or a stable
+identifier shared by review and support.</p>
+<h3 id="binary-acceptance-gate-2">Binary acceptance gate</h3>
+
+<ol>
+<li>Alice&#39;s credential signature is rejected after any signed field changes.</li>
+<li>Bob can open one eligible H1 support case within 30 days.</li>
+<li>Reusing the support entitlement fails.</li>
+<li><code>recordSupportDecisionV2</code> succeeds with Alice&#39;s registered key and no Bob
+credential or holder secret in its interface.</li>
+<li>A second decision for the same support nullifier fails.</li>
+<li>The regulatory bridge binds Clara, case, purpose, evidence set, policy
+version, and expiry.</li>
+<li>Recipient, purpose, case, or evidence substitution fails.</li>
+<li>Review and support nullifiers for the same credential are unequal.</li>
+<li>A serialized ledger-state scan contains none of the private fixture values.</li>
+<li>Compilation and all circuit tests pass using the recorded tool versions.</li>
+</ol>
+<h3 id="rejection-conditions-2">Rejection conditions</h3>
+
+<p>M2 fails if it retains the V1 decision interface, introduces a global Bob
+pseudonym, hand-edits compiler output, or describes an off-chain policy check
+as an on-chain proof.</p>
+</section>
+<section aria-labelledby="7-m3-midnight-client-adapters-and-recoverable-state">
+<h2 id="7-m3-midnight-client-adapters-and-recoverable-state">7 M3 — Midnight client, adapters, and recoverable state</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M2</code>.</p>
+<h3 id="objective-3">Objective</h3>
+
+<p>Provide typed, testable application interfaces for generating and submitting
+the five Midnight actions while keeping private inputs inside Bob&#39;s or Alice&#39;s
+controlled execution boundary.</p>
+<h3 id="required-artifacts-3">Required artifacts</h3>
+
+<ul>
+<li><code>packages/midnight-client/src/ports.ts</code></li>
+<li><code>packages/midnight-client/src/providers.ts</code></li>
+<li><code>packages/midnight-client/src/transactions.ts</code></li>
+<li><code>packages/midnight-client/src/private-state.ts</code></li>
+<li><code>packages/midnight-client/src/receipts.ts</code></li>
+<li><code>packages/midnight-client/test/transactions.test.ts</code></li>
+<li><code>packages/midnight-client/test/recovery.test.ts</code></li>
+<li><code>packages/midnight-client/test/redaction.test.ts</code></li>
+<li><code>docs/evidence/M3/acceptance.json</code></li>
+</ul>
+<h3 id="required-state-machine">Required state machine</h3>
+
+<pre><code class="language-text">DRAFT
+-&gt; POLICY_APPROVED
+-&gt; PROVING
+-&gt; MIDNIGHT_SUBMITTED
+-&gt; MIDNIGHT_CONFIRMED
+</code></pre>
+<p>Only the transition immediately following the persisted state may run. Retrying
+the same transition uses the same idempotency key and cannot change its public
+commitment.</p>
+<h3 id="binary-acceptance-gate-3">Binary acceptance gate</h3>
+
+<ol>
+<li>Provider configuration supports generated-runtime tests and Midnight Local
+Dev without changing domain code.</li>
+<li>Each action exposes an explicit private-input type and public receipt type.</li>
+<li>Logs, thrown errors, serialized jobs, and receipts exclude all private
+fixture values.</li>
+<li>A forced restart after submission resumes observation rather than creating
+a second transaction.</li>
+<li>An invalid state transition is rejected.</li>
+<li>Account A cannot load Account B&#39;s encrypted private state.</li>
+<li>Tests run without a live network; a separately named integration command
+targets Midnight Local Dev.</li>
+</ol>
+<h3 id="rejection-conditions-3">Rejection conditions</h3>
+
+<p>M3 fails if a hosted Permio process receives Bob&#39;s holder secret, if private
+state is global rather than account-scoped, or if retries can change a
+commitment.</p>
+</section>
+<section aria-labelledby="8-m4-gateway-policy-and-durable-monad-outbox">
+<h2 id="8-m4-gateway-policy-and-durable-monad-outbox">8 M4 — Gateway, policy, and durable Monad outbox</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M3</code>.</p>
+<h3 id="objective-4">Objective</h3>
+
+<p>Implement the narrow trusted bridge. The gateway reads only confirmed Midnight
+public outputs, applies versioned policy, signs one EIP-712 attestation, and
+publishes it through an independently keyed relayer.</p>
+<h3 id="required-artifacts-4">Required artifacts</h3>
+
+<ul>
+<li><code>packages/gateway/src/midnight-observer.ts</code></li>
+<li><code>packages/gateway/src/policy.ts</code></li>
+<li><code>packages/gateway/src/relay-nullifier.ts</code></li>
+<li><code>packages/gateway/src/attestation-signer.ts</code></li>
+<li><code>packages/gateway/src/outbox.ts</code></li>
+<li><code>packages/gateway/src/monad-publisher.ts</code></li>
+<li><code>packages/gateway/src/worker.ts</code></li>
+<li><code>packages/gateway/test/policy.test.ts</code></li>
+<li><code>packages/gateway/test/outbox-recovery.test.ts</code></li>
+<li><code>packages/gateway/test/key-separation.test.ts</code></li>
+<li><code>docs/evidence/M4/acceptance.json</code></li>
+</ul>
+<h3 id="required-outbox-lifecycle">Required outbox lifecycle</h3>
+
+<pre><code class="language-text">MIDNIGHT_CONFIRMED
+-&gt; ATTESTATION_PREPARED
+-&gt; ATTESTATION_SIGNED
+-&gt; MONAD_SUBMITTED
+-&gt; MONAD_FINALIZED
+-&gt; CONSUMED | REVOKED
+</code></pre>
+<p>The idempotency key binds Midnight network, Compact contract, Midnight
+transaction, schema, purpose, recipient, Monad chain ID, and registry address.</p>
+<h3 id="binary-acceptance-gate-4">Binary acceptance gate</h3>
+
+<ol>
+<li>The observer rejects the wrong network, contract, circuit/action, or public
+commitment.</li>
+<li>The policy rejects unapproved schema-purpose-recipient combinations.</li>
+<li>The gateway signs with the verifier key; the relayer submits with a
+different key.</li>
+<li>A relay nullifier changes if recipient, purpose, chain ID, or registry
+address changes.</li>
+<li>Two workers processing one outbox row produce at most one accepted Monad
+receipt.</li>
+<li>Restarting at every lifecycle state converges on one final attestation ID.</li>
+<li>The outbox and logs contain no Midnight witness data.</li>
+<li>Expired and revoked receipts are not reported as valid.</li>
+</ol>
+<h3 id="rejection-conditions-4">Rejection conditions</h3>
+
+<p>M4 fails if the gateway accepts a client assertion without reading Midnight,
+if verifier and relayer keys are equal, or if an in-memory queue is the only
+record of a submitted transaction.</p>
+</section>
+<section aria-labelledby="9-m5-local-dual-chain-support-vertical-slice">
+<h2 id="9-m5-local-dual-chain-support-vertical-slice">9 M5 — Local dual-chain support vertical slice</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M4</code>.</p>
+<h3 id="objective-5">Objective</h3>
+
+<p>Prove the complete support path on Midnight Local Dev and a local Hardhat node.
+This is the first point at which Permio may claim a working composite
+architecture.</p>
+<h3 id="required-artifacts-5">Required artifacts</h3>
+
+<ul>
+<li><code>test/e2e/local-support.e2e.test.ts</code></li>
+<li><code>test/e2e/local-support-negative.e2e.test.ts</code></li>
+<li><code>infra/local/README.md</code></li>
+<li><code>infra/local/config.example.json</code></li>
+<li>redacted machine-readable test receipt</li>
+<li><code>docs/evidence/M5/acceptance.json</code></li>
+</ul>
+<h3 id="exact-happy-path">Exact happy path</h3>
+
+<ol>
+<li>Alice&#39;s issuer key is registered on Midnight Local Dev.</li>
+<li>Alice signs Bob&#39;s H1 purchase credential off-chain.</li>
+<li>Bob proves replacement eligibility and opens <code>CASE-BOB-001</code>.</li>
+<li>The gateway observes the confirmed public support commitment.</li>
+<li>The gateway produces a 900-second support attestation for Alice&#39;s exact
+local recipient contract.</li>
+<li>The neutral relayer submits it to the local Monad registry.</li>
+<li>Alice&#39;s consumer verifies <code>isValidFor</code> and records one decision.</li>
+<li>The UI-independent receipt contains both chain references and no Bob
+identity.</li>
+</ol>
+<h3 id="binary-acceptance-gate-5">Binary acceptance gate</h3>
+
+<p>The happy path passes from one command. Separate tests prove that an invalid
+credential, expired purchase, duplicate support request, substituted
+recipient, substituted purpose, unauthorized gateway, reused scope, and
+expired receipt each fail at the named boundary. Stopping and restarting the
+gateway after both chain submissions still produces exactly one Monad record.</p>
+<h3 id="rejection-conditions-5">Rejection conditions</h3>
+
+<p>M5 fails if either chain is mocked, if Bob submits the Monad transaction, or if
+the demo requires copying a holder secret into the gateway process.</p>
+</section>
+<section aria-labelledby="10-m6-midnight-preprod-and-monad-testnet-support-deployment">
+<h2 id="10-m6-midnight-preprod-and-monad-testnet-support-deployment">10 M6 — Midnight Preprod and Monad Testnet support deployment</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M5</code>.</p>
+<h3 id="objective-6">Objective</h3>
+
+<p>Reproduce the support vertical slice on public non-production networks and
+record enough information to verify the deployment without exposing secrets.</p>
+<h3 id="required-artifacts-6">Required artifacts</h3>
+
+<ul>
+<li><code>deployments/midnight-preprod/manifest.json</code></li>
+<li><code>deployments/monad-testnet/10143/manifest.json</code></li>
+<li><code>deployments/monad-testnet/10143/abi/RecipientBoundAttestationRegistry.json</code></li>
+<li><code>scripts/deploy-midnight-preprod.mjs</code></li>
+<li>the existing Hardhat Ignition Monad module with pinned parameters</li>
+<li><code>scripts/smoke-public-support.mjs</code></li>
+<li><code>docs/evidence/M6/acceptance.json</code></li>
+</ul>
+<p>Each manifest records network, chain ID where applicable, contract address or
+identifier, source commit, compiler version, artifact hash, deployment
+transaction, timestamp, and public explorer/indexer references. It never
+records a private key or mnemonic.</p>
+<h3 id="binary-acceptance-gate-6">Binary acceptance gate</h3>
+
+<ol>
+<li>Source is clean and tagged before deployment.</li>
+<li>Deployed bytecode or contract artifact matches the recorded source commit.</li>
+<li>One redacted Alice–Bob support transaction reaches Midnight confirmation.</li>
+<li>One recipient-bound receipt reaches Monad <code>Finalized</code>.</li>
+<li>The receipt is valid only for Alice&#39;s configured recipient and exact
+support purpose.</li>
+<li>A public smoke command re-verifies both chain references.</li>
+<li>The application labels the bridge as gateway-attested, not trustless.</li>
+</ol>
+<h3 id="rejection-conditions-6">Rejection conditions</h3>
+
+<p>M6 fails if it deploys to either mainnet, depends on an unrecorded local
+artifact, exposes funded account credentials, or reports completion at Monad
+transaction inclusion rather than finalization.</p>
+</section>
+<section aria-labelledby="11-m7-reputation-context">
+<h2 id="11-m7-reputation-context">11 M7 — Reputation context</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M6</code>.</p>
+<h3 id="objective-7">Objective</h3>
+
+<p>Add Bob&#39;s one-review-per-purchase flow through the same Midnight contract,
+gateway, Monad registry, and lifecycle abstractions without linking it to the
+support receipt.</p>
+<h3 id="required-artifacts-7">Required artifacts</h3>
+
+<ul>
+<li>reputation policy in <code>packages/gateway/src/policy.ts</code></li>
+<li>public review application service and storage adapter</li>
+<li>local dual-chain reputation test</li>
+<li>Preprod/Testnet reputation smoke test</li>
+<li>cross-context unlinkability test</li>
+<li><code>docs/evidence/M7/acceptance.json</code></li>
+</ul>
+<h3 id="binary-acceptance-gate-7">Binary acceptance gate</h3>
+
+<ol>
+<li>Bob authors only rating and free-form review text.</li>
+<li>One credential produces one review for the fixed merchant-product scope.</li>
+<li>The public receives rating, text, verified status, merchant, product, and
+permitted time metadata only.</li>
+<li>A second review with the same entitlement fails.</li>
+<li>The support and review public records share no stable Bob-derived field.</li>
+<li>Alice cannot query the support receipt to identify Bob&#39;s public review.</li>
+<li>The UI states that the proof establishes eligibility and uniqueness, not
+truth.</li>
+</ol>
+<h3 id="rejection-conditions-7">Rejection conditions</h3>
+
+<p>M7 fails if it adds a public Bob profile, copies the support nullifier, adds
+unapproved review fields, or claims the review opinion is proven true.</p>
+</section>
+<section aria-labelledby="12-m8-clara-regulatory-bridge-and-evidence-package">
+<h2 id="12-m8-clara-regulatory-bridge-and-evidence-package">12 M8 — Clara regulatory bridge and evidence package</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M7</code>.</p>
+<h3 id="objective-8">Objective</h3>
+
+<p>Let Bob explicitly authorize one purpose-bound, recipient-bound bridge that
+allows Clara to verify the selected review, support case, Alice decision, and
+chronology without revealing unrelated activity.</p>
+<h3 id="required-artifacts-8">Required artifacts</h3>
+
+<ul>
+<li>regulatory policy in <code>packages/gateway/src/policy.ts</code></li>
+<li><code>packages/evidence/src/manifest.ts</code></li>
+<li><code>packages/evidence/src/encryption.ts</code></li>
+<li><code>packages/evidence/src/verification.ts</code></li>
+<li>Clara verification command or API</li>
+<li>local and public-network regulatory tests</li>
+<li><code>docs/evidence/M8/acceptance.json</code></li>
+</ul>
+<h3 id="exact-evidence-manifest">Exact evidence manifest</h3>
+
+<p>The manifest contains version, Clara recipient identifier, regulatory case ID,
+purpose, policy version, review commitment, support commitment, decision
+commitment, evidence-set hash, bridge commitment, creation time, and expiry.
+Plaintext evidence is encrypted to Clara&#39;s case key and transported separately
+from the ZK proof and Monad receipt.</p>
+<h3 id="binary-acceptance-gate-8">Binary acceptance gate</h3>
+
+<ol>
+<li>Bob sees and confirms Clara, case, purpose, exact selected records, newly
+created linkability, and expiry before authorization.</li>
+<li>Clara verifies the Midnight bridge, Monad receipt, evidence manifest,
+ciphertext integrity, and chronology.</li>
+<li>Another recipient, case, purpose, or evidence set fails verification.</li>
+<li>Clara cannot enumerate Bob&#39;s other reviews, credentials, or support cases.</li>
+<li>Alice receives no new review-to-Bob link from the regulatory workflow.</li>
+<li>Expired, revoked, or altered evidence is rejected.</li>
+</ol>
+<h3 id="rejection-conditions-8">Rejection conditions</h3>
+
+<p>M8 fails if the bridge is implicit, if Clara receives a reusable global Bob
+identifier, if the evidence package is public, or if an application signature
+is described as proof that Bob&#39;s allegation is true.</p>
+</section>
+<section aria-labelledby="13-m9-account-first-product-ui">
+<h2 id="13-m9-account-first-product-ui">13 M9 — Account-first product UI</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M8</code>.</p>
+<h3 id="objective-9">Objective</h3>
+
+<p>Integrate the three contexts into the account-based product without restoring
+actor cards, perspective selectors, scenario runners, or exposed administrator
+credentials.</p>
+<h3 id="required-artifacts-9">Required artifacts</h3>
+
+<ul>
+<li><code>apps/web</code> for browser UI</li>
+<li><code>apps/api</code> for account, policy, persistence, and orchestration endpoints</li>
+<li>account-isolated encrypted private-state integration</li>
+<li>disclosure preview component</li>
+<li>two-chain lifecycle receipt component</li>
+<li>Alice, Bob, and Clara browser journey tests</li>
+<li>accessibility and secret-leak tests</li>
+<li><code>docs/evidence/M9/acceptance.json</code></li>
+</ul>
+<h3 id="binary-acceptance-gate-9">Binary acceptance gate</h3>
+
+<ol>
+<li>Alice, Bob, and Clara register or log in through separate sessions.</li>
+<li>Bob can complete review, support, and regulatory authorization from his own
+account with a disclosure preview before each proof.</li>
+<li>Alice sees only merchant and support views authorized for her account.</li>
+<li>Clara sees only assigned cases and Bob-authorized evidence.</li>
+<li>Lifecycle states distinguish proof generation, Midnight confirmation,
+gateway signature, Monad submission, and Monad finalization.</li>
+<li>No private input appears in DOM text, URLs, browser storage intended for
+public data, API error bodies, logs, or analytics.</li>
+<li>Refresh and process restart preserve state without duplicate submission.</li>
+<li>The browser journeys pass with four isolated sessions: Alice, Bob, Clara,
+and an unauthorized ordinary account.</li>
+</ol>
+<h3 id="rejection-conditions-9">Rejection conditions</h3>
+
+<p>M9 fails if a scenario selector bypasses authentication, if an administrator
+credential is prefilled or displayed, or if the UI calls an in-progress
+transaction final.</p>
+</section>
+<section aria-labelledby="14-m10-hackathon-release-candidate">
+<h2 id="14-m10-hackathon-release-candidate">14 M10 — Hackathon release candidate</h2>
+
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M9</code>.</p>
+<h3 id="objective-10">Objective</h3>
+
+<p>Produce one reproducible release candidate whose claims match its implemented
+privacy and trust boundaries.</p>
+<h3 id="required-artifacts-10">Required artifacts</h3>
+
+<ul>
+<li>tagged release candidate commit</li>
+<li><code>docs/DEMO_RUNBOOK.md</code> and generated HTML</li>
+<li><code>docs/SECURITY_AND_TRUST.md</code> and generated HTML</li>
+<li>architecture, milestone, deployment, and acceptance evidence links in README</li>
+<li>license and third-party notices</li>
+<li>dependency and secret scans</li>
+<li>clean-install verification on Ubuntu and the supported Windows workflow</li>
+<li>final <code>docs/evidence/M10/acceptance.json</code></li>
+</ul>
+<h3 id="required-demo-sequence">Required demo sequence</h3>
+
+<ol>
+<li>Show Alice&#39;s issuer registration without exposing her key.</li>
+<li>Show Bob receiving a private credential.</li>
+<li>Show Bob proving support eligibility and a neutral relayer submitting the
+Monad receipt.</li>
+<li>Show Alice validating the receipt and recording a decision without Bob&#39;s
+secret.</li>
+<li>Show Bob publishing one unlinkable verified review.</li>
+<li>Show Bob explicitly authorizing Clara&#39;s regulatory bridge.</li>
+<li>Show Clara verifying only the selected evidence.</li>
+<li>Show recipient substitution and replay attempts fail.</li>
+</ol>
+<h3 id="binary-acceptance-gate-10">Binary acceptance gate</h3>
+
+<ol>
+<li><code>npm ci</code> and <code>npm run check</code> pass from a fresh checkout.</li>
+<li>All milestone acceptance records reference the release candidate or an
+explicitly recorded ancestor without unresolved failures.</li>
+<li>The public-network smoke tests pass against the recorded Preprod and Testnet
+deployments.</li>
+<li>Repository, built assets, logs, evidence, and browser output pass the secret
+and private-fixture scans.</li>
+<li>The demo runbook completes without manual database edits or hidden setup.</li>
+<li>README claims distinguish ZK-proven facts, gateway-attested facts, public
+user-authored content, and unproven opinions.</li>
+<li>A rollback and verifier-revocation procedure is tested.</li>
+</ol>
+<h3 id="rejection-conditions-10">Rejection conditions</h3>
+
+<p>M10 fails if any demo claim exceeds the implemented proof, if the demo depends
+on mainnet funds, if a private fixture appears publicly, or if a failed
+acceptance gate is waived without changing the milestone specification.</p>
+</section>
+<section aria-labelledby="15-cross-milestone-rules">
+<h2 id="15-cross-milestone-rules">15 Cross-milestone rules</h2>
+
+<h3 id="change-control">Change control</h3>
+
+<p>After <code>M1</code>, changing a schema, purpose, encoding, domain separator, EIP-712
+field, public Compact output, or acceptance fixture requires a protocol decision
+record under <code>docs/decisions/</code>, a version increment, migration impact, updated
+vectors, and updated tests. Editing an expected value solely to make a failing
+test pass is prohibited.</p>
+<h3 id="evidence-quality">Evidence quality</h3>
+
+<p>Every acceptance command must be reproducible from the referenced commit.
+Screenshots may supplement but never replace assertions, receipts, or manifest
+checks. Live-network identifiers are public evidence; secrets are never
+evidence. Machine-generated evidence must be redacted before commit.</p>
+<h3 id="definition-of-blocked">Definition of blocked</h3>
+
+<p>A milestone may be <code>BLOCKED</code> only when a required external service or network
+is unavailable, a required platform defect has been reproduced, or an owner
+decision is genuinely missing. A failing test, unfinished implementation, or
+uncertain design is <code>IN_PROGRESS</code>, not <code>BLOCKED</code>.</p>
+<h3 id="definition-of-done">Definition of done</h3>
+
+<p>The result of a milestone is the exact committed artifacts plus passing gates,
+not a progress percentage. If one required negative test, privacy scan,
+restart test, manifest, or acceptance record is missing, the milestone remains
+<code>IN_PROGRESS</code>.</p>
+<hr>
+</section>
+<h1 id="permio-确定性里程碑">Permio 确定性里程碑</h1>
+
+<p>状态：实施契约<br>日期：2026 年 10 月 9 日<br>范围：Alice、Bob、Clara 在 Midnight 与 Monad 上的复合流程</p>
+<section aria-labelledby="1-目标与完成规则">
+<h2 id="1-目标与完成规则">1 目标与完成规则</h2>
+
+<p>本文档把复合架构转化为严格顺序执行的实施契约。只有当指定产物全部存在、验收测试全部
+通过、隐私不变量得到证明，并且验收记录已提交时，一个里程碑才算完成。部分功能、缺少
+机器证据的截图，或者只是与目标相似的实现，都不能算完成。</p>
+<p>“确定性”表示可观察结果是固定的：模式、公开字段、私有字段、状态转换、文件位置、失败
+行为和测试证据均已规定。命名模块内部的代码组织可以不同，但不能改变这些结果。</p>
+<p>里程碑必须严格按顺序完成。可以提前研究后续工作，但 <code>M(n)</code> 没有通过验收时，
+<code>M(n+1)</code> 的代码不能合并到 <code>main</code>。状态只有 <code>NOT_STARTED</code>、<code>IN_PROGRESS</code>、<code>BLOCKED</code>
+和 <code>COMPLETE</code> 四种。每个 <code>MN</code> 的验收记录固定为
+<code>docs/evidence/MN/acceptance.json</code>，记录提交、工具版本、命令、测试摘要、必要的公开部署
+标识和非 Git 证据的 SHA-256 哈希，但绝不包含 witness、助记词、凭证、私钥、Cookie 或
+个人数据。</p>
+</section>
+<section aria-labelledby="2-固定协议决策">
+<h2 id="2-固定协议决策">2 固定协议决策</h2>
+
+<p><code>M1</code> 必须锁定并统一使用以下值：客服模式 <code>permio.support-eligibility.v1</code>、评价模式
+<code>permio.review-eligible-unique.v1</code>、监管模式 <code>permio.regulatory-bridge.v1</code>；对应用途为
+<code>permio.support.replacement.v1</code>、<code>permio.review.publish.v1</code> 和
+<code>permio.regulatory.consumer-complaint-assessment.v1</code>。客服收据有效期为 900 秒，评价为
+31536000 秒，监管为 604800 秒。公开 Midnight 网络标签为 <code>midnight-preprod</code>，Monad
+Testnet 链 ID 为 <code>10143</code>。EIP-712 域名固定为
+<code>Permio Recipient-Bound Attestation Registry</code>，版本为 <code>1</code>。</p>
+<p>Monad 的模式 ID 和用途哈希是上述精确 UTF-8 字符串的 <code>keccak256</code>。Monad 中继空值标识
+绑定 Midnight 限定范围空值标识、模式、用途、接收方、Monad 链 ID 和注册表地址；原始
+Midnight 空值标识不得直接复制到 Monad 交易。</p>
+</section>
+<section aria-labelledby="3-依赖顺序">
+<h2 id="3-依赖顺序">3 依赖顺序</h2>
+
+<pre><code class="language-text">M0 仓库基线
+  -&gt; M1 协议冻结
+  -&gt; M2 Midnight V2 合约
+  -&gt; M3 Midnight 客户端与状态
+  -&gt; M4 网关与持久化 outbox
+  -&gt; M5 本地客服纵向切片
+  -&gt; M6 公开测试网客服部署
+  -&gt; M7 评价上下文
+  -&gt; M8 监管上下文
+  -&gt; M9 账户优先产品界面
+  -&gt; M10 发布候选版本
+</code></pre>
+<p>客服路径必须先在本地和公开测试网络完整完成，然后才能扩展评价与监管。这能够先证明两条
+链都承担了不可替代的职责，再横向增加场景。</p>
+</section>
+<section aria-labelledby="4-m0-仓库基线">
+<h2 id="4-m0-仓库基线">4 M0 — 仓库基线</h2>
+
+<p>状态：已在基线提交 <code>b25b005</code> 完成。现有 Solidity 注册表绑定接收方、用途、模式、过期
+时间和验证者；五项 Hardhat 测试覆盖正常中继登记、接收方替换、限定范围重放、未授权
+验证者和撤销；架构文档使用 Markdown 权威源文件和自动生成 HTML；<code>npm run check</code> 会
+检查文档新鲜度、类型、合约和测试。M0 不代表已经验证 Midnight 证明、实现跨链网关或
+完成 Monad Testnet 部署。</p>
+</section>
+<section aria-labelledby="5-m1-协议与工作区冻结">
+<h2 id="5-m1-协议与工作区冻结">5 M1 — 协议与工作区冻结</h2>
+
+<p>状态：<code>NOT_STARTED</code>，是下一个实施里程碑。必须建立唯一的 <code>packages/protocol</code>，其中
+包含模式常量、规范编码、EIP-712 类型、Alice–Bob–Clara 固定数据、哈希向量和协议测试，
+并把仓库改为 npm workspace。其他包不得重复手写协议字符串。</p>
+<p>验收要求：三种模式和三种用途在 Windows 与 Ubuntu 上产生完全相同的固定哈希；EIP-712
+字段及顺序与 Solidity 类型哈希完全一致；长度分隔编码消除拼接歧义；各承诺和空值标识域
+两两不同；现有合约测试导入协议常量；干净执行 <code>npm ci</code> 后 <code>npm run check</code> 通过。若测试
+用被测函数本身计算期望值，或者编码能在不升级版本的情况下变化，M1 失败。</p>
+</section>
+<section aria-labelledby="6-m2-midnight-v2-合约与证明">
+<h2 id="6-m2-midnight-v2-合约与证明">6 M2 — Midnight V2 合约与证明</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M1。必须把最小 Midnight 合约迁入
+<code>packages/midnight-contract</code>，只导出 <code>registerCredentialIssuer</code>、<code>publishReview</code>、
+<code>openSupportCase</code>、<code>recordSupportDecisionV2</code> 和 <code>authorizeRegulatoryBridgeV2</code> 五个电路，
+并记录 Compact 编译器与 devtool 版本。</p>
+<p>公开状态只允许签发者 ID 与公钥、上下文限定空值标识、版本化动作承诺、桥接承诺和计数器。
+订单号、凭证号、持有人秘密、精确购买日期、评价文本、决定理由和监管证据必须保持私有。
+验收必须证明：签发字段不可篡改；30 天内的 H1 客服资格有效且只能使用一次；V2 客服决定
+不接收 Bob 凭证或秘密；重复决定失败；监管桥接绑定 Clara、案件、用途、证据集合、策略
+版本和期限；替换任何绑定字段都会失败；同一凭证的评价与客服空值标识不同；账本状态扫描
+不存在私有固定数据。</p>
+</section>
+<section aria-labelledby="7-m3-midnight-客户端-适配器与可恢复状态">
+<h2 id="7-m3-midnight-客户端-适配器与可恢复状态">7 M3 — Midnight 客户端、适配器与可恢复状态</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M2。必须在 <code>packages/midnight-client</code> 提供 provider、交易、
+私有状态和收据接口。固定状态机为 <code>DRAFT -&gt; POLICY_APPROVED -&gt; PROVING -&gt; MIDNIGHT_SUBMITTED -&gt; MIDNIGHT_CONFIRMED</code>。重试只能执行持久化状态之后的下一步，并使用
+同一个幂等键，不能改变公开承诺。</p>
+<p>验收必须证明：生成运行时测试与 Midnight Local Dev 共用领域代码；每个动作都有明确的
+私有输入与公开收据类型；日志、错误、任务和收据不含私有固定数据；提交后重启只恢复观察，
+不会创建第二笔交易；非法状态转换失败；账户之间无法读取对方私有状态。若托管的 Permio
+进程接收 Bob 的持有人秘密，M3 失败。</p>
+</section>
+<section aria-labelledby="8-m4-网关-策略与持久化-monad-outbox">
+<h2 id="8-m4-网关-策略与持久化-monad-outbox">8 M4 — 网关、策略与持久化 Monad outbox</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M3。网关必须只读取已确认的 Midnight 公开输出，执行版本化
+策略，使用验证者密钥签署 EIP-712，再由不同的中继器密钥提交。固定生命周期为
+<code>MIDNIGHT_CONFIRMED -&gt; ATTESTATION_PREPARED -&gt; ATTESTATION_SIGNED -&gt; MONAD_SUBMITTED -&gt; MONAD_FINALIZED -&gt; CONSUMED | REVOKED</code>。</p>
+<p>验收必须证明：错误网络、合约、动作或承诺被拒绝；未批准的模式、用途、接收方组合被拒绝；
+验证者与中继器密钥不同；接收方、用途、链 ID 或注册表改变时中继空值标识也改变；两个
+worker 竞争一个 outbox 项时最多产生一条有效 Monad 收据；在任意状态重启都收敛到同一个
+证明 ID；outbox 和日志不含 witness。只使用内存队列或相信客户端自报 Midnight 结果时，
+M4 失败。</p>
+</section>
+<section aria-labelledby="9-m5-本地双链客服纵向切片">
+<h2 id="9-m5-本地双链客服纵向切片">9 M5 — 本地双链客服纵向切片</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M4。必须使用真实 Midnight Local Dev 和本地 Hardhat 节点
+完成 Alice 登记签发者、Alice 为 Bob 签署 H1 凭证、Bob 为 <code>CASE-BOB-001</code> 证明换货资格、
+网关观察 Midnight 承诺、签署 900 秒收据、中立中继器提交 Monad、Alice 验证并记录决定
+的完整路径。Bob 不得拥有或使用 Monad 地址。</p>
+<p>一个命令必须完成正常路径；独立负向测试必须证明无效凭证、超期购买、重复客服请求、替换
+接收方、替换用途、未授权网关、重复范围和过期收据分别在指定边界失败。两次链上提交之后
+重启网关仍只能得到一条 Monad 记录。如果任一链被模拟，或者 Bob 的秘密进入网关进程，
+M5 失败。</p>
+</section>
+<section aria-labelledby="10-m6-midnight-preprod-与-monad-testnet-客服部署">
+<h2 id="10-m6-midnight-preprod-与-monad-testnet-客服部署">10 M6 — Midnight Preprod 与 Monad Testnet 客服部署</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M5。必须通过脚本把同一客服切片部署到 Midnight Preprod 和
+链 ID <code>10143</code> 的 Monad Testnet，并在 <code>deployments/</code> 保存不含秘密的清单、ABI、源码提交、
+编译器版本、产物哈希、部署交易和公开查询链接。</p>
+<p>验收必须证明：部署前源码干净并打标签；部署产物对应记录的提交；一条脱敏客服交易在
+Midnight 确认；一条严格绑定 Alice 接收方和客服用途的收据在 Monad 达到 <code>Finalized</code>；
+公开 smoke 命令能够重新验证两条链引用；界面明确标记这是网关证明而不是无信任桥。
+部署到任一主网、泄露测试账户凭据或仅在交易被包含时就宣布完成，均判定 M6 失败。</p>
+</section>
+<section aria-labelledby="11-m7-评价上下文">
+<h2 id="11-m7-评价上下文">11 M7 — 评价上下文</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M6。必须通过同一 Midnight 合约、网关、Monad 注册表和生命
+周期抽象添加每次购买一次评价的流程。Bob 只能创作评分和自由文本。公开结果只包含评分、
+文本、验证状态、商家、产品和允许的时间元数据。</p>
+<p>验收必须证明：重复评价失败；评价和客服公开记录没有稳定的 Bob 派生字段；Alice 不能从
+客服收据识别 Bob 的公开评价；界面明确说明证明只建立资格与唯一性，不证明意见真实。
+引入公开 Bob 资料、复用客服空值标识或增加未经批准的评价字段，均判定 M7 失败。</p>
+</section>
+<section aria-labelledby="12-m8-clara-监管桥接与证据包">
+<h2 id="12-m8-clara-监管桥接与证据包">12 M8 — Clara 监管桥接与证据包</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M7。Bob 必须明确授权一条限定用途、限定接收方的桥接，让
+Clara 验证选定的评价、客服案件、Alice 决定和时间顺序，同时无法看到无关活动。证据
+manifest 固定绑定 Clara、监管案件、用途、策略版本、三个承诺、证据集合、桥接、创建时间
+和期限。明文证据使用 Clara 案件密钥加密，并与 ZK 证明和 Monad 收据分开传输。</p>
+<p>验收必须证明：Bob 授权前看到接收方、案件、用途、精确记录、新增关联和期限；Clara 能
+验证桥接、收据、manifest、密文完整性与时间顺序；替换接收方、案件、用途或证据集合失败；
+Clara 无法枚举 Bob 的其他活动；Alice 不获得新的评价关联；过期、撤销或篡改证据失败。
+隐式桥接、全局 Bob 标识或公开证据包均判定 M8 失败。</p>
+</section>
+<section aria-labelledby="13-m9-账户优先产品界面">
+<h2 id="13-m9-账户优先产品界面">13 M9 — 账户优先产品界面</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M8。必须把三个上下文整合进真实账户界面，不得恢复角色卡片、
+视角选择器、场景运行器或暴露管理员凭据。必须提供披露预览、双链生命周期收据，以及
+Alice、Bob、Clara 和一个未授权普通账户四个隔离浏览器会话的测试。</p>
+<p>验收必须证明：三人分别登录；Bob 在每次证明前确认披露；Alice 只能看到被授权的商家和
+客服视图；Clara 只能看到分配案件和 Bob 授权证据；界面区分证明生成、Midnight 确认、
+网关签名、Monad 提交与最终确认；私有输入不出现在 DOM、URL、公共浏览器存储、API 错误、
+日志或分析数据中；刷新与进程重启不产生重复提交。</p>
+</section>
+<section aria-labelledby="14-m10-黑客松发布候选版本">
+<h2 id="14-m10-黑客松发布候选版本">14 M10 — 黑客松发布候选版本</h2>
+
+<p>状态：<code>NOT_STARTED</code>，依赖 M9。必须生成带标签的候选版本、演示手册、安全与信任文档、
+部署及验收索引、许可证和第三方声明，并在 Ubuntu 与受支持的 Windows 工作流中从干净
+安装完成验证。</p>
+<p>最终演示顺序固定为：Alice 登记签发者；Bob 接收私有凭证；Bob 证明客服资格并由中立
+中继器提交 Monad；Alice 在不知道 Bob 秘密的情况下验证并记录决定；Bob 发布一条不可
+关联的已验证评价；Bob 明确授权 Clara；Clara 只验证选定证据；最后展示接收方替换和
+重放失败。</p>
+<p>验收必须证明：干净检出后 <code>npm ci</code> 与 <code>npm run check</code> 通过；全部里程碑验收记录可追溯；
+公开网络 smoke 测试通过；仓库、构建产物、日志、证据和浏览器输出通过秘密与私有固定数据
+扫描；演示不需要手工修改数据库或隐藏设置；README 区分 ZK 证明事实、网关证明事实、
+用户公开内容和未证明观点；回滚与验证者撤销流程已测试。</p>
+</section>
+<section aria-labelledby="15-跨里程碑规则">
+<h2 id="15-跨里程碑规则">15 跨里程碑规则</h2>
+
+<p>M1 之后，任何模式、用途、编码、域分离符、EIP-712 字段、Compact 公开输出或验收固定数据
+的变化，都必须新增 <code>docs/decisions/</code> 协议决策记录、升级版本、说明迁移影响并更新向量与
+测试。禁止只为让失败测试通过而修改期望值。</p>
+<p>所有验收命令必须能从记录的提交复现。截图只能补充，不能替代断言、收据或 manifest。
+公开链标识可以作为证据，秘密不能作为证据。只有外部服务不可用、平台缺陷已复现或确实
+缺少所有者决策时，里程碑才能标记为 <code>BLOCKED</code>；测试失败、代码未完成或设计不确定都属于
+<code>IN_PROGRESS</code>。</p>
+<p>里程碑结果是精确的已提交产物和通过的门槛，而不是完成百分比。缺少任何负向测试、隐私
+扫描、重启测试、部署清单或验收记录时，该里程碑仍是 <code>IN_PROGRESS</code>。</p>
+</section>
+      </article>
+      <footer>
+        Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
+        Source SHA-256: <code>993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6</code>.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

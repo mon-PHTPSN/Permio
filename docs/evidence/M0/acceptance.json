@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M0",
+  "status": "COMPLETE",
+  "acceptedSourceCommit": "b25b005c9ea0126ba5cdc76f78225a9b62129960",
+  "acceptedAt": "2026-10-09",
+  "environment": {
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "hardhat": "3.14.0"
+  },
+  "commands": [
+    {
+      "command": "npm ci",
+      "result": "passed",
+      "summary": "160 packages audited; zero vulnerabilities reported"
+    },
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Generated documentation current; typecheck and contract build passed; five registry tests passed"
+    }
+  ],
+  "acceptedBehaviors": [
+    "valid recipient-bound attestation registration through a relayer",
+    "recipient substitution rejection",
+    "scoped entitlement replay rejection",
+    "unauthorized verifier rejection",
+    "verifier revocation"
+  ],
+  "declarations": {
+    "midnightProofVerified": false,
+    "gatewayImplemented": false,
+    "monadTestnetDeployed": false,
+    "privateDataIncluded": false
+  },
+  "notes": "The formal acceptance record was added with the deterministic milestone specification and records the already verified M0 source baseline."
+}
