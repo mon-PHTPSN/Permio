@@ -22,6 +22,8 @@ Implementation is governed by the
 also available as a generated
 [`HTML milestone edition`](docs/deterministic-milestones.html). Each milestone
 has fixed artifacts, privacy invariants, negative tests, and a binary exit gate.
+`M1 — Protocol and workspace freeze` is complete; `M2 — Midnight V2 contract
+and proofs` is the next implementation milestone.
 
 ## Current scope
 
@@ -136,6 +138,7 @@ Permio 正在为 Monad 应用构建绑定接收方的隐私保护证明。当前
 实施过程由[`确定性里程碑规范`](docs/DETERMINISTIC_MILESTONES.md)约束，并提供自动生成的
 [`HTML 里程碑版本`](docs/deterministic-milestones.html)。每个里程碑都规定了固定产物、
 隐私不变量、负向测试和二元退出门槛。
+`M1——协议与工作区冻结` 已完成；下一个实施里程碑是 `M2——Midnight V2 合约与证明`。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

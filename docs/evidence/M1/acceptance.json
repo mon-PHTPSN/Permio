@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M1",
+  "status": "COMPLETE",
+  "implementationCommit": "d5982c9d1994adc63ad6e2c644670cecc59914d5",
+  "acceptedAt": "2026-10-09",
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0",
+    "viem": "2.55.19"
+  },
+  "commands": [
+    {
+      "command": "npm ci",
+      "result": "passed",
+      "summary": "160 packages installed; 162 packages audited; zero vulnerabilities reported"
+    },
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Documentation freshness, TypeScript, Hardhat build, six protocol tests, and six contract integration tests passed"
+    }
+  ],
+  "artifacts": [
+    "packages/protocol/package.json",
+    "packages/protocol/src/schema.ts",
+    "packages/protocol/src/canonical-encoding.ts",
+    "packages/protocol/src/eip712.ts",
+    "packages/protocol/src/index.ts",
+    "packages/protocol/fixtures/alice-bob-clara.v1.json",
+    "packages/protocol/fixtures/hash-vectors.v1.json",
+    "packages/protocol/test/protocol.test.ts"
+  ],
+  "artifactSha256": {
+    "packages/protocol/fixtures/hash-vectors.v1.json": "1e95a805709bcfa43f4d1365a5911b21ecbe19ea1f5ad1076ea837e063548be8",
+    "packages/protocol/fixtures/alice-bob-clara.v1.json": "3ca620da494d7f270ea8df2e19fc998ca059df7d09608a726f12bebbe599f4a8"
+  },
+  "exitGates": {
+    "schemaAndPurposeHashesMatchCommittedVectors": true,
+    "eip712FieldsAndTypeHashMatchSolidity": true,
+    "lengthDelimitedEncodingDistinguishesAmbiguousInputs": true,
+    "commitmentDomainsArePairwiseDistinct": true,
+    "registryTestsImportProtocolConstants": true,
+    "cleanInstallAndFullCheckPass": true
+  },
+  "declarations": {
+    "productionSecretsIncluded": false,
+    "midnightExampleMnemonicReused": false,
+    "protocolConstantsDuplicatedAcrossTypeScriptPackages": false
+  },
+  "nextMilestone": "M2"
+}

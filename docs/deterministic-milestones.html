@@ -2,15 +2,15 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-  Source SHA-256: 993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6
+  Source SHA-256: 05ab2cac80a93b60b16b60211b282565ad5525d1b74c5d40ece442e3ea1a632d
   Regenerate with: npm run docs:build
 -->
-<html lang="en">
+<html lang="en" data-language="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-  <meta name="source-sha256" content="993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6">
+  <meta name="source-sha256" content="05ab2cac80a93b60b16b60211b282565ad5525d1b74c5d40ece442e3ea1a632d">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -23,6 +23,7 @@
     "about": ["Midnight","Monad","software milestones","acceptance tests"]
   }
   </script>
+  <script>document.documentElement.classList.add("js");</script>
   <style>
     :root {
       color-scheme: light dark;
@@ -55,6 +56,19 @@
     }
     nav strong { display: block; margin-bottom: .25rem; font-size: 1.1rem; }
     nav small { color: var(--muted); }
+    .language-switcher {
+      display: none; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 1rem 0 .35rem;
+      padding: .3rem; border: 1px solid var(--border); border-radius: .65rem;
+      background: var(--surface-2);
+    }
+    .js .language-switcher { display: grid; }
+    .language-switcher button {
+      border: 0; border-radius: .4rem; padding: .5rem .6rem; background: transparent;
+      color: var(--muted); cursor: pointer; font: inherit; font-size: .88rem;
+    }
+    .language-switcher button[aria-pressed="true"] {
+      background: var(--surface); color: var(--text); box-shadow: var(--shadow); font-weight: 700;
+    }
     nav ul { list-style: none; margin: 1.4rem 0 0; padding: 0; }
     nav li { margin: .15rem 0; }
     nav a {
@@ -81,6 +95,10 @@
       margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
       border-left: 4px solid var(--midnight); background: var(--surface-2);
     }
+    .translation-notice {
+      margin: 2rem 0 1rem; padding: .85rem 1rem; border: 1px solid var(--border);
+      border-left: 4px solid var(--midnight); border-radius: .45rem; background: var(--surface-2);
+    }
     .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
     table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
     th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
@@ -90,6 +108,8 @@
       width: min(72rem, calc(100% - 3rem)); margin: 0 auto 3rem; padding-top: 1.2rem;
       color: var(--muted); border-top: 1px solid var(--border); font-size: .88rem;
     }
+    html[data-language="en"] [data-language-panel="zh-CN"],
+    html[data-language="zh-CN"] [data-language-panel="en"] { display: none; }
     @media (max-width: 880px) {
       .shell { display: block; }
       nav { position: static; width: auto; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
@@ -113,10 +133,16 @@
 </head>
 <body>
   <div class="shell">
-    <nav aria-label="Architecture sections">
-      <strong>Permio architecture</strong>
-      <small>Generated from canonical Markdown</small>
-      <ul>
+    <nav aria-label="Document navigation">
+      <strong>Permio</strong>
+      <small data-language-panel="en">Generated from canonical Markdown</small>
+      <small data-language-panel="zh-CN" lang="zh-CN">由规范 Markdown 自动生成</small>
+      <div class="language-switcher" role="group" aria-label="Document language">
+        <button type="button" data-language-choice="en" aria-pressed="true">English</button>
+        <button type="button" data-language-choice="zh-CN" aria-pressed="false">中文</button>
+      </div>
+      <div data-language-panel="en" lang="en">
+        <ul aria-label="English sections">
           <li><a href="#1-purpose-and-completion-rule">1 Purpose and completion rule</a></li>
           <li><a href="#2-fixed-protocol-decisions">2 Fixed protocol decisions</a></li>
           <li><a href="#3-milestone-dependency-chain">3 Milestone dependency chain</a></li>
@@ -132,7 +158,10 @@
           <li><a href="#13-m9-account-first-product-ui">13 M9 — Account-first product UI</a></li>
           <li><a href="#14-m10-hackathon-release-candidate">14 M10 — Hackathon release candidate</a></li>
           <li><a href="#15-cross-milestone-rules">15 Cross-milestone rules</a></li>
-          <li><a href="#permio-确定性里程碑">Permio 确定性里程碑</a></li>
+        </ul>
+      </div>
+      <div data-language-panel="zh-CN" lang="zh-CN">
+        <ul aria-label="中文章节">
           <li><a href="#1-目标与完成规则">1 目标与完成规则</a></li>
           <li><a href="#2-固定协议决策">2 固定协议决策</a></li>
           <li><a href="#3-依赖顺序">3 依赖顺序</a></li>
@@ -148,15 +177,17 @@
           <li><a href="#13-m9-账户优先产品界面">13 M9 — 账户优先产品界面</a></li>
           <li><a href="#14-m10-黑客松发布候选版本">14 M10 — 黑客松发布候选版本</a></li>
           <li><a href="#15-跨里程碑规则">15 跨里程碑规则</a></li>
-      </ul>
+        </ul>
+      </div>
     </nav>
     <main>
-      <header>
-        <div class="eyebrow">Midnight × Monad</div>
-        <h1>Permio Deterministic Milestones</h1>
-        <p>A bilingual execution contract that fixes milestone order, artifacts, privacy invariants, tests, evidence, and binary completion gates for the Permio build.</p>
-      </header>
-      <article>
+      <div data-language-panel="en" data-document-title="Permio Deterministic Milestones" lang="en">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio Deterministic Milestones</h1>
+          <p>A bilingual execution contract that fixes milestone order, artifacts, privacy invariants, tests, evidence, and binary completion gates for the Permio build.</p>
+        </header>
+        <article>
 <p>Status: implementation contract<br>Date: 9 October 2026<br>Scope: Alice, Bob, and Clara composite flow across Midnight and Monad</p>
 <section aria-labelledby="1-purpose-and-completion-rule">
 <h2 id="1-purpose-and-completion-rule">1 Purpose and completion rule</h2>
@@ -308,7 +339,9 @@ exists, or that the registry is deployed to Monad Testnet.</p>
 <section aria-labelledby="5-m1-protocol-and-workspace-freeze">
 <h2 id="5-m1-protocol-and-workspace-freeze">5 M1 — Protocol and workspace freeze</h2>
 
-<p>Status: <code>NOT_STARTED</code>. This is the next implementation milestone.</p>
+<p>Status: <code>COMPLETE</code> at implementation commit
+<code>d5982c9d1994adc63ad6e2c644670cecc59914d5</code>. The committed acceptance record is
+<code>docs/evidence/M1/acceptance.json</code>.</p>
 <h3 id="objective">Objective</h3>
 
 <p>Create one versioned protocol package that every Compact circuit, TypeScript
@@ -352,7 +385,8 @@ encoding change can occur without incrementing a version.</p>
 <section aria-labelledby="6-m2-midnight-v2-contract-and-proofs">
 <h2 id="6-m2-midnight-v2-contract-and-proofs">6 M2 — Midnight V2 contract and proofs</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on <code>M1</code>.</p>
+<p>Status: <code>NOT_STARTED</code>; depends on <code>M1</code>. This is the next implementation
+milestone.</p>
 <h3 id="objective-2">Objective</h3>
 
 <p>Port the minimum Midnight contract into Permio and implement the corrected
@@ -813,9 +847,20 @@ uncertain design is <code>IN_PROGRESS</code>, not <code>BLOCKED</code>.</p>
 not a progress percentage. If one required negative test, privacy scan,
 restart test, manifest, or acceptance record is missing, the milestone remains
 <code>IN_PROGRESS</code>.</p>
-<hr>
 </section>
-<h1 id="permio-确定性里程碑">Permio 确定性里程碑</h1>
+        </article>
+        <footer>
+          Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
+          Source SHA-256: <code>05ab2cac80a93b60b16b60211b282565ad5525d1b74c5d40ece442e3ea1a632d</code>.
+        </footer>
+      </div>
+      <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio 确定性里程碑</h1>
+          <p>一份完整的双语执行契约，固定 Permio 构建的里程碑顺序、产物、隐私不变量、测试、证据与二元完成门槛。</p>
+        </header>
+        <article>
 
 <p>状态：实施契约<br>日期：2026 年 10 月 9 日<br>范围：Alice、Bob、Clara 在 Midnight 与 Monad 上的复合流程</p>
 <section aria-labelledby="1-目标与完成规则">
@@ -877,7 +922,9 @@ Midnight 空值标识不得直接复制到 Monad 交易。</p>
 <section aria-labelledby="5-m1-协议与工作区冻结">
 <h2 id="5-m1-协议与工作区冻结">5 M1 — 协议与工作区冻结</h2>
 
-<p>状态：<code>NOT_STARTED</code>，是下一个实施里程碑。必须建立唯一的 <code>packages/protocol</code>，其中
+<p>状态：<code>COMPLETE</code>，实施提交为
+<code>d5982c9d1994adc63ad6e2c644670cecc59914d5</code>，验收记录为
+<code>docs/evidence/M1/acceptance.json</code>。已经建立唯一的 <code>packages/protocol</code>，其中
 包含模式常量、规范编码、EIP-712 类型、Alice–Bob–Clara 固定数据、哈希向量和协议测试，
 并把仓库改为 npm workspace。其他包不得重复手写协议字符串。</p>
 <p>验收要求：三种模式和三种用途在 Windows 与 Ubuntu 上产生完全相同的固定哈希；EIP-712
@@ -888,7 +935,7 @@ Midnight 空值标识不得直接复制到 Monad 交易。</p>
 <section aria-labelledby="6-m2-midnight-v2-合约与证明">
 <h2 id="6-m2-midnight-v2-合约与证明">6 M2 — Midnight V2 合约与证明</h2>
 
-<p>状态：<code>NOT_STARTED</code>，依赖 M1。必须把最小 Midnight 合约迁入
+<p>状态：<code>NOT_STARTED</code>，依赖 M1，是下一个实施里程碑。必须把最小 Midnight 合约迁入
 <code>packages/midnight-contract</code>，只导出 <code>registerCredentialIssuer</code>、<code>publishReview</code>、
 <code>openSupportCase</code>、<code>recordSupportDecisionV2</code> 和 <code>authorizeRegulatoryBridgeV2</code> 五个电路，
 并记录 Compact 编译器与 devtool 版本。</p>
@@ -1006,12 +1053,80 @@ Alice、Bob、Clara 和一个未授权普通账户四个隔离浏览器会话的
 <p>里程碑结果是精确的已提交产物和通过的门槛，而不是完成百分比。缺少任何负向测试、隐私
 扫描、重启测试、部署清单或验收记录时，该里程碑仍是 <code>IN_PROGRESS</code>。</p>
 </section>
-      </article>
-      <footer>
-        Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-        Source SHA-256: <code>993c9a7340522db8f53ddebe59065196cd0b3189a32ff59754c9b2454e5546a6</code>.
-      </footer>
+        </article>
+        <footer>
+          由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
+          源文件 SHA-256：<code>05ab2cac80a93b60b16b60211b282565ad5525d1b74c5d40ece442e3ea1a632d</code>。
+        </footer>
+      </div>
     </main>
   </div>
+  <script>
+    (() => {
+      const storageKey = "permio-doc-language";
+      const supportedLanguages = new Set(["en", "zh-CN"]);
+      const buttons = [...document.querySelectorAll("[data-language-choice]")];
+
+      function languageFromHash() {
+        if (!window.location.hash) return null;
+        try {
+          const target = document.getElementById(
+            decodeURIComponent(window.location.hash.slice(1)),
+          );
+          return target?.closest("[data-language-panel]")?.dataset.languagePanel ?? null;
+        } catch {
+          return null;
+        }
+      }
+
+      function storedLanguage() {
+        try {
+          const stored = window.localStorage.getItem(storageKey);
+          return supportedLanguages.has(stored) ? stored : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function selectLanguage(language, persist = false) {
+        if (!supportedLanguages.has(language)) return;
+        document.documentElement.lang = language;
+        document.documentElement.dataset.language = language;
+        for (const button of buttons) {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.languageChoice === language),
+          );
+        }
+        const panel = document.querySelector(
+          '[data-language-panel="' + language + '"][data-document-title]',
+        );
+        if (panel) document.title = panel.dataset.documentTitle;
+        if (persist) {
+          try {
+            window.localStorage.setItem(storageKey, language);
+          } catch {
+            // The page still works when browser privacy settings disable storage.
+          }
+        }
+      }
+
+      const initialLanguage =
+        languageFromHash() ??
+        storedLanguage() ??
+        (window.navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
+      selectLanguage(initialLanguage);
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          selectLanguage(button.dataset.languageChoice, true);
+        });
+      }
+      window.addEventListener("hashchange", () => {
+        const language = languageFromHash();
+        if (language) selectLanguage(language);
+      });
+    })();
+  </script>
 </body>
 </html>

@@ -105,7 +105,9 @@ exists, or that the registry is deployed to Monad Testnet.
 
 ## 5 M1 — Protocol and workspace freeze
 
-Status: `NOT_STARTED`. This is the next implementation milestone.
+Status: `COMPLETE` at implementation commit
+`d5982c9d1994adc63ad6e2c644670cecc59914d5`. The committed acceptance record is
+`docs/evidence/M1/acceptance.json`.
 
 ### Objective
 
@@ -149,7 +151,8 @@ encoding change can occur without incrementing a version.
 
 ## 6 M2 — Midnight V2 contract and proofs
 
-Status: `NOT_STARTED`; depends on `M1`.
+Status: `NOT_STARTED`; depends on `M1`. This is the next implementation
+milestone.
 
 ### Objective
 
@@ -681,7 +684,9 @@ M0 仓库基线
 
 ## 5 M1 — 协议与工作区冻结
 
-状态：`NOT_STARTED`，是下一个实施里程碑。必须建立唯一的 `packages/protocol`，其中
+状态：`COMPLETE`，实施提交为
+`d5982c9d1994adc63ad6e2c644670cecc59914d5`，验收记录为
+`docs/evidence/M1/acceptance.json`。已经建立唯一的 `packages/protocol`，其中
 包含模式常量、规范编码、EIP-712 类型、Alice–Bob–Clara 固定数据、哈希向量和协议测试，
 并把仓库改为 npm workspace。其他包不得重复手写协议字符串。
 
@@ -692,7 +697,7 @@ M0 仓库基线
 
 ## 6 M2 — Midnight V2 合约与证明
 
-状态：`NOT_STARTED`，依赖 M1。必须把最小 Midnight 合约迁入
+状态：`NOT_STARTED`，依赖 M1，是下一个实施里程碑。必须把最小 Midnight 合约迁入
 `packages/midnight-contract`，只导出 `registerCredentialIssuer`、`publishReview`、
 `openSupportCase`、`recordSupportDecisionV2` 和 `authorizeRegulatoryBridgeV2` 五个电路，
 并记录 Compact 编译器与 devtool 版本。
