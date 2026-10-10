@@ -1,18 +1,25 @@
 # Permio
 
-Permio is building recipient-bound, privacy-preserving attestations for
-applications on Monad. The current repository starts with the Monad trust
-consumption layer; a later Midnight adapter will supply narrowly scoped public
-results derived from private proofs.
+Permio is a programmable contextual-privacy architecture: versioned scenario
+templates and context-bound capabilities are authorized privately on Midnight,
+then consumed as narrow receipts by Monad or ordinary applications. The current
+checkout implements only the recipient-bound execution-registry slice and is
+therefore incomplete against the authoritative architecture.
 
 This is a clean implementation for Monad Metropolis Track 4: Trust, Identity &
 AI Infrastructure.
 
-The detailed two-chain design, including the Alice, Bob, and Clara scenario,
-information-flow boundaries, Compact circuits, Monad attestation schemas, and
-delivery sequence, is available as a
-[`semantic HTML reading edition`](docs/alice-bob-clara-architecture.html) and
-[`canonical Markdown source`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md).
+Start with the human-first
+[`from need to system design guide`](docs/permio-from-need-to-design.html), or
+read its [`canonical Markdown source`](docs/PERMIO_FROM_NEED_TO_DESIGN.md). It
+follows one continuous path from contextual-privacy needs through programmable
+scenario templates, context-bound permissions, cross-domain use cases, module
+boundaries, and implementation order.
+
+The detailed architecture for scenario governance, generated instances,
+privacy authorization, execution receipts, and encrypted evidence is available
+as a [`semantic HTML reading edition`](docs/programmable-context-architecture.html)
+and [`canonical Markdown source`](docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md).
 Edit only the Markdown source, then run `npm run docs:build` to regenerate the
 HTML. `npm run docs:check` and the complete `npm run check` command reject stale
 generated HTML.
@@ -22,8 +29,9 @@ Implementation is governed by the
 also available as a generated
 [`HTML milestone edition`](docs/deterministic-milestones.html). Each milestone
 has fixed artifacts, privacy invariants, negative tests, and a binary exit gate.
-`M1 — Protocol and workspace freeze` is complete; `M2 — Midnight V2 contract
-and proofs` is the next implementation milestone.
+`M0 — Documentation and naming baseline` and the historical `M1 — Existing
+receipt-protocol baseline` are complete; `M2 — Scenario-template domain
+package` is the next implementation milestone.
 
 ## Current scope
 
@@ -124,21 +132,27 @@ Apache-2.0. See `LICENSE`.
 
 # 中文说明
 
-Permio 正在为 Monad 应用构建绑定接收方的隐私保护证明。当前仓库首先实现 Monad
-信任消费层；之后会加入 Midnight 适配器，提供由私有证明派生、范围严格受限的公开结果。
+Permio 是一套可编程情境隐私架构：版本化情境模板和上下文能力在 Midnight 上完成私有授权，
+再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 只实现了接收方绑定执行注册表
+切片，因此尚未完整符合权威架构。
 这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
 
-完整的双链方案，包括 Alice、Bob、Clara 场景、信息流边界、Compact 电路、Monad
-证明模式和交付顺序，提供
-[`语义化 HTML 阅读版`](docs/alice-bob-clara-architecture.html)和
-[`规范 Markdown 源文件`](docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md)。
+建议先阅读以人的理解路径为主的
+[`从需求到系统设计指南`](docs/permio-from-need-to-design.html)，或查看其
+[`规范 Markdown 源文件`](docs/PERMIO_FROM_NEED_TO_DESIGN.md)。它沿着一条连续主线，
+从情境隐私需求出发，依次解释可编程情境模板、上下文权限、跨领域用例、模块边界和实施顺序。
+
+情境治理、生成实例、隐私授权、执行收据和加密证据的详细架构提供
+[`语义化 HTML 阅读版`](docs/programmable-context-architecture.html)和
+[`规范 Markdown 源文件`](docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md)。
 只编辑 Markdown 源文件，然后运行 `npm run docs:build` 重新生成 HTML。
 `npm run docs:check` 和完整的 `npm run check` 命令会拒绝过期的 HTML 生成文件。
 
 实施过程由[`确定性里程碑规范`](docs/DETERMINISTIC_MILESTONES.md)约束，并提供自动生成的
 [`HTML 里程碑版本`](docs/deterministic-milestones.html)。每个里程碑都规定了固定产物、
 隐私不变量、负向测试和二元退出门槛。
-`M1——协议与工作区冻结` 已完成；下一个实施里程碑是 `M2——Midnight V2 合约与证明`。
+`M0——文档与命名基线` 和历史 `M1——现有收据协议基线` 已完成；下一个实施里程碑是
+`M2——情境模板领域包`。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

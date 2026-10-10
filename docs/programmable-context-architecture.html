@@ -1,0 +1,1198 @@
+<!doctype html>
+<!--
+  GENERATED FILE — DO NOT EDIT DIRECTLY.
+  Source: docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md
+  Source SHA-256: b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d
+  Regenerate with: npm run docs:build
+-->
+<html lang="en" data-language="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Permio architecture for programmable context privacy across Midnight and composable execution systems">
+  <meta name="source-sha256" content="b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d">
+  <title>Permio Programmable Context Architecture</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "name": "Permio Programmable Context Architecture",
+    "dateModified": "2026-10-10",
+    "version": "2.0",
+    "inLanguage": ["en", "zh-CN"],
+    "about": ["Midnight","Monad","contextual privacy","programmable authorization","zero-knowledge proofs","recipient-bound attestations"]
+  }
+  </script>
+  <script>document.documentElement.classList.add("js");</script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f4f6f8, #0d1117);
+      --surface: light-dark(#ffffff, #161b22);
+      --surface-2: light-dark(#edf3f7, #1f2630);
+      --text: light-dark(#17202a, #e6edf3);
+      --muted: light-dark(#52616f, #9ba8b4);
+      --border: light-dark(#d5dde4, #30363d);
+      --midnight: light-dark(#5b3fd3, #a792ff);
+      --monad: light-dark(#2867b2, #70b7ff);
+      --code: light-dark(#f2f5f7, #0d1117);
+      --shadow: light-dark(0 12px 30px rgba(31, 45, 61, .08), none);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.62; }
+    a { color: var(--monad); }
+    code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { font-size: .92em; }
+    pre {
+      margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--border);
+      border-radius: .65rem; background: var(--code); overflow-x: auto;
+    }
+    pre.mermaid { display: flex; justify-content: center; white-space: pre-wrap; background: var(--surface); }
+    pre.mermaid svg { max-width: 100%; height: auto; }
+    pre.mermaid.mermaid-error { display: block; color: var(--muted); text-align: left; }
+    .shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.6rem 1.25rem;
+      background: var(--surface); border-right: 1px solid var(--border);
+    }
+    nav strong { display: block; margin-bottom: .25rem; font-size: 1.1rem; }
+    nav small { color: var(--muted); }
+    .language-switcher {
+      display: none; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 1rem 0 .35rem;
+      padding: .3rem; border: 1px solid var(--border); border-radius: .65rem;
+      background: var(--surface-2);
+    }
+    .js .language-switcher { display: grid; }
+    .language-switcher button {
+      border: 0; border-radius: .4rem; padding: .5rem .6rem; background: transparent;
+      color: var(--muted); cursor: pointer; font: inherit; font-size: .88rem;
+    }
+    .language-switcher button[aria-pressed="true"] {
+      background: var(--surface); color: var(--text); box-shadow: var(--shadow); font-weight: 700;
+    }
+    nav ul { list-style: none; margin: 1.4rem 0 0; padding: 0; }
+    nav li { margin: .15rem 0; }
+    nav a {
+      display: block; padding: .42rem .55rem; border-radius: .4rem;
+      color: var(--muted); text-decoration: none;
+    }
+    nav a:hover, nav a:focus { color: var(--text); background: var(--surface-2); }
+    main { min-width: 0; }
+    header, article { width: min(72rem, calc(100% - 3rem)); margin-inline: auto; }
+    header { padding: 4rem 0 2rem; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      color: var(--midnight); font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; font-size: .78rem;
+    }
+    h1 { margin: .55rem 0 1rem; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1.04; letter-spacing: -.04em; }
+    header p { max-width: 58rem; color: var(--muted); font-size: 1.08rem; }
+    article { padding: 1rem 0 5rem; }
+    section { scroll-margin-top: 1rem; margin: 3.5rem 0; }
+    h2 { margin: 0 0 1rem; font-size: clamp(1.55rem, 3vw, 2.3rem); line-height: 1.16; letter-spacing: -.025em; }
+    h3 { margin: 1.8rem 0 .65rem; font-size: 1.18rem; }
+    article > h1 { margin-top: 4rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+    p { max-width: 82ch; }
+    blockquote {
+      margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
+      border-left: 4px solid var(--midnight); background: var(--surface-2);
+    }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
+    th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); }
+    hr { margin: 4rem 0; border: 0; border-top: 1px solid var(--border); }
+    footer {
+      width: min(72rem, calc(100% - 3rem)); margin: 0 auto 3rem; padding-top: 1.2rem;
+      color: var(--muted); border-top: 1px solid var(--border); font-size: .88rem;
+    }
+    html[data-language="en"] [data-language-panel="zh-CN"],
+    html[data-language="zh-CN"] [data-language-panel="en"] { display: none; }
+    @media (max-width: 880px) {
+      .shell { display: block; }
+      nav { position: static; width: auto; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+      nav ul { columns: 2; }
+      header { padding-top: 2.5rem; }
+    }
+    @media (max-width: 560px) {
+      nav ul { columns: 1; }
+      header, article, footer { width: min(100% - 1.5rem, 72rem); }
+      th, td { min-width: 9rem; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      nav { display: none; }
+      .shell { display: block; }
+      header, article, footer { width: 100%; }
+      section { break-inside: avoid-page; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav aria-label="Document navigation">
+      <strong>Permio</strong>
+      <small data-language-panel="en">Generated from canonical Markdown</small>
+      <small data-language-panel="zh-CN" lang="zh-CN">由规范 Markdown 自动生成</small>
+      <div class="language-switcher" role="group" aria-label="Document language">
+        <button type="button" data-language-choice="en" aria-pressed="true">English</button>
+        <button type="button" data-language-choice="zh-CN" aria-pressed="false">中文</button>
+      </div>
+      <div data-language-panel="en" lang="en">
+        <ul aria-label="English sections">
+          <li><a href="#1-decision">1 Decision</a></li>
+          <li><a href="#2-core-model">2 Core model</a></li>
+          <li><a href="#3-programmable-context-bound-accounts">3 Programmable, context-bound accounts</a></li>
+          <li><a href="#4-architecture-views">4 Architecture views</a></li>
+          <li><a href="#5-control-plane-and-scenario-library">5 Control plane and scenario library</a></li>
+          <li><a href="#6-privacy-authorization-and-execution-boundary">6 Privacy authorization and execution boundary</a></li>
+          <li><a href="#7-component-responsibilities">7 Component responsibilities</a></li>
+          <li><a href="#8-required-first-scenario-profiles">8 Required first scenario profiles</a></li>
+          <li><a href="#9-contract-authority-and-governance">9 Contract authority and governance</a></li>
+          <li><a href="#10-security-and-privacy-invariants">10 Security and privacy invariants</a></li>
+          <li><a href="#11-generated-examples-and-deterministic-testing">11 Generated examples and deterministic testing</a></li>
+          <li><a href="#12-research-basis">12 Research basis</a></li>
+        </ul>
+      </div>
+      <div data-language-panel="zh-CN" lang="zh-CN">
+        <ul aria-label="中文章节">
+          <li><a href="#zh-1-架构决策">1 架构决策</a></li>
+          <li><a href="#zh-2-核心模型">2 核心模型</a></li>
+          <li><a href="#zh-3-可编程-受上下文约束的账户">3 可编程、受上下文约束的账户</a></li>
+          <li><a href="#zh-4-架构视图">4 架构视图</a></li>
+          <li><a href="#zh-5-控制面与情境库">5 控制面与情境库</a></li>
+          <li><a href="#zh-6-隐私授权与执行边界">6 隐私授权与执行边界</a></li>
+          <li><a href="#zh-7-组件职责">7 组件职责</a></li>
+          <li><a href="#zh-8-首批必需情境-profile">8 首批必需情境 profile</a></li>
+          <li><a href="#zh-9-合约治理权限">9 合约治理权限</a></li>
+          <li><a href="#zh-10-安全与隐私不变量">10 安全与隐私不变量</a></li>
+          <li><a href="#zh-11-生成示例与确定性测试">11 生成示例与确定性测试</a></li>
+          <li><a href="#zh-12-研究依据">12 研究依据</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div data-language-panel="en" data-document-title="Permio Programmable Context Architecture" lang="en">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio Programmable Context Architecture</h1>
+          <p>A bilingual architecture for versioned scenario templates, context-bound accounts, Midnight privacy authorization, minimal receipts, and composable execution.</p>
+        </header>
+        <article>
+<p>Status: authoritative architecture and implementation contract<br>
+Date: 10 October 2026<br>
+Scope: versioned scenario templates, context-bound accounts, Midnight privacy authorization, and composable execution</p>
+<section aria-labelledby="1-decision">
+<h2 id="1-decision">1 Decision</h2>
+
+<p>Permio is not a fixed review, support, or regulatory application. It is
+infrastructure for defining a context, authorizing a narrowly scoped action,
+proving only the facts required by that action, and carrying a minimal decision
+receipt into an execution system.</p>
+<p>The architecture has four independent planes:</p>
+<ol>
+<li>A <strong>control plane</strong> authors, validates, approves, versions, and retires
+scenario templates and policies.</li>
+<li>A <strong>privacy authorization plane</strong> evaluates private evidence and
+context-bound capabilities on Midnight.</li>
+<li>A <strong>high-throughput execution plane</strong> consumes narrow receipts on Monad or
+in an ordinary application without reinterpreting the privacy decision.</li>
+<li>An <strong>encrypted evidence plane</strong> transports selected confidential records
+directly to an authorized recipient when a proof alone is insufficient.</li>
+</ol>
+<p>No architecture component, contract, test, or document may depend on literal
+participant names, product names, case identifiers, credential identifiers,
+dates, amounts, or other scenario-instance values. Concrete examples and test
+fixtures are generated from versioned templates and explicit seeds after a
+scenario instance is created.</p>
+</section>
+<section aria-labelledby="2-core-model">
+<h2 id="2-core-model">2 Core model</h2>
+
+<p>The reusable product unit is a <code>ScenarioTemplate</code>. <code>InformationFlow</code> is one
+runtime action inside a scenario instance.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Concept</th>
+<th>Responsibility</th>
+<th>Must not become</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ScenarioTemplate</code></td>
+<td>Versioned definition of participant slots, contexts, actions, state transitions, proof requirements, disclosures, and adapters</td>
+<td>A bundle of named test participants or instance data</td>
+</tr>
+<tr>
+<td><code>ContextDefinition</code></td>
+<td>Rules for one social or operational context, including permitted actors, purposes, records, claims, recipients, and transitions</td>
+<td>A free-form label with no enforceable semantics</td>
+</tr>
+<tr>
+<td><code>ScenarioInstance</code></td>
+<td>Runtime binding of one approved template version to actual principals, policy versions, and lifecycle state</td>
+<td>A global account role assignment</td>
+</tr>
+<tr>
+<td><code>ContextAccount</code></td>
+<td>Logical account valid only in one instance or context</td>
+<td>A reusable public identity across unrelated contexts</td>
+</tr>
+<tr>
+<td><code>CapabilityGrant</code></td>
+<td>Authorization for exact actions, resources, purposes, recipients, time, delegation, and disclosure policy</td>
+<td>A permanent buyer, merchant, regulator, employee, patient, or agent role</td>
+</tr>
+<tr>
+<td><code>ActionIntent</code></td>
+<td>Signed request to exercise one capability against current instance state</td>
+<td>An implicit permission inferred only from login status</td>
+</tr>
+<tr>
+<td><code>InformationFlow</code></td>
+<td>Canonical private record of one evaluated action or disclosure</td>
+<td>The scenario template or the whole product</td>
+</tr>
+<tr>
+<td><code>DecisionReceipt</code></td>
+<td>Minimal versioned output stating that one action was approved for one scope</td>
+<td>A copy of the source evidence or a universal subject identifier</td>
+</tr>
+</tbody></table></div>
+<p>The logical relationship is:</p>
+<pre><code class="language-text">ScenarioTemplate + ScenarioInstance + ContextAccount
+  + CapabilityGrant + ActionIntent + selected private evidence
+  -&gt; InformationFlow evaluation
+  -&gt; DecisionReceipt
+  -&gt; optional public execution and encrypted evidence delivery
+</code></pre>
+</section>
+<section aria-labelledby="3-programmable-context-bound-accounts">
+<h2 id="3-programmable-context-bound-accounts">3 Programmable, context-bound accounts</h2>
+
+<p>Registration establishes control of an account key. It does not assign a
+business role. Effective authority is derived from active capabilities inside
+the selected scenario instance.</p>
+<pre><code class="language-text">CapabilityGrant {
+  templateId, templateVersion,
+  instanceId, contextId,
+  principalRef, sessionPublicKey?,
+  actions[], resourceSelector,
+  purpose, recipient,
+  notBefore, expiresAt,
+  disclosurePolicyId,
+  delegation: { allowedActions, maxDepth },
+  nullifierDomain, revocationRef,
+  issuerRef, issuerProof
+}
+</code></pre>
+<p>Authorization fails closed if any dimension does not match. A correct action
+with the wrong context, purpose, recipient, resource, time window, disclosure
+policy, delegation depth, or instance is unauthorized.</p>
+<p>A session key is a short-lived signing key with a strict subset of a parent
+capability. Human users, services, contracts, and automated agents use the same
+model. An agent receives permission to perform listed actions, not blanket
+access to an account or scenario.</p>
+</section>
+<section aria-labelledby="4-architecture-views">
+<h2 id="4-architecture-views">4 Architecture views</h2>
+
+<p>These diagrams deliberately show one question at a time. Node labels describe
+responsibility; edge labels describe the only payload crossing that boundary.</p>
+<h3 id="4-1-system-topology-at-a-glance">4.1 System topology at a glance</h3>
+
+<pre class="mermaid">flowchart LR
+  Control[&quot;CONTROL PLANE&lt;br/&gt;Approve template and policy versions&quot;]
+  Privacy[&quot;PRIVACY AUTHORIZATION&lt;br/&gt;Midnight verifies capability and evidence&quot;]
+  Receipt[&quot;MINIMAL DECISION RECEIPT&lt;br/&gt;Action, purpose, recipient, expiry, nullifier&quot;]
+  Execute[&quot;EXECUTION PLANE&lt;br/&gt;Monad or application performs the named action&quot;]
+  Evidence[&quot;ENCRYPTED EVIDENCE&lt;br/&gt;Recipient-specific delivery when required&quot;]
+
+  Control --&gt;|&quot;approved hashes and rules&quot;| Privacy
+  Privacy --&gt;|&quot;public decision only&quot;| Receipt
+  Receipt --&gt;|&quot;versioned receipt&quot;| Execute
+  Privacy -.-&gt;|&quot;selected ciphertext; never public evidence&quot;| Evidence
+</pre>
+<p>The control plane never receives private witness data. The execution plane
+never receives enough information to broaden the permission. The encrypted
+evidence channel is not routed through either public ledger.</p>
+<h3 id="4-2-scenario-template-lifecycle">4.2 Scenario-template lifecycle</h3>
+
+<pre class="mermaid">flowchart LR
+  Draft[&quot;Draft&lt;br/&gt;human, organization, or agent&quot;]
+  Validate[&quot;Validate&lt;br/&gt;schema, proofs, conflicts, invariants&quot;]
+  Review[&quot;Review&lt;br/&gt;privacy, security, and domain&quot;]
+  Activate[&quot;Activate&lt;br/&gt;threshold governance&quot;]
+  Instantiate[&quot;Instantiate&lt;br/&gt;bind principals to slots&quot;]
+  Retire[&quot;Retire or revoke&lt;br/&gt;stop new actions&quot;]
+
+  Draft --&gt; Validate --&gt; Review --&gt; Activate --&gt; Instantiate --&gt; Retire
+</pre>
+<p>Automated tools may draft, validate, and simulate. They do not create policy
+legitimacy. A shared or cross-organization template requires accountable
+reviewers and threshold activation of an exact content hash and version.</p>
+<h3 id="4-3-one-runtime-action">4.3 One runtime action</h3>
+
+<pre class="mermaid">sequenceDiagram
+  autonumber
+  participant Principal as Principal or scoped agent
+  participant Client as Context-aware client
+  participant Midnight as Midnight authorization
+  participant Gateway as Receipt gateway
+  participant Executor as Monad or application
+  participant Vault as Authorized evidence vault
+
+  Principal-&gt;&gt;Client: Sign ActionIntent with scoped session key
+  Client-&gt;&gt;Midnight: Private evidence plus capability proof
+  Midnight-&gt;&gt;Midnight: Verify template, context, state, scope, expiry, and uniqueness
+  Midnight--&gt;&gt;Gateway: Finalized minimal DecisionReceipt
+  Gateway-&gt;&gt;Gateway: Verify source and sign typed transport envelope
+  Gateway--&gt;&gt;Executor: Recipient- and purpose-bound receipt
+  Executor-&gt;&gt;Executor: Recheck version, action, recipient, expiry, and replay scope
+  Executor--&gt;&gt;Principal: Public execution result
+  opt Selected confidential records are required
+    Client--&gt;&gt;Vault: Recipient-encrypted evidence plus manifest
+  end
+</pre>
+</section>
+<section aria-labelledby="5-control-plane-and-scenario-library">
+<h2 id="5-control-plane-and-scenario-library">5 Control plane and scenario library</h2>
+
+<h3 id="5-1-template-contents">5.1 Template contents</h3>
+
+<p>Every template version declares:</p>
+<ul>
+<li>stable template identifier, semantic version, namespace, and content hash;</li>
+<li>participant slots and which principals may fill or assign them;</li>
+<li>context definitions and permitted transitions between contexts;</li>
+<li>action schemas, state preconditions, and resulting state transitions;</li>
+<li>capability issuance, attenuation, delegation, expiry, and revocation rules;</li>
+<li>record, claim, recipient, purpose, and disclosure constraints;</li>
+<li>proof/circuit identifiers and expected public-output schemas;</li>
+<li>optional execution adapters and encrypted-evidence requirements;</li>
+<li>migration and retirement rules; and</li>
+<li>executable privacy invariants, negative cases, and acceptance tests.</li>
+</ul>
+<h3 id="5-2-who-may-design-and-activate-scenarios">5.2 Who may design and activate scenarios</h3>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Function</th>
+<th>Authorized principal</th>
+<th>Constraint</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Draft</td>
+<td>Human, organization, or agent with a template-author capability</td>
+<td>Draft remains private or namespaced</td>
+</tr>
+<tr>
+<td>Validate and simulate</td>
+<td>Deterministic compiler, verifier, and analysis agents</td>
+<td>Reports errors and risk; grants no trust</td>
+</tr>
+<tr>
+<td>Review</td>
+<td>Named privacy, security, and domain reviewers</td>
+<td>Attests to one template hash and version</td>
+</tr>
+<tr>
+<td>Activate</td>
+<td>Namespace multisig or threshold governance</td>
+<td>Sole author cannot self-activate a high-impact template</td>
+</tr>
+<tr>
+<td>Instantiate</td>
+<td>Principal or allocator with an instantiate capability</td>
+<td>Only active versions may be used</td>
+</tr>
+<tr>
+<td>Assign or delegate</td>
+<td>Authority declared by the template and current instance</td>
+<td>Cannot grant more authority than it holds</td>
+</tr>
+<tr>
+<td>Retire or revoke</td>
+<td>Declared governance or emergency authority</td>
+<td>Stops new actions without rewriting historical receipts</td>
+</tr>
+</tbody></table></div>
+<p>Template namespaces let an organization use local policies without implying
+ecosystem-wide trust. Cross-organization templates require governance roots
+recognized by every participating namespace.</p>
+</section>
+<section aria-labelledby="6-privacy-authorization-and-execution-boundary">
+<h2 id="6-privacy-authorization-and-execution-boundary">6 Privacy authorization and execution boundary</h2>
+
+<p>Midnight decides whether an action is permitted. Monad or an application
+executes the permitted public effect. The boundary is a versioned receipt, not
+a shared database record.</p>
+<pre><code class="language-text">DecisionReceipt {
+  receiptVersion,
+  templateId, templateVersion,
+  instanceCommitment, contextId,
+  actionSchemaId,
+  purposeHash, recipient,
+  validAfter, validBefore,
+  scopedNullifier,
+  outputCommitment,
+  sourceNetwork, sourceContract, sourceTransaction
+}
+</code></pre>
+<p>The receipt excludes private evidence, a stable subject identifier, session
+keys, credentials, and unrelated instance activity. Its nullifier domain must
+include the template, context, action, resource scope, and policy version so it
+cannot be reused across purposes.</p>
+<p>The execution layer may reject an approved receipt because of local execution
+state, but it may not convert it into a broader action. A schema or policy
+change requires a new version and explicit compatibility rules.</p>
+</section>
+<section aria-labelledby="7-component-responsibilities">
+<h2 id="7-component-responsibilities">7 Component responsibilities</h2>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Receives</th>
+<th>Processes</th>
+<th>Emits</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Scenario authoring tools</td>
+<td>Draft template and referenced schemas</td>
+<td>Editing, simulation, linting</td>
+<td>Draft content hash</td>
+</tr>
+<tr>
+<td>Template validator</td>
+<td>Draft, circuit metadata, invariants</td>
+<td>Deterministic structural and privacy checks</td>
+<td>Validation report</td>
+</tr>
+<tr>
+<td>Governance registry</td>
+<td>Reviewer attestations and activation proposal</td>
+<td>Threshold and namespace checks</td>
+<td>Active immutable template version</td>
+</tr>
+<tr>
+<td>Scenario allocator</td>
+<td>Active template and instantiate capability</td>
+<td>Binds principals to slots</td>
+<td>Scenario instance commitment</td>
+</tr>
+<tr>
+<td>Context-aware client</td>
+<td>Instance state, capabilities, private records</td>
+<td>Disclosure preview and ActionIntent signing</td>
+<td>Private proof request</td>
+</tr>
+<tr>
+<td>Midnight contract</td>
+<td>Proof request and approved template/policy hashes</td>
+<td>Capability, evidence, state, and uniqueness verification</td>
+<td>Minimal DecisionReceipt fields</td>
+</tr>
+<tr>
+<td>Gateway</td>
+<td>Finalized public Midnight output</td>
+<td>Source verification and transport signing</td>
+<td>Typed receipt envelope</td>
+</tr>
+<tr>
+<td>Monad registry or application</td>
+<td>Typed receipt</td>
+<td>Signer, schema, recipient, expiry, and replay checks</td>
+<td>Public action result</td>
+</tr>
+<tr>
+<td>Evidence vault</td>
+<td>Ciphertext and manifest</td>
+<td>Recipient decryption and integrity checks</td>
+<td>Selected recipient view</td>
+</tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="8-required-first-scenario-profiles">
+<h2 id="8-required-first-scenario-profiles">8 Required first scenario profiles</h2>
+
+<p>These three profiles are part of Permio&#39;s architecture and must run through the
+same template, capability, privacy-authorization, receipt, and execution model.
+They are not embedded fixtures: concrete participants, records, identifiers,
+values, dates, and policies are generated or supplied only when a template is
+instantiated.</p>
+<h3 id="8-1-clinical-referral-and-research-consent">8.1 Clinical referral and research consent</h3>
+
+<p>A patient can authorize one specialist to access selected observations for a
+treatment purpose and limited period. A later research request is a different
+context: a research service may receive only an eligibility or cohort claim,
+not the treatment record or the specialist relationship. Emergency access, if
+supported, is a separately governed action with a short lifetime and an audit
+obligation.</p>
+<p>This family exercises recipient changes, purpose changes, consent expiry,
+revocation, sensitive encrypted evidence, and a deliberate transition from
+treatment to research. HL7 FHIR Consent already models recipients, actions,
+purposes, data, and effective periods and allows computable consent rules; it is
+useful input for a future Permio healthcare profile, not a dependency silently
+assumed by the core protocol.</p>
+<h3 id="8-2-professional-qualification-and-temporary-site-access">8.2 Professional qualification and temporary site access</h3>
+
+<p>A credential holder proves that a required qualification is current for one
+site, task, and shift without revealing a full transcript, unrelated
+certifications, home address, or employment history. A site system issues a
+short-lived access capability. If an incident occurs, the holder may authorize
+a separate evidence bridge to a named investigator without making the original
+presentation globally linkable.</p>
+<p>This family exercises issuer authority, credential status and revocation,
+selective claims, time-bounded access, and a later investigator context. W3C
+Verifiable Credentials materials describe education and professional
+qualification use cases, holder-controlled disclosure, duration limits, and
+correlation risks; Permio adds context transitions and execution receipts
+around those credentials.</p>
+<h3 id="8-3-delegated-financial-or-purchasing-agent">8.3 Delegated financial or purchasing agent</h3>
+
+<p>A person authorizes an automated agent to perform one named transaction or
+class of transactions for a named counterparty, bounded resource, purpose,
+amount policy, and expiry. The agent cannot inspect unrelated account history,
+change the recipient, delegate indefinitely, activate templates, or reuse an
+approval after revocation. The privacy plane approves the exact intent; the
+execution plane performs the high-volume transaction.</p>
+<p>This family exercises machine principals, capability attenuation, monetary or
+resource ceilings, explicit counterparties, rapid revocation, and separation of
+authorization from execution. OAuth Rich Authorization Requests demonstrates
+the need for structured fine-grained authorization details beyond broad scope
+strings. ODRL provides another useful policy vocabulary for parties, actions,
+assets, constraints, and duties. Permio must profile such ideas rather than
+accept arbitrary policy text at runtime.</p>
+</section>
+<section aria-labelledby="9-contract-authority-and-governance">
+<h2 id="9-contract-authority-and-governance">9 Contract authority and governance</h2>
+
+<p>“Contract Authority” must not name one permanent manager or one autonomous
+program. It combines two responsibilities that must remain distinct:</p>
+<ul>
+<li>a <strong>governance controller</strong> decides which exact issuer, template version,
+policy hash, circuit, verifier, upgrade, or emergency action is authorized;
+and</li>
+<li>an <strong>enforcement contract</strong> automatically verifies the corresponding proof,
+signature, threshold, timelock, and current state.</li>
+</ul>
+<p>A single bootstrap secret may exist only in local development and must be
+labelled transitional. Production authority is divided into separately scoped
+capabilities for template activation, issuer admission, circuit upgrades,
+gateway rotation, execution-registry administration, and emergency revocation.
+Daily issuers, relayers, agents, and scenario allocators do not hold governance
+keys.</p>
+</section>
+<section aria-labelledby="10-security-and-privacy-invariants">
+<h2 id="10-security-and-privacy-invariants">10 Security and privacy invariants</h2>
+
+<ol>
+<li>No global public pseudonym links a principal across scenario instances or
+contexts.</li>
+<li>Every authorization binds template version, instance, context, action,
+resource, purpose, recipient, time, and disclosure policy.</li>
+<li>Delegation attenuates authority; it never expands it.</li>
+<li>Review, validation, activation, allocation, and execution are distinct
+capabilities.</li>
+<li>Agents cannot self-approve templates or obtain blanket account access.</li>
+<li>Private source records and witness data never enter the gateway, Monad, or a
+public application store.</li>
+<li>Cross-context disclosure is explicit, purpose-bound, recipient-bound,
+selected-record-bound, expiring, and revocable where the protocol permits.</li>
+<li>A proof establishes only the claims encoded by its circuit and policy. It
+does not establish that an opinion, allegation, diagnosis, or human judgment
+is true.</li>
+<li>Template and receipt schema changes are versioned protocol changes.</li>
+<li>Architecture documents and tests reference generated fixture schemas and
+seeds, never literal scenario-instance data.</li>
+</ol>
+</section>
+<section aria-labelledby="11-generated-examples-and-deterministic-testing">
+<h2 id="11-generated-examples-and-deterministic-testing">11 Generated examples and deterministic testing</h2>
+
+<p>Concrete scenarios are generated after template selection:</p>
+<pre><code class="language-text">template + generatorVersion + explicitSeed + policyProfile
+  -&gt; scenario instance
+  -&gt; principals, records, credentials, cases, values, and timestamps
+  -&gt; expected private/public classification
+  -&gt; positive and negative test vectors
+</code></pre>
+<p>The generator must be deterministic for tests, but its output is not protocol
+law. Golden vectors record generator version, seed, template hash, and expected
+commitments. Changing a generated participant name or instance identifier must
+not require architecture, circuit, or application source changes.</p>
+<p>Production data is never generated from test seeds. Test output must use
+synthetic values and must pass a public-artifact scan proving that fields
+classified private are absent from ledgers, receipts, logs, and generated HTML.</p>
+</section>
+<section aria-labelledby="12-research-basis">
+<h2 id="12-research-basis">12 Research basis</h2>
+
+<ul>
+<li><a href="https://hl7.org/fhir/consent.html">HL7 FHIR Consent</a> — computable healthcare
+consent with recipients, actions, purposes, data, and periods.</li>
+<li><a href="https://www.w3.org/TR/vc-use-cases/">W3C Verifiable Credentials Use Cases</a> —
+education, professional, health, and holder-controlled disclosure examples.</li>
+<li><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C Verifiable Credentials Data Model 2.0</a> —
+credential privacy, selective disclosure, and correlation considerations.</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9396.html">RFC 9396: OAuth 2.0 Rich Authorization Requests</a> —
+structured fine-grained authorization details.</li>
+<li><a href="https://www.w3.org/TR/odrl-model/">W3C ODRL Information Model 2.2</a> — parties,
+actions, assets, constraints, duties, and policy profiles.</li>
+</ul>
+<p>These sources inform the required profiles. Permio&#39;s profile semantics are
+defined by this architecture; adopting an external serialization or runtime
+dependency still requires an explicit compatibility decision and tests.</p>
+</section>
+        </article>
+        <footer>
+          Generated from <code>docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md</code>.
+          Source SHA-256: <code>b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d</code>.
+        </footer>
+      </div>
+      <div data-language-panel="zh-CN" data-document-title="Permio 可编程情境架构" lang="zh-CN">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio 可编程情境架构</h1>
+          <p>版本化情境模板、上下文账户、Midnight 隐私授权、最小收据与可组合执行的完整双语架构。</p>
+        </header>
+        <article>
+<p>状态：权威架构与实施契约<br>
+日期：2026 年 10 月 10 日<br>
+范围：版本化情境模板、上下文账户、Midnight 隐私授权与可组合执行</p>
+<section aria-labelledby="zh-1-架构决策">
+<h2 id="zh-1-架构决策">1 架构决策</h2>
+
+<p>Permio 不是一个固定的评价、客服或监管应用。它是一套用于定义情境、授权有限范围操作、
+只证明该操作所需事实，并把最小决策收据交给执行系统的基础设施。</p>
+<p>架构包含四个相互独立的平面：</p>
+<ol>
+<li><strong>控制面</strong>负责编写、验证、批准、版本化和退役情境模板及策略。</li>
+<li><strong>隐私授权面</strong>在 Midnight 上评估私有证据与受上下文约束的能力。</li>
+<li><strong>高吞吐执行面</strong>在 Monad 或普通应用中消费狭窄收据，而不重新解释隐私决定。</li>
+<li>当证明本身不足时，<strong>加密证据面</strong>把选定机密记录直接交给获授权接收方。</li>
+</ol>
+<p>任何架构组件、合约、测试或文档都不得依赖写死的参与者姓名、产品名称、案件标识符、
+凭证标识符、日期、金额或其他情境实例值。具体示例和测试数据必须在创建情境实例之后，
+根据版本化模板和显式种子生成。</p>
+</section>
+<section aria-labelledby="zh-2-核心模型">
+<h2 id="zh-2-核心模型">2 核心模型</h2>
+
+<p>可复用的产品单元是 <code>ScenarioTemplate</code>。<code>InformationFlow</code> 是情境实例内的一次运行时操作。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>概念</th>
+<th>职责</th>
+<th>不得变成</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>ScenarioTemplate</code></td>
+<td>对参与者槽位、上下文、操作、状态转换、证明要求、披露和适配器进行版本化定义</td>
+<td>具名测试参与者和实例数据的集合</td>
+</tr>
+<tr>
+<td><code>ContextDefinition</code></td>
+<td>定义一个社会或操作上下文中的参与者、用途、记录、声明、接收方与转换规则</td>
+<td>没有可执行语义的自由文本标签</td>
+</tr>
+<tr>
+<td><code>ScenarioInstance</code></td>
+<td>把一个已批准模板版本与实际主体、策略版本和生命周期状态绑定</td>
+<td>全局账户角色分配</td>
+</tr>
+<tr>
+<td><code>ContextAccount</code></td>
+<td>只在一个实例或上下文中有效的逻辑账户</td>
+<td>在无关上下文之间复用的公开身份</td>
+</tr>
+<tr>
+<td><code>CapabilityGrant</code></td>
+<td>对精确操作、资源、用途、接收方、时间、委托和披露策略进行授权</td>
+<td>永久买家、商家、监管者、员工、患者或 Agent 角色</td>
+</tr>
+<tr>
+<td><code>ActionIntent</code></td>
+<td>针对当前实例状态行使一个能力的签名请求</td>
+<td>仅由登录状态隐式推导的权限</td>
+</tr>
+<tr>
+<td><code>InformationFlow</code></td>
+<td>一次经过评估的操作或披露的规范化私有记录</td>
+<td>情境模板或整个产品</td>
+</tr>
+<tr>
+<td><code>DecisionReceipt</code></td>
+<td>说明一个操作在一个范围内获批准的最小版本化输出</td>
+<td>来源证据副本或通用主体标识符</td>
+</tr>
+</tbody></table></div>
+<p>逻辑关系如下：</p>
+<pre><code class="language-text">ScenarioTemplate + ScenarioInstance + ContextAccount
+  + CapabilityGrant + ActionIntent + 所选私有证据
+  -&gt; InformationFlow 评估
+  -&gt; DecisionReceipt
+  -&gt; 可选公开执行与加密证据交付
+</code></pre>
+</section>
+<section aria-labelledby="zh-3-可编程-受上下文约束的账户">
+<h2 id="zh-3-可编程-受上下文约束的账户">3 可编程、受上下文约束的账户</h2>
+
+<p>注册只建立账户密钥控制权，不分配业务角色。有效权限由所选情境实例中的活跃能力推导。</p>
+<pre><code class="language-text">CapabilityGrant {
+  templateId, templateVersion,
+  instanceId, contextId,
+  principalRef, sessionPublicKey?,
+  actions[], resourceSelector,
+  purpose, recipient,
+  notBefore, expiresAt,
+  disclosurePolicyId,
+  delegation: { allowedActions, maxDepth },
+  nullifierDomain, revocationRef,
+  issuerRef, issuerProof
+}
+</code></pre>
+<p>任何维度不匹配都必须默认拒绝。即使操作正确，只要上下文、用途、接收方、资源、时间窗口、
+披露策略、委托深度或实例不匹配，也不构成授权。</p>
+<p>会话密钥是只拥有父能力严格子集的短期签名密钥。人类用户、服务、合约与自动化 Agent
+使用同一模型。Agent 只能获得执行列出操作的权限，不能获得账户或情境的全面访问。</p>
+</section>
+<section aria-labelledby="zh-4-架构视图">
+<h2 id="zh-4-架构视图">4 架构视图</h2>
+
+<p>下面每张图只回答一个问题。节点描述职责，边描述唯一允许跨越该边界的载荷。</p>
+<h3 id="zh-4-1-一眼看懂系统拓扑">4.1 一眼看懂系统拓扑</h3>
+
+<pre class="mermaid">flowchart LR
+  Control[&quot;控制面&lt;br/&gt;批准模板与策略版本&quot;]
+  Privacy[&quot;隐私授权面&lt;br/&gt;Midnight 验证能力与证据&quot;]
+  Receipt[&quot;最小决策收据&lt;br/&gt;操作、用途、接收方、期限、空值标识&quot;]
+  Execute[&quot;执行面&lt;br/&gt;Monad 或应用执行具名操作&quot;]
+  Evidence[&quot;加密证据&lt;br/&gt;需要时向指定接收方交付&quot;]
+
+  Control --&gt;|&quot;已批准哈希与规则&quot;| Privacy
+  Privacy --&gt;|&quot;仅公开决策&quot;| Receipt
+  Receipt --&gt;|&quot;版本化收据&quot;| Execute
+  Privacy -.-&gt;|&quot;选定密文；绝不公开证据&quot;| Evidence
+</pre>
+<p>控制面不接收私有见证数据。执行面不会获得足以扩大权限的信息。加密证据通道不经过任一
+公开账本。</p>
+<h3 id="zh-4-2-情境模板生命周期">4.2 情境模板生命周期</h3>
+
+<pre class="mermaid">flowchart LR
+  Draft[&quot;草拟&lt;br/&gt;人、组织或 Agent&quot;]
+  Validate[&quot;验证&lt;br/&gt;模式、证明、冲突、不变量&quot;]
+  Review[&quot;审核&lt;br/&gt;隐私、安全与领域&quot;]
+  Activate[&quot;激活&lt;br/&gt;阈值治理&quot;]
+  Instantiate[&quot;实例化&lt;br/&gt;把主体绑定到槽位&quot;]
+  Retire[&quot;退役或撤销&lt;br/&gt;停止新操作&quot;]
+
+  Draft --&gt; Validate --&gt; Review --&gt; Activate --&gt; Instantiate --&gt; Retire
+</pre>
+<p>自动化工具可以草拟、验证和模拟，但不能赋予策略合法性。共享或跨组织模板需要可问责的
+审核者，并通过阈值机制激活精确的内容哈希和版本。</p>
+<h3 id="zh-4-3-一次运行时操作">4.3 一次运行时操作</h3>
+
+<pre class="mermaid">sequenceDiagram
+  autonumber
+  participant Principal as 主体或有限范围 Agent
+  participant Client as 上下文感知客户端
+  participant Midnight as Midnight 授权
+  participant Gateway as 收据网关
+  participant Executor as Monad 或应用
+  participant Vault as 获授权证据保险库
+
+  Principal-&gt;&gt;Client: 使用有限范围会话密钥签署 ActionIntent
+  Client-&gt;&gt;Midnight: 私有证据与能力证明
+  Midnight-&gt;&gt;Midnight: 验证模板、上下文、状态、范围、期限与唯一性
+  Midnight--&gt;&gt;Gateway: 已最终确认的最小 DecisionReceipt
+  Gateway-&gt;&gt;Gateway: 验证来源并签署类型化传输封装
+  Gateway--&gt;&gt;Executor: 接收方与用途绑定收据
+  Executor-&gt;&gt;Executor: 复核版本、操作、接收方、期限与重放范围
+  Executor--&gt;&gt;Principal: 公开执行结果
+  opt 需要选定机密记录
+    Client--&gt;&gt;Vault: 接收方加密证据与 manifest
+  end
+</pre>
+</section>
+<section aria-labelledby="zh-5-控制面与情境库">
+<h2 id="zh-5-控制面与情境库">5 控制面与情境库</h2>
+
+<h3 id="zh-5-1-模板内容">5.1 模板内容</h3>
+
+<p>每个模板版本声明：</p>
+<ul>
+<li>稳定模板标识符、语义版本、命名空间和内容哈希；</li>
+<li>参与者槽位以及哪些主体可以填充或分配这些槽位；</li>
+<li>上下文定义及上下文之间允许的转换；</li>
+<li>操作模式、状态前置条件及产生的状态转换；</li>
+<li>能力签发、收缩、委托、到期和撤销规则；</li>
+<li>记录、声明、接收方、用途和披露约束；</li>
+<li>证明/电路标识符和预期公开输出模式；</li>
+<li>可选执行适配器及加密证据要求；</li>
+<li>迁移和退役规则；以及</li>
+<li>可执行隐私不变量、负向案例和验收测试。</li>
+</ul>
+<h3 id="zh-5-2-谁可以设计和激活情境">5.2 谁可以设计和激活情境</h3>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>功能</th>
+<th>获授权主体</th>
+<th>约束</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>草拟</td>
+<td>持有模板作者能力的人、组织或 Agent</td>
+<td>草稿保持私有或只存在于命名空间内</td>
+</tr>
+<tr>
+<td>验证与模拟</td>
+<td>确定性编译器、验证器和分析 Agent</td>
+<td>报告错误和风险，但不授予信任</td>
+</tr>
+<tr>
+<td>审核</td>
+<td>具名隐私、安全和领域审核者</td>
+<td>只为一个模板哈希和版本背书</td>
+</tr>
+<tr>
+<td>激活</td>
+<td>命名空间多签或阈值治理</td>
+<td>唯一作者不能自行激活高影响模板</td>
+</tr>
+<tr>
+<td>实例化</td>
+<td>持有实例化能力的主体或分配器</td>
+<td>只能使用活跃版本</td>
+</tr>
+<tr>
+<td>分配或委托</td>
+<td>模板及当前实例声明的权限方</td>
+<td>不能授予超过自身范围的权限</td>
+</tr>
+<tr>
+<td>退役或撤销</td>
+<td>声明的治理方或紧急权限方</td>
+<td>停止新操作，但不改写历史收据</td>
+</tr>
+</tbody></table></div>
+<p>模板命名空间允许组织使用本地策略，而不暗示整个生态都信任它。跨组织模板需要每个参与
+命名空间都认可的治理根。</p>
+</section>
+<section aria-labelledby="zh-6-隐私授权与执行边界">
+<h2 id="zh-6-隐私授权与执行边界">6 隐私授权与执行边界</h2>
+
+<p>Midnight 决定操作是否允许。Monad 或普通应用执行获准的公开效果。两者边界是版本化收据，
+而不是共享数据库记录。</p>
+<pre><code class="language-text">DecisionReceipt {
+  receiptVersion,
+  templateId, templateVersion,
+  instanceCommitment, contextId,
+  actionSchemaId,
+  purposeHash, recipient,
+  validAfter, validBefore,
+  scopedNullifier,
+  outputCommitment,
+  sourceNetwork, sourceContract, sourceTransaction
+}
+</code></pre>
+<p>收据不包含私有证据、稳定主体标识符、会话密钥、凭证或无关实例活动。空值标识域必须包含
+模板、上下文、操作、资源范围和策略版本，防止跨用途复用。</p>
+<p>执行层可以因为本地执行状态而拒绝一份已批准收据，但不能把它转换为更宽的操作。模式或
+策略变更需要新版本和显式兼容规则。</p>
+</section>
+<section aria-labelledby="zh-7-组件职责">
+<h2 id="zh-7-组件职责">7 组件职责</h2>
+
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>组件</th>
+<th>接收</th>
+<th>处理</th>
+<th>输出</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>情境编写工具</td>
+<td>模板草稿与引用模式</td>
+<td>编辑、模拟、lint</td>
+<td>草稿内容哈希</td>
+</tr>
+<tr>
+<td>模板验证器</td>
+<td>草稿、电路元数据、不变量</td>
+<td>确定性结构与隐私检查</td>
+<td>验证报告</td>
+</tr>
+<tr>
+<td>治理注册表</td>
+<td>审核者背书与激活提案</td>
+<td>阈值和命名空间检查</td>
+<td>活跃不可变模板版本</td>
+</tr>
+<tr>
+<td>情境分配器</td>
+<td>活跃模板与实例化能力</td>
+<td>把主体绑定到槽位</td>
+<td>情境实例承诺</td>
+</tr>
+<tr>
+<td>上下文感知客户端</td>
+<td>实例状态、能力、私有记录</td>
+<td>披露预览与 ActionIntent 签名</td>
+<td>私有证明请求</td>
+</tr>
+<tr>
+<td>Midnight 合约</td>
+<td>证明请求与批准的模板/策略哈希</td>
+<td>验证能力、证据、状态与唯一性</td>
+<td>最小 DecisionReceipt 字段</td>
+</tr>
+<tr>
+<td>网关</td>
+<td>已最终确认的 Midnight 公开输出</td>
+<td>来源验证与传输签名</td>
+<td>类型化收据封装</td>
+</tr>
+<tr>
+<td>Monad 注册表或应用</td>
+<td>类型化收据</td>
+<td>验证签名者、模式、接收方、期限与重放</td>
+<td>公开操作结果</td>
+</tr>
+<tr>
+<td>证据保险库</td>
+<td>密文与 manifest</td>
+<td>接收方解密及完整性检查</td>
+<td>选定接收方视图</td>
+</tr>
+</tbody></table></div>
+</section>
+<section aria-labelledby="zh-8-首批必需情境-profile">
+<h2 id="zh-8-首批必需情境-profile">8 首批必需情境 profile</h2>
+
+<p>这三个 profile 是 Permio 架构的一部分，必须通过同一套模板、能力、隐私授权、收据和执行
+模型运行。它们不是嵌入代码的固定测试数据：具体参与者、记录、标识符、数值、日期和策略
+只在模板实例化时生成或提供。</p>
+<h3 id="zh-8-1-临床转诊与研究同意">8.1 临床转诊与研究同意</h3>
+
+<p>患者可以授权一位专科人员为了治疗目的、在有限期限内访问选定观察记录。后续研究请求属于
+另一个上下文：研究服务只能收到资格或队列声明，不能获得治疗记录或专科关系。如果支持紧急
+访问，它必须是一项独立治理、生命周期很短并附带审计义务的操作。</p>
+<p>该情境族测试接收方变化、用途变化、同意到期、撤销、敏感加密证据，以及从治疗到研究的
+刻意转换。HL7 FHIR Consent 已经建模接收方、操作、用途、数据和有效期，并允许可计算同意
+规则；它是 Permio 医疗 profile 的参考，而不是核心协议暗中依赖的组件。</p>
+<h3 id="zh-8-2-专业资格与临时场地访问">8.2 专业资格与临时场地访问</h3>
+
+<p>凭证持有人证明某项资格对于一个场地、任务和班次仍然有效，而无需披露完整成绩单、无关证书、
+家庭地址或就业历史。场地系统签发短期访问能力。如果发生事件，持有人可以向具名调查者授权
+一条独立证据桥接，同时不让原始证明在全局范围内可关联。</p>
+<p>该情境族测试签发者权限、凭证状态与撤销、选择性声明、限时访问和后续调查上下文。W3C
+Verifiable Credentials 材料描述了教育与专业资格用例、持有人控制披露、期限限制与关联风险；
+Permio 在这些凭证之外增加上下文转换和执行收据。</p>
+<h3 id="zh-8-3-受委托的金融或采购-agent">8.3 受委托的金融或采购 Agent</h3>
+
+<p>一个人授权自动化 Agent 为具名交易对手执行一项具名交易或一类交易，并限制资源、用途、金额
+策略和期限。Agent 不能查看无关账户历史、替换接收方、无限委托、激活模板，也不能在撤销后
+复用批准。隐私授权面批准精确意图，执行面执行高吞吐交易。</p>
+<p>该情境族测试机器主体、能力收缩、金额或资源上限、显式交易对手、快速撤销及授权与执行分离。
+OAuth Rich Authorization Requests 展示了为什么需要超越宽泛 scope 字符串的结构化细粒度
+授权。ODRL 则为参与方、操作、资产、约束和义务提供了另一套参考词汇。Permio 必须把这些
+思想转化为受控 profile，不能在运行时接受任意策略文本。</p>
+</section>
+<section aria-labelledby="zh-9-合约治理权限">
+<h2 id="zh-9-合约治理权限">9 合约治理权限</h2>
+
+<p>“Contract Authority” 不得表示一个永久 manager，也不得表示一个自主程序。它组合了两项
+必须保持分离的职责：</p>
+<ul>
+<li><strong>治理控制者</strong>决定应当授权哪个精确签发者、模板版本、策略哈希、电路、验证者、升级或
+紧急操作；</li>
+<li><strong>执行合约</strong>自动验证相应证明、签名、阈值、时间锁和当前状态。</li>
+</ul>
+<p>单一引导秘密只能存在于本地开发，并必须标记为过渡方案。生产权限应拆分为模板激活、签发者
+准入、电路升级、网关轮换、执行注册表管理和紧急撤销等有限范围能力。日常签发者、中继器、
+Agent 和情境分配器都不持有治理密钥。</p>
+</section>
+<section aria-labelledby="zh-10-安全与隐私不变量">
+<h2 id="zh-10-安全与隐私不变量">10 安全与隐私不变量</h2>
+
+<ol>
+<li>不存在把主体跨情境实例或上下文关联起来的全局公开假名。</li>
+<li>每次授权都绑定模板版本、实例、上下文、操作、资源、用途、接收方、时间和披露策略。</li>
+<li>委托只能收缩权限，不能扩大权限。</li>
+<li>审核、验证、激活、分配和执行是不同能力。</li>
+<li>Agent 不能自行批准模板，也不能获得账户全面访问。</li>
+<li>私有来源记录和见证数据绝不进入网关、Monad 或公开应用存储。</li>
+<li>跨上下文披露必须显式、用途绑定、接收方绑定、选定记录绑定、会到期，并在协议允许时可撤销。</li>
+<li>证明只建立电路和策略编码的声明，不证明观点、指控、诊断或人的判断为真。</li>
+<li>模板和收据模式变更属于版本化协议变更。</li>
+<li>架构文档和测试只引用生成器模式与种子，绝不包含写死的情境实例数据。</li>
+</ol>
+</section>
+<section aria-labelledby="zh-11-生成示例与确定性测试">
+<h2 id="zh-11-生成示例与确定性测试">11 生成示例与确定性测试</h2>
+
+<p>具体情境在模板选择后生成：</p>
+<pre><code class="language-text">模板 + 生成器版本 + 显式种子 + 策略 profile
+  -&gt; 情境实例
+  -&gt; 主体、记录、凭证、案件、数值与时间戳
+  -&gt; 预期私有/公开分类
+  -&gt; 正向与负向测试向量
+</code></pre>
+<p>测试生成器必须确定，但其输出不是协议规则。Golden vectors 记录生成器版本、种子、模板哈希
+和预期承诺。改变生成的参与者姓名或实例标识符，不得要求修改架构、电路或应用源码。</p>
+<p>生产数据绝不使用测试种子生成。测试输出必须使用合成值，并通过公开产物扫描，证明被分类为
+私有的字段没有出现在账本、收据、日志或生成 HTML 中。</p>
+</section>
+<section aria-labelledby="zh-12-研究依据">
+<h2 id="zh-12-研究依据">12 研究依据</h2>
+
+<ul>
+<li><a href="https://hl7.org/fhir/consent.html">HL7 FHIR Consent</a>——包含接收方、操作、用途、数据和期限
+的可计算医疗同意。</li>
+<li><a href="https://www.w3.org/TR/vc-use-cases/">W3C Verifiable Credentials Use Cases</a>——教育、专业、
+医疗及持有人控制披露示例。</li>
+<li><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C Verifiable Credentials Data Model 2.0</a>——
+凭证隐私、选择性披露和关联风险。</li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9396.html">RFC 9396: OAuth 2.0 Rich Authorization Requests</a>——
+结构化细粒度授权详情。</li>
+<li><a href="https://www.w3.org/TR/odrl-model/">W3C ODRL Information Model 2.2</a>——参与方、操作、资产、
+约束、义务和策略 profile。</li>
+</ul>
+<p>这些资料用于定义必需 profile。Permio 的 profile 语义由本架构确定；采用外部序列化格式或
+运行时依赖仍然需要明确的兼容性决策与测试。</p>
+</section>
+        </article>
+        <footer>
+          由 <code>docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md</code> 自动生成。
+          源文件 SHA-256：<code>b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d</code>。
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const storageKey = "permio-doc-language";
+      const supportedLanguages = new Set(["en", "zh-CN"]);
+      const buttons = [...document.querySelectorAll("[data-language-choice]")];
+
+      function languageFromHash() {
+        if (!window.location.hash) return null;
+        try {
+          const target = document.getElementById(
+            decodeURIComponent(window.location.hash.slice(1)),
+          );
+          return target?.closest("[data-language-panel]")?.dataset.languagePanel ?? null;
+        } catch {
+          return null;
+        }
+      }
+
+      function storedLanguage() {
+        try {
+          const stored = window.localStorage.getItem(storageKey);
+          return supportedLanguages.has(stored) ? stored : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function selectLanguage(language, persist = false) {
+        if (!supportedLanguages.has(language)) return;
+        document.documentElement.lang = language;
+        document.documentElement.dataset.language = language;
+        for (const button of buttons) {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.languageChoice === language),
+          );
+        }
+        const panel = document.querySelector(
+          '[data-language-panel="' + language + '"][data-document-title]',
+        );
+        if (panel) document.title = panel.dataset.documentTitle;
+        if (persist) {
+          try {
+            window.localStorage.setItem(storageKey, language);
+          } catch {
+            // The page still works when browser privacy settings disable storage.
+          }
+        }
+        window.dispatchEvent(
+          new CustomEvent("permio:languagechange", { detail: { language } }),
+        );
+      }
+
+      const initialLanguage =
+        languageFromHash() ??
+        storedLanguage() ??
+        (window.navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
+      selectLanguage(initialLanguage);
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          selectLanguage(button.dataset.languageChoice, true);
+        });
+      }
+      window.addEventListener("hashchange", () => {
+        const language = languageFromHash();
+        if (language) selectLanguage(language);
+      });
+    })();
+  </script>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "default",
+      look: "classic",
+      layout: "dagre",
+    });
+
+    async function renderActiveMermaidDiagrams() {
+      const language = document.documentElement.dataset.language ?? "en";
+      const diagrams = document.querySelectorAll(
+        '[data-language-panel="' + language + '"] pre.mermaid:not([data-processed="true"])',
+      );
+
+      for (const diagram of diagrams) {
+        const source = diagram.textContent;
+        try {
+          await mermaid.run({ nodes: [diagram], suppressErrors: true });
+          if (!diagram.querySelector("svg")) {
+            throw new Error("Mermaid did not produce an SVG diagram.");
+          }
+        } catch (error) {
+          diagram.removeAttribute("data-processed");
+          diagram.textContent = source;
+          diagram.classList.add("mermaid-error");
+          console.error("Unable to render Mermaid diagram.", error);
+        }
+      }
+    }
+
+    await renderActiveMermaidDiagrams();
+    window.addEventListener("permio:languagechange", renderActiveMermaidDiagrams);
+  </script>
+</body>
+</html>

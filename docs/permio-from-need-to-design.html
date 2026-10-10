@@ -1,0 +1,718 @@
+<!doctype html>
+<!--
+  GENERATED FILE — DO NOT EDIT DIRECTLY.
+  Source: docs/PERMIO_FROM_NEED_TO_DESIGN.md
+  Source SHA-256: c928d98f38bbe2a337f00ee62377f2991952ffe50588410d960b430e69f875b9
+  Regenerate with: npm run docs:build
+-->
+<html lang="en" data-language="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A human-first explanation of how Permio's requirements lead to its module and protocol design">
+  <meta name="source-sha256" content="c928d98f38bbe2a337f00ee62377f2991952ffe50588410d960b430e69f875b9">
+  <title>Permio: From Human Need to Programmable Context</title>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "name": "Permio: From Human Need to Programmable Context",
+    "dateModified": "2026-10-10",
+    "version": "2.0",
+    "inLanguage": ["en", "zh-CN"],
+    "about": ["Permio","human-centered architecture","privacy-preserving credentials","Midnight","Monad"]
+  }
+  </script>
+  <script>document.documentElement.classList.add("js");</script>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: light-dark(#f4f6f8, #0d1117);
+      --surface: light-dark(#ffffff, #161b22);
+      --surface-2: light-dark(#edf3f7, #1f2630);
+      --text: light-dark(#17202a, #e6edf3);
+      --muted: light-dark(#52616f, #9ba8b4);
+      --border: light-dark(#d5dde4, #30363d);
+      --midnight: light-dark(#5b3fd3, #a792ff);
+      --monad: light-dark(#2867b2, #70b7ff);
+      --code: light-dark(#f2f5f7, #0d1117);
+      --shadow: light-dark(0 12px 30px rgba(31, 45, 61, .08), none);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.62; }
+    a { color: var(--monad); }
+    code, pre { font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace; }
+    code { font-size: .92em; }
+    pre {
+      margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--border);
+      border-radius: .65rem; background: var(--code); overflow-x: auto;
+    }
+    pre.mermaid { display: flex; justify-content: center; white-space: pre-wrap; background: var(--surface); }
+    pre.mermaid svg { max-width: 100%; height: auto; }
+    pre.mermaid.mermaid-error { display: block; color: var(--muted); text-align: left; }
+    .shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
+    nav {
+      position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.6rem 1.25rem;
+      background: var(--surface); border-right: 1px solid var(--border);
+    }
+    nav strong { display: block; margin-bottom: .25rem; font-size: 1.1rem; }
+    nav small { color: var(--muted); }
+    .language-switcher {
+      display: none; grid-template-columns: 1fr 1fr; gap: .35rem; margin: 1rem 0 .35rem;
+      padding: .3rem; border: 1px solid var(--border); border-radius: .65rem;
+      background: var(--surface-2);
+    }
+    .js .language-switcher { display: grid; }
+    .language-switcher button {
+      border: 0; border-radius: .4rem; padding: .5rem .6rem; background: transparent;
+      color: var(--muted); cursor: pointer; font: inherit; font-size: .88rem;
+    }
+    .language-switcher button[aria-pressed="true"] {
+      background: var(--surface); color: var(--text); box-shadow: var(--shadow); font-weight: 700;
+    }
+    nav ul { list-style: none; margin: 1.4rem 0 0; padding: 0; }
+    nav li { margin: .15rem 0; }
+    nav a {
+      display: block; padding: .42rem .55rem; border-radius: .4rem;
+      color: var(--muted); text-decoration: none;
+    }
+    nav a:hover, nav a:focus { color: var(--text); background: var(--surface-2); }
+    main { min-width: 0; }
+    header, article { width: min(72rem, calc(100% - 3rem)); margin-inline: auto; }
+    header { padding: 4rem 0 2rem; border-bottom: 1px solid var(--border); }
+    .eyebrow {
+      color: var(--midnight); font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; font-size: .78rem;
+    }
+    h1 { margin: .55rem 0 1rem; font-size: clamp(2.2rem, 5vw, 4.4rem); line-height: 1.04; letter-spacing: -.04em; }
+    header p { max-width: 58rem; color: var(--muted); font-size: 1.08rem; }
+    article { padding: 1rem 0 5rem; }
+    section { scroll-margin-top: 1rem; margin: 3.5rem 0; }
+    h2 { margin: 0 0 1rem; font-size: clamp(1.55rem, 3vw, 2.3rem); line-height: 1.16; letter-spacing: -.025em; }
+    h3 { margin: 1.8rem 0 .65rem; font-size: 1.18rem; }
+    article > h1 { margin-top: 4rem; font-size: clamp(2rem, 4vw, 3.2rem); }
+    p { max-width: 82ch; }
+    blockquote {
+      margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
+      border-left: 4px solid var(--midnight); background: var(--surface-2);
+    }
+    .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
+    table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
+    th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
+    th { background: var(--surface-2); }
+    hr { margin: 4rem 0; border: 0; border-top: 1px solid var(--border); }
+    footer {
+      width: min(72rem, calc(100% - 3rem)); margin: 0 auto 3rem; padding-top: 1.2rem;
+      color: var(--muted); border-top: 1px solid var(--border); font-size: .88rem;
+    }
+    html[data-language="en"] [data-language-panel="zh-CN"],
+    html[data-language="zh-CN"] [data-language-panel="en"] { display: none; }
+    @media (max-width: 880px) {
+      .shell { display: block; }
+      nav { position: static; width: auto; height: auto; border-right: 0; border-bottom: 1px solid var(--border); }
+      nav ul { columns: 2; }
+      header { padding-top: 2.5rem; }
+    }
+    @media (max-width: 560px) {
+      nav ul { columns: 1; }
+      header, article, footer { width: min(100% - 1.5rem, 72rem); }
+      th, td { min-width: 9rem; }
+    }
+    @media print {
+      :root { color-scheme: light; }
+      nav { display: none; }
+      .shell { display: block; }
+      header, article, footer { width: 100%; }
+      section { break-inside: avoid-page; }
+      a { color: inherit; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav aria-label="Document navigation">
+      <strong>Permio</strong>
+      <small data-language-panel="en">Generated from canonical Markdown</small>
+      <small data-language-panel="zh-CN" lang="zh-CN">由规范 Markdown 自动生成</small>
+      <div class="language-switcher" role="group" aria-label="Document language">
+        <button type="button" data-language-choice="en" aria-pressed="true">English</button>
+        <button type="button" data-language-choice="zh-CN" aria-pressed="false">中文</button>
+      </div>
+      <div data-language-panel="en" lang="en">
+        <ul aria-label="English sections">
+          <li><a href="#1-start-with-the-human-problem">1 Start with the human problem</a></li>
+          <li><a href="#2-the-central-idea-context-changes-what-is-appropriate">2 The central idea: context changes what is appropriate</a></li>
+          <li><a href="#3-the-example-is-not-the-product">3 The example is not the product</a></li>
+          <li><a href="#4-how-a-scenario-enters-the-library">4 How a scenario enters the library</a></li>
+          <li><a href="#5-how-programmable-permissions-feel-to-a-user">5 How programmable permissions feel to a user</a></li>
+          <li><a href="#6-three-first-class-scenario-profiles">6 Three first-class scenario profiles</a></li>
+          <li><a href="#7-the-system-in-one-picture">7 The system in one picture</a></li>
+          <li><a href="#8-what-contract-authority-means">8 What “Contract Authority” means</a></li>
+          <li><a href="#9-what-the-system-proves-and-what-it-does-not">9 What the system proves—and what it does not</a></li>
+          <li><a href="#10-how-examples-and-tests-are-produced">10 How examples and tests are produced</a></li>
+          <li><a href="#11-research-references">11 Research references</a></li>
+        </ul>
+      </div>
+      <div data-language-panel="zh-CN" lang="zh-CN">
+        <ul aria-label="中文章节">
+          <li><a href="#zh-1-从人的问题开始">1 从人的问题开始</a></li>
+          <li><a href="#zh-2-核心思想-上下文决定什么是合理的信息流">2 核心思想：上下文决定什么是合理的信息流</a></li>
+          <li><a href="#zh-3-示例不是产品">3 示例不是产品</a></li>
+          <li><a href="#zh-4-情境如何进入情境库">4 情境如何进入情境库</a></li>
+          <li><a href="#zh-5-用户如何感受到可编程权限">5 用户如何感受到可编程权限</a></li>
+          <li><a href="#zh-6-三个一等情境-profile">6 三个一等情境 profile</a></li>
+          <li><a href="#zh-7-一张图看懂系统">7 一张图看懂系统</a></li>
+          <li><a href="#zh-8-合约治理方-是什么意思">8 “合约治理方”是什么意思</a></li>
+          <li><a href="#zh-9-系统证明什么-又不证明什么">9 系统证明什么，又不证明什么</a></li>
+          <li><a href="#zh-10-示例与测试如何产生">10 示例与测试如何产生</a></li>
+          <li><a href="#zh-11-研究资料">11 研究资料</a></li>
+        </ul>
+      </div>
+    </nav>
+    <main>
+      <div data-language-panel="en" data-document-title="Permio: From Human Need to Programmable Context" lang="en">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio: From Human Need to Programmable Context</h1>
+          <p>A human-first path from contextual privacy needs to programmable scenarios, scoped capabilities, cross-domain use cases, system boundaries, and implementation order.</p>
+        </header>
+        <article>
+<p>Status: human-first product and architecture guide<br>
+Date: 10 October 2026</p>
+<section aria-labelledby="1-start-with-the-human-problem">
+<h2 id="1-start-with-the-human-problem">1 Start with the human problem</h2>
+
+<p>People disclose information because a relationship requires it. A patient
+shares a test with a specialist. A worker proves a qualification to a site. A
+person lets an automated agent make a bounded payment. The information may be
+appropriate in that relationship and inappropriate everywhere else.</p>
+<p>Traditional platforms can implement access rules, but they usually accumulate
+the identity graph, raw records, policy logic, execution power, and audit trail
+in one operator. The user has to trust that operator not to widen a purpose,
+reuse an identifier, retain unnecessary data, or silently change the rule.</p>
+<p>Decentralization is useful here when it separates those powers. A private proof
+system can check a rule without publishing the source record. A public
+execution system can consume a narrow result without learning the evidence. An
+independent recipient can verify what was authorized. No single component
+needs the whole relationship graph.</p>
+<p>Permio is therefore not “a decentralized version” of one application. It is
+infrastructure for making information-use permissions explicit, narrow,
+verifiable, and reusable across different products.</p>
+</section>
+<section aria-labelledby="2-the-central-idea-context-changes-what-is-appropriate">
+<h2 id="2-the-central-idea-context-changes-what-is-appropriate">2 The central idea: context changes what is appropriate</h2>
+
+<p>Privacy is not only secrecy. The same fact can be appropriate for one
+recipient, purpose, and period but inappropriate for another. A context must
+therefore define:</p>
+<ul>
+<li>who is participating and in what relationship;</li>
+<li>which records may support an action;</li>
+<li>which claims may be derived;</li>
+<li>who may receive those claims;</li>
+<li>the permitted purpose and time window;</li>
+<li>whether delegation is allowed;</li>
+<li>what happens when information crosses into another context; and</li>
+<li>which public effect may follow an approved decision.</li>
+</ul>
+<p>Logging in is not enough. A valid account may still be unauthorized for the
+selected action, case, purpose, or recipient.</p>
+</section>
+<section aria-labelledby="3-the-example-is-not-the-product">
+<h2 id="3-the-example-is-not-the-product">3 The example is not the product</h2>
+
+<p>Earlier designs followed one named purchase journey. That was useful for
+learning, but it accidentally made the test story look like the architecture.
+Permio now separates five levels:</p>
+<ol>
+<li>A <code>ScenarioTemplate</code> defines reusable roles-as-slots, contexts, actions,
+transitions, disclosures, proofs, and execution adapters.</li>
+<li>A <code>ScenarioInstance</code> binds an approved template version to real principals
+and current state.</li>
+<li>A <code>ContextAccount</code> represents one principal only inside that instance or
+context.</li>
+<li>A <code>CapabilityGrant</code> authorizes an exact action, resource, purpose,
+recipient, time, and delegation limit.</li>
+<li>An <code>InformationFlow</code> records one evaluated action inside the instance.</li>
+</ol>
+<p>Concrete names, records, identifiers, amounts, and timestamps belong to a
+generated or real scenario instance. They do not belong in architecture,
+contracts, or hand-written acceptance criteria.</p>
+</section>
+<section aria-labelledby="4-how-a-scenario-enters-the-library">
+<h2 id="4-how-a-scenario-enters-the-library">4 How a scenario enters the library</h2>
+
+<pre class="mermaid">flowchart LR
+  Draft[&quot;Draft&quot;] --&gt; Validate[&quot;Validate and simulate&quot;]
+  Validate --&gt; Review[&quot;Privacy and domain review&quot;]
+  Review --&gt; Activate[&quot;Threshold activation&quot;]
+  Activate --&gt; Instantiate[&quot;Create an instance&quot;]
+</pre>
+<p>A human, organization, or Agent may draft a template if it holds an authoring
+capability. Deterministic tools check its schema, referenced circuits,
+conflicting rules, privacy invariants, and tests. Named reviewers examine what
+can be disclosed and how contexts connect. Namespace governance activates one
+exact version and content hash. A runtime allocator may then instantiate it.</p>
+<p>An Agent can draft, test, and flag risks. It cannot approve its own policy.
+The party allowed to instantiate a template is also not automatically allowed
+to assign every slot or delegate every action.</p>
+</section>
+<section aria-labelledby="5-how-programmable-permissions-feel-to-a-user">
+<h2 id="5-how-programmable-permissions-feel-to-a-user">5 How programmable permissions feel to a user</h2>
+
+<p>A person does not receive a permanent “patient,” “worker,” “buyer,” or “agent
+owner” role. The interface presents a proposed action in plain language:</p>
+<ul>
+<li>what will happen;</li>
+<li>which context and scenario instance it belongs to;</li>
+<li>which records will be used privately;</li>
+<li>which claims will be revealed;</li>
+<li>who receives the result;</li>
+<li>why they receive it;</li>
+<li>how long the permission lasts;</li>
+<li>whether an Agent or service may act; and</li>
+<li>which new link, if any, the action creates.</li>
+</ul>
+<p>After confirmation, the client creates an <code>ActionIntent</code>. A short-lived session
+key may exercise only the listed capability. Changing the recipient, purpose,
+resource, time, or action requires a different authorization.</p>
+</section>
+<section aria-labelledby="6-three-first-class-scenario-profiles">
+<h2 id="6-three-first-class-scenario-profiles">6 Three first-class scenario profiles</h2>
+
+<p>These template families are part of the Permio design, not optional future
+examples and not fixed fixtures. Concrete values are generated only when a
+template is instantiated.</p>
+<h3 id="6-1-clinical-referral-and-research-consent">6.1 Clinical referral and research consent</h3>
+
+<p>A patient wants a specialist to see selected observations for treatment during
+a limited period. The specialist does not need the patient&#39;s complete record.
+Later, a research service asks whether the patient meets a study criterion.
+That is a new context and should reveal an eligibility claim rather than the
+treatment record or specialist relationship.</p>
+<p>The template must distinguish treatment, research, and optional emergency
+access; bind each to its own recipient, purpose, period, and audit rule; and
+allow consent to expire or be revoked. HL7 FHIR Consent is relevant because it
+models recipients, actions, purposes, data, periods, and computable consent
+rules.</p>
+<h3 id="6-2-professional-qualification-and-temporary-site-access">6.2 Professional qualification and temporary site access</h3>
+
+<p>A professional needs to prove that one qualification is current for a specific
+task, site, and shift. The site does not need the person&#39;s full transcript,
+home address, unrelated certificates, or employment history. A successful
+proof creates a short-lived access capability.</p>
+<p>If an incident later requires investigation, selected evidence moves into a
+new investigator context through an explicit bridge. The original site-access
+presentation must not become a reusable identifier. W3C Verifiable Credentials
+research is relevant because it covers professional and education credentials,
+holder-controlled disclosure, duration limits, revocation, and correlation
+risks.</p>
+<h3 id="6-3-delegated-financial-or-purchasing-agent">6.3 Delegated financial or purchasing Agent</h3>
+
+<p>A person wants an automated Agent to complete a named transaction for a named
+counterparty under a bounded amount or resource policy and before an expiry.
+The Agent should not see unrelated account history, change the recipient,
+delegate indefinitely, activate policies, or reuse permission after revocation.</p>
+<p>The privacy layer approves the precise intent; the high-throughput layer
+executes it. OAuth Rich Authorization Requests is relevant because it uses
+structured authorization details rather than one broad scope string. ODRL is
+relevant as a vocabulary for parties, actions, assets, constraints, and duties.</p>
+</section>
+<section aria-labelledby="7-the-system-in-one-picture">
+<h2 id="7-the-system-in-one-picture">7 The system in one picture</h2>
+
+<pre class="mermaid">flowchart LR
+  A[&quot;CONTROL&lt;br/&gt;Which template and policy are active?&quot;]
+  B[&quot;PRIVACY&lt;br/&gt;Is this exact action allowed?&quot;]
+  C[&quot;RECEIPT&lt;br/&gt;Minimal approved result&quot;]
+  D[&quot;EXECUTION&lt;br/&gt;Perform only that action&quot;]
+  E[&quot;EVIDENCE&lt;br/&gt;Optional recipient-encrypted records&quot;]
+
+  A --&gt; B --&gt; C --&gt; D
+  B -.-&gt; E
+</pre>
+<ul>
+<li>The <strong>control plane</strong> governs versions, reviewers, issuers, and upgrades.</li>
+<li><strong>Midnight</strong> checks private evidence, capability scope, context, expiry, and
+uniqueness.</li>
+<li>A <strong>gateway</strong> verifies finalized public output and transports a typed receipt.</li>
+<li><strong>Monad or an application</strong> checks the receipt and performs the named action.</li>
+<li>An <strong>evidence vault</strong> receives selected ciphertext directly when necessary.</li>
+</ul>
+<p>The execution layer may reject a receipt because execution state has changed.
+It may never broaden what the privacy layer approved.</p>
+</section>
+<section aria-labelledby="8-what-contract-authority-means">
+<h2 id="8-what-contract-authority-means">8 What “Contract Authority” means</h2>
+
+<p>The smart contract is an automated enforcer, not a human manager. It checks
+proofs, signatures, thresholds, timelocks, and state. Accountable governance
+controllers decide which issuer, template, circuit, verifier, upgrade, or
+emergency action should be authorized.</p>
+<p>Those powers must be separated. Template activation, issuer admission, circuit
+upgrades, gateway rotation, execution-registry administration, and emergency
+revocation use different capabilities and preferably different threshold keys.
+A single authority secret is acceptable only as a labelled local-development
+bootstrap mechanism.</p>
+</section>
+<section aria-labelledby="9-what-the-system-proves-and-what-it-does-not">
+<h2 id="9-what-the-system-proves-and-what-it-does-not">9 What the system proves—and what it does not</h2>
+
+<p>Depending on the selected template and circuit, a proof may establish:</p>
+<ul>
+<li>credential provenance and current status;</li>
+<li>control of a credential or context account;</li>
+<li>satisfaction of a policy predicate;</li>
+<li>authorization for one recipient, purpose, action, and period;</li>
+<li>scoped uniqueness or non-reuse; and</li>
+<li>integrity of selected records and transitions.</li>
+</ul>
+<p>It does not automatically prove that an opinion, allegation, diagnosis,
+prediction, or human decision is true. It also does not make an unsafe scenario
+template safe. Template review and governance remain essential.</p>
+</section>
+<section aria-labelledby="10-how-examples-and-tests-are-produced">
+<h2 id="10-how-examples-and-tests-are-produced">10 How examples and tests are produced</h2>
+
+<p>Architecture defines schemas and invariants. A versioned generator produces
+synthetic scenario instances from an explicit seed:</p>
+<pre><code class="language-text">template + generator version + seed + policy profile
+  -&gt; synthetic principals and records
+  -&gt; expected private/public classification
+  -&gt; positive and negative tests
+</code></pre>
+<p>The same generator can produce a readable demonstration, a deterministic test
+fixture, or randomized property tests. Changing a generated name or identifier
+must not require source-code changes. Production data never uses test seeds.</p>
+</section>
+<section aria-labelledby="11-research-references">
+<h2 id="11-research-references">11 Research references</h2>
+
+<ul>
+<li><a href="https://hl7.org/fhir/consent.html">HL7 FHIR Consent</a></li>
+<li><a href="https://www.w3.org/TR/vc-use-cases/">W3C Verifiable Credentials Use Cases</a></li>
+<li><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C Verifiable Credentials Data Model 2.0</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9396.html">RFC 9396: OAuth 2.0 Rich Authorization Requests</a></li>
+<li><a href="https://www.w3.org/TR/odrl-model/">W3C ODRL Information Model 2.2</a></li>
+</ul>
+<p>These sources help define Permio&#39;s first profiles. Using their external data
+formats or libraries still requires an explicit compatibility, security,
+privacy, and licensing decision.</p>
+</section>
+        </article>
+        <footer>
+          Generated from <code>docs/PERMIO_FROM_NEED_TO_DESIGN.md</code>.
+          Source SHA-256: <code>c928d98f38bbe2a337f00ee62377f2991952ffe50588410d960b430e69f875b9</code>.
+        </footer>
+      </div>
+      <div data-language-panel="zh-CN" data-document-title="Permio：从人的需求到可编程情境" lang="zh-CN">
+        <header>
+          <div class="eyebrow">Midnight × Monad</div>
+          <h1>Permio：从人的需求到可编程情境</h1>
+          <p>从情境隐私需求出发，逐步推导 Permio 的可编程情境、有限能力、跨领域用例、系统边界与实施顺序。</p>
+        </header>
+        <article>
+<p>状态：面向人的产品与架构指南<br>
+日期：2026 年 10 月 10 日</p>
+<section aria-labelledby="zh-1-从人的问题开始">
+<h2 id="zh-1-从人的问题开始">1 从人的问题开始</h2>
+
+<p>人们披露信息，是因为某种关系需要它。患者把检查结果交给专科人员；工作人员向场地证明
+资格；一个人允许自动化 Agent 执行有限范围的付款。信息在该关系中可能合理，到了其他地方
+却可能不合理。</p>
+<p>传统平台当然可以实现访问规则，但通常会把身份关系图、原始记录、策略逻辑、执行权和审计
+轨迹集中到一个运营方。用户只能相信它不会扩大用途、复用标识符、保留不必要数据或悄悄改变
+规则。</p>
+<p>去中心化在这里的价值是拆分这些权力。私有证明系统可以在不发布来源记录的情况下检查规则；
+公开执行系统可以在不了解证据的情况下消费一个狭窄结果；独立接收方可以验证究竟授权了什么。
+没有任何单一组件需要掌握完整关系图。</p>
+<p>因此，Permio 不是某一个应用的“去中心化版本”。它是一套让信息使用权限变得显式、狭窄、
+可验证，并能够在不同产品中复用的基础设施。</p>
+</section>
+<section aria-labelledby="zh-2-核心思想-上下文决定什么是合理的信息流">
+<h2 id="zh-2-核心思想-上下文决定什么是合理的信息流">2 核心思想：上下文决定什么是合理的信息流</h2>
+
+<p>隐私不只是保密。同一事实对于某个接收方、用途和期限可能合理，对于另一个则不合理。因此，
+一个上下文必须定义：</p>
+<ul>
+<li>谁参与，以及他们处于什么关系；</li>
+<li>哪些记录可以支持操作；</li>
+<li>可以派生哪些声明；</li>
+<li>谁可以接收这些声明；</li>
+<li>允许的用途与时间窗口；</li>
+<li>是否允许委托；</li>
+<li>信息跨入另一个上下文时会发生什么；以及</li>
+<li>获批准决定可以触发什么公开效果。</li>
+</ul>
+<p>登录并不等于授权。有效账户仍可能没有权限执行所选操作、处理所选案件、使用某个用途或向
+某个接收方披露。</p>
+</section>
+<section aria-labelledby="zh-3-示例不是产品">
+<h2 id="zh-3-示例不是产品">3 示例不是产品</h2>
+
+<p>早期设计沿着一个具名购买旅程展开。它有助于学习，却也意外地让测试故事看起来像架构本身。
+Permio 现在把五个层次分开：</p>
+<ol>
+<li><code>ScenarioTemplate</code> 定义可复用的角色槽位、上下文、操作、转换、披露、证明和执行适配器。</li>
+<li><code>ScenarioInstance</code> 把一个已批准模板版本绑定到真实主体和当前状态。</li>
+<li><code>ContextAccount</code> 只在该实例或上下文内表示一个主体。</li>
+<li><code>CapabilityGrant</code> 授权精确操作、资源、用途、接收方、时间与委托限制。</li>
+<li><code>InformationFlow</code> 记录实例内一次经过评估的操作。</li>
+</ol>
+<p>具体姓名、记录、标识符、金额和时间戳属于生成的或真实的情境实例，不属于架构、合约或
+手写验收条件。</p>
+</section>
+<section aria-labelledby="zh-4-情境如何进入情境库">
+<h2 id="zh-4-情境如何进入情境库">4 情境如何进入情境库</h2>
+
+<pre class="mermaid">flowchart LR
+  Draft[&quot;草拟&quot;] --&gt; Validate[&quot;验证与模拟&quot;]
+  Validate --&gt; Review[&quot;隐私与领域审核&quot;]
+  Review --&gt; Activate[&quot;阈值激活&quot;]
+  Activate --&gt; Instantiate[&quot;创建实例&quot;]
+</pre>
+<p>持有作者能力的人、组织或 Agent 可以草拟模板。确定性工具检查模式、引用电路、冲突规则、
+隐私不变量和测试。具名审核者检查哪些内容可以披露以及上下文如何连接。命名空间治理激活一个
+精确版本与内容哈希。之后，运行时分配器才能实例化它。</p>
+<p>Agent 可以草拟、测试和标记风险，但不能批准自己的策略。能够实例化模板的一方，也不会自动
+获得分配所有槽位或委托所有操作的权限。</p>
+</section>
+<section aria-labelledby="zh-5-用户如何感受到可编程权限">
+<h2 id="zh-5-用户如何感受到可编程权限">5 用户如何感受到可编程权限</h2>
+
+<p>一个人不会获得永久“患者”“工作人员”“买家”或“Agent 所有者”角色。界面会用普通语言
+展示拟议操作：</p>
+<ul>
+<li>将发生什么；</li>
+<li>它属于哪个上下文和情境实例；</li>
+<li>哪些记录只会被私下使用；</li>
+<li>将披露哪些声明；</li>
+<li>谁接收结果；</li>
+<li>接收的用途是什么；</li>
+<li>权限持续多久；</li>
+<li>Agent 或服务是否可以行动；以及</li>
+<li>该操作会新建什么关联。</li>
+</ul>
+<p>确认后，客户端创建 <code>ActionIntent</code>。短期会话密钥只能行使列出的能力。改变接收方、用途、
+资源、时间或操作，都需要另一份授权。</p>
+</section>
+<section aria-labelledby="zh-6-三个一等情境-profile">
+<h2 id="zh-6-三个一等情境-profile">6 三个一等情境 profile</h2>
+
+<p>这些模板族已经是 Permio 设计的一部分，不是未来可选示例，也不是固定测试数据。具体值只在
+实例化模板时生成。</p>
+<h3 id="zh-6-1-临床转诊与研究同意">6.1 临床转诊与研究同意</h3>
+
+<p>患者希望一位专科人员在有限期限内为了治疗查看选定观察记录，而不需要看到完整病历。之后，
+研究服务询问患者是否满足研究标准。这是一个新上下文，应当披露资格声明，而不是治疗记录或
+专科关系。</p>
+<p>模板必须区分治疗、研究和可选紧急访问；把每项操作绑定到各自的接收方、用途、期限和审计
+规则；并允许同意到期或撤销。HL7 FHIR Consent 与此相关，因为它建模了接收方、操作、用途、
+数据、期限和可计算同意规则。</p>
+<h3 id="zh-6-2-专业资格与临时场地访问">6.2 专业资格与临时场地访问</h3>
+
+<p>专业人员需要证明一项资格对于特定任务、场地和班次仍然有效。场地不需要完整成绩单、家庭
+地址、无关证书或就业历史。证明成功后产生短期访问能力。</p>
+<p>如果之后发生需要调查的事件，选定证据通过显式桥接进入新的调查者上下文。原始场地访问证明
+不得变成可重复使用的标识符。W3C Verifiable Credentials 研究与此相关，因为它覆盖专业和
+教育凭证、持有人控制披露、期限限制、撤销和关联风险。</p>
+<h3 id="zh-6-3-受委托的金融或采购-agent">6.3 受委托的金融或采购 Agent</h3>
+
+<p>一个人希望自动化 Agent 为具名交易对手完成一项具名交易，并受到金额或资源策略及期限约束。
+Agent 不应看到无关账户历史、替换接收方、无限委托、激活策略，或在撤销后复用权限。</p>
+<p>隐私层批准精确意图，高吞吐层负责执行。OAuth Rich Authorization Requests 与此相关，因为
+它使用结构化授权详情，而不是一个宽泛 scope 字符串。ODRL 则可作为参与方、操作、资产、
+约束和义务的参考词汇。</p>
+</section>
+<section aria-labelledby="zh-7-一张图看懂系统">
+<h2 id="zh-7-一张图看懂系统">7 一张图看懂系统</h2>
+
+<pre class="mermaid">flowchart LR
+  A[&quot;控制&lt;br/&gt;哪些模板与策略有效？&quot;]
+  B[&quot;隐私&lt;br/&gt;这个精确操作是否允许？&quot;]
+  C[&quot;收据&lt;br/&gt;最小获批结果&quot;]
+  D[&quot;执行&lt;br/&gt;只执行该操作&quot;]
+  E[&quot;证据&lt;br/&gt;可选的接收方加密记录&quot;]
+
+  A --&gt; B --&gt; C --&gt; D
+  B -.-&gt; E
+</pre>
+<ul>
+<li><strong>控制面</strong>治理版本、审核者、签发者和升级。</li>
+<li><strong>Midnight</strong>检查私有证据、能力范围、上下文、期限和唯一性。</li>
+<li><strong>网关</strong>验证已最终确认的公开输出，并传输类型化收据。</li>
+<li><strong>Monad 或应用</strong>检查收据并执行具名操作。</li>
+<li>必要时，<strong>证据保险库</strong>直接接收选定密文。</li>
+</ul>
+<p>执行层可以因为执行状态变化而拒绝收据，但永远不能扩大隐私层批准的内容。</p>
+</section>
+<section aria-labelledby="zh-8-合约治理方-是什么意思">
+<h2 id="zh-8-合约治理方-是什么意思">8 “合约治理方”是什么意思</h2>
+
+<p>智能合约是自动执行者，不是人类 manager。它检查证明、签名、阈值、时间锁和状态。需要承担
+责任的治理控制者决定应当授权哪个签发者、模板、电路、验证者、升级或紧急操作。</p>
+<p>这些权力必须拆分。模板激活、签发者准入、电路升级、网关轮换、执行注册表管理和紧急撤销
+使用不同能力，并最好使用不同的阈值密钥。单一 authority secret 只能作为标记清楚的本地开发
+引导机制。</p>
+</section>
+<section aria-labelledby="zh-9-系统证明什么-又不证明什么">
+<h2 id="zh-9-系统证明什么-又不证明什么">9 系统证明什么，又不证明什么</h2>
+
+<p>根据所选模板和电路，证明可以建立：</p>
+<ul>
+<li>凭证来源与当前状态；</li>
+<li>凭证或上下文账户的控制权；</li>
+<li>是否满足策略谓词；</li>
+<li>对一个接收方、用途、操作和期限的授权；</li>
+<li>限定范围的唯一性或不可复用性；以及</li>
+<li>所选记录和转换的完整性。</li>
+</ul>
+<p>它不会自动证明观点、指控、诊断、预测或人的决定为真，也不会让一个不安全的情境模板自动
+变安全。模板审核与治理仍然不可缺少。</p>
+</section>
+<section aria-labelledby="zh-10-示例与测试如何产生">
+<h2 id="zh-10-示例与测试如何产生">10 示例与测试如何产生</h2>
+
+<p>架构定义模式和不变量。版本化生成器根据显式种子生成合成情境实例：</p>
+<pre><code class="language-text">模板 + 生成器版本 + 种子 + 策略 profile
+  -&gt; 合成主体与记录
+  -&gt; 预期私有/公开分类
+  -&gt; 正向与负向测试
+</code></pre>
+<p>同一生成器可以产生可读演示、确定性测试数据或随机属性测试。改变生成的姓名或标识符不得要求
+修改源码。生产数据绝不使用测试种子。</p>
+</section>
+<section aria-labelledby="zh-11-研究资料">
+<h2 id="zh-11-研究资料">11 研究资料</h2>
+
+<ul>
+<li><a href="https://hl7.org/fhir/consent.html">HL7 FHIR Consent</a></li>
+<li><a href="https://www.w3.org/TR/vc-use-cases/">W3C Verifiable Credentials Use Cases</a></li>
+<li><a href="https://www.w3.org/TR/vc-data-model-2.0/">W3C Verifiable Credentials Data Model 2.0</a></li>
+<li><a href="https://www.rfc-editor.org/rfc/rfc9396.html">RFC 9396: OAuth 2.0 Rich Authorization Requests</a></li>
+<li><a href="https://www.w3.org/TR/odrl-model/">W3C ODRL Information Model 2.2</a></li>
+</ul>
+<p>这些资料帮助定义 Permio 的首批 profile。使用其外部数据格式或库，仍需要明确的兼容性、
+安全、隐私和许可证决策。</p>
+</section>
+        </article>
+        <footer>
+          由 <code>docs/PERMIO_FROM_NEED_TO_DESIGN.md</code> 自动生成。
+          源文件 SHA-256：<code>c928d98f38bbe2a337f00ee62377f2991952ffe50588410d960b430e69f875b9</code>。
+        </footer>
+      </div>
+    </main>
+  </div>
+  <script>
+    (() => {
+      const storageKey = "permio-doc-language";
+      const supportedLanguages = new Set(["en", "zh-CN"]);
+      const buttons = [...document.querySelectorAll("[data-language-choice]")];
+
+      function languageFromHash() {
+        if (!window.location.hash) return null;
+        try {
+          const target = document.getElementById(
+            decodeURIComponent(window.location.hash.slice(1)),
+          );
+          return target?.closest("[data-language-panel]")?.dataset.languagePanel ?? null;
+        } catch {
+          return null;
+        }
+      }
+
+      function storedLanguage() {
+        try {
+          const stored = window.localStorage.getItem(storageKey);
+          return supportedLanguages.has(stored) ? stored : null;
+        } catch {
+          return null;
+        }
+      }
+
+      function selectLanguage(language, persist = false) {
+        if (!supportedLanguages.has(language)) return;
+        document.documentElement.lang = language;
+        document.documentElement.dataset.language = language;
+        for (const button of buttons) {
+          button.setAttribute(
+            "aria-pressed",
+            String(button.dataset.languageChoice === language),
+          );
+        }
+        const panel = document.querySelector(
+          '[data-language-panel="' + language + '"][data-document-title]',
+        );
+        if (panel) document.title = panel.dataset.documentTitle;
+        if (persist) {
+          try {
+            window.localStorage.setItem(storageKey, language);
+          } catch {
+            // The page still works when browser privacy settings disable storage.
+          }
+        }
+        window.dispatchEvent(
+          new CustomEvent("permio:languagechange", { detail: { language } }),
+        );
+      }
+
+      const initialLanguage =
+        languageFromHash() ??
+        storedLanguage() ??
+        (window.navigator.language.toLowerCase().startsWith("zh") ? "zh-CN" : "en");
+      selectLanguage(initialLanguage);
+
+      for (const button of buttons) {
+        button.addEventListener("click", () => {
+          selectLanguage(button.dataset.languageChoice, true);
+        });
+      }
+      window.addEventListener("hashchange", () => {
+        const language = languageFromHash();
+        if (language) selectLanguage(language);
+      });
+    })();
+  </script>
+
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "default",
+      look: "classic",
+      layout: "dagre",
+    });
+
+    async function renderActiveMermaidDiagrams() {
+      const language = document.documentElement.dataset.language ?? "en";
+      const diagrams = document.querySelectorAll(
+        '[data-language-panel="' + language + '"] pre.mermaid:not([data-processed="true"])',
+      );
+
+      for (const diagram of diagrams) {
+        const source = diagram.textContent;
+        try {
+          await mermaid.run({ nodes: [diagram], suppressErrors: true });
+          if (!diagram.querySelector("svg")) {
+            throw new Error("Mermaid did not produce an SVG diagram.");
+          }
+        } catch (error) {
+          diagram.removeAttribute("data-processed");
+          diagram.textContent = source;
+          diagram.classList.add("mermaid-error");
+          console.error("Unable to render Mermaid diagram.", error);
+        }
+      }
+    }
+
+    await renderActiveMermaidDiagrams();
+    window.addEventListener("permio:languagechange", renderActiveMermaidDiagrams);
+  </script>
+</body>
+</html>

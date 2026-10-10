@@ -9,19 +9,38 @@ const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "..");
 const documentDefinitions = [
   {
-    source: "docs/ALICE_BOB_CLARA_COMPOSITE_ARCHITECTURE.md",
-    output: "docs/alice-bob-clara-architecture.html",
+    source: "docs/PERMIO_FROM_NEED_TO_DESIGN.md",
+    output: "docs/permio-from-need-to-design.html",
     description:
-      "Permio composite architecture for Alice, Bob, and Clara across Midnight and Monad, with a condensed Chinese summary",
+      "A human-first explanation of how Permio's requirements lead to its module and protocol design",
     summaries: {
-      en: "A complete English architecture for the Alice, Bob, and Clara scenario, with a condensed Chinese summary covering the core information flows, zero-knowledge circuits, public attestations, trust boundaries, and delivery sequence.",
+      en: "A human-first path from contextual privacy needs to programmable scenarios, scoped capabilities, cross-domain use cases, system boundaries, and implementation order.",
       "zh-CN":
-        "Alice、Bob 与 Clara 场景的中文摘要，涵盖核心信息流、零知识电路、公开证明、信任边界与交付顺序。完整规范请切换至英文。",
+        "从情境隐私需求出发，逐步推导 Permio 的可编程情境、有限能力、跨领域用例、系统边界与实施顺序。",
     },
-    chineseContent: "summary",
+    about: [
+      "Permio",
+      "human-centered architecture",
+      "privacy-preserving credentials",
+      "Midnight",
+      "Monad",
+    ],
+  },
+  {
+    source: "docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md",
+    output: "docs/programmable-context-architecture.html",
+    description:
+      "Permio architecture for programmable context privacy across Midnight and composable execution systems",
+    summaries: {
+      en: "A bilingual architecture for versioned scenario templates, context-bound accounts, Midnight privacy authorization, minimal receipts, and composable execution.",
+      "zh-CN":
+        "版本化情境模板、上下文账户、Midnight 隐私授权、最小收据与可组合执行的完整双语架构。",
+    },
     about: [
       "Midnight",
       "Monad",
+      "contextual privacy",
+      "programmable authorization",
       "zero-knowledge proofs",
       "recipient-bound attestations",
     ],
@@ -36,7 +55,6 @@ const documentDefinitions = [
       "zh-CN":
         "一份完整的双语执行契约，固定 Permio 构建的里程碑顺序、产物、隐私不变量、测试、证据与二元完成门槛。",
     },
-    chineseContent: "complete",
     about: [
       "Midnight",
       "Monad",
@@ -75,7 +93,7 @@ function createSlug(value, occurrences) {
   return occurrence === 0 ? base : `${base}-${occurrence + 1}`;
 }
 
-function prepareMarkdown(source) {
+function prepareMarkdown(source, idPrefix = "") {
   const occurrences = new Map();
   const headings = [];
   let title = "Permio Architecture";
@@ -91,7 +109,7 @@ function prepareMarkdown(source) {
     const depth = match[1].length;
     const rawText = match[2];
     const text = headingText(rawText);
-    const id = createSlug(rawText, occurrences);
+    const id = `${idPrefix}${createSlug(rawText, occurrences)}`;
 
     if (depth === 1 && !removedFirstTitle) {
       title = text;
@@ -163,12 +181,17 @@ function wrapSections(renderedMarkdown) {
   return openedSection ? `${withSections}</section>` : withSections;
 }
 
-function renderLanguage(source) {
-  const { headings, markdown, title } = prepareMarkdown(source);
-  const renderedMarkdown = marked.parse(markdown, {
-    async: false,
-    gfm: true,
-  });
+function renderLanguage(source, idPrefix = "") {
+  const { headings, markdown, title } = prepareMarkdown(source, idPrefix);
+  const renderedMarkdown = marked
+    .parse(markdown, {
+      async: false,
+      gfm: true,
+    })
+    .replace(
+      /<pre><code class="language-mermaid">([\s\S]*?)<\/code><\/pre>/g,
+      (_block, diagram) => `<pre class="mermaid">${diagram}</pre>`,
+    );
   const article = wrapSections(
     renderedMarkdown.replace(
       /<table>[\s\S]*?<\/table>/g,
@@ -193,15 +216,51 @@ function generateHtml(source, definition) {
     definition.source,
   );
   const english = renderLanguage(languageSources.en);
-  const chinese = renderLanguage(languageSources["zh-CN"]);
-  const chineseChoiceLabel =
-    definition.chineseContent === "summary" ? "中文摘要" : "中文";
-  const chineseNotice =
-    definition.chineseContent === "summary"
-      ? `<aside class="translation-notice" role="note">
-          本页为中文摘要，并非英文规范的逐节完整翻译。完整内容请参阅英文版本。
-        </aside>`
-      : "";
+  const chinese = renderLanguage(languageSources["zh-CN"], "zh-");
+  const hasMermaid =
+    english.article.includes('class="mermaid"') ||
+    chinese.article.includes('class="mermaid"');
+  const mermaidSupport = hasMermaid
+    ? `
+  <script type="module">
+    import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@12.1.0/dist/mermaid.esm.min.mjs";
+
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "strict",
+      theme: window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? "dark"
+        : "default",
+      look: "classic",
+      layout: "dagre",
+    });
+
+    async function renderActiveMermaidDiagrams() {
+      const language = document.documentElement.dataset.language ?? "en";
+      const diagrams = document.querySelectorAll(
+        '[data-language-panel="' + language + '"] pre.mermaid:not([data-processed="true"])',
+      );
+
+      for (const diagram of diagrams) {
+        const source = diagram.textContent;
+        try {
+          await mermaid.run({ nodes: [diagram], suppressErrors: true });
+          if (!diagram.querySelector("svg")) {
+            throw new Error("Mermaid did not produce an SVG diagram.");
+          }
+        } catch (error) {
+          diagram.removeAttribute("data-processed");
+          diagram.textContent = source;
+          diagram.classList.add("mermaid-error");
+          console.error("Unable to render Mermaid diagram.", error);
+        }
+      }
+    }
+
+    await renderActiveMermaidDiagrams();
+    window.addEventListener("permio:languagechange", renderActiveMermaidDiagrams);
+  </script>`
+    : "";
 
   return `<!doctype html>
 <!--
@@ -222,8 +281,8 @@ function generateHtml(source, definition) {
     "@context": "https://schema.org",
     "@type": "TechArticle",
     "name": ${JSON.stringify(english.title)},
-    "dateModified": "2026-10-09",
-    "version": "1.1",
+    "dateModified": "2026-10-10",
+    "version": "2.0",
     "inLanguage": ["en", "zh-CN"],
     "about": ${JSON.stringify(definition.about)}
   }
@@ -254,6 +313,9 @@ function generateHtml(source, definition) {
       margin: 1rem 0; padding: 1rem 1.1rem; border: 1px solid var(--border);
       border-radius: .65rem; background: var(--code); overflow-x: auto;
     }
+    pre.mermaid { display: flex; justify-content: center; white-space: pre-wrap; background: var(--surface); }
+    pre.mermaid svg { max-width: 100%; height: auto; }
+    pre.mermaid.mermaid-error { display: block; color: var(--muted); text-align: left; }
     .shell { display: grid; grid-template-columns: 18rem minmax(0, 1fr); min-height: 100vh; }
     nav {
       position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.6rem 1.25rem;
@@ -300,10 +362,6 @@ function generateHtml(source, definition) {
       margin: 1.25rem 0; padding: .35rem 1rem; color: var(--muted);
       border-left: 4px solid var(--midnight); background: var(--surface-2);
     }
-    .translation-notice {
-      margin: 2rem 0 1rem; padding: .85rem 1rem; border: 1px solid var(--border);
-      border-left: 4px solid var(--midnight); border-radius: .45rem; background: var(--surface-2);
-    }
     .table-wrap { overflow-x: auto; margin: 1rem 0 1.5rem; border-radius: .7rem; box-shadow: var(--shadow); }
     table { width: 100%; border-collapse: collapse; background: var(--surface); font-size: .94rem; }
     th, td { padding: .7rem .8rem; border: 1px solid var(--border); text-align: left; vertical-align: top; }
@@ -344,11 +402,7 @@ function generateHtml(source, definition) {
       <small data-language-panel="zh-CN" lang="zh-CN">由规范 Markdown 自动生成</small>
       <div class="language-switcher" role="group" aria-label="Document language">
         <button type="button" data-language-choice="en" aria-pressed="true">English</button>
-        <button type="button" data-language-choice="zh-CN" aria-pressed="false"${
-          definition.chineseContent === "summary"
-            ? ' aria-label="Condensed Chinese summary" title="Condensed Chinese summary"'
-            : ""
-        }>${chineseChoiceLabel}</button>
+        <button type="button" data-language-choice="zh-CN" aria-pressed="false">中文</button>
       </div>
       <div data-language-panel="en" lang="en">
         <ul aria-label="English sections">
@@ -383,7 +437,6 @@ ${english.article}
           <p>${escapeHtml(definition.summaries["zh-CN"])}</p>
         </header>
         <article>
-${chineseNotice}
 ${chinese.article}
         </article>
         <footer>
@@ -441,6 +494,9 @@ ${chinese.article}
             // The page still works when browser privacy settings disable storage.
           }
         }
+        window.dispatchEvent(
+          new CustomEvent("permio:languagechange", { detail: { language } }),
+        );
       }
 
       const initialLanguage =
@@ -460,6 +516,7 @@ ${chinese.article}
       });
     })();
   </script>
+${mermaidSupport}
 </body>
 </html>
 `;
