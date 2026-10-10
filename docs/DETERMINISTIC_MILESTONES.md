@@ -95,7 +95,8 @@ authorization are implemented.
 
 ## 5 M2 — Scenario-template domain package
 
-Status: `NOT_STARTED`; depends on M0
+Status: `DONE`; depends on M0; acceptance evidence is recorded in
+`docs/evidence/M2/acceptance.json`
 
 ### Artifacts
 
@@ -118,6 +119,17 @@ Status: `NOT_STARTED`; depends on M0
 
 M2 fails if supported contexts or actions are a closed TypeScript union tied to
 one use case, or if validation executes arbitrary template code.
+
+### Implemented result
+
+`packages/scenario-domain` now owns the open template model, exact schema
+validation, graph and cross-reference checks, canonical Unicode-normalized
+serialization, length-delimited domain-separated SHA-256 hashing, and template
+revision compatibility. Its tests permute object-key order, exercise invalid
+graphs and references, prove that accessor code is not executed, and enforce a
+local-only production import boundary. Scenario catalog entries remain data to
+be governed in M4 and instantiated by the M3 generator; none is embedded as a
+closed application type.
 
 ## 6 M3 — Deterministic scenario generator
 
@@ -505,7 +517,7 @@ M1 的完成状态只记录已经实现的收据切片，不表示情境模板�
 
 ## 5 M2——情境模板领域包
 
-状态：`NOT_STARTED`；依赖 M0
+状态：`DONE`；依赖 M0；验收证据记录于 `docs/evidence/M2/acceptance.json`
 
 产物包括 `ScenarioTemplate`、`ContextDefinition`、`ActionDefinition`、转换模式、规范序列化、
 版本化模板哈希、命名空间与语义版本规则、验证错误分类，以及单元和属性测试。
@@ -515,6 +527,13 @@ M1 的完成状态只记录已经实现的收据切片，不表示情境模板�
 
 如果支持的上下文或操作仍是绑定单一用例的封闭 TypeScript union，或者验证器执行任意模板代码，
 M2 失败。
+
+### 已实现结果
+
+`packages/scenario-domain` 现在负责开放式模板模型、精确模式验证、图与交叉引用检查、Unicode
+规范化的规范序列化、带长度前缀和域分离的 SHA-256 哈希，以及模板修订兼容性。测试会置换对象键
+顺序、覆盖无效图与引用、证明不会执行访问器代码，并强制生产代码只能进行包内导入。情境库条目
+仍是将在 M4 中治理、由 M3 生成器实例化的数据；它们没有作为封闭的应用类型嵌入源码。
 
 ## 6 M3——确定性情境生成器
 

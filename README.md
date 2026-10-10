@@ -3,8 +3,9 @@
 Permio is a programmable contextual-privacy architecture: versioned scenario
 templates and context-bound capabilities are authorized privately on Midnight,
 then consumed as narrow receipts by Monad or ordinary applications. The current
-checkout implements only the recipient-bound execution-registry slice and is
-therefore incomplete against the authoritative architecture.
+checkout implements the scenario-template domain package and the
+recipient-bound execution-registry slice. Later authorization, generation, and
+governance milestones remain incomplete against the authoritative architecture.
 
 This is a clean implementation for Monad Metropolis Track 4: Trust, Identity &
 AI Infrastructure.
@@ -30,8 +31,10 @@ also available as a generated
 [`HTML milestone edition`](docs/deterministic-milestones.html). Each milestone
 has fixed artifacts, privacy invariants, negative tests, and a binary exit gate.
 `M0 — Documentation and naming baseline` and the historical `M1 — Existing
-receipt-protocol baseline` are complete; `M2 — Scenario-template domain
-package` is the next implementation milestone.
+receipt-protocol baseline` are complete. `M2 — Scenario-template domain
+package` is also complete, with acceptance evidence in
+[`docs/evidence/M2/acceptance.json`](docs/evidence/M2/acceptance.json); `M3 —
+Deterministic scenario generator` is next.
 
 ## Current scope
 
@@ -117,7 +120,7 @@ identifier.
 | --- | --- |
 | `npm run typecheck` | Check TypeScript configuration and tests. |
 | `npm run compile` | Compile the Solidity contract. |
-| `npm test` | Run the local Hardhat/Node integration tests. |
+| `npm test` | Run protocol, scenario-domain, and contract integration tests. |
 | `npm run check` | Run all local verification. |
 | `npm run node` | Start a local Hardhat JSON-RPC node. |
 | `npm run deploy:local` | Deploy to Hardhat's simulated network. |
@@ -133,8 +136,8 @@ Apache-2.0. See `LICENSE`.
 # 中文说明
 
 Permio 是一套可编程情境隐私架构：版本化情境模板和上下文能力在 Midnight 上完成私有授权，
-再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 只实现了接收方绑定执行注册表
-切片，因此尚未完整符合权威架构。
+再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 已实现情境模板领域包和接收方绑定
+执行注册表切片；后续授权、生成和治理里程碑尚未完成，因此还未完整符合权威架构。
 这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
 
 建议先阅读以人的理解路径为主的
@@ -151,8 +154,10 @@ Permio 是一套可编程情境隐私架构：版本化情境模板和上下文�
 实施过程由[`确定性里程碑规范`](docs/DETERMINISTIC_MILESTONES.md)约束，并提供自动生成的
 [`HTML 里程碑版本`](docs/deterministic-milestones.html)。每个里程碑都规定了固定产物、
 隐私不变量、负向测试和二元退出门槛。
-`M0——文档与命名基线` 和历史 `M1——现有收据协议基线` 已完成；下一个实施里程碑是
-`M2——情境模板领域包`。
+`M0——文档与命名基线`、历史 `M1——现有收据协议基线` 和
+`M2——情境模板领域包` 均已完成。M2 的验收证据位于
+[`docs/evidence/M2/acceptance.json`](docs/evidence/M2/acceptance.json)；下一个实施里程碑是
+`M3——确定性情境生成器`。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

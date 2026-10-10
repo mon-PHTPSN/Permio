@@ -2,7 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-  Source SHA-256: dce0be0185b2f355f960d2f9a8eb1d31f44cce8c06b860f0c40d0ce2b0767fef
+  Source SHA-256: 3b2399e558d1628fbee997b47c3a7f09d473dd1845073e81a1c38f1c8eb7c044
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-  <meta name="source-sha256" content="dce0be0185b2f355f960d2f9a8eb1d31f44cce8c06b860f0c40d0ce2b0767fef">
+  <meta name="source-sha256" content="3b2399e558d1628fbee997b47c3a7f09d473dd1845073e81a1c38f1c8eb7c044">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -283,7 +283,8 @@ authorization are implemented.</p>
 <section aria-labelledby="5-m2-scenario-template-domain-package">
 <h2 id="5-m2-scenario-template-domain-package">5 M2 — Scenario-template domain package</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on M0</p>
+<p>Status: <code>DONE</code>; depends on M0; acceptance evidence is recorded in
+<code>docs/evidence/M2/acceptance.json</code></p>
 <h3 id="artifacts-2">Artifacts</h3>
 
 <ul>
@@ -307,6 +308,16 @@ duplicate identifiers fail validation.</li>
 
 <p>M2 fails if supported contexts or actions are a closed TypeScript union tied to
 one use case, or if validation executes arbitrary template code.</p>
+<h3 id="implemented-result">Implemented result</h3>
+
+<p><code>packages/scenario-domain</code> now owns the open template model, exact schema
+validation, graph and cross-reference checks, canonical Unicode-normalized
+serialization, length-delimited domain-separated SHA-256 hashing, and template
+revision compatibility. Its tests permute object-key order, exercise invalid
+graphs and references, prove that accessor code is not executed, and enforce a
+local-only production import boundary. Scenario catalog entries remain data to
+be governed in M4 and instantiated by the M3 generator; none is embedded as a
+closed application type.</p>
 </section>
 <section aria-labelledby="6-m3-deterministic-scenario-generator">
 <h2 id="6-m3-deterministic-scenario-generator">6 M3 — Deterministic scenario generator</h2>
@@ -634,7 +645,7 @@ hide an environmental failure.</p>
         </article>
         <footer>
           Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-          Source SHA-256: <code>dce0be0185b2f355f960d2f9a8eb1d31f44cce8c06b860f0c40d0ce2b0767fef</code>.
+          Source SHA-256: <code>3b2399e558d1628fbee997b47c3a7f09d473dd1845073e81a1c38f1c8eb7c044</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
@@ -719,13 +730,19 @@ checkout 尚未实现权威设计的这一部分；它不允许继续采用另�
 <section aria-labelledby="zh-5-m2-情境模板领域包">
 <h2 id="zh-5-m2-情境模板领域包">5 M2——情境模板领域包</h2>
 
-<p>状态：<code>NOT_STARTED</code>；依赖 M0</p>
+<p>状态：<code>DONE</code>；依赖 M0；验收证据记录于 <code>docs/evidence/M2/acceptance.json</code></p>
 <p>产物包括 <code>ScenarioTemplate</code>、<code>ContextDefinition</code>、<code>ActionDefinition</code>、转换模式、规范序列化、
 版本化模板哈希、命名空间与语义版本规则、验证错误分类，以及单元和属性测试。</p>
 <p>验收必须证明：未知、缺失或重复字段以及无效引用和不可达状态会失败；规范化不受对象键顺序
 影响；不兼容变更需要新版本；领域包不导入特定应用情境模块。</p>
 <p>如果支持的上下文或操作仍是绑定单一用例的封闭 TypeScript union，或者验证器执行任意模板代码，
 M2 失败。</p>
+<h3 id="zh-已实现结果">已实现结果</h3>
+
+<p><code>packages/scenario-domain</code> 现在负责开放式模板模型、精确模式验证、图与交叉引用检查、Unicode
+规范化的规范序列化、带长度前缀和域分离的 SHA-256 哈希，以及模板修订兼容性。测试会置换对象键
+顺序、覆盖无效图与引用、证明不会执行访问器代码，并强制生产代码只能进行包内导入。情境库条目
+仍是将在 M4 中治理、由 M3 生成器实例化的数据；它们没有作为封闭的应用类型嵌入源码。</p>
 </section>
 <section aria-labelledby="zh-6-m3-确定性情境生成器">
 <h2 id="zh-6-m3-确定性情境生成器">6 M3——确定性情境生成器</h2>
@@ -844,7 +861,7 @@ npm run compile
         </article>
         <footer>
           由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
-          源文件 SHA-256：<code>dce0be0185b2f355f960d2f9a8eb1d31f44cce8c06b860f0c40d0ce2b0767fef</code>。
+          源文件 SHA-256：<code>3b2399e558d1628fbee997b47c3a7f09d473dd1845073e81a1c38f1c8eb7c044</code>。
         </footer>
       </div>
     </main>

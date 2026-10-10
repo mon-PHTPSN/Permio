@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M2",
+  "status": "COMPLETE",
+  "implementationBaseCommit": "e9e8410e4ebfb456b48f10f62a9258f2e3cf3876",
+  "implementationState": "committed with this acceptance record",
+  "acceptedAt": "2026-10-10",
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0"
+  },
+  "commands": [
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Documentation freshness, TypeScript, Hardhat build, six protocol tests, fifteen scenario-domain tests, and six contract integration tests passed"
+    }
+  ],
+  "artifacts": [
+    "packages/scenario-domain/package.json",
+    "packages/scenario-domain/README.md",
+    "packages/scenario-domain/src/model.ts",
+    "packages/scenario-domain/src/validation.ts",
+    "packages/scenario-domain/src/canonical.ts",
+    "packages/scenario-domain/src/versioning.ts",
+    "packages/scenario-domain/src/index.ts",
+    "packages/scenario-domain/test/scenario-domain.test.ts"
+  ],
+  "artifactSha256": {
+    "packages/scenario-domain/src/model.ts": "6edb6d9c4d60c9f53ca4bcae8e00721c5d4876df6ac887cdcd1729748e3e6af2",
+    "packages/scenario-domain/src/validation.ts": "bb1625e5c81c00d66f09f619414f0ab4755a86dc8a2ebd5528434c32744bcc94",
+    "packages/scenario-domain/src/canonical.ts": "9dfdaf0861a4ba7795892f9cc35eca571a7ed0feaa0d48edafb64c70a4990f3a",
+    "packages/scenario-domain/src/versioning.ts": "885f04a279633d38aaddc3248b77014d88ef8eb389d5692fa73911ec203a87fa",
+    "packages/scenario-domain/test/scenario-domain.test.ts": "dffda4210117259ae377aeea1f3271f56a192a8cd59f59f461546288163b8304"
+  },
+  "exitGates": {
+    "exactSchemaRejectsUnknownAndMissingFields": true,
+    "duplicateIdentifiersAndInvalidReferencesFail": true,
+    "unreachableAndAmbiguousStateGraphsFail": true,
+    "canonicalizationSurvivesSixtyFourKeyOrderPermutations": true,
+    "unicodeStringsNormalizeToNfc": true,
+    "templateHashIsLengthDelimitedAndDomainSeparated": true,
+    "semanticVersionCompatibilityIsEnforced": true,
+    "contextsAndActionsAreOpenDataIdentifiers": true,
+    "templateAccessorsAreNeverExecuted": true,
+    "productionImportsAreLocalOrNodeBuiltinsOnly": true,
+    "fullRepositoryCheckPasses": true
+  },
+  "declarations": {
+    "applicationSpecificScenarioImported": false,
+    "closedContextOrActionUnionIntroduced": false,
+    "arbitraryTemplateCodeExecuted": false,
+    "productionSecretsIncluded": false
+  },
+  "nextMilestone": "M3"
+}
