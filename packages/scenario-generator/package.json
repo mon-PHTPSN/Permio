@@ -1,0 +1,20 @@
+{
+  "name": "@permio/scenario-generator",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "generate:golden": "node scripts/write-golden-vector.ts",
+    "test": "node --test test/scenario-generator.test.ts"
+  },
+  "dependencies": {
+    "@permio/scenario-domain": "0.1.0"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

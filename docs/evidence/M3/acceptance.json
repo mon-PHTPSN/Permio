@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M3",
+  "status": "COMPLETE",
+  "implementationBaseCommit": "51197e36fffa04d29162ea9b7ff300e6e1b2c10a",
+  "implementationState": "committed with this acceptance record",
+  "acceptedAt": "2026-10-10",
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0"
+  },
+  "commands": [
+    {
+      "command": "npm run generate:golden --workspace @permio/scenario-generator",
+      "result": "passed",
+      "summary": "Regenerated the committed version-1 private golden vector from the complete validated generator input"
+    },
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Documentation freshness, TypeScript, Hardhat build, six protocol tests, fifteen scenario-domain tests, fourteen scenario-generator tests, and six contract integration tests passed"
+    }
+  ],
+  "artifacts": [
+    "packages/scenario-generator/package.json",
+    "packages/scenario-generator/README.md",
+    "packages/scenario-generator/src/canonical.ts",
+    "packages/scenario-generator/src/classification.ts",
+    "packages/scenario-generator/src/generator.ts",
+    "packages/scenario-generator/src/golden.ts",
+    "packages/scenario-generator/src/index.ts",
+    "packages/scenario-generator/src/model.ts",
+    "packages/scenario-generator/src/privacy-scanner.ts",
+    "packages/scenario-generator/src/validation.ts",
+    "packages/scenario-generator/scripts/write-golden-vector.ts",
+    "packages/scenario-generator/test/support/generator-input.ts",
+    "packages/scenario-generator/test/scenario-generator.test.ts",
+    "packages/scenario-generator/fixtures/generator-vector.v1.json",
+    "package.json",
+    "package-lock.json"
+  ],
+  "artifactSha256": {
+    "packages/scenario-generator/src/canonical.ts": "b36fae032a14cef3cf2cdee2053f2c64f29638b6e652754af3163a30b38a33be",
+    "packages/scenario-generator/src/classification.ts": "99937f87d7bdedfea0dd4c73016c6769eb31526b14fc077aa1f6f239cb9f87fe",
+    "packages/scenario-generator/src/generator.ts": "3d76e653bcae457264740e4f04e09cf961e3caeb17960d851285249fedd84934",
+    "packages/scenario-generator/src/golden.ts": "58032c37922214a084d284c9639a85d8214d171d6ca36428be07320d3f564304",
+    "packages/scenario-generator/src/model.ts": "dcb6e469505693366c5c30f826ddc7e8179a09f77df255e08ce782c9ed45a04e",
+    "packages/scenario-generator/src/privacy-scanner.ts": "78df184a585da7d4a6b911915ea995d759a8943aa572a2ead9ca4e48af8dfa90",
+    "packages/scenario-generator/src/validation.ts": "045f3b349abf79c77c58b22621616e916d78022a0509a24cc64c0f0b805f5fdb",
+    "packages/scenario-generator/test/scenario-generator.test.ts": "be8d6285355a983f16e465f795a9f2f17d5ac2319b4f48b3a94157cda7770666",
+    "packages/scenario-generator/fixtures/generator-vector.v1.json": "c9722134872f00a2f6b3c214700bf8be85f77fe5977ce9e83fc7077b6eb7de5f"
+  },
+  "exitGates": {
+    "completeInputIncludesValidatedTemplateAndHash": true,
+    "generatorVersionSeedAndPolicyProfileAreExplicit": true,
+    "allHashDerivationsAreLengthDelimitedAndDomainSeparated": true,
+    "clockRandomEnvironmentAndMachineStateAreNotRead": true,
+    "principalsAreContextScoped": true,
+    "recordsCredentialsEventsAndTimestampsAreSynthetic": true,
+    "canonicalOutputIsByteStable": true,
+    "committedGoldenVectorIsVersionedAndReproduced": true,
+    "differentSeedsSeparateInstanceValues": true,
+    "classificationManifestIsExhaustiveAndFailClosed": true,
+    "scannerCoversReceiptsLedgersLogsAndGeneratedHtml": true,
+    "rawEscapedAndEncodedLeakageFails": true,
+    "rootTestIntegrationAndLockfileAreUpdated": true,
+    "fullRepositoryCheckPasses": true
+  },
+  "declarations": {
+    "legacyNamedFixtureImported": false,
+    "architectureDocumentInstanceLiteralUsed": false,
+    "applicationSpecificUnionIntroduced": false,
+    "sharedMilestoneStatusMarkdownEdited": false,
+    "generatedHtmlEdited": false,
+    "productionSecretsIncluded": false,
+    "remotePushPerformed": false
+  },
+  "integrationCaveats": [
+    "Golden vectors contain private synthetic output and are test artifacts, not public receipts.",
+    "The privacy scanner detects exact raw and supported single-encoding representations; it does not claim to reverse compression, encryption, hashing, chunking, or arbitrarily layered encodings.",
+    "Hardhat local-install verification requires filesystem realpath access and may fail with HHE22 when an execution sandbox denies that operation."
+  ],
+  "nextMilestone": "M4"
+}
