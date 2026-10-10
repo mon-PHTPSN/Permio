@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M5",
+  "status": "COMPLETE",
+  "implementationBaseCommit": "9b76d6117cabf7211b5077c12357bdc6a3cd251e",
+  "implementationState": "committed with this acceptance record",
+  "acceptedAt": "2026-10-11",
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0",
+    "solidity": "0.8.31",
+    "evmTarget": "osaka"
+  },
+  "commands": [
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Documentation freshness, TypeScript, Solidity compilation, six protocol tests, fifteen scenario-domain tests, fourteen scenario-generator tests, sixteen scenario-governance tests, thirteen context-account tests, and six deployed-contract tests passed"
+    }
+  ],
+  "onChainVerification": {
+    "network": "Hardhat local EVM",
+    "contract": "RecipientBoundAttestationRegistry",
+    "command": "npm run test:contracts",
+    "result": "passed",
+    "tests": 6,
+    "newM5ChainLogic": false,
+    "boundary": "M5 is an off-chain context-account and session-authorization milestone; generic Midnight proof enforcement begins at M6 and is not claimed here"
+  },
+  "artifacts": [
+    "README.md",
+    "docs/evidence/M5/development-log.md",
+    "packages/context-accounts/package.json",
+    "packages/context-accounts/README.md",
+    "packages/context-accounts/src/model.ts",
+    "packages/context-accounts/src/errors.ts",
+    "packages/context-accounts/src/action-intent.ts",
+    "packages/context-accounts/src/system.ts",
+    "packages/context-accounts/src/index.ts",
+    "packages/context-accounts/test/context-accounts.test.ts"
+  ],
+  "artifactSha256": {
+    "README.md": "f8145e4b678a689be40f6687a3fdc1c8e96626429610d6ebe09d20aed6cad7a6",
+    "docs/evidence/M5/development-log.md": "31970e977d380d301fea428f1f546e0d50141ce13b8ca5e688fc856b5672e77e",
+    "packages/context-accounts/src/model.ts": "7f03cdde52d82a9124cd5013d9b3b92a4c3178f795f600518042c6bf0c7b0c0c",
+    "packages/context-accounts/src/errors.ts": "9a378e41987e3c07c7712f3ccf1d97171bbaa74b538840a2e8c77a5356497d0f",
+    "packages/context-accounts/src/action-intent.ts": "9a6a19fb9308a638a62f7038be7947599d00b739fa9ceea77ebc04c05300eba1",
+    "packages/context-accounts/src/system.ts": "0a87ea87644c11a74ea406007ce71b280252084825871a08cadbd415060d59ac",
+    "packages/context-accounts/src/index.ts": "e83bd03e28611f742dfa5453b1d0a8626985b4a39838f436df690747e80f4927",
+    "packages/context-accounts/test/context-accounts.test.ts": "c970fc0fbede841f4d611b64d35dfee3b7ad6e6d3dc811c48d464b55016f97a7"
+  },
+  "exitGates": {
+    "registrationGrantsNoBusinessRole": true,
+    "exactActiveM4AllocationRequired": true,
+    "retiredTemplatesCannotCreateInstances": true,
+    "contextAccountsAreInstanceAndContextBound": true,
+    "humanServiceContractAndAgentPrincipalsSupported": true,
+    "capabilitiesCheckEveryConstrainedDimension": true,
+    "delegationStrictlyAttenuatesParentAuthority": true,
+    "delegationDepthIsBounded": true,
+    "ancestorRevocationPropagates": true,
+    "sessionKeysAreFreshAndCapabilityScoped": true,
+    "sessionIntentSignaturesBindEveryField": true,
+    "sessionExpiryAndReplayAreEnforced": true,
+    "singleDimensionChangesReturnPreciseDenials": true,
+    "instanceAccountGrantAndSessionRevocationAreEnforced": true,
+    "agentsReceiveNoImplicitIssuerOrGovernanceAuthority": true,
+    "existingSolidityContractTestsPassOnLocalEvm": true,
+    "fullRepositoryCheckPasses": true
+  },
+  "declarations": {
+    "loginStateAuthorizesDomainActions": false,
+    "globalRoleIsRuntimeAuthority": false,
+    "globalPublicPseudonymIntroduced": false,
+    "unboundedDelegationAllowed": false,
+    "midnightProofEnforcementClaimed": false,
+    "productionSecretsIncluded": false
+  },
+  "nextMilestone": "M6"
+}

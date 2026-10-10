@@ -3,9 +3,11 @@
 Permio is a programmable contextual-privacy architecture: versioned scenario
 templates and context-bound capabilities are authorized privately on Midnight,
 then consumed as narrow receipts by Monad or ordinary applications. The current
-checkout implements the scenario-template domain package and the
-recipient-bound execution-registry slice. Later authorization, generation, and
-governance milestones remain incomplete against the authoritative architecture.
+checkout implements the M2 scenario-template domain, M3 deterministic
+generator, M4 template governance, M5 context accounts and scoped sessions,
+and the recipient-bound execution-registry slice. Generic Midnight proof
+enforcement and the later receipt, execution, and encrypted-evidence
+milestones remain incomplete against the authoritative architecture.
 
 This is a clean implementation for Monad Metropolis Track 4: Trust, Identity &
 AI Infrastructure.
@@ -30,16 +32,32 @@ Implementation is governed by the
 also available as a generated
 [`HTML milestone edition`](docs/deterministic-milestones.html). Each milestone
 has fixed artifacts, privacy invariants, negative tests, and a binary exit gate.
-`M0 — Documentation and naming baseline` and the historical `M1 — Existing
-receipt-protocol baseline` are complete. `M2 — Scenario-template domain
-package` is also complete, with acceptance evidence in
-[`docs/evidence/M2/acceptance.json`](docs/evidence/M2/acceptance.json); `M3 —
-Deterministic scenario generator` is next.
+M0 through M5 are complete. Machine-readable acceptance evidence is stored
+under `docs/evidence/M0` through `docs/evidence/M5`. The actual M4 and M5
+implementation work, negative cases, rebase resolutions, commands, results,
+and limitations are recorded in the
+[`M4 development log`](docs/evidence/M4/development-log.md) and
+[`M5 development log`](docs/evidence/M5/development-log.md). `M6 — Generic
+Midnight proof enforcement` is next. The milestone specification retains its
+planning baseline; acceptance JSON and these logs are the current completion
+record.
 
 ## Current scope
 
-The first vertical slice is a Solidity registry for short-lived attestations.
-An authorized verifier signs an EIP-712 payload that binds a claim to:
+The implemented off-chain packages form a concrete dependency chain:
+
+- `@permio/scenario-domain` validates and hashes application-neutral scenario
+  templates;
+- `@permio/scenario-generator` creates deterministic synthetic instances and
+  scans public artifacts for private-value leakage;
+- `@permio/scenario-governance` separates five authorities and governs exact
+  template versions and hashes; and
+- `@permio/context-accounts` consumes an active allocation, attenuates
+  capabilities, issues fresh scoped sessions, and authorizes signed actions.
+
+The current on-chain vertical slice remains a Solidity registry for short-lived
+attestations. An authorized verifier signs an EIP-712 payload that binds a
+claim to:
 
 - one versioned schema;
 - one Midnight network, contract, and transaction reference;
@@ -120,7 +138,7 @@ identifier.
 | --- | --- |
 | `npm run typecheck` | Check TypeScript configuration and tests. |
 | `npm run compile` | Compile the Solidity contract. |
-| `npm test` | Run protocol, scenario-domain, and contract integration tests. |
+| `npm test` | Run protocol, scenario-domain, generator, governance, context-account, and Hardhat contract tests. |
 | `npm run check` | Run all local verification. |
 | `npm run node` | Start a local Hardhat JSON-RPC node. |
 | `npm run deploy:local` | Deploy to Hardhat's simulated network. |
@@ -136,8 +154,9 @@ Apache-2.0. See `LICENSE`.
 # 中文说明
 
 Permio 是一套可编程情境隐私架构：版本化情境模板和上下文能力在 Midnight 上完成私有授权，
-再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 已实现情境模板领域包和接收方绑定
-执行注册表切片；后续授权、生成和治理里程碑尚未完成，因此还未完整符合权威架构。
+再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 已实现 M2 情境模板领域、M3
+确定性生成器、M4 模板治理、M5 上下文账户与有限会话，以及接收方绑定执行注册表切片。
+通用 Midnight 证明强制执行，以及后续收据、执行和加密证据里程碑仍未完成。
 这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
 
 建议先阅读以人的理解路径为主的
@@ -154,10 +173,18 @@ Permio 是一套可编程情境隐私架构：版本化情境模板和上下文�
 实施过程由[`确定性里程碑规范`](docs/DETERMINISTIC_MILESTONES.md)约束，并提供自动生成的
 [`HTML 里程碑版本`](docs/deterministic-milestones.html)。每个里程碑都规定了固定产物、
 隐私不变量、负向测试和二元退出门槛。
-`M0——文档与命名基线`、历史 `M1——现有收据协议基线` 和
-`M2——情境模板领域包` 均已完成。M2 的验收证据位于
-[`docs/evidence/M2/acceptance.json`](docs/evidence/M2/acceptance.json)；下一个实施里程碑是
-`M3——确定性情境生成器`。
+M0 至 M5 均已完成。机器可读的验收证据保存在 `docs/evidence/M0` 至
+`docs/evidence/M5`。M4 和 M5 的实际实现工作、负向用例、变基冲突解决、执行命令、结果与
+限制分别记录在[`M4 开发日志`](docs/evidence/M4/development-log.md)和
+[`M5 开发日志`](docs/evidence/M5/development-log.md)。下一个里程碑是
+`M6——通用 Midnight 证明强制执行`。里程碑规范保留规划基线状态；验收 JSON 和开发日志
+构成当前完成记录。
+
+当前链下包形成明确的依赖链：`@permio/scenario-domain` 验证并哈希应用无关的情境模板；
+`@permio/scenario-generator` 生成确定性的合成实例，并扫描公开产物中的私有值泄漏；
+`@permio/scenario-governance` 分离五类权限，并治理精确的模板版本与哈希；
+`@permio/context-accounts` 消费已激活的分配，收窄能力范围，签发新鲜的有限会话，并授权
+签名操作。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的
