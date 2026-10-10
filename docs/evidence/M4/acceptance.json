@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M4",
+  "status": "COMPLETE",
+  "implementationBaseCommit": "38227d45c7a2f409ebeb0a0d1be0bec877cdaecc",
+  "implementationState": "committed with this acceptance record",
+  "acceptedAt": "2026-10-10",
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0"
+  },
+  "commands": [
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "summary": "Documentation freshness, TypeScript, Hardhat build, six protocol tests, fifteen scenario-domain tests, fourteen scenario-generator tests, sixteen scenario-governance tests, and six contract integration tests passed"
+    }
+  ],
+  "artifacts": [
+    "docs/evidence/M4/development-log.md",
+    "packages/scenario-governance/package.json",
+    "packages/scenario-governance/README.md",
+    "packages/scenario-governance/src/model.ts",
+    "packages/scenario-governance/src/errors.ts",
+    "packages/scenario-governance/src/attestation.ts",
+    "packages/scenario-governance/src/registry.ts",
+    "packages/scenario-governance/src/index.ts",
+    "packages/scenario-governance/test/scenario-governance.test.ts"
+  ],
+  "artifactSha256": {
+    "docs/evidence/M4/development-log.md": "bcf73cb6e697500461e8111aae0978650de37a1a242312d9077aa1c6a5ed0896",
+    "packages/scenario-governance/src/model.ts": "b228787c6b03a6b024ae316215cde790dd6dea6da3aa107ffca2f54d9b0a4c20",
+    "packages/scenario-governance/src/errors.ts": "9f0f9a8bd6c33de8ae61b42700c603fcd05d4e7f85037a6bbefc79d4a81c5558",
+    "packages/scenario-governance/src/attestation.ts": "9a0efe640992ce5e13dd30a603b78f522255b45a4740fa36d4362af6f9ae3ea6",
+    "packages/scenario-governance/src/registry.ts": "1ffa1193681aa5fdf319856ca5dae5cfe8533972293bbe590e1b04adc60b174e",
+    "packages/scenario-governance/src/index.ts": "2bdb5695c14717b47d5bf1e7a5274ab8590823a13386eac8c276fed579b6e904",
+    "packages/scenario-governance/test/scenario-governance.test.ts": "d1a89eea5e0977bbb1c43429bd4cc0bcfcb48cf53f9612447db551d8e5518c21"
+  },
+  "exitGates": {
+    "validatedM2TemplatesAndExactHashesAreConsumed": true,
+    "lifecycleTransitionsAreExplicitAndChecked": true,
+    "validationReportsRiskWithoutGrantingTrust": true,
+    "authoritySetsAreExplicitAndDisjoint": true,
+    "agentsCannotSelfActivateHighImpactTemplates": true,
+    "reviewerAttestationsBindTheExactTarget": true,
+    "reviewersAndReviewerKeysAreUnique": true,
+    "duplicateApprovalsAreRejected": true,
+    "namespaceReviewThresholdsAreEnforced": true,
+    "activeVersionAndInstantiationHistoryIsImmutable": true,
+    "retirementBlocksNewInstances": true,
+    "revocationIsExplicitlyProspective": true,
+    "allocatorsRequireAnActiveExactVersionAndHash": true,
+    "negativeAuthorizationAndTransitionTestsPass": true,
+    "fullRepositoryCheckPasses": true
+  },
+  "declarations": {
+    "universalAdministratorIntroduced": false,
+    "validationActivatesTemplates": false,
+    "historicalActivationOrInstantiationRewritten": false,
+    "applicationSpecificScenarioImported": false,
+    "productionSecretsIncluded": false
+  },
+  "nextMilestone": "M5"
+}
