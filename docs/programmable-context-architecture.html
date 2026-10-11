@@ -2,7 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md
-  Source SHA-256: b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d
+  Source SHA-256: e2429fa48b420c44e9a76c1033b1ab0946c0376eb4f9d2ad0671b365ee75ec37
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio architecture for programmable context privacy across Midnight and composable execution systems">
-  <meta name="source-sha256" content="b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d">
+  <meta name="source-sha256" content="e2429fa48b420c44e9a76c1033b1ab0946c0376eb4f9d2ad0671b365ee75ec37">
   <title>Permio Programmable Context Architecture</title>
   <script type="application/ld+json">
   {
@@ -182,7 +182,7 @@
         </header>
         <article>
 <p>Status: authoritative architecture and implementation contract<br>
-Date: 10 October 2026<br>
+Date: 11 October 2026<br>
 Scope: versioned scenario templates, context-bound accounts, Midnight privacy authorization, and composable execution</p>
 <section aria-labelledby="1-decision">
 <h2 id="1-decision">1 Decision</h2>
@@ -334,6 +334,13 @@ evidence channel is not routed through either public ledger.</p>
 <p>Automated tools may draft, validate, and simulate. They do not create policy
 legitimacy. A shared or cross-organization template requires accountable
 reviewers and threshold activation of an exact content hash and version.</p>
+<p>M4 performs that review and threshold decision with Ed25519 attestations. M6
+does not ask every reviewer to register a second Midnight key and does not
+claim to re-verify those attestations on-chain. After M4 activation, the
+namespace-scoped governance/activation authority signs one exact admission
+envelope with the allowlisted <code>midnight-jubjub-schnorr-v1</code> profile. Midnight
+verifies that authority against the current namespace-authority root and
+admits only the exact template version and hash bound by the envelope.</p>
 <h3 id="4-3-one-runtime-action">4.3 One runtime action</h3>
 
 <pre class="mermaid">sequenceDiagram
@@ -347,7 +354,7 @@ reviewers and threshold activation of an exact content hash and version.</p>
 
   Principal-&gt;&gt;Client: Sign ActionIntent with scoped session key
   Client-&gt;&gt;Midnight: Private evidence plus capability proof
-  Midnight-&gt;&gt;Midnight: Verify template, context, state, scope, expiry, and uniqueness
+  Midnight-&gt;&gt;Midnight: Verify exact registries and proof; atomically update commitment, sequence, and nullifier
   Midnight--&gt;&gt;Gateway: Finalized minimal DecisionReceipt
   Gateway-&gt;&gt;Gateway: Verify source and sign typed transport envelope
   Gateway--&gt;&gt;Executor: Recipient- and purpose-bound receipt
@@ -425,29 +432,436 @@ reviewers and threshold activation of an exact content hash and version.</p>
 <p>Template namespaces let an organization use local policies without implying
 ecosystem-wide trust. Cross-organization templates require governance roots
 recognized by every participating namespace.</p>
+<h3 id="5-3-three-programmable-surfaces-and-their-runtimes">5.3 Three programmable surfaces and their runtimes</h3>
+
+<p>Permio has no global <code>programmer</code> or <code>programmable administrator</code> role.
+Programmability is divided into three separately governed surfaces. A principal
+authorized on one surface receives no implied authority on either of the other
+two.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Programmable surface</th>
+<th>What may be defined</th>
+<th>Proposal capability</th>
+<th>Approval boundary</th>
+<th>Execution location</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Declarative scenario template</td>
+<td>Slots, contexts, actions, transitions, capability rules, disclosure constraints, and references to approved proof profiles and adapters</td>
+<td><code>template-author</code></td>
+<td>Exact template hash and version pass review and namespace activation</td>
+<td>The template does not execute; authoring tools and <code>@permio/scenario-domain</code> validate, canonicalize, and hash it off-chain</td>
+</tr>
+<tr>
+<td>Proof profile and circuit</td>
+<td>Private predicates, witness rules, public outputs, and nullifier domains</td>
+<td><code>circuit-maintainer</code></td>
+<td>Privacy/security review plus circuit-governance approval of the exact circuit and output schema</td>
+<td>Circuit compilation is offline; proof generation occurs in the client or approved prover; authorization verification occurs on Midnight</td>
+</tr>
+<tr>
+<td>Execution adapter</td>
+<td>The public application or contract effect permitted by a valid receipt</td>
+<td><code>adapter-developer</code></td>
+<td>Application deployment and execution-registry governance</td>
+<td>Monad smart contract or ordinary application backend</td>
+</tr>
+</tbody></table></div>
+<p>A template therefore selects approved components by identifier; it cannot
+contain JavaScript, TypeScript, Compact, Solidity, a script URL, or another
+executable payload. The gateway transports an authorization result and does
+not execute template policy. The execution layer may narrow or reject the
+approved effect because of current execution state, but it may not broaden it.</p>
+<h3 id="5-4-normative-system-capability-matrix">5.4 Normative system capability matrix</h3>
+
+<p>The following names describe scoped capabilities, not permanent business roles
+attached at registration. Different capabilities require distinct keys and
+authorization checks even when one accountable organization operates more
+than one of them. High-assurance acceptance tests use separate identities to
+prove that authority does not collapse accidentally.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Capability holder</th>
+<th>May do</th>
+<th>Must not do</th>
+<th>Required for the core flow</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Template author</td>
+<td>Create and revise namespaced drafts</td>
+<td>Activate its own high-impact shared template</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Template validator</td>
+<td>Produce deterministic structural, reference, compatibility, and privacy-risk reports</td>
+<td>Grant trust, approve, or activate</td>
+<td>Yes; this is a component, not a human authority</td>
+</tr>
+<tr>
+<td>Privacy reviewer</td>
+<td>Attest to disclosure, linkability, recipient, and evidence-boundary properties of one exact hash and version</td>
+<td>Edit the reviewed bytes or activate alone</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Security reviewer</td>
+<td>Attest to replay, signature, circuit, adapter, and upgrade properties of one exact hash and version</td>
+<td>Substitute another hash, circuit, or adapter</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Domain reviewer</td>
+<td>Attest that the declared actions and transitions represent the intended domain rules</td>
+<td>Establish the truth of future user claims or records</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Namespace activation governance</td>
+<td>Activate an exact reviewed template version after its configured threshold is met</td>
+<td>Author, allocate, or execute merely because it can activate</td>
+<td>Yes; represented by a threshold group rather than one administrator</td>
+</tr>
+<tr>
+<td>Scenario allocator / instance creator</td>
+<td>Instantiate an active version and initiate permitted slot assignment</td>
+<td>Activate drafts or fill slots whose assignment rule excludes it</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Slot assignment authority</td>
+<td>Bind a principal to a slot when allowed by <code>assignableBy</code></td>
+<td>Assign unrelated slots or expand delegated authority</td>
+<td>As declared by the template; it may be the instance creator, namespace governance, or another occupied slot</td>
+</tr>
+<tr>
+<td>Emergency revocation authority</td>
+<td>Stop specified new uses after compromise or policy withdrawal</td>
+<td>Rewrite historical receipts or inherit ordinary authoring powers</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Proof/circuit maintainer</td>
+<td>Develop and propose versioned proof artifacts</td>
+<td>Activate its own artifact or change an active template silently</td>
+<td>Required when the proof catalog changes</td>
+</tr>
+<tr>
+<td>Credential or record issuer</td>
+<td>Issue a source credential or signed record accepted by a selected profile</td>
+<td>Activate templates, approve unrelated purposes, or read later disclosures automatically</td>
+<td>Conditional on the selected template</td>
+</tr>
+<tr>
+<td>Gateway signer/operator</td>
+<td>Verify finalized Midnight output and sign the typed transport envelope</td>
+<td>Re-evaluate private evidence or widen the approved action</td>
+<td>Yes for cross-plane receipt delivery</td>
+</tr>
+<tr>
+<td>Execution-registry governor</td>
+<td>Configure approved gateway/verifier keys and execution upgrades</td>
+<td>Sign ordinary receipts merely because it governs the registry</td>
+<td>Yes for governed execution</td>
+</tr>
+<tr>
+<td>Relayer</td>
+<td>Submit a public transaction containing an unchanged valid receipt</td>
+<td>Change its recipient, purpose, scope, or expiry</td>
+<td>Yes when execution uses a ledger transaction</td>
+</tr>
+<tr>
+<td>Evidence-vault operator</td>
+<td>Deliver recipient-encrypted selected evidence and verify its manifest</td>
+<td>Receive plaintext without recipient authorization or infer unrelated context activity</td>
+<td>Conditional on confidential evidence delivery</td>
+</tr>
+<tr>
+<td>Auditor / test observer</td>
+<td>Read public events and acceptance evidence</td>
+<td>Exercise an operational capability</td>
+<td>Recommended; non-authoritative</td>
+</tr>
+</tbody></table></div>
+<p><code>Contract Authority</code> is not an additional super-role. Governance controllers
+decide which exact artifacts and keys are authorized; enforcement contracts
+mechanically verify proofs, signatures, thresholds, timelocks, and current
+state. A local-development bootstrap key may temporarily hold several
+capabilities only when this consolidation is explicit, test-only, and followed
+by a tested separation procedure.</p>
+<h3 id="5-5-generated-end-to-end-test-cast">5.5 Generated end-to-end test cast</h3>
+
+<p>Task participants are generated values that occupy template slots; their names
+are not protocol roles. Excluding those participants and excluding Agents, the
+high-assurance end-to-end suite generates at least these independent control
+identities:</p>
+<ol>
+<li>one template author;</li>
+<li>one privacy reviewer, one security reviewer, and one domain reviewer;</li>
+<li>three namespace-governance signers with a two-of-three activation threshold;</li>
+<li>one scenario allocator / instance creator; and</li>
+<li>one emergency revocation authority.</li>
+</ol>
+<p>It also generates separate service identities for the gateway signer,
+execution-registry governor, and relayer. A credential issuer and
+evidence-vault operator are added only when the selected template requires
+them. The validator, Midnight contract, Monad contract, and privacy scanner are
+components, not human roles. An auditor identity has no private operational
+key.</p>
+<p>The suite must include negative journeys in which each identity attempts at
+least one adjacent capability it does not hold: author activation, reviewer
+allocation, governance execution, allocator review, relayer mutation, gateway
+policy widening, and emergency-authority history rewriting. A smaller user
+interface demo may let one person control multiple test keys, but the keys,
+capabilities, audit events, and negative assertions remain separate.</p>
+<h3 id="5-6-exact-control-and-runtime-state-represented-on-midnight">5.6 Exact control and runtime state represented on Midnight</h3>
+
+<p>M6 does not compress all M4 and M5 information into one unexplained root. Each
+fact uses the least revealing mechanism that still lets Midnight enforce it.</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>Information</th>
+<th>Midnight representation</th>
+<th>Reason</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Exact active template and lifecycle</td>
+<td>Direct public ledger record</td>
+<td>Shared, long-lived governance fact that must be independently auditable</td>
+</tr>
+<tr>
+<td>Eligible namespace authority keys</td>
+<td>Versioned namespace-authority Merkle root</td>
+<td>The set may be large; proofs need eligibility without publishing real-world identities</td>
+</tr>
+<tr>
+<td>M4 reviewer approvals</td>
+<td>Off-chain Ed25519 evidence committed by the admission envelope</td>
+<td>M4 enforces reviewer eligibility and threshold; M6 v1 verifies the authorized admission, not every review signature</td>
+</tr>
+<tr>
+<td>Instance allocation and capability grants</td>
+<td>Private signed assertions</td>
+<td>They reveal instance-specific resources, purposes, recipients, and delegation</td>
+</tr>
+<tr>
+<td>Context-account, capability, and session status</td>
+<td>Versioned current-status Merkle root</td>
+<td>A proof establishes current active status without publishing the complete permission</td>
+</tr>
+<tr>
+<td>Private instance state</td>
+<td>Public state commitment and transition sequence</td>
+<td>Conflicting transitions are ordered without revealing the state label</td>
+</tr>
+<tr>
+<td>One-use action authorization</td>
+<td>Public scoped nullifier</td>
+<td>The same private authorization cannot be consumed twice</td>
+</tr>
+<tr>
+<td>Records, credentials, claims, evidence, and free text</td>
+<td>Private witness and off-chain storage</td>
+<td>The public protocol does not need the plaintext</td>
+</tr>
+</tbody></table></div>
+<p>An active-template ledger record contains:</p>
+<pre><code class="language-text">namespaceHash, templateIdHash, semanticVersion, templateContentHash,
+governancePolicyHash, authorityRoot, proofModuleBindingsHash,
+m4ActivationRecordHash, approvalEvidenceCommitment,
+admissionProfileId, admissionKeyHash,
+lifecycleStatus, activationSequence, activatedAt,
+retiredAt?, revokedAt?, terminationReasonHash?
+</code></pre>
+<p>Activation, retirement, and revocation are directly readable events. Retirement
+and revocation are prospective: they prevent new uses from their effective
+sequence without deleting activation history or earlier receipts. Full template
+JSON, validation findings, reviewer comments, and human-readable termination
+reasons remain off-chain; their hashes prevent later substitution.</p>
+<p>The namespace-authority root has one exact meaning. Each leaf commits to:</p>
+<pre><code class="language-text">namespaceHash, governancePolicyVersion, authorityKind,
+authorityKeyHash, validFrom, validUntil
+</code></pre>
+<p><code>authorityKind</code> is one of <code>author</code>, <code>reviewer</code>, <code>governance-activator</code>,
+<code>allocator</code>, <code>emergency-revoker</code>, <code>capability-issuer</code>,
+<code>protocol-reviewer</code>, <code>module-approver</code>, <code>module-activator</code>, or
+<code>module-emergency-revoker</code>. These sets remain separately scoped; publishing one
+root does not merge their powers.</p>
+<p>The runtime status root is a keyed current-status Merkle tree, not an
+append-only list of revocations. A credential ID commitment selects exactly one
+current leaf:</p>
+<pre><code class="language-text">namespaceHash, instanceCommitment, credentialKind,
+credentialIdCommitment, status, statusSequence, effectiveAt
+</code></pre>
+<p><code>credentialKind</code> is <code>context-account</code>, <code>capability</code>, or <code>session</code>; <code>status</code> is
+<code>active</code> or <code>revoked</code>. The Midnight contract stores the current root and its
+monotonically increasing root sequence. M6 accepts a credential only by proving
+membership of its <code>active</code> leaf under the exact current root and sequence. A
+revocation replaces that leaf with <code>revoked</code> and advances the root sequence.
+This design needs ordinary Merkle membership proofs and does not depend on an
+unspecified non-membership construction.</p>
+<p>The M6 baseline has no separate instance-authority root. The exact allocator
+and capability-issuer authorization is carried by private signed assertions,
+checked against the namespace-authority root, and committed into the private
+instance state. Adding another root later would be a versioned protocol change,
+not an implementation convenience.</p>
+<p>Neither root may be replaced by a trusted operator writing an arbitrary value.
+A namespace-authority update verifies the separately authorized governance
+decision over the old root, new root, policy version, and effective sequence.
+A runtime-status update proves the old leaf and Merkle path, verifies the exact
+issuer or revoker authority, calculates the replacement <code>active</code> or <code>revoked</code>
+leaf, and derives the new root. The ledger then advances the corresponding root
+sequence atomically.</p>
+<h3 id="5-7-exact-m4-activation-admission">5.7 Exact M4 activation admission</h3>
+
+<p>The M4-to-Midnight boundary is a versioned admission protocol, not a trusted
+database copy. Its canonical signed envelope contains:</p>
+<pre><code class="language-text">envelopeVersion
+namespaceHash + templateIdHash + semanticVersion + templateContentHash
+governancePolicyHash + proofModuleBindingsHash
+m4ActivationRecordHash + approvalEvidenceCommitment
+authorityRootVersion + authorityRootSequence
+targetNetworkId + targetContractIdentity + registryProtocolVersion
+admissionNonce
+</code></pre>
+<p>The signer must be a currently eligible <code>governance-activator</code> for the exact
+namespace. The v1 allowlisted admission signature profile is
+<code>midnight-jubjub-schnorr-v1</code>. The <code>admit-m4-activation-v1</code> registry circuit
+verifies key eligibility, the exact envelope signature, target binding, and
+the unused nonce before it creates the immutable active-version record. Any
+field substitution, key substitution, signature-profile substitution, or
+nonce replay fails.</p>
+<p>This signer cannot manufacture M4 approval evidence. M4 remains responsible
+for Ed25519 reviewer signature verification, unique eligible reviewers,
+namespace thresholds, rejection state, and separation of duties. Midnight
+v1 proves that the authorized M4 governance boundary admitted the exact
+activation and commits to its evidence; it does not prove that Midnight
+independently checked every reviewer signature. Direct Ed25519 review
+verification on Midnight would be a later, separately governed Compact/ledger
+protocol upgrade.</p>
+<p>The admission key grants no allocator, capability issuer, proof-module
+activation, retirement, or emergency-revocation power. Those authorities
+remain separately scoped, and neither admission nor termination rewrites an
+earlier registry record or receipt.</p>
+<h3 id="5-8-extensible-allowlisted-proof-modules">5.8 Extensible, allowlisted proof modules</h3>
+
+<p>Templates are data and cannot introduce executable proof logic. Each action
+references one exact active proof implementation:</p>
+<pre><code class="language-text">proofModuleId, proofModuleVersion, implementationHash,
+configurationHash, receiptSchemaHash
+</code></pre>
+<p>The reference never uses <code>latest</code>. Configuration is bounded by the module&#39;s
+approved configuration schema. Unknown fields, unsupported values, executable
+expressions, and unregistered implementation hashes fail closed with
+<code>UNSUPPORTED_PROOF_REQUIREMENT</code> or a more specific validation result.</p>
+<p>The initial reusable runtime proof families are:</p>
+<ul>
+<li><code>delegated-capability-action-v1</code>, which checks issuer eligibility,
+attenuation, session scope, exact intent, time, current credential status,
+and replay; and</li>
+<li><code>private-state-transition-v1</code>, which checks the committed previous state,
+permitted deterministic transition, calculated next-state commitment, and
+single consumption of the old state.</li>
+</ul>
+<p>The physical M6 deployment is also fixed. One versioned Compact authorization
+contract contains the registries, root/state ledgers, common receipt logic,
+the <code>admit-m4-activation-v1</code> registry entry point, and the two initial runtime
+module entry points. A module&#39;s
+<code>implementationReference</code> is the exact contract address, contract version, and
+circuit entry-point name together with the implementation hash. Compact does
+not dynamically load template code. A future proof family is introduced by a
+new versioned contract deployment and registry record through the protocol
+upgrade process; existing template bindings remain pinned to their original
+deployment.</p>
+<p>A proof module is governed as a protocol implementation, independently of
+ordinary template governance. Its public registry record contains:</p>
+<pre><code class="language-text">moduleId, moduleVersion, implementationReference,
+sourceHash, implementationHash, inputSchemaHash,
+configurationSchemaHash, receiptSchemaHash, compilerVersion,
+compatibilityPolicyHash, status, activationSequence,
+activatedAt?, deprecatedAt?, revokedAt?, approvalEvidenceCommitment
+</code></pre>
+<p>Its lifecycle is fixed:</p>
+<pre><code class="language-text">proposed -&gt; reviewed -&gt; approved -&gt; active -&gt; deprecated
+                                      |
+                                      +-&gt; revoked
+</code></pre>
+<p>Review reports evidence but grants no trust. Approval requires independent
+human security/privacy review and a high-threshold protocol-governance decision
+over the exact source, compiled implementation, schemas, compiler version,
+compatibility policy, and deployment reference. A separate module-activation
+authority makes it usable. A separate emergency authority may prospectively
+revoke it. Agents may implement and test modules but do not count toward the
+human approval threshold and cannot activate them.</p>
+<p>Deprecation prevents new template activations from selecting the module.
+Existing instances follow the compatibility policy approved with that exact
+module version. Revocation rejects new proofs prospectively. Neither event
+rewrites historical receipts. A new module version never migrates a template
+silently: the template must create a new revision, pass M4 review again, and
+pin the new implementation hash.</p>
 </section>
 <section aria-labelledby="6-privacy-authorization-and-execution-boundary">
 <h2 id="6-privacy-authorization-and-execution-boundary">6 Privacy authorization and execution boundary</h2>
 
-<p>Midnight decides whether an action is permitted. Monad or an application
-executes the permitted public effect. The boundary is a versioned receipt, not
-a shared database record.</p>
+<p>M6 is stateful for actions whose template declares an authorization-state
+transition. Midnight decides whether an action is permitted and which private
+authorization-state transition becomes authoritative. Monad or an application
+separately decides whether the downstream public effect executes. An approved
+Midnight transition never falsely asserts that downstream execution succeeded.</p>
+<p>For a state-transitioning action, one Midnight transaction atomically:</p>
+<ol>
+<li>verifies the private allocation, capability, session, action intent, and
+selected evidence;</li>
+<li>verifies the exact active template, authority-root sequence, runtime-status
+root sequence, proof-module version, implementation hash, and configuration;</li>
+<li>checks that the supplied previous state commitment and transition sequence
+equal current ledger state;</li>
+<li>proves that the template permits exactly one next authorization state;</li>
+<li>consumes the scoped nullifier;</li>
+<li>installs the calculated next-state commitment; and</li>
+<li>increments the transition sequence and emits one <code>DecisionReceipt</code>.</li>
+</ol>
+<p>Only one transaction can consume a given previous commitment and sequence.
+Competing proof computation may be wasted, but correctness does not depend on a
+proof-generation lock. Proof time and contention are measured during on-chain
+testing; coordination is added only through a later explicit performance
+decision.</p>
+<p>For an action with no template-declared state transition, M6 verifies the same
+private authorization and current registries, consumes a scoped nullifier when
+the action is single-use, and emits a receipt without changing the instance
+state commitment.</p>
+<p>All proof modules emit one common envelope:</p>
 <pre><code class="language-text">DecisionReceipt {
   receiptVersion,
-  templateId, templateVersion,
-  instanceCommitment, contextId,
-  actionSchemaId,
+  proofModuleId, proofModuleVersion, implementationHash,
+  namespaceHash, templateIdHash, templateVersion, templateContentHash,
+  instanceCommitment, previousStateCommitment?, nextStateCommitment?,
+  transitionSequence?, contextHash, actionSchemaId,
   purposeHash, recipient,
   validAfter, validBefore,
   scopedNullifier,
   outputCommitment,
-  sourceNetwork, sourceContract, sourceTransaction
+  sourceNetwork, sourceContract, sourceTransaction, sourceLedgerSequence
 }
 </code></pre>
-<p>The receipt excludes private evidence, a stable subject identifier, session
-keys, credentials, and unrelated instance activity. Its nullifier domain must
-include the template, context, action, resource scope, and policy version so it
-cannot be reused across purposes.</p>
+<p>Textual namespace, template, context, and purpose values are represented by
+versioned hashes. The recipient remains the exact downstream recipient needed
+for enforcement. The receipt excludes private evidence, state labels, reviewer
+identities, capability scope, account and session keys, credentials, free text,
+and unrelated instance activity. Its nullifier domain includes the receipt
+version, proof module and implementation, exact template, instance, context,
+action, resource commitment, purpose, recipient, and policy versions.</p>
+<p>A module may include additional module-specific material only inside
+<code>outputCommitment</code>. The gateway and execution layer consume the common envelope
+and the explicitly registered receipt schema; they do not reinterpret private
+policy or silently broaden module-specific output.</p>
 <p>The execution layer may reject an approved receipt because of local execution
 state, but it may not convert it into a broader action. A schema or policy
 change requires a new version and explicit compatibility rules.</p>
@@ -479,8 +893,20 @@ change requires a new version and explicit compatibility rules.</p>
 <tr>
 <td>Governance registry</td>
 <td>Reviewer attestations and activation proposal</td>
-<td>Threshold and namespace checks</td>
-<td>Active immutable template version</td>
+<td>Threshold and namespace checks over exact hashes</td>
+<td>M4 activation evidence for Midnight submission</td>
+</tr>
+<tr>
+<td>Midnight template registry</td>
+<td>M4 activation, retirement, or revocation evidence</td>
+<td>Exact target, authority root, lifecycle sequence, and proof-module binding checks</td>
+<td>Direct public template lifecycle record</td>
+</tr>
+<tr>
+<td>Midnight proof-module registry</td>
+<td>Reviewed implementation and protocol-governance evidence</td>
+<td>Exact hashes, lifecycle, compatibility, and separated activation checks</td>
+<td>Active/deprecated/revoked module record</td>
 </tr>
 <tr>
 <td>Scenario allocator</td>
@@ -495,16 +921,16 @@ change requires a new version and explicit compatibility rules.</p>
 <td>Private proof request</td>
 </tr>
 <tr>
-<td>Midnight contract</td>
-<td>Proof request and approved template/policy hashes</td>
-<td>Capability, evidence, state, and uniqueness verification</td>
-<td>Minimal DecisionReceipt fields</td>
+<td>Midnight authorization contract</td>
+<td>Private proof request plus current registry references</td>
+<td>Capability, evidence, status, atomic state, and uniqueness verification</td>
+<td>Minimal <code>DecisionReceipt</code> fields and updated commitments</td>
 </tr>
 <tr>
 <td>Gateway</td>
 <td>Finalized public Midnight output</td>
-<td>Source verification and transport signing</td>
-<td>Typed receipt envelope</td>
+<td>Finality, source, allowlist, schema, and byte-exact envelope checks</td>
+<td>Typed transport signature over the unchanged receipt</td>
 </tr>
 <tr>
 <td>Monad registry or application</td>
@@ -613,6 +1039,12 @@ is true.</li>
 <li>Template and receipt schema changes are versioned protocol changes.</li>
 <li>Architecture documents and tests reference generated fixture schemas and
 seeds, never literal scenario-instance data.</li>
+<li>Templates reference only exact active proof-module versions and hashes;
+unsupported proof semantics stop activation rather than being approximated.</li>
+<li>Public template and module registries, authority roots, credential-status
+roots, state commitments, and nullifiers have separate meanings and domains.</li>
+<li>Midnight owns authorization-state ordering, while Monad or the target
+application owns downstream execution success or failure.</li>
 </ol>
 </section>
 <section aria-labelledby="11-generated-examples-and-deterministic-testing">
@@ -655,7 +1087,7 @@ dependency still requires an explicit compatibility decision and tests.</p>
         </article>
         <footer>
           Generated from <code>docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md</code>.
-          Source SHA-256: <code>b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d</code>.
+          Source SHA-256: <code>e2429fa48b420c44e9a76c1033b1ab0946c0376eb4f9d2ad0671b365ee75ec37</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 可编程情境架构" lang="zh-CN">
@@ -666,7 +1098,7 @@ dependency still requires an explicit compatibility decision and tests.</p>
         </header>
         <article>
 <p>状态：权威架构与实施契约<br>
-日期：2026 年 10 月 10 日<br>
+日期：2026 年 10 月 11 日<br>
 范围：版本化情境模板、上下文账户、Midnight 隐私授权与可组合执行</p>
 <section aria-labelledby="zh-1-架构决策">
 <h2 id="zh-1-架构决策">1 架构决策</h2>
@@ -801,6 +1233,10 @@ dependency still requires an explicit compatibility decision and tests.</p>
 </pre>
 <p>自动化工具可以草拟、验证和模拟，但不能赋予策略合法性。共享或跨组织模板需要可问责的
 审核者，并通过阈值机制激活精确的内容哈希和版本。</p>
+<p>M4 使用 Ed25519 证明完成审核与阈值决定。M6 不要求每个审核者再登记一套 Midnight 密钥，
+也不声称在链上重新验证这些证明。M4 激活后，命名空间范围内的治理／激活权限使用 allowlist
+中的 <code>midnight-jubjub-schnorr-v1</code> profile 对一份精确登记封装签名。Midnight 对照当前
+namespace 权限 root 验证该权限，并且只登记封装绑定的精确模板版本与哈希。</p>
 <h3 id="zh-4-3-一次运行时操作">4.3 一次运行时操作</h3>
 
 <pre class="mermaid">sequenceDiagram
@@ -814,7 +1250,7 @@ dependency still requires an explicit compatibility decision and tests.</p>
 
   Principal-&gt;&gt;Client: 使用有限范围会话密钥签署 ActionIntent
   Client-&gt;&gt;Midnight: 私有证据与能力证明
-  Midnight-&gt;&gt;Midnight: 验证模板、上下文、状态、范围、期限与唯一性
+  Midnight-&gt;&gt;Midnight: 验证精确注册表与证明；原子更新 commitment、序号和 nullifier
   Midnight--&gt;&gt;Gateway: 已最终确认的最小 DecisionReceipt
   Gateway-&gt;&gt;Gateway: 验证来源并签署类型化传输封装
   Gateway--&gt;&gt;Executor: 接收方与用途绑定收据
@@ -891,26 +1327,366 @@ dependency still requires an explicit compatibility decision and tests.</p>
 </tbody></table></div>
 <p>模板命名空间允许组织使用本地策略，而不暗示整个生态都信任它。跨组织模板需要每个参与
 命名空间都认可的治理根。</p>
+<h3 id="zh-5-3-三类可编程表面及其运行位置">5.3 三类可编程表面及其运行位置</h3>
+
+<p>Permio 不存在全局 <code>programmer</code> 或“可编程管理员”角色。可编程性被拆分为三个独立治理的
+表面；主体在其中一个表面获得授权，不会隐含获得另外两个表面的权限。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>可编程表面</th>
+<th>可以定义什么</th>
+<th>提案能力</th>
+<th>批准边界</th>
+<th>执行位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>声明式情境模板</td>
+<td>槽位、上下文、操作、转换、能力规则、披露约束，以及对获批证明配置和适配器的引用</td>
+<td><code>template-author</code></td>
+<td>精确模板哈希和版本通过审核与命名空间激活</td>
+<td>模板本身不执行；编写工具和 <code>@permio/scenario-domain</code> 在链下验证、规范化并计算哈希</td>
+</tr>
+<tr>
+<td>证明配置与电路</td>
+<td>私有谓词、见证规则、公开输出和空值标识域</td>
+<td><code>circuit-maintainer</code></td>
+<td>隐私/安全审核，加上电路治理对精确电路及输出模式的批准</td>
+<td>电路离线编译；客户端或获批证明服务生成证明；Midnight 验证授权</td>
+</tr>
+<tr>
+<td>执行适配器</td>
+<td>有效收据允许产生的公开应用或合约效果</td>
+<td><code>adapter-developer</code></td>
+<td>应用部署与执行注册表治理</td>
+<td>Monad 智能合约或普通应用后端</td>
+</tr>
+</tbody></table></div>
+<p>因此，模板只能通过标识符选择已获批准的组件；它不能包含 JavaScript、TypeScript、Compact、
+Solidity、脚本 URL 或其他可执行载荷。网关只传输授权结果，不执行模板策略。执行层可以因为
+当前执行状态而缩小或拒绝已批准效果，但不能扩大它。</p>
+<h3 id="zh-5-4-规范性系统能力矩阵">5.4 规范性系统能力矩阵</h3>
+
+<p>下列名称表示有限范围的能力，而不是注册时附加的永久业务角色。即使由同一个可问责组织运营
+多个能力，每项能力仍需使用独立密钥和授权检查。高保证验收测试使用不同身份，以证明权限不会
+意外坍缩。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>能力持有者</th>
+<th>可以做什么</th>
+<th>不得做什么</th>
+<th>核心流程是否需要</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>模板作者</td>
+<td>创建和修订命名空间内的草稿</td>
+<td>自行激活其高影响共享模板</td>
+<td>是</td>
+</tr>
+<tr>
+<td>模板验证器</td>
+<td>生成确定性的结构、引用、兼容性和隐私风险报告</td>
+<td>授予信任、批准或激活</td>
+<td>是；它是组件，不是人类权限方</td>
+</tr>
+<tr>
+<td>隐私审核者</td>
+<td>对一个精确哈希和版本的披露、关联、接收方及证据边界作出背书</td>
+<td>修改已审核字节或单独激活</td>
+<td>是</td>
+</tr>
+<tr>
+<td>安全审核者</td>
+<td>对一个精确哈希和版本的重放、签名、电路、适配器及升级属性作出背书</td>
+<td>替换其他哈希、电路或适配器</td>
+<td>是</td>
+</tr>
+<tr>
+<td>领域审核者</td>
+<td>确认声明的操作和转换表达了预期领域规则</td>
+<td>证明未来用户声明或记录的真实性</td>
+<td>是</td>
+</tr>
+<tr>
+<td>命名空间激活治理方</td>
+<td>在达到配置阈值后激活精确的已审核模板版本</td>
+<td>仅因拥有激活能力而获得编写、分配或执行权限</td>
+<td>是；使用阈值组，而不是单个管理员</td>
+</tr>
+<tr>
+<td>情境分配者/实例创建者</td>
+<td>实例化活跃版本并启动获准的槽位分配</td>
+<td>激活草稿或填充规则不允许其分配的槽位</td>
+<td>是</td>
+</tr>
+<tr>
+<td>槽位分配权限方</td>
+<td>在 <code>assignableBy</code> 允许时把主体绑定到槽位</td>
+<td>分配无关槽位或扩大委托权限</td>
+<td>由模板声明；可以是实例创建者、命名空间治理方或另一个已占用槽位</td>
+</tr>
+<tr>
+<td>紧急撤销方</td>
+<td>在受损或政策撤回后阻止指定的新使用</td>
+<td>改写历史收据或继承普通编写权限</td>
+<td>是</td>
+</tr>
+<tr>
+<td>证明/电路维护者</td>
+<td>开发并提出版本化证明产物</td>
+<td>自行激活产物或静默修改活跃模板</td>
+<td>证明目录变更时需要</td>
+</tr>
+<tr>
+<td>凭证或记录签发者</td>
+<td>签发所选配置接受的源凭证或签名记录</td>
+<td>激活模板、批准无关用途或自动读取后续披露</td>
+<td>取决于所选模板</td>
+</tr>
+<tr>
+<td>网关签名者/运营者</td>
+<td>验证已最终确认的 Midnight 输出并签署类型化传输封装</td>
+<td>重新评估私有证据或扩大获准操作</td>
+<td>跨平面交付收据时需要</td>
+</tr>
+<tr>
+<td>执行注册表治理方</td>
+<td>配置获准网关/验证者密钥及执行升级</td>
+<td>仅因治理注册表而签署日常收据</td>
+<td>受治理执行时需要</td>
+</tr>
+<tr>
+<td>中继者</td>
+<td>提交包含未修改有效收据的公开交易</td>
+<td>修改接收方、用途、范围或期限</td>
+<td>执行使用账本交易时需要</td>
+</tr>
+<tr>
+<td>证据保险库运营者</td>
+<td>交付面向接收方加密的选定证据并验证 manifest</td>
+<td>未经接收方授权获得明文或推断无关上下文活动</td>
+<td>取决于是否交付机密证据</td>
+</tr>
+<tr>
+<td>审计者/测试观察者</td>
+<td>读取公开事件和验收证据</td>
+<td>行使操作能力</td>
+<td>建议设置；无授权能力</td>
+</tr>
+</tbody></table></div>
+<p><code>Contract Authority</code> 不是另一个超级角色。治理控制者决定授权哪些精确产物和密钥；执行合约
+机械地验证证明、签名、阈值、时间锁和当前状态。只有在权限合并被明确标记为仅供测试，并且有
+经过测试的拆分流程时，本地开发引导密钥才能暂时持有多个能力。</p>
+<h3 id="zh-5-5-生成式端到端测试角色阵容">5.5 生成式端到端测试角色阵容</h3>
+
+<p>任务参与者是填充模板槽位的生成值；其姓名不是协议角色。在排除这些参与者和 Agent 后，高保证
+端到端测试至少生成以下相互独立的控制身份：</p>
+<ol>
+<li>一名模板作者；</li>
+<li>一名隐私审核者、一名安全审核者和一名领域审核者；</li>
+<li>三名命名空间治理签名者，激活阈值为三选二；</li>
+<li>一名情境分配者/实例创建者；以及</li>
+<li>一名紧急撤销方。</li>
+</ol>
+<p>测试还为网关签名者、执行注册表治理方和中继者生成独立服务身份。只有所选模板需要时，才加入
+凭证签发者和证据保险库运营者。验证器、Midnight 合约、Monad 合约和隐私扫描器是组件，不是
+人类角色。审计身份不持有私有操作密钥。</p>
+<p>测试必须包含负向旅程，让每个身份至少尝试一项自己不具备的相邻能力：作者尝试激活、审核者
+尝试分配、治理方尝试执行、分配者尝试审核、中继者尝试篡改、网关尝试扩大策略，以及紧急权限
+方尝试改写历史。较小的用户界面演示可以让一个人控制多个测试密钥，但密钥、能力、审计事件和
+负向断言仍保持分离。</p>
+<h3 id="zh-5-6-midnight-上的精确控制状态与运行时状态">5.6 Midnight 上的精确控制状态与运行时状态</h3>
+
+<p>M6 不会把所有 M4 和 M5 信息塞进一个含义不明的状态根。每类事实都使用既能让 Midnight
+执行检查、又尽量少披露信息的机制。</p>
+<div class="table-wrap"><table>
+<thead>
+<tr>
+<th>信息</th>
+<th>Midnight 表示方式</th>
+<th>原因</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>精确活跃模板及其生命周期</td>
+<td>直接公开账本记录</td>
+<td>共享、长期存在且必须可独立审计的治理事实</td>
+</tr>
+<tr>
+<td>合格 namespace 权限密钥</td>
+<td>版本化 namespace 权限 Merkle root</td>
+<td>集合可能很大；证明需要验证资格但不应公开现实身份</td>
+</tr>
+<tr>
+<td>M4 审核者批准</td>
+<td>由登记封装 commitment 的链下 Ed25519 证据</td>
+<td>M4 执行审核者资格与阈值；M6 v1 验证获授权登记，而不是每个审核签名</td>
+</tr>
+<tr>
+<td>实例分配与 capability grant</td>
+<td>私有签名断言</td>
+<td>会暴露实例特定资源、用途、接收方和委托范围</td>
+</tr>
+<tr>
+<td>上下文账户、capability 与 session 状态</td>
+<td>版本化当前状态 Merkle root</td>
+<td>在不公开完整权限的情况下证明当前 active 状态</td>
+</tr>
+<tr>
+<td>私有实例状态</td>
+<td>公开状态 commitment 与转换序号</td>
+<td>在不披露状态标签的情况下为冲突转换排序</td>
+</tr>
+<tr>
+<td>一次性操作授权</td>
+<td>公开限定范围 nullifier</td>
+<td>同一私有授权不能被消费两次</td>
+</tr>
+<tr>
+<td>记录、凭证、声明、证据与自由文本</td>
+<td>私有见证与链下存储</td>
+<td>公开协议不需要明文</td>
+</tr>
+</tbody></table></div>
+<p>活跃模板账本记录包含：</p>
+<pre><code class="language-text">namespaceHash, templateIdHash, semanticVersion, templateContentHash,
+governancePolicyHash, authorityRoot, proofModuleBindingsHash,
+m4ActivationRecordHash, approvalEvidenceCommitment,
+admissionProfileId, admissionKeyHash,
+lifecycleStatus, activationSequence, activatedAt,
+retiredAt?, revokedAt?, terminationReasonHash?
+</code></pre>
+<p>激活、退役和撤销都是可直接读取的事件。退役与撤销前瞻性生效：从其生效序号开始阻止新的
+使用，但不删除激活历史或早期收据。完整模板 JSON、验证发现、审核意见和人类可读终止原因
+留在链下；其哈希防止以后替换内容。</p>
+<p>Namespace 权限 root 只有一个精确含义。每个叶子 commitment 包含：</p>
+<pre><code class="language-text">namespaceHash, governancePolicyVersion, authorityKind,
+authorityKeyHash, validFrom, validUntil
+</code></pre>
+<p><code>authorityKind</code> 是 <code>author</code>、<code>reviewer</code>、<code>governance-activator</code>、<code>allocator</code>、
+<code>emergency-revoker</code>、<code>capability-issuer</code>、<code>protocol-reviewer</code>、<code>module-approver</code>、
+<code>module-activator</code> 或 <code>module-emergency-revoker</code>。这些权限集合仍然各自独立；发布在同一个
+root 中不会合并它们的权力。</p>
+<p>运行时状态 root 是按 credential ID commitment 寻址的“当前状态 Merkle tree”，不是仅追加
+的撤销列表。每个 credential ID commitment 精确对应一个当前叶子：</p>
+<pre><code class="language-text">namespaceHash, instanceCommitment, credentialKind,
+credentialIdCommitment, status, statusSequence, effectiveAt
+</code></pre>
+<p><code>credentialKind</code> 是 <code>context-account</code>、<code>capability</code> 或 <code>session</code>；<code>status</code> 是 <code>active</code> 或
+<code>revoked</code>。Midnight 合约存储当前 root 及单调递增的 root 序号。M6 只在证明某个 credential
+的 <code>active</code> 叶子属于精确当前 root 和序号时才接受它。撤销会把该叶子替换为 <code>revoked</code> 并推进
+root 序号。该设计只需要普通 Merkle 成员证明，不依赖尚未定义的非成员证明。</p>
+<p>M6 基线不引入独立的实例权限 root。精确分配器与 capability 签发者权限通过私有签名断言
+携带、对照 namespace 权限 root 检查，并写入私有实例状态 commitment。以后增加另一种 root
+必须作为版本化协议变更处理，不能只是实现便利。</p>
+<p>任何 root 都不能由受信任操作员随意写入新值。Namespace 权限更新必须验证对 old root、new root、
+策略版本和生效序号作出的独立治理授权。运行时状态更新必须证明旧叶子及 Merkle path、验证精确
+签发者或撤销者权限、计算替代的 <code>active</code> 或 <code>revoked</code> 叶子并导出新 root；随后账本原子推进相应
+root 序号。</p>
+<h3 id="zh-5-7-精确-m4-激活登记">5.7 精确 M4 激活登记</h3>
+
+<p>M4 到 Midnight 的边界是版本化登记协议，而不是受信任的数据库复制。其规范签名封装包含：</p>
+<pre><code class="language-text">envelopeVersion
+namespaceHash + templateIdHash + semanticVersion + templateContentHash
+governancePolicyHash + proofModuleBindingsHash
+m4ActivationRecordHash + approvalEvidenceCommitment
+authorityRootVersion + authorityRootSequence
+targetNetworkId + targetContractIdentity + registryProtocolVersion
+admissionNonce
+</code></pre>
+<p>签名者必须是精确 namespace 当前合格的 <code>governance-activator</code>。v1 allowlist 登记签名 profile
+为 <code>midnight-jubjub-schnorr-v1</code>。<code>admit-m4-activation-v1</code> 注册电路在创建不可变 active-version
+记录前，验证密钥资格、精确封装签名、目标绑定和未使用 nonce。替换任何字段、密钥、签名
+profile，或重放 nonce 都会失败。</p>
+<p>该签名者不能伪造 M4 批准证据。M4 继续负责 Ed25519 审核签名验证、合格审核者唯一性、
+namespace 阈值、拒绝状态和职责分离。Midnight v1 证明获授权的 M4 治理边界登记了精确激活，
+并 commitment 其证据；它不证明 Midnight 独立检查了每个审核者签名。若以后需要在 Midnight
+直接验证 Ed25519 审核证明，必须作为独立治理的 Compact／ledger 协议升级处理。</p>
+<p>登记密钥不授予 allocator、capability 签发、证明模块激活、退役或紧急撤销权限。这些权限仍然
+分别限定；登记和终止都不能改写较早的注册记录或收据。</p>
+<h3 id="zh-5-8-可扩展但受-allowlist-控制的证明模块">5.8 可扩展但受 allowlist 控制的证明模块</h3>
+
+<p>模板是数据，不能引入可执行证明逻辑。每个操作引用一个精确的活跃证明实现：</p>
+<pre><code class="language-text">proofModuleId, proofModuleVersion, implementationHash,
+configurationHash, receiptSchemaHash
+</code></pre>
+<p>引用绝不能使用 <code>latest</code>。配置受模块已批准的配置 schema 限制。未知字段、不支持的值、可执行
+表达式和未登记实现哈希必须默认拒绝，并返回 <code>UNSUPPORTED_PROOF_REQUIREMENT</code> 或更具体的
+验证结果。</p>
+<p>首批可复用运行时证明类型为：</p>
+<ul>
+<li><code>delegated-capability-action-v1</code>：检查签发者资格、权限收缩、会话范围、精确意图、时间、
+当前 credential 状态和重放；以及</li>
+<li><code>private-state-transition-v1</code>：检查已 commitment 的前一状态、允许的确定性转换、正确计算的
+下一状态 commitment，以及旧状态只能被消费一次。</li>
+</ul>
+<p>M6 的物理部署同样固定。一个版本化 Compact 授权合约包含注册表、root／状态账本、通用收据
+逻辑、<code>admit-m4-activation-v1</code> 注册入口和两个首批运行时模块入口。模块的
+<code>implementationReference</code> 由精确合约地址、合约版本、
+电路入口名称和实现哈希共同构成。Compact 不会动态加载模板代码。未来证明类型通过协议升级流程
+创建新的版本化合约部署和注册记录；现有模板绑定继续固定到原始部署。</p>
+<p>证明模块作为协议实现治理，独立于普通模板治理。其公开注册记录包含：</p>
+<pre><code class="language-text">moduleId, moduleVersion, implementationReference,
+sourceHash, implementationHash, inputSchemaHash,
+configurationSchemaHash, receiptSchemaHash, compilerVersion,
+compatibilityPolicyHash, status, activationSequence,
+activatedAt?, deprecatedAt?, revokedAt?, approvalEvidenceCommitment
+</code></pre>
+<p>其生命周期固定为：</p>
+<pre><code class="language-text">proposed -&gt; reviewed -&gt; approved -&gt; active -&gt; deprecated
+                                      |
+                                      +-&gt; revoked
+</code></pre>
+<p>审核只报告证据，不授予信任。批准要求独立人工安全／隐私审核，以及高阈值协议治理对精确源码、
+编译实现、schema、编译器版本、兼容策略和部署引用作出决定。独立模块激活权限使模块可用；独立
+紧急权限可以前瞻性撤销。Agent 可以实现和测试模块，但不能计入人工批准阈值，也不能激活模块。</p>
+<p>弃用阻止新的模板激活选择该模块。现有实例按照与该精确模块版本共同批准的兼容策略处理。撤销
+前瞻性拒绝新证明。两者都不改写历史收据。新模块版本绝不能静默迁移模板：模板必须创建新修订、
+重新通过 M4 审核并固定新的实现哈希。</p>
 </section>
 <section aria-labelledby="zh-6-隐私授权与执行边界">
 <h2 id="zh-6-隐私授权与执行边界">6 隐私授权与执行边界</h2>
 
-<p>Midnight 决定操作是否允许。Monad 或普通应用执行获准的公开效果。两者边界是版本化收据，
-而不是共享数据库记录。</p>
+<p>对于模板声明会改变授权状态的操作，M6 是有状态的。Midnight 决定操作是否允许，以及哪个私有
+授权状态转换成为权威结果。Monad 或普通应用另行决定下游公开效果是否成功执行。Midnight 上
+已批准的转换绝不能错误声称下游执行已经成功。</p>
+<p>对于状态转换操作，一笔 Midnight 交易原子完成：</p>
+<ol>
+<li>验证私有分配、capability、session、ActionIntent 和选定证据；</li>
+<li>验证精确活跃模板、权限 root 序号、运行时状态 root 序号、证明模块版本、实现哈希和配置；</li>
+<li>检查提供的前一状态 commitment 与转换序号等于当前账本状态；</li>
+<li>证明模板只允许一个下一授权状态；</li>
+<li>消费限定范围 nullifier；</li>
+<li>安装计算出的下一状态 commitment；以及</li>
+<li>增加转换序号并发出一份 <code>DecisionReceipt</code>。</li>
+</ol>
+<p>只有一笔交易能够消费某个前一 commitment 与序号。竞争证明可能浪费计算，但正确性不依赖证明
+生成锁。真实链测试会测量证明时间和冲突；只有后续明确的性能决策才能增加协调机制。</p>
+<p>对于模板未声明状态转换的操作，M6 验证同样的私有授权和当前注册表；如果操作只能使用一次，
+则消费限定范围 nullifier；随后发出收据，但不修改实例状态 commitment。</p>
+<p>所有证明模块输出同一种通用封装：</p>
 <pre><code class="language-text">DecisionReceipt {
   receiptVersion,
-  templateId, templateVersion,
-  instanceCommitment, contextId,
-  actionSchemaId,
+  proofModuleId, proofModuleVersion, implementationHash,
+  namespaceHash, templateIdHash, templateVersion, templateContentHash,
+  instanceCommitment, previousStateCommitment?, nextStateCommitment?,
+  transitionSequence?, contextHash, actionSchemaId,
   purposeHash, recipient,
   validAfter, validBefore,
   scopedNullifier,
   outputCommitment,
-  sourceNetwork, sourceContract, sourceTransaction
+  sourceNetwork, sourceContract, sourceTransaction, sourceLedgerSequence
 }
 </code></pre>
-<p>收据不包含私有证据、稳定主体标识符、会话密钥、凭证或无关实例活动。空值标识域必须包含
-模板、上下文、操作、资源范围和策略版本，防止跨用途复用。</p>
+<p>文本 namespace、template、context 和 purpose 使用版本化哈希表示。接收方保留为下游执行所需
+的精确地址。收据不包含私有证据、状态标签、审核者身份、capability 范围、账户或会话密钥、
+凭证、自由文本或无关实例活动。Nullifier 域包含收据版本、证明模块与实现、精确模板、实例、
+上下文、操作、资源 commitment、用途、接收方和策略版本。</p>
+<p>模块特定的额外材料只能进入 <code>outputCommitment</code>。网关和执行层只消费通用封装和明确登记的收据
+schema；它们不重新解释私有策略，也不静默扩大模块特定输出。</p>
 <p>执行层可以因为本地执行状态而拒绝一份已批准收据，但不能把它转换为更宽的操作。模式或
 策略变更需要新版本和显式兼容规则。</p>
 </section>
@@ -941,8 +1717,20 @@ dependency still requires an explicit compatibility decision and tests.</p>
 <tr>
 <td>治理注册表</td>
 <td>审核者背书与激活提案</td>
-<td>阈值和命名空间检查</td>
-<td>活跃不可变模板版本</td>
+<td>对精确哈希执行阈值与 namespace 检查</td>
+<td>提交给 Midnight 的 M4 激活证据</td>
+</tr>
+<tr>
+<td>Midnight 模板注册表</td>
+<td>M4 激活、退役或撤销证据</td>
+<td>精确目标、权限 root、生命周期序号与证明模块绑定检查</td>
+<td>直接公开的模板生命周期记录</td>
+</tr>
+<tr>
+<td>Midnight 证明模块注册表</td>
+<td>已审核实现与协议治理证据</td>
+<td>精确哈希、生命周期、兼容性和独立激活检查</td>
+<td>active／deprecated／revoked 模块记录</td>
 </tr>
 <tr>
 <td>情境分配器</td>
@@ -957,16 +1745,16 @@ dependency still requires an explicit compatibility decision and tests.</p>
 <td>私有证明请求</td>
 </tr>
 <tr>
-<td>Midnight 合约</td>
-<td>证明请求与批准的模板/策略哈希</td>
-<td>验证能力、证据、状态与唯一性</td>
-<td>最小 DecisionReceipt 字段</td>
+<td>Midnight 授权合约</td>
+<td>私有证明请求与当前注册表引用</td>
+<td>验证 capability、证据、状态、原子转换与唯一性</td>
+<td>最小 <code>DecisionReceipt</code> 字段和更新后的 commitment</td>
 </tr>
 <tr>
 <td>网关</td>
 <td>已最终确认的 Midnight 公开输出</td>
-<td>来源验证与传输签名</td>
-<td>类型化收据封装</td>
+<td>最终性、来源、allowlist、schema 和逐字节封装检查</td>
+<td>对未修改收据的类型化传输签名</td>
 </tr>
 <tr>
 <td>Monad 注册表或应用</td>
@@ -1042,6 +1830,10 @@ Agent 和情境分配器都不持有治理密钥。</p>
 <li>证明只建立电路和策略编码的声明，不证明观点、指控、诊断或人的判断为真。</li>
 <li>模板和收据模式变更属于版本化协议变更。</li>
 <li>架构文档和测试只引用生成器模式与种子，绝不包含写死的情境实例数据。</li>
+<li>模板只能引用精确、活跃的证明模块版本和哈希；不支持的证明语义必须停止激活，不能被近似。</li>
+<li>公开模板与模块注册表、权限 root、credential 状态 root、状态 commitment 和 nullifier 各自
+具有独立含义与域。</li>
+<li>Midnight 负责授权状态顺序；Monad 或目标应用负责下游执行成功或失败。</li>
 </ol>
 </section>
 <section aria-labelledby="zh-11-生成示例与确定性测试">
@@ -1080,7 +1872,7 @@ Agent 和情境分配器都不持有治理密钥。</p>
         </article>
         <footer>
           由 <code>docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md</code> 自动生成。
-          源文件 SHA-256：<code>b0a642e971f5d5388dacc84791135e76f0f091838043114ea209e5ec51facf3d</code>。
+          源文件 SHA-256：<code>e2429fa48b420c44e9a76c1033b1ab0946c0376eb4f9d2ad0671b365ee75ec37</code>。
         </footer>
       </div>
     </main>

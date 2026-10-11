@@ -1,7 +1,7 @@
 # Permio: From Human Need to Programmable Context
 
 Status: human-first product and architecture guide<br>
-Date: 10 October 2026
+Date: 11 October 2026
 
 ## 1 Start with the human problem
 
@@ -82,6 +82,29 @@ exact version and content hash. A runtime allocator may then instantiate it.
 An Agent can draft, test, and flag risks. It cannot approve its own policy.
 The party allowed to instantiate a template is also not automatically allowed
 to assign every slot or delegate every action.
+
+### 4.1 Who actually programs the system
+
+There is no single programmer role. A template author writes declarative data:
+slots, contexts, actions, transitions, constraints, and references to already
+approved proof profiles and execution adapters. The template cannot contain or
+download executable code. Reviewers attest to its exact hash and version;
+threshold namespace governance activates it; an allocator creates instances.
+
+Executable privacy logic follows a separate release path. Circuit maintainers
+write and compile proof logic, clients or approved provers generate proofs, and
+Midnight verifies authorization. Executable public effects follow another
+release path: adapter developers implement them in a Monad contract or ordinary
+application, and execution governance controls deployment. The gateway only
+transports a finalized decision receipt; it does not run private policy.
+
+For a high-assurance end-to-end test, task participants are generated slot
+occupants rather than system roles. Outside those participants, the test uses a
+separate template author, privacy reviewer, security reviewer, domain reviewer,
+three namespace signers with a two-of-three threshold, allocator, emergency
+revoker, gateway signer, execution-registry governor, and relayer. Issuer and
+evidence-vault identities appear only when the selected template requires
+them. The full normative matrix is in the architecture document.
 
 ## 5 How programmable permissions feel to a user
 
@@ -172,6 +195,39 @@ flowchart LR
 The execution layer may reject a receipt because execution state has changed.
 It may never broaden what the privacy layer approved.
 
+### 7.1 What Midnight stores and what remains private
+
+Permio uses four mechanisms for four different jobs. Active template versions,
+their exact content hashes, lifecycle, and approved proof-module versions are
+direct public Midnight records because they are shared governance facts.
+Versioned Merkle roots represent eligible namespace authority keys and the
+current active/revoked status of private context accounts, capabilities, and
+sessions. Individual allocations, grants, sessions, and action intents remain
+private signed assertions checked inside runtime proofs. M4 reviewer approvals
+remain off-chain Ed25519 evidence committed by the activation-admission
+envelope. Private instance state remains hidden behind a public state
+commitment and sequence; scoped nullifiers prevent the same action
+authorization from being consumed twice.
+
+M4 verifies eligible unique reviewers, namespace thresholds, rejection state,
+and separation of duties. The namespace governance/activation authority then
+signs one exact, replay-protected envelope with the allowlisted Midnight
+Jubjub/Schnorr admission profile. Midnight verifies that currently eligible
+authority and records only the exact template version and hash. It does not
+claim to have independently re-verified each Ed25519 reviewer signature.
+
+A template may select and configure only an exact active module from the
+allowlisted proof-module registry. It cannot contain executable proof logic or
+request `latest`. If no approved module implements the required claim, template
+activation stops with `UNSUPPORTED_PROOF_REQUIREMENT`; adding that proof family
+requires an independently reviewed and governed protocol upgrade.
+
+For a template-declared state transition, Midnight verifies the current state
+commitment and sequence and atomically installs the next commitment, increments
+the sequence, and consumes the nullifier. This orders privacy-authorization
+state. It does not claim that Monad or another application successfully
+performed the downstream action.
+
 ## 8 What “Contract Authority” means
 
 The smart contract is an automated enforcer, not a human manager. It checks
@@ -216,6 +272,21 @@ The same generator can produce a readable demonstration, a deterministic test
 fixture, or randomized property tests. Changing a generated name or identifier
 must not require source-code changes. Production data never uses test seeds.
 
+For M6 engineering, the sibling `information-flow` repository is a reference
+for Midnight integration mechanics, not a Permio application template or code
+dependency. Its resumable wallet synchronization, Compact compilation,
+deployment/reconnect, local proof-server configuration, redaction, and
+public-only evidence patterns may be studied and deliberately adapted. Its
+domain model, contract state, named actors, keys, checkpoints, and deployed
+addresses are not copied into Permio.
+
+The shared workspace already retains three synchronized disposable Preprod
+account checkpoints and a ledger-8 local proof server, avoiding unnecessary
+full-history synchronization during later opt-in smoke tests. Wallet secrets
+and checkpoints remain ignored and privacy-sensitive. M6 completion still
+requires a fresh, recorded test against the pinned Local Dev node, indexer, and
+proof server; the reusable Preprod accounts do not replace that exit gate.
+
 ## 11 Research references
 
 - [HL7 FHIR Consent](https://hl7.org/fhir/consent.html)
@@ -233,7 +304,7 @@ privacy, and licensing decision.
 # Permio：从人的需求到可编程情境
 
 状态：面向人的产品与架构指南<br>
-日期：2026 年 10 月 10 日
+日期：2026 年 10 月 11 日
 
 ## 1 从人的问题开始
 
@@ -299,6 +370,21 @@ flowchart LR
 
 Agent 可以草拟、测试和标记风险，但不能批准自己的策略。能够实例化模板的一方，也不会自动
 获得分配所有槽位或委托所有操作的权限。
+
+### 4.1 到底是谁在编程系统
+
+系统不存在单一程序员角色。模板作者编写的是声明式数据：槽位、上下文、操作、转换、约束，
+以及对已获批准的证明配置和执行适配器的引用。模板不能包含或下载可执行代码。审核者为模板的
+精确哈希和版本背书；阈值命名空间治理方激活模板；分配者创建实例。
+
+可执行隐私逻辑使用另一条发布路径。电路维护者编写并编译证明逻辑，客户端或获批证明服务生成
+证明，Midnight 验证授权。可执行公开效果又使用独立发布路径：适配器开发者在 Monad 合约或
+普通应用中实现公开效果，执行治理方控制部署。网关只传输已最终确认的决策收据，不运行私有策略。
+
+在高保证端到端测试中，任务参与者是生成的槽位占用者，而不是系统角色。在这些参与者之外，
+测试分别使用模板作者、隐私审核者、安全审核者、领域审核者、三名采用三选二阈值的命名空间
+签名者、分配者、紧急撤销方、网关签名者、执行注册表治理方和中继者。只有所选模板需要时，
+才加入签发者和证据保险库身份。完整规范矩阵位于架构文档。
 
 ## 5 用户如何感受到可编程权限
 
@@ -373,6 +459,28 @@ flowchart LR
 
 执行层可以因为执行状态变化而拒绝收据，但永远不能扩大隐私层批准的内容。
 
+### 7.1 Midnight 存储什么，哪些内容保持私有
+
+Permio 用四种机制处理四种不同工作。活跃模板版本、精确内容哈希、生命周期和已批准证明模块
+版本是共享治理事实，因此作为 Midnight 直接公开记录。版本化 Merkle root 表示合格 namespace
+权限密钥，以及私有上下文账户、capability 和 session 当前 active／revoked 状态。单个分配、
+grant、session 和 action intent 保持为在运行时证明内部检查的私有签名断言。M4 审核批准保留
+为链下 Ed25519 证据，并由激活登记封装 commitment。私有实例状态隐藏在公开状态 commitment
+与序号后；限定范围 nullifier 防止同一操作授权被消费两次。
+
+M4 验证合格审核者唯一性、namespace 阈值、拒绝状态和职责分离。随后 namespace 治理／激活
+权限使用 allowlist 中的 Midnight Jubjub/Schnorr 登记 profile，对一份精确且防重放的封装签名。
+Midnight 验证当前合格权限，并且只记录精确模板版本与哈希；它不声称独立重新验证了每个
+Ed25519 审核者签名。
+
+模板只能选择和配置 allowlist 证明模块注册表中的一个精确 active 模块，不能包含可执行证明逻辑
+或请求 `latest`。如果没有已批准模块实现所需声明，模板激活以
+`UNSUPPORTED_PROOF_REQUIREMENT` 停止；新增该证明类型必须经过独立审核与治理的协议升级。
+
+对于模板声明的状态转换，Midnight 验证当前状态 commitment 和序号，并原子安装下一 commitment、
+增加序号和消费 nullifier。它负责隐私授权状态顺序，但不声称 Monad 或其他应用已经成功执行下游
+操作。
+
 ## 8 “合约治理方”是什么意思
 
 智能合约是自动执行者，不是人类 manager。它检查证明、签名、阈值、时间锁和状态。需要承担
@@ -409,6 +517,16 @@ flowchart LR
 
 同一生成器可以产生可读演示、确定性测试数据或随机属性测试。改变生成的姓名或标识符不得要求
 修改源码。生产数据绝不使用测试种子。
+
+M6 工程可以把相邻的 `information-flow` 仓库用作 Midnight 集成机制参考，但不能把它当作
+Permio 应用模板或代码依赖。可以研究并有意识地适配其可恢复钱包同步、Compact 编译、部署／
+重连、本地 proof server 配置、脱敏和只含公开数据的证据模式；不能把它的领域模型、合约状态、
+具名参与者、密钥、checkpoint 或已部署地址复制进 Permio。
+
+共享 workspace 已保留三个完成同步的一次性 Preprod 账户 checkpoint，以及一个 ledger 8 本地
+证明服务器，从而避免后续显式 smoke test 再进行完整历史同步。钱包秘密与 checkpoint 必须保持
+ignored 且按隐私敏感数据处理。M6 完成仍然要求针对固定 Local Dev 节点、indexer 和 proof server
+执行并记录新的测试；可复用 Preprod 账户不能替代该退出门槛。
 
 ## 11 研究资料
 

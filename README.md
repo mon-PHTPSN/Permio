@@ -38,9 +38,32 @@ implementation work, negative cases, rebase resolutions, commands, results,
 and limitations are recorded in the
 [`M4 development log`](docs/evidence/M4/development-log.md) and
 [`M5 development log`](docs/evidence/M5/development-log.md). `M6 — Generic
-Midnight proof enforcement` is next. The milestone specification retains its
-planning baseline; acceptance JSON and these logs are the current completion
-record.
+Midnight proof enforcement` is next. Its architecture is fixed: active template
+and proof-module lifecycle facts are direct Midnight records; namespace
+authority and current private-credential status use separate versioned Merkle
+roots; instance allocation, capabilities, sessions, and action intents remain
+private signed assertions; and private authorization state is ordered by public
+commitments, sequences, and scoped nullifiers.
+
+Templates may configure only exact active implementations from an allowlisted,
+versioned proof-module registry. A template cannot introduce executable proof
+logic or select `latest`. Unsupported proof semantics stop activation and enter
+a separately reviewed protocol-upgrade process. For a declared state
+transition, M6 verifies and atomically replaces the current state commitment
+and sequence; M8 or the target application separately owns downstream execution
+success or failure. The approved boundary is recorded in the
+[`M6 architecture decision`](docs/evidence/M6/architecture-decision.md); the
+concrete pre-implementation investigation is recorded in the
+[`M6 development log`](docs/evidence/M6/development-log.md).
+
+M4 continues to verify Ed25519 reviewer attestations, unique eligible
+reviewers, thresholds, rejection state, and separation of duties. Midnight
+does not repeat those checks in M6 v1. Instead, the namespace-scoped M4
+governance/activation authority signs an exact, replay-protected activation
+envelope with the allowlisted `midnight-jubjub-schnorr-v1` admission profile.
+The M6 registry circuit verifies that authority and admits only the envelope's
+exact namespace, template ID, semantic version, content hash, M4 activation
+record hash, and approval-evidence commitment.
 
 ## Current scope
 
@@ -54,6 +77,25 @@ The implemented off-chain packages form a concrete dependency chain:
   template versions and hashes; and
 - `@permio/context-accounts` consumes an active allocation, attenuates
   capabilities, issues fresh scoped sessions, and authorizes signed actions.
+
+M6 has a separate `admit-m4-activation-v1` registry circuit plus the initial
+runtime modules `delegated-capability-action-v1` and
+`private-state-transition-v1`. Runtime modules emit a common minimal
+`DecisionReceipt`. The M7 gateway is a finalized-source observer and byte-exact
+transport signer; it does not re-evaluate private policy or reinterpret
+module-specific output.
+
+For M6 development, the sibling `../information-flow` checkout is a reference
+for Midnight integration mechanics only: Compact compilation, managed
+artifacts, resumable wallet synchronization, deployment/reconnect, proof-server
+use, and public-only live evidence. It is not a Permio dependency or product
+template, and its application model, contract state, named actors, wallet
+secrets, checkpoints, and deployed addresses must not be copied into Permio.
+The workspace provides three already-synchronized disposable Preprod account
+checkpoints there and a pinned local proof server at `http://127.0.0.1:6300`.
+The checkpoints and secrets remain ignored and privacy-sensitive; Local Dev is
+still the mandatory M6 acceptance network, while Preprod reuse is an opt-in
+secondary smoke test.
 
 The current on-chain vertical slice remains a Solidity registry for short-lived
 attestations. An authorized verifier signs an EIP-712 payload that binds a
@@ -177,14 +219,41 @@ M0 至 M5 均已完成。机器可读的验收证据保存在 `docs/evidence/M0`
 `docs/evidence/M5`。M4 和 M5 的实际实现工作、负向用例、变基冲突解决、执行命令、结果与
 限制分别记录在[`M4 开发日志`](docs/evidence/M4/development-log.md)和
 [`M5 开发日志`](docs/evidence/M5/development-log.md)。下一个里程碑是
-`M6——通用 Midnight 证明强制执行`。里程碑规范保留规划基线状态；验收 JSON 和开发日志
-构成当前完成记录。
+`M6——通用 Midnight 证明强制执行`。其架构已经固定：活跃模板与证明模块生命周期事实使用
+Midnight 直接记录；namespace 权限和当前私有 credential 状态使用两个独立的版本化 Merkle
+root；实例分配、capability、session 和 action intent 保持为私有签名断言；私有授权状态通过
+公开 commitment、序号和限定范围 nullifier 排序。
+
+模板只能配置 allowlist 中精确、活跃、版本化的证明模块实现，不能引入可执行证明逻辑，也不能
+选择 `latest`。不支持的证明语义会停止激活，并进入独立审核的协议升级流程。对于声明的状态
+转换，M6 验证并原子替换当前状态 commitment 与序号；M8 或目标应用另行负责下游执行成功或失败。
+获批准边界记录在[`M6 架构决策`](docs/evidence/M6/architecture-decision.md)中。
+具体的实现前调查记录在[`M6 开发日志`](docs/evidence/M6/development-log.md)中。
+
+M4 继续验证 Ed25519 审核者证明、合格审核者唯一性、阈值、拒绝状态和职责分离。M6 v1 不在
+Midnight 上重复这些检查。命名空间范围内的 M4 治理／激活权限改为使用 allowlist 中的
+`midnight-jubjub-schnorr-v1` 准入 profile，对精确且防重放的激活封装签名。M6 注册电路验证该
+权限，并且只登记封装中的精确 namespace、template ID、语义版本、内容哈希、M4 激活记录哈希
+和审批证据 commitment。
 
 当前链下包形成明确的依赖链：`@permio/scenario-domain` 验证并哈希应用无关的情境模板；
 `@permio/scenario-generator` 生成确定性的合成实例，并扫描公开产物中的私有值泄漏；
 `@permio/scenario-governance` 分离五类权限，并治理精确的模板版本与哈希；
 `@permio/context-accounts` 消费已激活的分配，收窄能力范围，签发新鲜的有限会话，并授权
 签名操作。
+
+M6 使用独立的 `admit-m4-activation-v1` 注册电路，以及首批运行时模块
+`delegated-capability-action-v1` 和 `private-state-transition-v1`。运行时模块统一输出最小
+`DecisionReceipt`。M7 网关只观察已最终确认来源并对逐字节不变的传输封装签名；它不会重新
+评估私有策略，也不会解释模块特定输出。
+
+M6 开发可以把相邻的 `../information-flow` checkout 用作 Midnight 集成机制的参考，包括
+Compact 编译、托管生成产物、可恢复钱包同步、部署／重连、proof server 使用和只包含公开数据
+的真实链证据。它不是 Permio 的依赖或产品模板；其应用模型、合约状态、具名参与者、钱包秘密、
+checkpoint 和已部署地址都不能复制进 Permio。Workspace 已在该 checkout 中提供三个完成同步的
+一次性 Preprod 账户 checkpoint，并提供固定版本的本地证明服务器
+`http://127.0.0.1:6300`。Checkpoint 与秘密保持 ignored 且属于隐私敏感数据；Local Dev 仍是
+M6 的强制验收网络，复用 Preprod 账户只属于显式选择的补充 smoke test。
 
 第一个纵向功能切片是短期证明的 Solidity 注册表。授权验证者使用 EIP-712 对载荷签名，
 把声明绑定到一个版本化模式、Midnight 网络/合约/交易引用、一个操作承诺和限定范围的

@@ -1,7 +1,7 @@
 # Permio Deterministic Milestones
 
-Status: revised execution contract<br>
-Date: 10 October 2026<br>
+Status: implementation record through M5; deterministic execution contract for M6–M12<br>
+Date: 11 October 2026<br>
 Scope: programmable scenario library, context-bound accounts, generated scenario packs, Midnight authorization, and composable execution
 
 ## 1 How completion is judged
@@ -54,24 +54,79 @@ Every milestone must preserve these rules:
 
 ## 3 M0 — Documentation and naming baseline
 
-Status: `DONE`
+Status: `DONE`<br>
+Accepted source commit: `b25b005c9ea0126ba5cdc76f78225a9b62129960`<br>
+Acceptance evidence: `docs/evidence/M0/acceptance.json`
+
+### Result in plain language
+
+M0 established what Permio is, which system boundaries exist, and how later
+work is documented and verified. A developer can begin from the repository
+without guessing whether private authorization happens on Midnight, whether
+the gateway may receive private evidence, or whether Monad is the privacy
+system. The answer is fixed: Midnight is the private authorization boundary,
+the gateway transports a minimal finalized result, and Monad consumes a
+recipient-bound public attestation.
+
+M0 also established that concrete people, records, purchases, cases, amounts,
+and timestamps are examples or generated test data—not protocol constants.
+“Alice”, “Bob”, and “Clara” may explain a historical flow, but core code and
+new acceptance tests cannot depend on those names.
 
 ### Artifacts
 
-- human-first guide;
-- programmable context architecture;
-- deterministic milestone contract;
-- bilingual generated HTML; and
-- documentation generator with Mermaid support.
+- `README.md`, which identifies the repository, supported commands, and the
+  current implementation boundary;
+- `docs/PERMIO_FROM_NEED_TO_DESIGN.md`, the human-first explanation of the
+  product need and privacy model;
+- `docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md`, which separates template
+  governance, private authorization, receipt transport, public execution, and
+  encrypted evidence delivery;
+- this deterministic milestone contract;
+- generated bilingual HTML editions of the canonical Markdown documents; and
+- `scripts/build-docs.mjs`, which renders Markdown and Mermaid diagrams and
+  checks that generated documentation matches its source.
+
+### Actors and responsibilities fixed by M0
+
+- A template author describes a reusable scenario but does not thereby gain
+  approval or runtime authority.
+- A user or Agent acts only through a context-specific authorization; account
+  registration alone grants no business permission.
+- Midnight verifies private authorization and publishes only the minimum
+  versioned result required downstream.
+- The gateway observes finalized public Midnight output. It must not receive
+  the user's private credential, record, witness, or plaintext evidence.
+- A relayer may pay the Monad transaction cost but cannot create or broaden an
+  authorization.
+- A Monad recipient consumes only an attestation addressed to that recipient
+  for the stated purpose and lifetime.
 
 ### Acceptance
 
-1. The architecture topology has separate control, privacy, receipt,
-   execution, and encrypted-evidence concepts and no all-in-one component map.
-2. All three source documents explain that concrete scenarios are generated,
-   not embedded.
-3. Documentation build and freshness checks pass.
-4. English and Chinese panels contain the same sections.
+1. The canonical architecture shows separate components for template control,
+   private proof generation, public receipt production, receipt transport,
+   public execution, and encrypted evidence delivery.
+2. No component is described as simultaneously authoring templates, approving
+   them, seeing private witnesses, signing gateway receipts, and executing
+   Monad actions.
+3. Canonical documents state that concrete scenario data is generated rather
+   than embedded in architecture or production branches.
+4. `npm run docs:check` proves that generated HTML is current and that the
+   English and Chinese panels have corresponding sections.
+5. The full `npm run check` gate passes under the recorded Node, npm, and
+   Hardhat versions.
+
+### Verified evidence
+
+The accepted M0 run used Node.js 24.13.1, npm 11.8.0, and Hardhat 3.14.0.
+`npm ci` reported zero vulnerabilities, and `npm run check` passed the
+documentation, type-checking, Solidity build, and five registry tests that
+existed at that source commit.
+
+M0 did not claim that a Midnight proof, gateway service, or Monad testnet
+deployment existed. Those declarations are explicitly false in the acceptance
+record, preventing documentation work from being mistaken for chain delivery.
 
 ### Exit gate
 
@@ -80,23 +135,86 @@ record, credential, case, product, amount, or timestamp fixtures.
 
 ## 4 M1 — Existing receipt-protocol baseline
 
-Status: `DONE`; historical evidence remains in `docs/evidence/M1`
+Status: `DONE`<br>
+Implementation commit: `d5982c9d1994adc63ad6e2c644670cecc59914d5`<br>
+Acceptance evidence: `docs/evidence/M1/acceptance.json`
 
-The repository already contains a canonical receipt schema package, EIP-712
-encoding, hash vectors, a recipient-bound Solidity registry, and integration
-tests. Its named hand-written scenario fixture is retained only as historical
-evidence for that completed baseline. New architecture and tests must migrate
-to the generator introduced in M3; the legacy fixture is not a template,
-protocol requirement, or source for new acceptance criteria.
+### Result in plain language
 
-M1 remains complete only as a record of the implemented receipt slice. It does
-not claim that scenario templates, context accounts, or generic Midnight
-authorization are implemented.
+M1 implemented the first executable public-receipt slice. It answers a narrow
+question: after some upstream privacy system has produced an authorization,
+how can a verifier sign an exact recipient-bound statement and how can a
+Monad-compatible contract reject altered, expired, unauthorized, or replayed
+statements?
+
+It does not answer whether the upstream private action was actually valid.
+The existing Solidity contract verifies the gateway/verifier signature and
+the public receipt constraints; it does not verify a Midnight proof.
+
+### Concrete protocol data
+
+`@permio/protocol` defines versioned schema and purpose identifiers, canonical
+length-delimited commitment inputs, and the EIP-712 typed-data layout. EIP-712
+is the Ethereum standard that signs named structured fields rather than an
+ambiguous byte string.
+
+The public attestation binds:
+
+- schema ID;
+- Midnight source network, contract, and transaction hashes;
+- action commitment and scoped nullifier;
+- purpose hash and exact Monad recipient;
+- issue and expiry times; and
+- the EIP-712 chain and verifying-contract domain.
+
+The scoped nullifier is a one-use identifier limited to a particular schema,
+purpose, and recipient. It prevents the same entitlement from being consumed
+twice without publishing a reusable identity for the user.
+
+### Implemented transaction flow
+
+1. An authorized verifier signs the exact EIP-712 attestation.
+2. A relayer submits the attestation and signature to
+   `RecipientBoundAttestationRegistry.registerAttestation`.
+3. The contract checks time validity, exact recipient binding, verifier
+   authorization, signature recovery, and unused replay scope.
+4. On success, the contract records the attestation and consumes the scope.
+5. On failure, no attestation or replay state is written.
+
+### Tests and negative cases
+
+- protocol tests prove schema and purpose hashes match committed vectors;
+- canonical encoding distinguishes inputs that naive concatenation would make
+  ambiguous;
+- commitment domains are pairwise separated so one hash type cannot be reused
+  as another;
+- Solidity and TypeScript agree on the EIP-712 field order and type hash;
+- a valid relayed registration succeeds on Hardhat's local EVM;
+- recipient substitution, replay, and an unauthorized verifier fail; and
+- revoking a verifier prevents later signatures from being accepted.
+
+### Verified evidence and limitation
+
+The accepted run used Node.js 24.13.1, npm 11.8.0, TypeScript 7.0.2,
+Hardhat 3.14.0, and viem 2.55.19. `npm run check` passed six protocol tests and
+six deployed-contract tests.
+
+The hand-written Alice/Bob/Clara fixture remains only as historical M1 test
+evidence. New scenario work must use M3 generation. M1 does not implement
+scenario templates, governance, context accounts, a gateway, or Midnight proof
+verification.
+
+### Exit gate
+
+M1 is not complete if TypeScript and Solidity hash different payloads, if an
+attestation can be replayed or redirected to another recipient, or if a
+relayer can create authorization without an authorized verifier signature.
 
 ## 5 M2 — Scenario-template domain package
 
 Status: `DONE`; depends on M0; acceptance evidence is recorded in
-`docs/evidence/M2/acceptance.json`
+`docs/evidence/M2/acceptance.json`<br>
+Implementation commit: `51197e36fffa04d29162ea9b7ff300e6e1b2c10a`
 
 ### Artifacts
 
@@ -107,6 +225,34 @@ Status: `DONE`; depends on M0; acceptance evidence is recorded in
 - validator error taxonomy; and
 - unit and property tests.
 
+### Result in plain language
+
+M2 created the language used to describe a reusable scenario. A template says
+which contexts exist, which participant slots may be filled, which record and
+claim shapes are recognized, which actions are available, which disclosures
+each action permits, and how an action moves an instance from one state to the
+next. These definitions are data validated by a fixed parser; they are not
+JavaScript callbacks or application-specific code.
+
+For example, the core understands that an action references a context,
+resource rule, disclosure policy, and state transition. It does not contain a
+hard-coded union such as “review”, “support”, or “clinical referral”. Those
+identifiers belong to governed template data.
+
+### Exact processing flow
+
+1. `parseScenarioTemplate` rejects values that are not exact JSON data.
+2. It rejects missing and unknown fields instead of silently defaulting them.
+3. It checks identifier uniqueness and resolves every cross-reference.
+4. It checks that all declared states are reachable and that one state/action
+   pair cannot select two different transitions.
+5. Canonicalization normalizes strings to Unicode NFC, sorts object keys, and
+   preserves meaningful array order.
+6. `hashScenarioTemplate` applies a versioned, length-delimited,
+   domain-separated SHA-256 hash to the canonical template.
+7. Revision checks require semantic-version changes appropriate to the actual
+   compatibility impact.
+
 ### Acceptance
 
 1. Unknown fields, missing fields, invalid references, unreachable states, and
@@ -114,6 +260,11 @@ Status: `DONE`; depends on M0; acceptance evidence is recorded in
 2. Canonicalization is stable across object-key order and supported runtimes.
 3. An incompatible schema change requires a new template or protocol version.
 4. The domain package imports no application-specific scenario module.
+5. Patch versions may change prose only; additive compatible changes require a
+   minor version; breaking semantic changes require a major version.
+6. Template getters, proxies, or accessors cannot execute during validation.
+7. Production package imports remain local or Node built-ins, preserving the
+   application-neutral boundary.
 
 ### Exit gate
 
@@ -131,9 +282,35 @@ local-only production import boundary. Scenario catalog entries remain data to
 be governed in M4 and instantiated by the M3 generator; none is embedded as a
 closed application type.
 
+### Tests and verified evidence
+
+Fifteen M2 tests cover unknown and missing fields, duplicate identifiers,
+invalid references, unreachable and ambiguous graphs, 64 object-key-order
+permutations, Unicode normalization, length and domain separation, revision
+compatibility, open identifiers, accessor non-execution, and package import
+boundaries. The accepted full repository check passed those tests together
+with the earlier protocol and Solidity suites.
+
+M2 deliberately does not decide whether a valid template is trustworthy or
+active. Structural validity is input to M4 governance, not permission to use a
+template.
+
 ## 6 M3 — Deterministic scenario generator
 
-Status: `NOT_STARTED`; depends on M2
+Status: `DONE`; depends on M2<br>
+Implementation commit: `38227d45c7a2f409ebeb0a0d1be0bec877cdaecc`<br>
+Acceptance evidence: `docs/evidence/M3/acceptance.json`
+
+### Result in plain language
+
+M3 replaced hand-written example identities and records with reproducible,
+synthetic test instances. Given the same validated template, exact template
+hash, generator version, `test:` seed, and policy profile, the generator emits
+the same canonical bytes on every run. Changing the seed changes generated
+principals and records without changing source code or the scenario schema.
+
+This generator is for tests, demonstrations, and acceptance evidence. It is
+not a production identity generator and never reads production data.
 
 ### Artifacts
 
@@ -144,6 +321,31 @@ Status: `NOT_STARTED`; depends on M2
 - golden-vector format; and
 - artifact privacy scanner.
 
+The concrete package is `packages/scenario-generator`. Its version-1 golden
+vector stores the complete deterministic input, canonical output bytes in
+lowercase hexadecimal, and a domain-separated digest. The vector is a private
+test artifact because it contains generated private fields; it is not a public
+receipt.
+
+### Generation flow
+
+1. Validate the supplied M2 template and recompute its exact hash.
+2. Reject a mismatch between the template and caller-supplied hash.
+3. Validate the generator version, explicit `test:` seed, and policy profile.
+4. Derive a master SHA-256 digest from length-prefixed inputs.
+5. Derive each principal, record, credential, claim, event, and timestamp under
+   its own versioned hash domain.
+6. Derive distinct principals for each `(context, participant slot)` pair so a
+   reused slot does not create a global cross-context identifier.
+7. Produce private instance data separately from the allowlisted public schema
+   summary.
+8. Rebuild the exhaustive classification manifest and scan every purported
+   public artifact before accepting it.
+
+The generator never reads the system clock, operating-system randomness,
+locale, environment variables, or machine-specific state. Synthetic values
+are prefixed with `syn_` so fixtures can reject accidental production data.
+
 ### Acceptance
 
 1. The same template hash, generator version, seed, and policy profile produce
@@ -153,6 +355,24 @@ Status: `NOT_STARTED`; depends on M2
 3. Generated fixtures contain synthetic data only.
 4. The scanner fails when a field classified private appears in a public
    receipt, ledger dump, log, or generated HTML.
+5. The scanner detects raw, JSON-escaped, HTML-escaped, numeric-entity,
+   URL-encoded, hexadecimal, Base64, and Base64URL forms of classified private
+   strings.
+6. Removing or weakening a private classification fails because the manifest
+   is re-derived from the generated shape rather than trusted from the caller.
+7. The committed golden vector is regenerated byte-for-byte by
+   `npm run generate:golden --workspace @permio/scenario-generator`.
+
+### Tests and verified evidence
+
+Fourteen generator tests cover complete-input validation, hash mismatch,
+determinism, seed separation, context-specific principals, synthetic values,
+explicit timestamps, byte-stable canonical output, golden-vector
+reproduction, exhaustive classification, and privacy-leak encodings.
+`npm run check` passed M0–M3 tests and the six deployed Solidity tests.
+
+The privacy scanner is an acceptance guard, not a claim that it can reverse
+encryption, compression, hashing, chunking, or unlimited nested encodings.
 
 ### Exit gate
 
@@ -161,7 +381,22 @@ against instance literals stored in architecture documents.
 
 ## 7 M4 — Template governance and library
 
-Status: `NOT_STARTED`; depends on M2
+Status: `DONE`; depends on M2 and is integrated above M3<br>
+Implementation commit: `9b76d6117cabf7211b5077c12357bdc6a3cd251e`<br>
+Acceptance evidence: `docs/evidence/M4/acceptance.json`<br>
+Development log: `docs/evidence/M4/development-log.md`
+
+### Result in plain language
+
+M4 determines when one exact M2 template version may be used to create new
+scenario instances. It separates creating a draft, reporting validation risk,
+reviewing the exact content, activating it, allocating instances, retiring it,
+and revoking it in an emergency. No universal administrator can perform all of
+those actions.
+
+A template is identified by four inseparable values: namespace, template ID,
+semantic version, and exact SHA-256 content hash. Approval of one combination
+never approves another version or altered content.
 
 ### Artifacts
 
@@ -170,6 +405,51 @@ Status: `NOT_STARTED`; depends on M2
 - namespace governance and threshold-approval model;
 - immutable active-version registry; and
 - authorization tests for authors, reviewers, governance, and allocators.
+
+The package `packages/scenario-governance` implements the lifecycle registry,
+authority policy, stable error codes, Ed25519 reviewer attestations, immutable
+history records, and sixteen governance tests.
+
+### Authority model
+
+Each namespace policy contains five non-overlapping sets:
+
+- authors create drafts and advance only their own draft through validation;
+- reviewers approve or reject an exact target with registered public keys;
+- governance authorities activate a sufficiently reviewed version and retire
+  an active version;
+- allocators request permission to create one instance from an active exact
+  version; and
+- emergency revokers prospectively stop an active or retired version.
+
+Policy creation rejects an actor present in more than one set, duplicate
+reviewer identities, duplicate reviewer keys, empty required authority sets,
+and thresholds that cannot be reached. Being an Agent or an author never
+implicitly grants review, activation, allocation, or revocation authority.
+
+### Lifecycle and exact transitions
+
+```text
+draft -> validated -> in_review -> active -> retired
+                                    |          |
+                                    +-> revoked<+
+```
+
+1. `createDraft` reparses the M2 template, computes its exact hash, and reserves
+   its namespace/template/version lineage.
+2. `recordValidation` stores structural and risk findings with
+   `grantsTrust: false`; it cannot approve or activate anything.
+3. `submitForReview` freezes the exact target for reviewer decisions.
+4. `submitReview` verifies reviewer eligibility and the signature over the
+   namespace, template ID, version, content hash, reviewer, decision, and time.
+5. `activate` requires a separate governance actor, enough unique approvals,
+   no recorded rejection, and no duplicated reviewer decision.
+6. `authorizeInstantiation` requires an allocator, a unique request ID, the
+   exact active target, and the current `active` state.
+7. `retire` prevents future allocations while preserving activation and prior
+   allocation history.
+8. `revoke` records an explicit prospective emergency stop and reason without
+   rewriting earlier records.
 
 ### Acceptance
 
@@ -180,6 +460,28 @@ Status: `NOT_STARTED`; depends on M2
 4. Retiring a template prevents new instances without rewriting historical
    receipts.
 5. An allocator can instantiate only an active version.
+6. Every review signature fails if any target field, reviewer identity,
+   decision, time, key, domain, or signature is changed.
+7. A rejection blocks activation even when the numeric approval threshold is
+   otherwise met.
+8. Termination cannot be backdated before an already-issued instantiation
+   authorization.
+9. Returned records are cloned so a caller cannot mutate registry history.
+
+### Negative tests and verified evidence
+
+The sixteen tests cover unauthorized authors, overlapping authority sets,
+Agent privilege escalation, same-version content replacement, invalid state
+transitions, validation attempting to grant trust, altered hashes and signed
+fields, ineligible and duplicate reviewers, insufficient thresholds, reviewer
+rejection, collapsed allocator/governance authority, allocation before
+activation, retirement, revocation, backdating, and attempted mutation of
+returned records.
+
+The accepted `npm run check` passed six protocol, fifteen scenario-domain,
+fourteen generator, sixteen governance, and six deployed-contract tests.
+M4 remains an in-memory off-chain governance package; it does not claim that
+Midnight currently enforces this lifecycle.
 
 ### Exit gate
 
@@ -188,7 +490,24 @@ allocation, upgrades, and emergency revocation.
 
 ## 8 M5 — Context accounts and scoped sessions
 
-Status: `NOT_STARTED`; depends on M2 and M4
+Status: `DONE`; depends on M2 and M4<br>
+Implementation commit: `c65cfe1dfcc31019754ac807b00819ec55b0542b`<br>
+Acceptance evidence: `docs/evidence/M5/acceptance.json`<br>
+Development log: `docs/evidence/M5/development-log.md`
+
+### Result in plain language
+
+M5 turns one M4-approved allocation into a running scenario instance and
+decides whether a particular signed action may change that instance. It does
+not use a global role such as “administrator”, “merchant”, or “agent” as
+permission. Authority always comes from a capability bound to one exact
+template, instance, context, action scope, recipient scope, purpose, disclosure
+policy, and time window.
+
+A context account is not a login account. It is a public key bound to one
+scenario instance and one template-defined context. Registration creates that
+binding but grants no action. An explicitly named instance issuer must create
+a root capability before the account can do anything.
 
 ### Artifacts
 
@@ -197,6 +516,61 @@ Status: `NOT_STARTED`; depends on M2 and M4
 - session-key issuance and verification;
 - human, service, contract, and Agent principal types; and
 - denial-reason tests.
+
+The concrete package is `packages/context-accounts`. It contains the runtime
+model, Ed25519 `ActionIntent` signing and verification, the authorization
+system, stable error types, and thirteen tests. Human, service, contract, and
+Agent principals all use the same capability checks.
+
+### Instance creation
+
+1. `createScenarioInstance` loads an unused M4 instantiation authorization.
+2. It reloads the governed template and requires that the template is still
+   active at instance-creation time.
+3. It reparses the M2 template, recomputes its hash, and compares namespace,
+   template ID, version, and hash with the M4 authorization.
+4. It records the allocator, initial template state, lifetime, and explicit
+   capability issuers.
+5. It consumes the M4 allocation once. A stale allocation cannot be reused,
+   and an allocation issued before retirement cannot create an instance after
+   retirement.
+
+### Capability and session rules
+
+A capability lists allowed actions, resource selectors and concrete resources,
+purposes, recipient kinds and exact recipients, disclosure policies, validity
+window, and remaining delegation depth. Delegation is valid only when the
+child is a strict subset of the parent: it must narrow at least one dimension,
+cannot add any value, cannot start earlier or end later, and cannot increase
+delegation depth. The implementation caps depth at 16 and treats revocation of
+any ancestor as revocation of its descendants.
+
+A session receives a fresh Ed25519 public key and a strict subset of one
+capability. Account keys cannot be reused as session keys, and a key cannot be
+reused across context accounts. These rules prevent a convenient reusable key
+from becoming an accidental public cross-context identifier.
+
+### Signed action and authorization flow
+
+The signed `ActionIntent` binds the exact template target, instance, session,
+context, action, resource selector, concrete resource, purpose, recipient kind,
+exact recipient, disclosure policy, issue time, and session-scoped nonce.
+
+`authorizeAction` checks, in order:
+
+1. the session exists and its Ed25519 signature is valid;
+2. template, instance, and context match exactly;
+3. instance, account, capability ancestry, grant, and session are not revoked;
+4. the instance, grant, and session are within their validity windows;
+5. the `(session ID, nonce)` pair has not already been consumed;
+6. action, current state, resource, purpose, recipient, and disclosure policy
+   are within the session and capability scopes; and
+7. the template defines exactly one permitted transition from the current
+   state for that action.
+
+Only after every check succeeds does the system consume the nonce and update
+the instance to the next state. A denial does not consume the nonce or mutate
+the instance.
 
 ### Acceptance
 
@@ -208,6 +582,48 @@ Status: `NOT_STARTED`; depends on M2 and M4
 5. Changing one constrained dimension causes a precise denial.
 6. An Agent cannot activate templates or create unbounded delegations unless a
    distinct governance capability explicitly permits it.
+7. Reusing an account or session key across contexts is rejected.
+8. Revoking an instance, context account, ancestor grant, grant, or session
+   blocks every later affected action without deleting history.
+9. Changing one signed field either invalidates the signature or returns the
+   precise denial for that constrained dimension.
+10. The authorization result records previous and next instance state and the
+    exact account/grant/session chain used for the decision.
+
+### Denial results
+
+Ordinary authorization failure returns one of nineteen stable reasons rather
+than relying on error-message prose:
+
+```text
+UNKNOWN_SESSION, INVALID_SIGNATURE, TEMPLATE_MISMATCH, INSTANCE_MISMATCH,
+INSTANCE_REVOKED, INSTANCE_EXPIRED, CONTEXT_MISMATCH, ACCOUNT_REVOKED,
+GRANT_REVOKED, SESSION_REVOKED, NOT_YET_VALID, EXPIRED, ACTION_DENIED,
+STATE_DENIED, RESOURCE_DENIED, PURPOSE_DENIED, RECIPIENT_DENIED,
+DISCLOSURE_POLICY_DENIED, REPLAYED_INTENT
+```
+
+### Negative tests and verified evidence
+
+The thirteen tests cover missing or stale M4 allocation, template/hash
+mismatch, retirement before instance creation, all four principal kinds,
+cross-context key reuse, unauthorized root issuance, every scope-expansion
+attempt, unbounded and excessive delegation, over-broad or non-fresh sessions,
+ancestor revocation, exact state transition, mutation of every signed field,
+single-dimension denials, time windows, nonce replay, and all four runtime
+revocation boundaries.
+
+The accepted full check passed generated-document freshness, TypeScript,
+Solidity 0.8.31 compilation for the Osaka EVM target, six protocol tests,
+fifteen domain tests, fourteen generator tests, sixteen governance tests,
+thirteen context-account tests, and six deployed-contract tests on Hardhat's
+local EVM.
+
+Those contract tests prove the existing Monad registry did not regress; they
+do not claim M5 capability decisions are enforced on-chain. M5 is an in-memory
+off-chain component. It does not persist state, authenticate network callers,
+generate a Midnight proof, publish a `DecisionReceipt`, or execute a Monad
+action.
 
 ### Exit gate
 
@@ -216,33 +632,227 @@ stores a global role as the source of runtime permission.
 
 ## 9 M6 — Generic Midnight authorization boundary
 
-Status: `NOT_STARTED`; depends on M2, M3, and M5
+Status: `NOT_STARTED`; depends on M2 through M5<br>
+Target network for milestone acceptance: the pinned Midnight Local Dev stack<br>
+Completion requires real Compact compilation, deployment, proof generation,
+transaction submission, indexed-state reads, and reconnect verification.
+Approved architecture: `docs/evidence/M6/architecture-decision.md`
+
+### Result required in plain language
+
+M6 moves the authorization decision that M5 currently evaluates in memory into
+a real, application-neutral Midnight boundary. It does not upload all M4/M5
+state and does not place all state behind one opaque root. Shared governance
+facts are public records; large authority and credential-status collections
+use roots; individual permissions remain private signed assertions; private
+instance state uses commitments and sequences; one-use actions use nullifiers.
+
+M4 remains responsible for validating Ed25519 reviewer attestations, unique
+eligible reviewers, namespace thresholds, rejection state, and separation of
+duties. M6 admits the resulting exact activation through a replay-protected
+envelope signed by the namespace `governance-activator` under the allowlisted
+`midnight-jubjub-schnorr-v1` profile. M6 v1 does not register a second Midnight
+key for every reviewer and does not claim to re-run M4's threshold on-chain.
+
+For an action that changes authorization state, Midnight becomes the authority
+that orders the transition. It verifies the old commitment and sequence,
+consumes the action nullifier, installs the next commitment, and increments the
+sequence atomically. Monad execution remains a later and separate result.
 
 ### Artifacts
 
-- approved template and policy hash registry;
-- generic capability and `ActionIntent` verification adapters;
-- action-specific proof modules selected through versioned schema identifiers;
-- scoped-nullifier derivation; and
-- public `DecisionReceipt` fields.
+- a Compact contract and generated TypeScript bindings compiled with recorded
+  compiler and dependency versions;
+- a direct public template registry containing namespace hash, template ID
+  hash, semantic version, exact content hash, governance-policy hash,
+  authority-root reference, proof-module-binding hash, lifecycle status,
+  activation sequence, activation time, and prospective termination data;
+- a namespace-authority root registry with explicit root version and sequence;
+- a keyed current-status Merkle-root registry for `context-account`,
+  `capability`, and `session` credentials;
+- a proof-module registry with exact implementation, source, input-schema,
+  configuration-schema, receipt-schema, compiler, compatibility-policy, and
+  approval-evidence hashes;
+- module lifecycle commands for `proposed`, `reviewed`, `approved`, `active`,
+  `deprecated`, and `revoked`, with separate review, approval, activation, and
+  emergency-revocation authorities;
+- versioned template extensions that pin every action to an exact active
+  module version, implementation hash, configuration hash, and receipt schema;
+- a canonical M4 activation-admission envelope, an
+  `admit-m4-activation-v1` registry circuit, and replay protection that bind
+  the exact template target, M4 activation-record hash, approval-evidence
+  commitment, authority-root sequence, target deployment, and protocol
+  version;
+- the initial `delegated-capability-action-v1` and
+  `private-state-transition-v1` runtime proof families;
+- one versioned Compact authorization deployment containing both registries,
+  root/state ledgers, common receipt logic, the activation-admission entry
+  point, and those two runtime module entry points; each implementation
+  reference binds its contract address, contract version, circuit entry-point
+  name, and implementation hash;
+- an M4 activation-record adapter plus private adapters for M4 allocation
+  evidence and M5 capability, session, `ActionIntent`, and selected-record
+  evidence;
+- public instance and state commitments, transition sequences, scoped
+  nullifiers, and a common `DecisionReceipt` envelope;
+- deploy, reconnect, state-query, and live-transaction scripts using the local
+  node, indexer, proof server, and funded disposable local accounts; and
+- `docs/evidence/M6/acceptance.json` plus a development log recording exact
+  implementation decisions, contract/compiler versions, commands, transaction
+  references, state observations, failures, and recovery steps.
+
+### Development reference and reusable environment
+
+The sibling `../information-flow` checkout is a reference for Midnight
+integration mechanics only. M6 may study and deliberately adapt its Compact
+compilation, generated-binding management, resumable wallet synchronization,
+deployment and reconnect flow, proof-server use, log redaction, and
+public-only live evidence. It is not a Permio dependency or product template;
+its domain model, contract schema, authority layout, named actors, database,
+wallet secrets, checkpoints, deployed addresses, and acceptance claims are not
+copied into Permio.
+
+The workspace retains three already-synchronized disposable Preprod account
+checkpoints for the `information-flow` fixtures Alice, Bob, and Clara. Their
+mnemonic stays in that repository's ignored environment file and their
+privacy-sensitive checkpoints stay under its ignored
+`data/preprod-wallet-state/` directory. Permio may access them only through an
+explicit test adapter that maps them to generated roles. Preserving the
+checkpoints avoids repeating full-history synchronization.
+
+The pinned `../midnight-local-dev` checkout supplies the ledger-8 proof server
+at `http://127.0.0.1:6300` (`proof-server:8.1.0`), node at port 9944, and
+indexer at port 8088. Local Dev is the mandatory M6 acceptance target. Reusing
+the synchronized Preprod accounts is an opt-in secondary smoke test and does
+not replace the required local deployment, proof, transaction, indexed-state,
+restart, and reconnect evidence.
+
+### Exact state representation
+
+1. Each active, retired, or revoked template version is a directly readable
+   ledger record. The full JSON, reviews, comments, and risk prose remain
+   off-chain.
+2. Namespace authority leaves bind namespace, governance-policy version,
+   authority kind, authority-key hash, and validity window.
+3. Runtime credential status uses a current-status keyed Merkle tree. Every
+   credential commitment has exactly one current `active` or `revoked` leaf.
+   The contract stores the latest root and monotonically increasing sequence.
+4. A proof must show membership of the exact `active` leaf in the current root;
+   revocation replaces it with `revoked`. M6 does not rely on unspecified
+   Merkle non-membership behavior.
+5. The baseline introduces no separate instance-authority root. Allocator and
+   capability-issuer assertions are private, checked against the namespace
+   authority root, and committed into private instance state.
+6. Root updates are verified transitions, not operator-supplied snapshots. An
+   authority-root update binds old root, new root, policy version, effective
+   sequence, and governance authorization. A credential-status update proves
+   the old leaf/path, verifies its issuer or revoker, calculates the new leaf,
+   and advances the root and sequence atomically.
+
+### Proof-module governance
+
+Templates may select and configure only a registered exact active module.
+They cannot contain executable expressions, choose `latest`, substitute an
+implementation hash, or independently deploy proof code. A missing proof
+family returns `UNSUPPORTED_PROOF_REQUIREMENT` and prevents template
+activation.
+
+A new proof family is a protocol upgrade. Before activation it must have a
+frozen protocol specification, exact implementation and toolchain, negative
+tests, live local-chain tests, independent human security/privacy review,
+high-threshold protocol-governance approval, and separate activation. Agents
+may implement and test it but cannot count toward the human threshold or
+activate it.
+
+Deprecation blocks new template activations and applies the module's already
+approved compatibility policy to existing instances. Revocation blocks new
+proofs prospectively. Neither changes historical receipts, and a new module
+version never silently migrates an active template.
+
+### Stateful authorization transaction
+
+For a template-declared state transition, one successful transaction must:
+
+1. verify the exact active template and proof module;
+2. verify current authority-root and credential-status-root sequences;
+3. privately verify allocation, issuer eligibility, capability ancestry,
+   session scope, signature, validity, revocation status, exact intent, and
+   selected evidence;
+4. match the public current state commitment and transition sequence;
+5. prove that the template selects exactly one permitted next state;
+6. reject an already-used scoped nullifier;
+7. atomically consume the nullifier, install the next-state commitment, and
+   increment the sequence; and
+8. emit one common receipt.
+
+For a non-transitioning action, the transaction performs the same
+authorization checks, consumes a nullifier when the action is declared
+single-use, and emits a receipt without changing state commitment or sequence.
+
+### Public receipt fields
+
+```text
+receiptVersion
+proofModuleId + proofModuleVersion + implementationHash
+namespaceHash + templateIdHash + semanticVersion + templateContentHash
+instanceCommitment
+previousStateCommitment? + nextStateCommitment? + transitionSequence?
+contextHash + actionSchemaId
+purposeHash + exact recipient
+validAfter + validBefore
+scopedNullifier + outputCommitment
+sourceNetwork + sourceContract + sourceTransaction + sourceLedgerSequence
+```
+
+Module-specific output may appear only through `outputCommitment`. Private
+template content, reviewer identity, capability scope, context-account and
+session keys, state labels, records, credentials, claims, evidence, free text,
+generator seeds, and generated private fixtures never become receipt fields.
 
 ### Acceptance
 
 1. Private evidence and witness values remain inside the caller-controlled
-   proof boundary.
-2. Public output contains only the receipt version, template/version reference,
-   instance commitment, context, action schema, purpose, recipient, validity
-   window, scoped nullifier, output commitment, and source reference.
-3. Nullifier domains separate templates, contexts, actions, resources, and
-   policy versions.
-4. Replacing recipient, purpose, action, template version, or instance causes
-   verification failure or a distinct non-reusable receipt.
-5. Unsupported schema identifiers fail closed.
+   proof boundary and are absent from contract state, indexed output, logs,
+   receipts, generated evidence, and failure messages.
+2. Altering any activation-envelope field, template, module, root sequence,
+   credential status, instance, state commitment, transition sequence,
+   context, action, resource, purpose, recipient, validity, disclosure,
+   signature, or evidence commitment fails.
+3. A stale authority or credential-status root fails even when the private
+   signature was once valid.
+4. An ineligible admission key, wrong signature profile, altered M4 activation
+   record hash, altered approval-evidence commitment, or replayed admission
+   nonce cannot create a Midnight template record. M4 regression tests remain
+   responsible for duplicate reviewers, ineligible reviewers, insufficient
+   thresholds, rejection state, and separation of duties.
+5. A deprecated module cannot be selected by a new template; a revoked module
+   cannot authorize a new proof; existing records remain queryable.
+6. Unsupported module IDs, versions, implementations, configurations, and
+   receipt schemas fail closed without fallback interpretation.
+7. Two transactions built from the same state commitment and sequence cannot
+   both succeed. The winner installs sequence `n + 1`; the other fails without
+   consuming a second logical transition.
+8. A reused scoped nullifier fails across retries and reconnects.
+9. A non-transitioning action leaves state commitment and sequence unchanged.
+10. The live local-node test deploys the contract, submits successful and
+    negative proof transactions, reads indexed state, reconnects to the
+    deployment, and confirms the same state after reconnect.
+11. The public-artifact scanner finds no generated private value in captured
+    chain, indexer, receipt, log, or HTML evidence.
+12. No template or runtime caller can replace an authority or credential-status
+    root without satisfying the exact root-transition authorization.
 
 ### Exit gate
 
-M6 fails if the Compact contract or adapter branches on generated participant
-names, generated identifiers, or one template family's literal values.
+M6 is incomplete if any required live test is skipped, if Compact code branches
+on generated participant names or one template family's literal values, if a
+template can introduce executable proof logic, if a stale/revoked credential
+can authorize, if conflicting transitions can both succeed, or if the evidence
+record omits the exact local stack, compiler, contract, command, and observed
+transaction/state results.
+
+M6 is also incomplete if documentation or evidence claims that Midnight v1
+independently verified every M4 Ed25519 reviewer signature.
 
 ## 10 M7 — Gateway and durable receipt transport
 
@@ -250,11 +860,36 @@ Status: `NOT_STARTED`; depends on M6
 
 ### Artifacts
 
-- finalized Midnight event observer;
-- source-network, contract, transaction, and policy verification;
-- versioned typed receipt envelope;
-- durable outbox with idempotent retries; and
-- gateway key-rotation tests.
+- a long-running observer for the exact allowlisted Midnight network, contract,
+  template registry, proof-module registry, and receipt schema versions;
+- an explicit finality rule and checkpoint cursor persisted before later work
+  is acknowledged;
+- byte-for-byte decoding of the common M6 receipt without private-policy
+  evaluation or module-specific reinterpretation;
+- a durable store containing source event identity, decoded receipt hash,
+  lifecycle state, attempt count, last error category, and next retry time;
+- an outbox uniqueness key derived from Midnight network, contract,
+  transaction, event index, receipt version, and scoped nullifier;
+- an EIP-712 transport signer separated from governance, module approval,
+  allocation, capability issuance, relaying, and registry ownership;
+- versioned verifier-key rotation with overlap and cutoff rules; and
+- restart, reorg, malformed-event, unknown-version, key-rotation, retry, and
+  crash-boundary integration tests.
+
+### Processing sequence
+
+1. Resume from the persisted finalized checkpoint.
+2. Read only finalized events from an allowlisted M6 deployment.
+3. Verify source identity, template and proof-module status at the source
+   sequence, receipt schema, validity window, and exact encoded field lengths.
+4. Insert the source event and receipt into the durable outbox transactionally;
+   a duplicate uniqueness key returns the existing row.
+5. Sign the unchanged typed envelope with the currently active gateway key.
+6. Deliver it to an authorized relayer or recipient endpoint.
+7. Persist acknowledgement or a classified retry state before advancing work.
+8. On a source reorganization before finality, discard the unfinalized event;
+   after the declared finality boundary, an inconsistency stops processing and
+   raises an operator-visible integrity error.
 
 ### Acceptance
 
@@ -267,6 +902,14 @@ Status: `NOT_STARTED`; depends on M6
 4. A stale, reorged, malformed, unknown, or expired source is rejected.
 5. Gateway authority is separate from governance, issuer, allocator, Agent,
    and relayer authority.
+6. The gateway signs exactly the fields emitted by M6 plus the transport-domain
+   chain and contract binding; it cannot change recipient, purpose, expiry,
+   module, template, commitments, nullifier, or source reference.
+7. A crash before or after every persistence, signing, delivery, and
+   acknowledgement boundary resumes without losing the event or creating a
+   second logical outbox record.
+8. Key rotation identifies which key signed every envelope and rejects keys
+   before activation or after cutoff.
 
 ### Exit gate
 
@@ -275,8 +918,17 @@ or relies on in-memory retry state.
 
 ## 11 M8 — Execution registry and adapters
 
-Status: `IN_PROGRESS`; the existing recipient-bound registry is a partial
-implementation and must be generalized after M6 and M7.
+Status: `PARTIAL_BASELINE`; the existing recipient-bound registry and six
+Hardhat deployment tests are implemented, but the M6 common receipt and M7
+durable-source rules are not yet enforced.
+
+### Result required in plain language
+
+M8 turns the existing Solidity registry into a consumer of the exact common
+receipt transported by M7. The registry does not decide whether private
+evidence was sufficient; Midnight already made that decision. It verifies that
+the gateway signed an unchanged receipt from an approved source and that the
+named Monad recipient may consume it once for the exact declared purpose.
 
 ### Artifacts
 
@@ -285,6 +937,16 @@ implementation and must be generalized after M6 and M7.
 - recipient, purpose, expiry, schema, and replay checks;
 - adapter interface for Monad contracts and ordinary applications; and
 - negative tests for widening and replay.
+
+The generalized on-chain record stores the receipt ID, exact M6 source,
+template and module hashes, recipient, purpose, validity, scoped nullifier,
+output commitment, gateway signer, registration time, and revocation state. It
+does not store a stable subject identifier or private M5 material.
+
+Each execution adapter is registered against one exact receipt-schema version
+and action schema. Its callable interface receives only the public receipt and
+adapter-specific public execution parameters. It cannot read private evidence
+or reinterpret `outputCommitment` as additional authority.
 
 ### Acceptance
 
@@ -295,6 +957,17 @@ implementation and must be generalized after M6 and M7.
 4. Execution may fail because local state changed, but failure does not mutate
    the underlying privacy authorization.
 5. No stable subject identifier is required by the registry.
+6. A gateway signer cannot authorize itself, change registry ownership, or
+   register a new adapter merely by signing a receipt.
+7. Registry governance, gateway signer rotation, adapter registration,
+   emergency pause/revocation, relaying, and recipient consumption are
+   separately scoped powers.
+8. The Hardhat local-node suite deploys the generalized registry and adapter,
+   submits the M7 fixture through a separate relayer, checks emitted events and
+   storage, and exercises every rejection path against the deployed contracts.
+9. A downstream execution failure records or returns that failure according to
+   the adapter contract but does not rewrite the successful Midnight
+   authorization receipt.
 
 ### Exit gate
 
@@ -315,6 +988,43 @@ Each pack contains a template, policy profile, generator rules, generated
 positive and negative instances, disclosure previews, expected receipts, and
 privacy scans. It contains no hand-authored participant or record fixture.
 
+### Required contents of every pack
+
+- one exact M2 template with namespace, semantic version, content hash, states,
+  actions, transitions, claims, recipients, purposes, disclosure policies, and
+  exact M6 proof-module bindings;
+- one M4 namespace policy defining separate authors, reviewers, governance
+  actors, allocators, and emergency revokers;
+- one M3 policy profile and at least two explicit `test:` seeds proving that
+  instance values change while schemas remain stable;
+- generated M5 principals, context accounts, capabilities, delegated grants,
+  sessions, signed positive intents, and one negative vector per constrained
+  authorization dimension;
+- expected M6 public template/module records, root sequences, state
+  commitments, nullifiers, and receipts;
+- expected M7 envelope and M8 execution result;
+- a human disclosure preview listing recipient, purpose, validity, claims,
+  newly created linkages, and data that remains private; and
+- a public-artifact scan covering captured receipts, ledger/indexer dumps,
+  gateway logs, EVM events, and generated documentation.
+
+### Concrete pack behavior
+
+The clinical pack contains separate treatment, research, and optional emergency
+contexts. Treatment disclosure cannot authorize research. Emergency access, if
+enabled by the template, has its own proof-module configuration, recipient,
+short validity, selected-record manifest, and audit obligation.
+
+The professional pack proves that one qualification is current for one site,
+task, and shift. It never exposes a complete transcript, unrelated credential,
+home address, or employment history. The resulting access capability expires
+at the shift boundary and cannot be replayed at another site.
+
+The delegated-agent pack binds one counterparty, action set, resource or amount
+ceiling, purpose, expiry, maximum delegation depth, and revocation status. The
+Agent cannot activate templates or modules, expand a child grant, substitute a
+recipient, read unrelated history, or reuse an intent after revocation.
+
 ### Acceptance
 
 1. The healthcare pack separates treatment, research, and optional emergency
@@ -327,6 +1037,11 @@ privacy scans. It contains no hand-authored participant or record fixture.
    execution interfaces.
 5. No pack requires adding a participant name, context literal, or branching
    rule to the core domain.
+6. All three packs use only approved reusable proof modules; if a required
+   semantic is unavailable, pack activation fails with
+   `UNSUPPORTED_PROOF_REQUIREMENT` rather than adding template code.
+7. Each pack completes at least one live local M6 transaction and one deployed
+   local M8 execution through the same M7 transport interface.
 
 ### Exit gate
 
@@ -345,6 +1060,29 @@ Status: `NOT_STARTED`; depends on M6 and M9
 - bridge receipt and revocation/expiry behavior; and
 - evidence-vault verification API.
 
+### Concrete bridge sequence
+
+1. The source context selects an explicit record manifest. Every entry contains
+   a record commitment, media/type descriptor, byte length, and ciphertext
+   digest; it never contains the plaintext record in a public artifact.
+2. Before signing, the client displays source and destination contexts, exact
+   recipient encryption-key fingerprint, purpose, selected records, expiry,
+   permitted use, and the new cross-context linkage.
+3. A scoped session signs a cross-context `ActionIntent` binding those values,
+   the source instance commitment, destination/case commitment, manifest root,
+   and a one-use nonce.
+4. M6 verifies the source capability, bridge proof module, current credential
+   status, exact recipient and purpose, manifest commitment, validity, and
+   nullifier. It emits a bridge receipt but never receives ciphertext.
+5. The client encrypts each selected record to the recipient's exact current
+   key and sends ciphertext plus manifest directly to the evidence vault.
+6. Before decryption, the vault verifies the M6/M7 receipt, manifest root,
+   ciphertext digests, source and destination commitments, recipient-key
+   fingerprint, expiry, and revocation state.
+7. Recipient key rotation never silently retargets existing ciphertext. New
+   encryption requires a new bridge intent and receipt unless the approved
+   envelope explicitly contains the replacement key and re-encryption rule.
+
 ### Acceptance
 
 1. The user sees source context, destination context, recipient, purpose,
@@ -355,6 +1093,11 @@ Status: `NOT_STARTED`; depends on M6 and M9
 4. Unrelated records and other instances cannot be enumerated.
 5. Changing recipient, purpose, record set, destination context, or case scope
    invalidates the bridge.
+6. Receipt transport and ciphertext delivery use different channels and
+   independently retryable identifiers; neither channel can infer missing
+   plaintext from the other.
+7. Expiry or prospective revocation blocks new retrieval authorization without
+   deleting immutable receipt history.
 
 ### Exit gate
 
@@ -374,6 +1117,29 @@ Status: `NOT_STARTED`; depends on M4, M5, and M9
 - Agent-session management and revocation; and
 - isolated multi-account browser journeys generated from scenario packs.
 
+### Required user journeys
+
+1. An author creates a draft, sees structural/risk validation that explicitly
+   grants no trust, and submits the exact hash for review.
+2. Independent reviewers inspect the same namespace, ID, version, content hash,
+   proof-module bindings, disclosure rules, and test evidence before signing.
+3. A governance actor sees threshold status and either activates the exact
+   version or receives a precise denial. An allocator then creates an instance
+   only while that version and all bound modules remain eligible.
+4. A participant registers a context account, receives a bounded capability,
+   delegates a strict subset, creates a fresh session, previews an exact action,
+   and sees the resulting Midnight authorization separately from Monad or
+   application execution.
+5. An Agent view shows counterparty, action, resource/amount ceiling, purpose,
+   expiry, remaining delegation depth, and current revocation state. The
+   revocation control is available to the correct authority without exposing a
+   universal administrator.
+6. A bridge journey presents the complete M10 linkage and disclosure preview
+   before any signature or encryption occurs.
+7. Retirement, emergency revocation, module deprecation/revocation, expired
+   sessions, stale state, failed downstream execution, and retry recovery each
+   have distinguishable user-visible results.
+
 ### Acceptance
 
 1. The UI never presents account registration as permanent role selection.
@@ -385,6 +1151,10 @@ Status: `NOT_STARTED`; depends on M4, M5, and M9
 5. Agents show their active scope and provide immediate revocation.
 6. Browser journeys are created from generated packs rather than fixed user
    names or a scenario-runner embedded in production UI.
+7. The browser tests log in as separate accounts and prove session isolation;
+   no perspective selector or test-only impersonation control is present.
+8. No page displays private keys, seed phrases, hidden witness values,
+   bootstrap credentials, or full private fixture objects.
 
 ### Exit gate
 
@@ -404,6 +1174,44 @@ Status: `NOT_STARTED`; depends on M7 through M11
 - generated-fixture provenance; and
 - final privacy-artifact scan.
 
+### Required environments and evidence
+
+The local run uses the pinned Midnight Local Dev node, indexer, and proof
+server plus a persistent local Hardhat or specified local Monad-compatible EVM.
+It deploys fresh M6 and M8 contracts, records exact source and implementation
+hashes, uses only disposable local accounts, and runs each M9 pack through M10
+where that pack requires encrypted evidence.
+
+The public run uses the explicitly selected Midnight public test network and
+Monad public testnet. It records network identifiers, RPC/indexer/proof-server
+versions, compiler versions, deployment addresses, transaction hashes,
+finality observations, gateway key fingerprints, and explorer or indexed-state
+references. Test funds are acquired only through the official faucet or
+documented local genesis accounts and are never mixed with production keys.
+
+For both environments, the evidence bundle records commands, timestamps,
+generated template hash, generator version and seed classification, public
+receipt, expected and observed state commitments/sequences, gateway outbox row
+identity, EVM receipt, redacted logs, and the public-artifact scan result. It
+does not record mnemonics, private keys, private generated values, credentials,
+capability scopes, session keys, or decrypted evidence.
+
+### Mandatory drills
+
+- stop and restart the M6 client after deployment, then reconnect and confirm
+  indexed state;
+- crash M7 before and after checkpoint, outbox insert, signing, delivery, and
+  acknowledgement, then prove one logical record;
+- submit stale state, altered root sequence, expired intent, revoked
+  credential, revoked module, wrong recipient, wrong purpose, and replayed
+  nullifier cases on the real local contracts;
+- simulate or observe the documented pre-finality reorg behavior and verify M7
+  does not sign an unfinalized event;
+- rotate gateway/verifier keys using the approved overlap and cutoff rules;
+- make downstream execution fail after valid Midnight authorization and prove
+  the authorization history remains unchanged; and
+- rerun the full public-artifact scanner over every publishable evidence file.
+
 ### Acceptance
 
 1. At least one generated instance from each required scenario pack completes
@@ -415,6 +1223,11 @@ Status: `NOT_STARTED`; depends on M7 through M11
 4. Key holders and authority boundaries match the architecture.
 5. Documentation, code, deployments, and recorded evidence describe the same
    protocol versions.
+6. On-chain evidence proves the public template and proof-module records,
+   current authority and credential-status roots, atomic state sequence,
+   nullifier consumption, M7 source identity, and M8 one-time execution.
+7. Every mandatory failure is represented as a failed transaction or explicit
+   rejection, never only as an in-memory unit-test result.
 
 ### Exit gate
 
@@ -441,8 +1254,8 @@ hide an environmental failure.
 
 # Permio 确定性里程碑
 
-状态：修订后的执行契约<br>
-日期：2026 年 10 月 10 日<br>
+状态：已记录至 M5 的实际实现；M6–M12 采用确定性执行契约<br>
+日期：2026 年 10 月 11 日<br>
 范围：可编程情境库、上下文账户、生成式情境包、Midnight 授权与可组合执行
 
 ## 1 如何判断完成
@@ -483,22 +1296,57 @@ checkout 尚未实现权威设计的这一部分；它不允许继续采用另�
 
 ## 3 M0——文档与命名基线
 
-状态：`DONE`
+状态：`DONE`<br>
+验收源码提交：`b25b005c9ea0126ba5cdc76f78225a9b62129960`<br>
+验收证据：`docs/evidence/M0/acceptance.json`
+
+### 通俗结果说明
+
+M0 明确了 Permio 是什么、系统边界如何划分，以及后续工作如何记录和验收。开发者不需要猜测
+私有授权是否发生在 Midnight、网关能否接收私有证据，或者 Monad 是否承担隐私证明。答案已经
+固定：Midnight 是私有授权边界；网关只传输最小化、已最终确认的结果；Monad 消费绑定到具体
+接收方的公开背书。
+
+M0 还明确：具体人物、记录、购买、案件、金额和时间戳只能是示例或生成的测试数据，不能成为
+协议常量。“Alice”“Bob”“Clara”可以用于解释历史流程，但核心代码和新验收测试不能依赖这些
+姓名。
 
 ### 产物
 
-- 面向人的指南；
-- 可编程情境架构；
-- 确定性里程碑契约；
-- 双语生成 HTML；以及
-- 支持 Mermaid 的文档生成器。
+- `README.md`：说明仓库身份、可用命令和当前实现边界；
+- `docs/PERMIO_FROM_NEED_TO_DESIGN.md`：面向人的产品需求与隐私模型说明；
+- `docs/PROGRAMMABLE_CONTEXT_ARCHITECTURE.md`：分别定义模板治理、私有授权、收据传输、
+  公开执行和加密证据交付；
+- 本确定性 milestone 契约；
+- 由规范 Markdown 生成的双语 HTML；以及
+- `scripts/build-docs.mjs`：渲染 Markdown 和 Mermaid 图，并检查生成文档与源文件一致。
+
+### M0 固定的参与者与责任
+
+- 模板作者描述可复用情境，但不会因此自动获得批准权或运行时权限。
+- 用户或 Agent 只能通过上下文特定授权执行操作；注册账户本身不授予业务权限。
+- Midnight 验证私有授权，只发布下游确实需要的最小版本化结果。
+- 网关观察已最终确认的 Midnight 公开输出，不得接收用户私有凭证、记录、见证或明文证据。
+- 中继器可以支付 Monad 交易费用，但不能创建或扩大授权。
+- Monad 接收方只能消费明确发送给该接收方、具有指定用途和期限的背书。
 
 ### 验收
 
-1. 架构拓扑分别呈现控制、隐私、收据、执行和加密证据概念，不再使用一张包揽所有组件的图。
-2. 三份源文档都说明具体情境由生成器产生，而不是嵌入代码。
-3. 文档构建与新鲜度检查通过。
-4. 英文与中文面板包含相同章节。
+1. 规范架构分别呈现模板控制、私有证明生成、公开收据生成、收据传输、公开执行和加密证据
+   交付组件。
+2. 不允许把编写模板、批准模板、读取私有见证、签署网关收据和执行 Monad 操作描述成同一个
+   组件的职责。
+3. 规范文档明确具体情境数据由生成器产生，而不是嵌入架构或生产代码分支。
+4. `npm run docs:check` 证明生成 HTML 是最新的，并且中英文面板具有对应章节。
+5. 在记录的 Node、npm 和 Hardhat 版本下，完整 `npm run check` 门槛通过。
+
+### 已验证证据
+
+M0 验收使用 Node.js 24.13.1、npm 11.8.0 和 Hardhat 3.14.0。`npm ci` 报告零漏洞，
+`npm run check` 通过文档、类型检查、Solidity 构建和当时存在的五个注册表测试。
+
+M0 没有声称 Midnight 证明、网关服务或 Monad 测试网部署已经存在。验收记录明确把这些声明
+标记为 false，防止把文档工作误认为链上交付。
 
 ### 退出门槛
 
@@ -506,24 +1354,101 @@ checkout 尚未实现权威设计的这一部分；它不允许继续采用另�
 
 ## 4 M1——现有收据协议基线
 
-状态：`DONE`；历史证据保留在 `docs/evidence/M1`
+状态：`DONE`<br>
+实现提交：`d5982c9d1994adc63ad6e2c644670cecc59914d5`<br>
+验收证据：`docs/evidence/M1/acceptance.json`
 
-仓库已经包含规范收据模式包、EIP-712 编码、哈希向量、接收方绑定 Solidity 注册表和集成测试。
-其中具名的手写情境数据只作为该已完成基线的历史证据保留。新的架构和测试必须迁移到 M3
-引入的生成器；旧数据不是模板、协议要求或新验收条件的来源。
+### 通俗结果说明
 
-M1 的完成状态只记录已经实现的收据切片，不表示情境模板、上下文账户或通用 Midnight 授权
-已经实现。
+M1 实现了第一个可执行的公开收据切片。它回答一个范围有限的问题：当上游隐私系统已经产生
+授权后，验证者如何签署一份精确、绑定接收方的声明，以及 Monad 兼容合约如何拒绝被修改、
+过期、未经授权或重复使用的声明。
+
+M1 不回答上游私有操作是否真实有效。现有 Solidity 合约验证网关／验证者签名和公开收据约束，
+但不验证 Midnight 证明。
+
+### 具体协议数据
+
+`@permio/protocol` 定义版本化 schema 与用途标识符、带长度前缀的规范 commitment 输入，以及
+EIP-712 类型化数据布局。EIP-712 是对具名结构化字段签名的 Ethereum 标准，避免对含义模糊的
+字节串签名。
+
+公开背书绑定：
+
+- schema ID；
+- Midnight 来源网络、合约和交易哈希；
+- 操作 commitment 与限定范围 nullifier；
+- 用途哈希与精确 Monad 接收方；
+- 签发与到期时间；以及
+- EIP-712 链 ID 和验证合约域。
+
+限定范围 nullifier 是限制在特定 schema、用途和接收方内的一次性标识。它防止同一权益被重复
+消费，同时不公开用户可重复使用的身份。
+
+### 已实现交易流程
+
+1. 获授权验证者对精确 EIP-712 背书签名。
+2. 中继器把背书和签名提交给 `RecipientBoundAttestationRegistry.registerAttestation`。
+3. 合约检查时间有效性、精确接收方、验证者授权、签名恢复和未使用的重放范围。
+4. 成功时，合约记录背书并消费该范围。
+5. 失败时，不写入背书记录或重放状态。
+
+### 测试与负向案例
+
+- 协议测试证明 schema 和用途哈希与已提交向量一致；
+- 规范编码能区分朴素拼接会混淆的输入；
+- commitment 域彼此隔离，防止一种哈希被当作另一种使用；
+- Solidity 与 TypeScript 对 EIP-712 字段顺序和类型哈希达成一致；
+- 有效中继注册可在 Hardhat 本地 EVM 成功；
+- 替换接收方、重复使用和未授权验证者均失败；以及
+- 撤销验证者后，其后续签名不再被接受。
+
+### 已验证证据与限制
+
+验收使用 Node.js 24.13.1、npm 11.8.0、TypeScript 7.0.2、Hardhat 3.14.0 和
+viem 2.55.19。`npm run check` 通过六个协议测试和六个已部署合约测试。
+
+手写 Alice/Bob/Clara fixture 只保留为 M1 历史测试证据。新情境工作必须使用 M3 生成器。M1
+没有实现情境模板、治理、上下文账户、网关或 Midnight 证明验证。
+
+### 退出门槛
+
+如果 TypeScript 与 Solidity 对同一 payload 得出不同哈希、背书可以被重放或转给另一个接收方，
+或者中继器无需获授权验证者签名即可创建授权，则 M1 不算完成。
 
 ## 5 M2——情境模板领域包
 
-状态：`DONE`；依赖 M0；验收证据记录于 `docs/evidence/M2/acceptance.json`
+状态：`DONE`；依赖 M0；验收证据记录于 `docs/evidence/M2/acceptance.json`<br>
+实现提交：`51197e36fffa04d29162ea9b7ff300e6e1b2c10a`
 
 产物包括 `ScenarioTemplate`、`ContextDefinition`、`ActionDefinition`、转换模式、规范序列化、
 版本化模板哈希、命名空间与语义版本规则、验证错误分类，以及单元和属性测试。
 
+### 通俗结果说明
+
+M2 创建了描述可复用情境的语言。模板说明存在哪些上下文、可以填入哪些参与者 slot、识别哪些
+记录和声明结构、可以执行哪些操作、每个操作允许披露什么，以及操作如何让实例从一个状态进入
+下一个状态。这些定义是由固定解析器验证的数据，不是 JavaScript 回调或应用特定代码。
+
+例如，核心系统理解一个操作会引用上下文、资源规则、披露策略和状态转换；但核心系统没有把
+“评价”“客服”或“临床转诊”写成封闭 union。这些标识属于受治理的模板数据。
+
+### 精确处理流程
+
+1. `parseScenarioTemplate` 拒绝不是精确 JSON 数据的值。
+2. 缺失字段和未知字段都会失败，不会被静默补默认值。
+3. 检查标识符唯一性并解析所有交叉引用。
+4. 检查所有声明状态均可达，并确保一个状态／操作组合不会选择两个不同转换。
+5. 规范化过程把字符串统一为 Unicode NFC、排序对象键，并保留有语义的数组顺序。
+6. `hashScenarioTemplate` 对规范模板应用版本化、带长度前缀、域分离的 SHA-256 哈希。
+7. 修订检查要求语义版本变化与实际兼容性影响相符。
+
 验收必须证明：未知、缺失或重复字段以及无效引用和不可达状态会失败；规范化不受对象键顺序
 影响；不兼容变更需要新版本；领域包不导入特定应用情境模块。
+
+此外，patch 版本只能修改说明文字；兼容的新增内容需要 minor 版本；破坏性语义变化需要 major
+版本。验证过程中不得执行模板 getter、proxy 或 accessor；生产包只能导入包内文件或 Node
+内置模块。
 
 如果支持的上下文或操作仍是绑定单一用例的封闭 TypeScript union，或者验证器执行任意模板代码，
 M2 失败。
@@ -535,76 +1460,462 @@ M2 失败。
 顺序、覆盖无效图与引用、证明不会执行访问器代码，并强制生产代码只能进行包内导入。情境库条目
 仍是将在 M4 中治理、由 M3 生成器实例化的数据；它们没有作为封闭的应用类型嵌入源码。
 
+### 测试与已验证证据
+
+十五个 M2 测试覆盖未知／缺失字段、重复标识、无效引用、不可达和歧义图、64 种对象键顺序
+排列、Unicode 规范化、长度与域分离、版本兼容性、开放标识符、accessor 不执行和包导入边界。
+验收时的完整仓库检查同时通过此前的协议和 Solidity 测试。
+
+M2 有意不判断一个有效模板是否可信或活跃。结构有效性只是 M4 治理的输入，不是使用模板的
+权限。
+
 ## 6 M3——确定性情境生成器
 
-状态：`NOT_STARTED`；依赖 M2
+状态：`DONE`；依赖 M2<br>
+实现提交：`38227d45c7a2f409ebeb0a0d1be0bec877cdaecc`<br>
+验收证据：`docs/evidence/M3/acceptance.json`
+
+### 通俗结果说明
+
+M3 用可复现的合成测试实例替代手写示例身份和记录。只要经过验证的模板、精确模板哈希、生成器
+版本、`test:` 种子和策略 profile 相同，每次运行都会产生相同的规范字节。改变种子会改变生成
+主体与记录，而不需要改变源码或情境 schema。
+
+该生成器只用于测试、演示和验收证据。它不是生产身份生成器，也不会读取生产数据。
 
 产物包括版本化生成器接口、带种子的合成主体/记录/凭证/事件/时间戳、公开/私有分类 manifest、
 golden-vector 格式和产物隐私扫描器。
 
+具体实现位于 `packages/scenario-generator`。版本 1 golden vector 保存完整确定性输入、小写十六
+进制规范输出字节和域分离 digest。因为它包含生成的私有字段，所以它是私有测试产物，不是公开
+收据。
+
+### 生成流程
+
+1. 验证 M2 模板并重新计算精确哈希。
+2. 模板与调用方提供的哈希不一致时拒绝。
+3. 验证生成器版本、显式 `test:` 种子和策略 profile。
+4. 从带长度前缀的输入导出主 SHA-256 digest。
+5. 在各自版本化哈希域下导出主体、记录、凭证、声明、事件和时间戳。
+6. 为每个“上下文 + 参与者 slot”组合导出不同主体，避免复用 slot 形成全局跨上下文标识。
+7. 私有实例数据与 allowlist 构造的公开 schema 摘要分别生成。
+8. 重新构建完整分类 manifest，并在接受任何公开产物前执行扫描。
+
+生成器不读取系统时钟、操作系统随机源、locale、环境变量或机器状态。所有合成值带 `syn_`
+前缀，使 fixture 能拒绝意外混入的生产数据。
+
 验收必须证明：相同输入产生字节一致向量；不同种子改变实例值但不改变模式或源码；所有数据均为
 合成数据；私有字段出现在公开收据、账本 dump、日志或 HTML 时扫描失败。
+
+扫描器还检查原始、JSON 转义、HTML 转义、数字实体、URL 编码、十六进制、Base64 和 Base64URL
+形式。分类 manifest 每次都从生成结构重新导出；调用方不能通过删除或放宽私有条目绕过检查。
+`npm run generate:golden --workspace @permio/scenario-generator` 必须逐字节重现已提交向量。
+
+### 测试与已验证证据
+
+十四个生成器测试覆盖完整输入验证、哈希不匹配、确定性、种子隔离、上下文特定主体、合成值、
+显式时间戳、字节稳定规范输出、golden vector 重现、完整分类和隐私泄漏编码。`npm run check`
+通过 M0–M3 测试和六个已部署 Solidity 合约测试。
+
+隐私扫描器是验收防线，并不声称可以逆向加密、压缩、哈希、分块或无限层嵌套编码。
 
 如果新测试导入手写具名情境数据，或把架构文档中的实例字面量作为断言对象，M3 失败。
 
 ## 7 M4——模板治理与情境库
 
-状态：`NOT_STARTED`；依赖 M2
+状态：`DONE`；依赖 M2，并已集成在 M3 之后<br>
+实现提交：`9b76d6117cabf7211b5077c12357bdc6a3cd251e`<br>
+验收证据：`docs/evidence/M4/acceptance.json`<br>
+开发日志：`docs/evidence/M4/development-log.md`
+
+### 通俗结果说明
+
+M4 决定某个精确 M2 模板版本何时可以用于创建新情境实例。它把创建草稿、报告验证风险、审核
+精确内容、激活、分配实例、退役和紧急撤销分开。不存在可以完成全部动作的万能管理员。
+
+模板由四个不可分割的值标识：namespace、template ID、语义版本和精确 SHA-256 内容哈希。批准
+其中一个组合，不会批准另一个版本或被修改的内容。
 
 产物包括草拟、验证、审核、激活、退役和撤销状态；对精确模板哈希的审核者背书；命名空间阈值
 治理；不可变活跃版本注册表；以及作者、审核者、治理方和分配器的权限测试。
 
+`packages/scenario-governance` 实现生命周期注册表、权限策略、稳定错误代码、Ed25519 审核者
+背书、不可变历史记录和十六个治理测试。
+
+### 权限模型
+
+每个 namespace 策略包含五组互不重叠的主体：
+
+- 作者创建草稿，并且只能推进自己的草稿完成验证；
+- 审核者使用已登记公钥批准或拒绝精确目标；
+- 治理方在满足审核阈值后激活版本，并可退役活跃版本；
+- 分配器只能为精确、活跃的版本申请一次实例创建权限；以及
+- 紧急撤销者可以前瞻性停止活跃或已退役版本。
+
+策略创建会拒绝出现在多个集合中的同一主体、重复审核者身份、重复审核者密钥、空的必要权限
+集合，以及无法达到的阈值。Agent 或作者身份不会隐式授予审核、激活、分配或撤销权限。
+
+### 生命周期与精确转换
+
+```text
+draft -> validated -> in_review -> active -> retired
+                                    |          |
+                                    +-> revoked<+
+```
+
+1. `createDraft` 重新解析 M2 模板、计算精确哈希，并占用 namespace/template/version 谱系。
+2. `recordValidation` 以 `grantsTrust: false` 保存结构与风险发现，不能批准或激活任何内容。
+3. `submitForReview` 冻结供审核者决定的精确目标。
+4. `submitReview` 验证审核者资格，以及对 namespace、template ID、版本、内容哈希、审核者、
+   决定和时间的签名。
+5. `activate` 要求独立治理主体、足够多的唯一批准、没有拒绝记录，并且没有重复审核决定。
+6. `authorizeInstantiation` 要求分配器、唯一 request ID、精确活跃目标和当前 `active` 状态。
+7. `retire` 阻止未来分配，但保留激活和此前分配历史。
+8. `revoke` 记录带原因的明确前瞻性紧急停止，不改写早期记录。
+
 验收必须证明：作者和 Agent 可草拟但不能自行激活高影响共享模板；验证工具不能授予信任；
 激活满足阈值；退役只阻止新实例而不改写历史收据；分配器只能实例化活跃版本。
+
+此外，任何目标字段、审核者身份、决定、时间、密钥、签名域或签名发生变化都必须让审核签名
+失效；即使批准数量达到阈值，只要存在拒绝也不能激活；终止时间不能早于已经签发的实例授权；
+调用方不能通过修改返回对象篡改注册表历史。
+
+### 负向测试与已验证证据
+
+十六个测试覆盖未授权作者、权限集合重叠、Agent 提权、同版本替换内容、无效状态转换、验证试图
+授予信任、修改哈希和已签字段、不合格及重复审核者、阈值不足、审核拒绝、分配／治理权限坍缩、
+激活前分配、退役、撤销、回填时间和修改返回记录。
+
+验收 `npm run check` 通过六个协议、十五个情境领域、十四个生成器、十六个治理和六个已部署合约
+测试。M4 仍是内存中的链下治理包；它不声称 Midnight 已经执行该生命周期。
 
 如果一个管理员角色隐式拥有编写、批准、分配、升级和紧急撤销全部权力，M4 失败。
 
 ## 8 M5——上下文账户与有限会话
 
-状态：`NOT_STARTED`；依赖 M2 和 M4
+状态：`DONE`；依赖 M2 和 M4<br>
+实现提交：`c65cfe1dfcc31019754ac807b00819ec55b0542b`<br>
+验收证据：`docs/evidence/M5/acceptance.json`<br>
+开发日志：`docs/evidence/M5/development-log.md`
+
+### 通俗结果说明
+
+M5 把一份 M4 批准的分配转换为运行中的情境实例，并判断某个已签名操作是否可以改变该实例。
+它不把“管理员”“商家”或“Agent”等全局角色当作权限。权限始终来自绑定到一个精确模板、实例、
+上下文、操作范围、接收方范围、用途、披露策略和时间窗口的 capability。
+
+上下文账户不是登录账户。它是一把绑定到一个情境实例和一个模板定义上下文的公钥。注册只创建
+这层绑定，不授予任何操作。实例中明确列出的签发者必须先创建根 capability，账户才能执行动作。
 
 产物包括 `ScenarioInstance`、`ContextAccount`、`CapabilityGrant`、`ActionIntent`、能力收缩/
 到期/撤销/委托深度、会话密钥，以及人、服务、合约和 Agent 主体类型。
 
+具体实现位于 `packages/context-accounts`，包含运行时模型、Ed25519 `ActionIntent` 签名与验证、
+授权系统、稳定错误类型和十三个测试。人、服务、合约和 Agent 主体全部使用相同 capability 检查。
+
+### 实例创建
+
+1. `createScenarioInstance` 加载尚未使用的 M4 实例化授权。
+2. 重新加载受治理模板，并要求创建实例时模板仍为 active。
+3. 重新解析 M2 模板并计算哈希，将 namespace、template ID、版本和哈希与 M4 授权逐项比较。
+4. 记录分配器、模板初始状态、实例期限和显式 capability 签发者。
+5. M4 分配只能消费一次。旧分配不能复用；退役前签发的分配不能在退役后创建实例。
+
+### Capability 与会话规则
+
+Capability 列出允许的操作、资源 selector 与具体资源、用途、接收方类型与精确接收方、披露策略、
+有效窗口和剩余委托深度。子 capability 必须是父 capability 的严格子集：至少缩小一个维度，
+不能增加任何值，不能更早开始或更晚结束，也不能增加委托深度。实现把深度上限设为 16，并把
+任一祖先 capability 的撤销传播给所有后代。
+
+会话使用全新的 Ed25519 公钥和一个 capability 的严格子集。账户密钥不能复用为会话密钥，同一
+密钥也不能跨上下文账户复用。这些规则防止便利的复用密钥意外成为公开的跨上下文标识符。
+
+### 已签操作与授权流程
+
+已签 `ActionIntent` 绑定精确模板目标、实例、会话、上下文、操作、资源 selector、具体资源、
+用途、接收方类型、精确接收方、披露策略、签发时间和会话范围 nonce。
+
+`authorizeAction` 按以下顺序检查：
+
+1. 会话存在且 Ed25519 签名有效；
+2. 模板、实例和上下文精确匹配；
+3. 实例、账户、capability 祖先链、grant 和会话均未撤销；
+4. 实例、grant 和会话均处于有效时间窗口；
+5. `(session ID, nonce)` 尚未被消费；
+6. 操作、当前状态、资源、用途、接收方和披露策略均在会话与 capability 范围内；以及
+7. 模板对当前状态下的该操作只定义一个允许转换。
+
+只有全部检查通过后，系统才消费 nonce 并把实例更新到下一状态。拒绝不会消费 nonce，也不会
+修改实例。
+
 验收必须证明：注册不授予永久业务角色；每次操作检查全部约束维度；子授权不超过父授权；会话
 密钥只能在到期前行使声明子集；改变任一约束维度会得到精确拒绝；Agent 不会隐式获得治理权。
+
+还必须证明：跨上下文复用账户或会话密钥会被拒绝；撤销实例、上下文账户、祖先 grant、grant
+或会话会阻止所有后续受影响操作且不删除历史；修改任一已签字段会使签名失效或返回对应维度的
+精确拒绝；成功结果记录前后实例状态及所使用的精确账户／grant／session 链。
+
+### 拒绝结果
+
+普通授权失败返回十九个稳定原因之一，而不是依赖错误文本：
+
+```text
+UNKNOWN_SESSION, INVALID_SIGNATURE, TEMPLATE_MISMATCH, INSTANCE_MISMATCH,
+INSTANCE_REVOKED, INSTANCE_EXPIRED, CONTEXT_MISMATCH, ACCOUNT_REVOKED,
+GRANT_REVOKED, SESSION_REVOKED, NOT_YET_VALID, EXPIRED, ACTION_DENIED,
+STATE_DENIED, RESOURCE_DENIED, PURPOSE_DENIED, RECIPIENT_DENIED,
+DISCLOSURE_POLICY_DENIED, REPLAYED_INTENT
+```
+
+### 负向测试与已验证证据
+
+十三个测试覆盖缺失或过期 M4 分配、模板／哈希不匹配、创建实例前退役、四种主体类型、跨上下文
+密钥复用、未授权根 capability 签发、每一种扩大 scope 的尝试、无界及过深委托、过宽或非新鲜
+会话、祖先撤销、精确状态转换、修改每个已签字段、单维度拒绝、时间窗口、nonce 重放和四种运行
+时撤销边界。
+
+验收完整检查通过生成文档新鲜度、TypeScript、面向 Osaka EVM 的 Solidity 0.8.31 编译、六个
+协议测试、十五个领域测试、十四个生成器测试、十六个治理测试、十三个上下文账户测试，以及
+Hardhat 本地 EVM 上六个已部署合约测试。
+
+这些合约测试证明现有 Monad 注册表没有回归；它们不声称 M5 capability 决策已经在链上执行。
+M5 是内存中的链下组件，不持久化状态、不认证网络调用方、不生成 Midnight 证明、不发布
+`DecisionReceipt`，也不执行 Monad 操作。
 
 如果登录状态本身可以授权领域操作，或数据库把全局角色作为运行时权限来源，M5 失败。
 
 ## 9 M6——通用 Midnight 授权边界
 
-状态：`NOT_STARTED`；依赖 M2、M3 和 M5
+状态：`NOT_STARTED`；依赖 M2 至 M5<br>
+Milestone 验收目标网络：固定版本的 Midnight Local Dev stack<br>
+完成必须包括真实 Compact 编译、部署、证明生成、交易提交、索引状态读取和重新连接验证。
+已批准架构：`docs/evidence/M6/architecture-decision.md`
 
-产物包括批准的模板/策略哈希注册表、通用能力与 `ActionIntent` 适配器、通过版本化模式标识符
-选择的操作证明模块、限定范围空值标识，以及公开 `DecisionReceipt` 字段。
+### 通俗结果要求
 
-验收必须证明：私有证据留在调用者控制的证明边界；公开输出只有最小版本化收据；空值标识域
-分离模板、上下文、操作、资源和策略版本；替换任何绑定维度都会失败或产生不可复用的新收据；
-不支持的模式默认拒绝。
+M6 把 M5 当前在内存中执行的授权决定迁移到真实、应用无关的 Midnight 边界。它不会把全部
+M4/M5 状态上传，也不会把全部状态藏在一个不透明 root 后。共享治理事实使用公开记录；大规模
+权限和 credential 状态集合使用 root；个人权限保持为私有签名断言；私有实例状态使用
+commitment 与序号；一次性操作使用 nullifier。
 
-如果 Compact 合约或适配器根据生成的姓名、标识符或某一模板族的字面值分支，M6 失败。
+M4 继续负责验证 Ed25519 审核者证明、合格审核者唯一性、namespace 阈值、拒绝状态和职责分离。
+M6 通过防重放封装登记由此产生的精确激活；该封装由 namespace `governance-activator` 使用
+allowlist 中的 `midnight-jubjub-schnorr-v1` profile 签名。M6 v1 不为每个审核者登记第二套
+Midnight 密钥，也不声称在链上重新执行 M4 阈值。
+
+对于会改变授权状态的操作，Midnight 成为状态转换顺序的权威。它验证旧 commitment 和序号、
+消费操作 nullifier、安装下一 commitment，并原子增加序号。Monad 执行仍然是后续独立结果。
+
+### 产物
+
+- 使用已记录编译器与依赖版本构建的 Compact 合约和生成 TypeScript binding；
+- 直接公开模板注册表，包含 namespace hash、template ID hash、语义版本、精确内容哈希、治理
+  策略哈希、权限 root 引用、证明模块绑定哈希、生命周期状态、激活序号、激活时间和前瞻性
+  终止数据；
+- 带明确 root 版本和序号的 namespace 权限 root 注册表；
+- 面向 `context-account`、`capability` 和 `session` credential 的按 key 寻址当前状态
+  Merkle-root 注册表；
+- 证明模块注册表，固定实现、源码、输入 schema、配置 schema、收据 schema、编译器、兼容
+  策略和批准证据哈希；
+- `proposed`、`reviewed`、`approved`、`active`、`deprecated`、`revoked` 模块生命周期命令，
+  并分离审核、批准、激活和紧急撤销权限；
+- 版本化模板扩展，使每个操作固定到精确活跃模块版本、实现哈希、配置哈希和收据 schema；
+- 规范 M4 激活登记封装、`admit-m4-activation-v1` 注册电路和防重放机制，绑定精确模板目标、
+  M4 激活记录哈希、审批证据 commitment、权限 root 序号、目标部署和协议版本；
+- 首批 `delegated-capability-action-v1` 和 `private-state-transition-v1` 运行时证明类型；
+- 一个版本化 Compact 授权部署，其中包含两个注册表、root／状态账本、通用收据逻辑、激活登记
+  入口和上述两个运行时模块入口；每个实现引用绑定精确合约地址、合约版本、电路入口名称和
+  实现哈希；
+- M4 激活记录适配器，以及用于 M4 分配证据与 M5 capability、session、`ActionIntent` 和选定
+  记录证据的私有适配器；
+- 公开实例／状态 commitment、转换序号、限定范围 nullifier 和通用 `DecisionReceipt` 封装；
+- 使用本地节点、indexer、proof server 和已充值一次性本地账户的部署、重连、状态查询和真实
+  交易脚本；以及
+- `docs/evidence/M6/acceptance.json` 和开发日志，记录精确实现决策、合约／编译器版本、命令、
+  交易引用、状态观察、失败和恢复步骤。
+
+### 开发参考与可复用环境
+
+相邻的 `../information-flow` checkout 只作为 Midnight 集成机制参考。M6 可以研究并有意识地
+适配其中的 Compact 编译、生成 binding 管理、可恢复钱包同步、部署与重连流程、proof server
+使用、日志脱敏和只包含公开数据的真实链证据。它不是 Permio 依赖或产品模板；其领域模型、
+合约 schema、权限布局、具名参与者、数据库、钱包秘密、checkpoint、已部署地址和验收声明都
+不能复制进 Permio。
+
+Workspace 已保留 `information-flow` fixture Alice、Bob、Clara 三个完成同步的一次性 Preprod
+账户 checkpoint。助记词保留在该仓库 ignored 环境文件中，隐私敏感 checkpoint 保留在 ignored
+的 `data/preprod-wallet-state/` 目录中。Permio 只能通过把它们映射到生成角色的显式测试适配器
+访问这些账户。保留 checkpoint 可以避免重复进行完整历史同步。
+
+固定版本的 `../midnight-local-dev` checkout 提供 ledger 8 proof server
+`http://127.0.0.1:6300`（`proof-server:8.1.0`）、9944 端口节点和 8088 端口 indexer。Local Dev
+是 M6 强制验收目标。复用已同步 Preprod 账户只属于显式选择的补充 smoke test，不能替代所需的
+本地部署、证明、交易、索引状态、重启和重连证据。
+
+### 精确状态表示
+
+1. 每个 active、retired 或 revoked 模板版本都是可直接读取的账本记录。完整 JSON、审核、意见
+   和风险文字留在链下。
+2. Namespace 权限叶子绑定 namespace、治理策略版本、权限类型、权限密钥哈希和有效窗口。
+3. 运行时 credential 状态使用当前状态 keyed Merkle tree。每个 credential commitment 精确拥有
+   一个当前 `active` 或 `revoked` 叶子；合约保存最新 root 和单调递增序号。
+4. 证明必须证明精确 `active` 叶子属于当前 root；撤销把该叶子替换为 `revoked`。M6 不依赖
+   未定义的 Merkle 非成员行为。
+5. 基线不引入独立实例权限 root。分配器和 capability 签发者断言保持私有，对照 namespace
+   权限 root 检查，并写入私有实例状态 commitment。
+6. Root 更新是经过验证的转换，不是操作员提交的 snapshot。权限 root 更新绑定 old root、new root、
+   策略版本、生效序号和治理授权；credential 状态更新证明旧叶子／path、验证签发者或撤销者、
+   计算新叶子，并原子推进 root 与序号。
+
+### 证明模块治理
+
+模板只能选择和配置已登记的精确 active 模块。模板不能包含可执行表达式、选择 `latest`、替换
+实现哈希或自行部署证明代码。缺少证明类型时返回 `UNSUPPORTED_PROOF_REQUIREMENT`，并阻止
+模板激活。
+
+新证明类型是协议升级。激活前必须具有冻结的协议规格、精确实现与工具链、负向测试、真实本地
+链测试、独立人工安全／隐私审核、高阈值协议治理批准，以及独立激活。Agent 可以实现和测试，
+但不能计入人工阈值或激活模块。
+
+弃用阻止新模板激活，并对现有实例执行此前已经批准的兼容策略。撤销前瞻性阻止新证明。两者
+都不改变历史收据；新模块版本绝不能静默迁移活跃模板。
+
+### 有状态授权交易
+
+对于模板声明的状态转换，一笔成功交易必须：
+
+1. 验证精确 active 模板与证明模块；
+2. 验证当前权限 root 和 credential 状态 root 序号；
+3. 私下验证分配、签发者资格、capability 祖先链、session 范围、签名、期限、撤销状态、
+   精确 intent 和选定证据；
+4. 匹配公开当前状态 commitment 与转换序号；
+5. 证明模板只选择一个允许的下一状态；
+6. 拒绝已经使用的限定范围 nullifier；
+7. 原子消费 nullifier、安装下一状态 commitment 并增加序号；以及
+8. 发出一份通用收据。
+
+对于无状态转换的操作，交易执行相同授权检查；如果操作声明为一次性则消费 nullifier；随后
+发出收据，但不改变状态 commitment 或序号。
+
+### 公开收据字段
+
+```text
+receiptVersion
+proofModuleId + proofModuleVersion + implementationHash
+namespaceHash + templateIdHash + semanticVersion + templateContentHash
+instanceCommitment
+previousStateCommitment? + nextStateCommitment? + transitionSequence?
+contextHash + actionSchemaId
+purposeHash + exact recipient
+validAfter + validBefore
+scopedNullifier + outputCommitment
+sourceNetwork + sourceContract + sourceTransaction + sourceLedgerSequence
+```
+
+模块特定输出只能通过 `outputCommitment` 表示。私有模板内容、审核者身份、capability 范围、
+上下文账户／session 密钥、状态标签、记录、凭证、声明、证据、自由文本、生成器种子和生成私有
+fixture 绝不能成为收据字段。
+
+### 验收
+
+1. 私有证据和见证值保持在调用者控制的证明边界内，并且不出现在合约状态、索引输出、日志、
+   收据、生成证据或失败消息中。
+2. 修改激活封装字段、模板、模块、root 序号、credential 状态、实例、状态 commitment、转换
+   序号、上下文、操作、资源、用途、接收方、期限、披露、签名或证据 commitment 中任一项都会失败。
+3. 即使私有签名曾经有效，旧权限 root 或 credential 状态 root 也会失败。
+4. 不合格登记密钥、错误签名 profile、被修改的 M4 激活记录哈希、被修改的审批证据 commitment，
+   或重放登记 nonce 都不能创建 Midnight 模板记录。M4 回归测试继续负责重复审核者、不合格
+   审核者、阈值不足、拒绝状态和职责分离。
+5. Deprecated 模块不能被新模板选择；revoked 模块不能授权新证明；历史记录仍可查询。
+6. 不支持的模块 ID、版本、实现、配置和收据 schema 默认拒绝，不采用备用解释。
+7. 基于同一状态 commitment 和序号构造的两笔交易不能同时成功。胜者安装序号 `n + 1`；另一笔
+   失败且不会消费第二次逻辑转换。
+8. 已使用的限定范围 nullifier 在重试和重连后仍失败。
+9. 无状态转换操作保持状态 commitment 和序号不变。
+10. 真实本地节点测试部署合约、提交成功与负向证明交易、读取索引状态、重新连接部署，并确认
+    重连后状态一致。
+11. 公开产物扫描器在捕获的链、indexer、收据、日志或 HTML 证据中找不到生成私有值。
+12. 模板或运行时调用方都不能在不满足精确 root 转换授权的情况下替换权限或 credential 状态 root。
+
+### 退出门槛
+
+如果跳过任何必需真实链测试、Compact 代码按生成姓名或某个模板族字面量分支、模板能引入可执行
+证明逻辑、旧或已撤销 credential 仍能授权、冲突转换都能成功，或者证据记录遗漏精确本地 stack、
+编译器、合约、命令及观察到的交易／状态结果，则 M6 未完成。
+
+如果文档或证据声称 Midnight v1 独立验证了每个 M4 Ed25519 审核者签名，M6 同样未完成。
 
 ## 10 M7——网关与持久化收据传输
 
 状态：`NOT_STARTED`；依赖 M6
 
-产物包括 Midnight 最终确认观察器、来源验证、版本化类型收据封装、持久化 outbox 和密钥轮换
-测试。
+### 产物
+
+- 长期运行观察器，只监听精确 allowlist 中的 Midnight 网络、合约、模板注册表、证明模块注册表
+  和收据 schema 版本；
+- 明确最终性规则和持久化 checkpoint cursor；
+- 对 M6 通用收据逐字节解码，不重新评估私有策略或解释模块特定内容；
+- 持久化存储 source event identity、解码收据哈希、生命周期状态、尝试次数、最后错误类型和
+  下次重试时间；
+- 根据 Midnight 网络、合约、交易、事件索引、收据版本和 scoped nullifier 导出的 outbox
+  唯一键；
+- 与治理、模块批准、分配、capability 签发、中继和注册表所有权分离的 EIP-712 传输签名者；
+- 带重叠与截止规则的版本化验证者密钥轮换；以及
+- 重启、重组、畸形事件、未知版本、密钥轮换、重试和崩溃边界集成测试。
+
+### 处理顺序
+
+1. 从持久化的已最终确认 checkpoint 恢复。
+2. 只读取 allowlist 中 M6 部署的已最终确认事件。
+3. 验证来源身份、来源序号下的模板／证明模块状态、收据 schema、有效窗口和精确编码长度。
+4. 在一个持久化事务中插入来源事件与收据；重复唯一键返回现有记录。
+5. 使用当前 active 网关密钥签署未修改的类型化封装。
+6. 交付给获授权中继器或接收方 endpoint。
+7. 在推进工作前持久化 acknowledgement 或分类后的重试状态。
+8. 最终确认前的来源重组丢弃未确认事件；越过声明最终性边界后若发现不一致，则停止处理并
+   产生操作员可见的完整性错误。
 
 验收必须证明：网关不接收私有数据；只为允许的来源和版本签名；在每个持久化边界重启仍最多
 产生一个逻辑执行记录；陈旧、重组、畸形、未知或过期来源被拒绝；网关权限与其他权限分离。
+
+网关必须对 M6 字段和传输域链／合约绑定进行精确签名，不能修改接收方、用途、期限、模块、
+模板、commitment、nullifier 或来源引用。每个持久化、签名、交付和 acknowledgement 边界前后
+崩溃都必须恢复，不能丢失事件或创建第二条逻辑 outbox 记录。密钥轮换必须记录每个封装使用的
+密钥，并拒绝激活前或截止后的密钥。
 
 如果网关重新评估私有策略、扩大收据或依赖内存重试状态，M7 失败。
 
 ## 11 M8——执行注册表与适配器
 
-状态：`IN_PROGRESS`；现有接收方绑定注册表只是部分实现，必须在 M6 和 M7 后泛化。
+状态：`PARTIAL_BASELINE`；现有接收方绑定注册表与六个 Hardhat 部署测试已经实现，但尚未强制
+执行 M6 通用收据和 M7 持久化来源规则。
+
+### 通俗结果要求
+
+M8 把现有 Solidity 注册表扩展为 M7 传输的精确通用收据消费者。注册表不判断私有证据是否充分；
+Midnight 已经作出该决定。它只验证网关对来自批准来源的未修改收据进行了签名，以及具名 Monad
+接收方只能为精确声明用途消费一次。
 
 产物包括版本化收据验证、签名者轮换、接收方/用途/期限/模式/重放检查、Monad 与普通应用适配器，
 以及扩大权限和重放的负向测试。
 
+泛化后的链上记录保存 receipt ID、精确 M6 来源、模板与模块哈希、接收方、用途、有效期、限定
+范围 nullifier、输出 commitment、网关签名者、登记时间和撤销状态。它不保存稳定主体标识符
+或私有 M5 材料。
+
+每个执行 adapter 针对一个精确收据 schema 版本和 action schema 登记。调用接口只接收公开
+收据与 adapter 特定公开执行参数；它不能读取私有证据，也不能把 `outputCommitment` 重新解释
+为额外权限。
+
 验收必须证明：执行器只执行收据具名操作；错误维度被拒绝；中继器只能付费而不能创建授权；
 执行失败不改变隐私授权；注册表不需要稳定主体标识符。
+
+网关签名者不能仅凭签名为自己授权、改变注册表所有权或登记新 adapter。注册表治理、网关签名
+密钥轮换、adapter 登记、紧急暂停／撤销、中继和接收方消费必须是不同权限。Hardhat 本地节点
+测试必须部署泛化注册表与 adapter，通过独立中继器提交 M7 fixture，检查事件与存储，并对已部署
+合约执行全部拒绝路径。下游执行失败按照 adapter 合约记录或返回，但不改写成功的 Midnight
+授权收据。
 
 如果适配器能把一份收据解释为更宽操作，或注册表所有者默认同时担任收据签名者，M8 失败。
 
@@ -617,8 +1928,37 @@ golden-vector 格式和产物隐私扫描器。
 每个包包含模板、策略 profile、生成规则、生成的正负实例、披露预览、预期收据和隐私扫描，
 不包含手写参与者或记录测试数据。
 
+### 每个情境包的必需内容
+
+- 一份精确 M2 模板，包含 namespace、语义版本、内容哈希、状态、操作、转换、声明、接收方、
+  用途、披露策略和精确 M6 证明模块绑定；
+- 一份 M4 namespace 策略，分别定义作者、审核者、治理方、分配器和紧急撤销者；
+- 一份 M3 policy profile 和至少两个显式 `test:` 种子，证明实例值变化但 schema 保持稳定；
+- 生成的 M5 主体、上下文账户、capability、委托 grant、session、已签正向 intent，以及每个
+  授权约束维度的一份负向向量；
+- 预期 M6 公开模板／模块记录、root 序号、状态 commitment、nullifier 和收据；
+- 预期 M7 封装与 M8 执行结果；
+- 面向人的披露预览，列出接收方、用途、期限、声明、新建关联和保持私有的数据；以及
+- 覆盖收据、账本／indexer dump、网关日志、EVM 事件和生成文档的公开产物扫描。
+
+### 各情境包的具体行为
+
+临床包包含相互分离的治疗、研究和可选紧急上下文。治疗披露不能授权研究。若模板启用紧急访问，
+它必须具有自己的证明模块配置、接收方、短期限、选定记录 manifest 和审计义务。
+
+专业资格包证明一项资格在一个场地、任务和班次仍有效，绝不披露完整成绩单、无关凭证、家庭
+地址或就业历史。产生的访问 capability 在班次边界到期，不能在另一个场地重放。
+
+受委托 Agent 包绑定一个交易对手、操作集合、资源或金额上限、用途、期限、最大委托深度和撤销
+状态。Agent 不能激活模板或模块、扩大子 grant、替换接收方、读取无关历史，也不能在撤销后复用
+intent。
+
 验收必须证明三个包各自覆盖其核心隐私转换，并通过同一情境、能力、收据、网关和执行接口；
 添加新包不需要在核心领域添加参与者姓名、上下文字面量或分支规则。
+
+三个包都只能使用已批准的可复用证明模块；若需要的语义不可用，激活必须以
+`UNSUPPORTED_PROOF_REQUIREMENT` 失败，不能向模板添加代码。每个包至少完成一笔真实本地 M6
+交易，并通过同一 M7 传输接口完成一次已部署本地 M8 执行。
 
 如果支持新包等同于复制核心系统再改字段名，或某个包绕过公共隐私不变量，M9 失败。
 
@@ -629,8 +1969,27 @@ golden-vector 格式和产物隐私扫描器。
 产物包括选定记录 manifest、接收方加密与密钥轮换接口、显式跨上下文 `ActionIntent`、桥接收据
 与撤销/到期行为，以及证据保险库验证 API。
 
+### 具体桥接顺序
+
+1. 来源上下文选择显式记录 manifest。每一项包含记录 commitment、媒体／类型描述、字节长度和
+   密文 digest；公开产物绝不包含记录明文。
+2. 签名前，客户端显示来源与目标上下文、精确接收方加密密钥 fingerprint、用途、选定记录、
+   期限、允许用途和新建跨上下文关联。
+3. 限定范围 session 签署跨上下文 `ActionIntent`，绑定上述值、来源实例 commitment、目标／
+   case commitment、manifest root 和一次性 nonce。
+4. M6 验证来源 capability、桥接证明模块、当前 credential 状态、精确接收方与用途、manifest
+   commitment、期限和 nullifier。M6 发出桥接收据，但永远不接收密文。
+5. 客户端把每份选定记录加密给接收方当前精确密钥，并将密文与 manifest 直接发送到证据保险库。
+6. 解密前，保险库验证 M6/M7 收据、manifest root、密文 digest、来源与目标 commitment、
+   接收方密钥 fingerprint、期限和撤销状态。
+7. 接收方密钥轮换绝不能静默改变已有密文的接收目标。除非已批准封装明确包含替代密钥与重加密
+   规则，否则必须创建新的桥接 intent 和收据。
+
 验收必须证明：授权前展示来源/目标上下文、接收方、用途、记录、期限和新增关联；密文与公开收据
 分开；接收方在解密前验证所有绑定；无关记录不可枚举；改变任何桥接维度都会失败。
+
+收据传输与密文交付使用不同通道和可独立重试的标识符；任一通道都不能从另一通道推断缺失明文。
+到期或前瞻性撤销阻止新的检索授权，但不删除不可变收据历史。
 
 如果桥接是隐式、全局复用、公开明文，或被描述为证明人类声明为真，M10 失败。
 
@@ -641,9 +2000,26 @@ golden-vector 格式和产物隐私扫描器。
 产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Agent 会话撤销，
 以及由生成情境包创建的多账户浏览器旅程。
 
+### 必需用户旅程
+
+1. 作者创建草稿，看到明确不授予信任的结构／风险验证，并提交精确哈希供审核。
+2. 独立审核者在签名前检查同一 namespace、ID、版本、内容哈希、证明模块绑定、披露规则和测试证据。
+3. 治理方查看阈值状态并激活精确版本，或者收到精确拒绝。只有该版本和所有绑定模块仍合格时，
+   分配器才能创建实例。
+4. 参与者注册上下文账户、获得有限 capability、委托严格子集、创建全新 session、预览精确操作，
+   并分别看到 Midnight 授权结果与 Monad／应用执行结果。
+5. Agent 视图显示交易对手、操作、资源／金额上限、用途、期限、剩余委托深度和当前撤销状态。
+   正确权限主体可以立即撤销，但不存在万能管理员。
+6. 桥接旅程在任何签名或加密发生前显示完整 M10 关联和披露预览。
+7. 模板退役、紧急撤销、模块弃用／撤销、session 过期、旧状态、下游执行失败和重试恢复各自具有
+   可区分的用户结果。
+
 验收必须证明：注册不要求永久角色；用户能区分模板、实例、上下文、账户、能力、会话、证明、
 收据、执行和证据交付；敏感操作在确认前展示所有关键绑定；审核者看到精确哈希与版本；Agent
 范围可见且可立即撤销；生产 UI 不包含固定情境运行器。
+
+浏览器测试必须以独立账户分别登录并证明 session 隔离；不得存在 perspective selector 或测试
+专用冒充控制。任何页面都不得显示私钥、助记词、隐藏见证值、bootstrap 凭证或完整私有 fixture。
 
 如果产品导航假定一个领域、透视选择器可以冒充用户，或管理员凭据出现在界面中，M11 失败。
 
@@ -654,8 +2030,39 @@ golden-vector 格式和产物隐私扫描器。
 产物包括本地双链证据、公开测试网络部署证据、重启/重组/到期/撤销/重放演练、脱敏收据、
 浏览器引用、生成数据来源记录和最终隐私扫描。
 
+### 必需环境与证据
+
+本地运行使用固定版本的 Midnight Local Dev node、indexer 和 proof server，以及持久化本地
+Hardhat 或指定的本地 Monad 兼容 EVM。它部署全新的 M6 与 M8 合约，记录精确源码和实现哈希，
+只使用一次性本地账户，并让每个 M9 情境包运行；需要加密证据的情境包还必须经过 M10。
+
+公开运行使用明确选择的 Midnight 公共测试网络和 Monad 公共测试网。证据记录网络标识符、
+RPC／indexer／proof-server 版本、编译器版本、部署地址、交易哈希、最终性观察、网关密钥
+fingerprint，以及 explorer 或索引状态引用。测试币只从官方 faucet 或已记录本地 genesis 账户
+获得，绝不与生产密钥混用。
+
+两个环境的证据 bundle 都记录命令、时间戳、生成模板哈希、生成器版本与种子分类、公开收据、
+预期和观察到的状态 commitment／序号、网关 outbox 行标识、EVM receipt、脱敏日志和公开产物
+扫描结果。不得记录助记词、私钥、生成私有值、credential、capability 范围、session 密钥或解密
+证据。
+
+### 强制演练
+
+- M6 部署后停止并重启客户端，重新连接并确认索引状态；
+- 在 M7 checkpoint、outbox insert、签名、交付和 acknowledgement 前后崩溃，证明只有一条逻辑记录；
+- 在真实本地合约上提交旧状态、被修改 root 序号、过期 intent、已撤销 credential、已撤销模块、
+  错误接收方、错误用途和重放 nullifier；
+- 模拟或观察已记录的最终确认前重组行为，证明 M7 不会签署未确认事件；
+- 按已批准重叠和截止规则轮换网关／验证者密钥；
+- 在有效 Midnight 授权后让下游执行失败，证明授权历史保持不变；以及
+- 对每个可发布证据文件重新运行完整公开产物扫描器。
+
 验收必须证明：每个必需情境包至少一个生成实例走完授权到执行；公开证据无私有记录和跨上下文
 稳定标识符；重启不产生重复逻辑操作；密钥持有人符合架构；文档、代码、部署和证据描述同一版本。
+
+链上证据必须证明公开模板与证明模块记录、当前权限与 credential 状态 root、原子状态序号、
+nullifier 消费、M7 来源身份和 M8 一次性执行。每一种强制失败都必须表现为真实本地合约上的失败
+交易或显式拒绝，不能只以内存单元测试结果代表。
 
 如果公开网络证据模拟任一链、私有测试数据公开，或失败交易被展示为成功，M12 失败。
 
