@@ -56,6 +56,16 @@ success or failure. The approved boundary is recorded in the
 concrete pre-implementation investigation is recorded in the
 [`M6 development log`](docs/evidence/M6/development-log.md).
 
+The selected post-M6 sponsor scope is Envio, Mera, and Dynamic; Qwen and other
+external AI-agent runtimes are intentionally out of scope. M7 stays
+provider-neutral, M8 adds an Envio HyperIndex read model that drives the product
+dashboard, M10 uses Mera PRF for non-account custody of recipient evidence keys,
+and M11 uses Dynamic for authentication plus the supported 1AM Midnight-wallet
+connection and a separate Monad EVM-wallet binding. M12 requires live evidence
+for all three integrations. The exact Dynamic wallet key/connector, SDK version,
+and supported Midnight network must be recorded and verified in its sandbox
+before the 1AM integration is claimed complete.
+
 M4 continues to verify Ed25519 reviewer attestations, unique eligible
 reviewers, thresholds, rejection state, and separation of duties. Midnight
 does not repeat those checks in M6 v1. Instead, the namespace-scoped M4
