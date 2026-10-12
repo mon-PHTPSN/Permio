@@ -1,6 +1,13 @@
 # Node modules
 /node_modules
 
+# Local Midnight/test logs
+**/logs/
+
+# Reproducible Compact proving artifacts (generated bindings stay tracked)
+packages/midnight-authorization/contracts/managed/**/keys/
+packages/midnight-authorization/contracts/managed/**/zkir/
+
 # Compilation output
 /dist
 

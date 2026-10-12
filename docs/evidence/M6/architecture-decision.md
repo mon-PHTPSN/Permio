@@ -1,12 +1,14 @@
 # M6 Architecture Decision Record
 
 Date approved: 2026-10-11<br>
-Status: approved architecture; implementation not started<br>
+Status: approved architecture; governance, admission, credential-status, and lifecycle slices implemented and live-tested; the approved depth-16 ancestry witness failed its pinned-toolchain feasibility gate and requires a new user decision<br>
 Applies to: M6 Midnight authorization, M7 receipt transport, and the M8 receipt consumer boundary
 
 This record captures the decisions approved before M6 implementation. It is
-not acceptance evidence and does not claim that any Compact contract, proof,
-deployment, gateway, or generalized Solidity registry has been implemented.
+not final M6 acceptance evidence. Concrete implementation and live-chain
+results are recorded in `development-log.md`; runtime authorization,
+credential-status roots, common receipts, and privacy scanning remain
+incomplete.
 
 ## Decision 1: admit an exact M4 activation through a Midnight envelope
 
@@ -23,6 +25,8 @@ admission envelope containing:
 envelopeVersion
 namespaceHash + templateIdHash + semanticVersion + templateContentHash
 governancePolicyHash + proofModuleBindingsHash
+proofModuleBindingRoot + proofModuleBindingCount
+proofModuleRegistrySequence + stagingExpiresAt
 m4ActivationRecordHash + approvalEvidenceCommitment
 authorityRootVersion + authorityRootSequence
 targetNetworkId + targetContractIdentity + registryProtocolVersion
@@ -162,6 +166,194 @@ and emits a receipt without changing the state commitment or sequence.
 M6 owns the ordering of privacy-authorization state. M8 or the target
 application separately owns downstream execution success or failure. A failed
 Monad execution does not rewrite a valid Midnight authorization result.
+
+## Decision 5: stage variable-length action bindings before atomic activation
+
+M2 templates retain a variable-length action list. M6 does not impose a fixed
+maximum action count merely to fit one Compact circuit invocation, and it does
+not trust an aggregate binding hash without validating its leaves.
+
+The governance-signed activation envelope therefore commits both the canonical
+SHA-256 binding-manifest hash and a depth-20 Compact Merkle root, together with
+the exact binding count, proof-module-registry sequence, and staging deadline.
+The admission lifecycle is:
+
+```text
+begin exact signed session
+  -> stage complete binding at index 0
+  -> stage complete binding at index 1
+  -> ...
+  -> atomically finalize the whole template
+```
+
+An action is never split. Each staging transaction verifies one complete
+indexed binding and its Merkle path, requires the exact registered module to be
+active, and advances a sequential next-index counter. Sequential staging
+rejects missing, duplicate, and out-of-order indexes without an unbounded
+bitmap. The session stores a constant-size rolling accumulator; the active
+record retains the signed root, count, manifest hash, module-registry sequence,
+and final accumulator.
+
+Beginning or staging never makes a template allocatable. Finalization rechecks
+the exact envelope, current governance authority, registry sequence, unused
+nonce, and complete binding count, then creates the active record in one state
+transition. Any module-registry sequence change invalidates the pending
+session, including a prospective module revocation before finalization.
+
+The signed deadline uses protocol-enforced block time. Expired or stale
+sessions are removed automatically when touched by begin, stage, or finalize.
+Cleanup releases temporary nonce reservation but cannot erase a consumed
+nonce, active template, lifecycle history, or receipt. Protocol correctness
+does not depend on a keeper or privileged maintenance actor.
+
+## Decision 6: add narrow root, retirement, and Midnight runtime-key roles
+
+The namespace authority root is changed only by a threshold of unique eligible
+`authority-root-governor` leaves. The threshold is itself stored in the current
+root record, must be at least two, and is carried into the signed old-root to
+new-root command together with both root versions and sequences. Neither the
+governance activator nor any single governor can rotate the root.
+
+Normal template retirement uses a separate `template-retirer` leaf. Emergency
+template revocation continues to use the existing emergency-revocation role.
+Retirement blocks new allocations prospectively; revocation blocks new use
+prospectively. Both retain the original activation record, sequence, timestamp,
+and exact content hash. Root governance, template retirement, and emergency
+revocation are not interchangeable privileges.
+
+M5 Ed25519 identities and `ActionIntent` signatures remain unchanged. Each M6
+principal or session instead receives a separately profiled
+`midnight-jubjub-schnorr-v1` runtime key binding that commits to the exact M5
+identity/capability/session chain, instance, context, validity window, and key.
+The M6 proof must verify the existing M5 chain and current credential status
+before accepting the runtime Schnorr signature. The additional key is a
+chain-specific authorization credential, not a replacement identity and not a
+universal administrator. This preserves application-neutral M5 portability if
+a later deployment uses a chain other than Midnight.
+
+## Implementation boundary found on 2026-10-12
+
+After adding the accepted authority-root and template lifecycle circuits, the
+pre-consolidation single-contract build contained fourteen exported transaction
+circuits. The pinned Local Dev node rejected the resulting 36,225-byte deployment transaction
+before contract creation with `1010: Invalid Transaction: Transaction would
+exhaust the block limits`. The node, indexer, and proof server were all healthy,
+and the same stack had previously deployed the ten-circuit contract.
+
+This conflicts with Decision 3's initial single-contract physical deployment,
+and the remaining runtime modules would enlarge that deployment further. No
+architecture has been changed in response. The viable directions are to
+consolidate transaction circuits while preserving one contract and the same
+authority model, or to approve a multi-contract boundary with an explicit
+cross-contract trust and atomicity design. Official Compact 0.35 release notes
+state that cross-contract calls arrived with the ledger-9 toolchain line, while
+current Mainnet contracts should remain on 0.31.x; the pinned ledger-8/0.31.1
+stack therefore cannot be assumed to provide the native composition needed by
+that split. Raising only the local node limit is not acceptance evidence for a
+deployment intended to respect network limits.
+
+The reasons, migration decisions, compatibility gates, and required real-chain
+tests for a later ledger-9 evaluation are recorded in
+`future-ledger9-upgrade.md`. That record is a future candidate, not authority to
+upgrade the current M6 baseline.
+
+The first approved mitigation combines first and subsequent root approvals into
+one `submitAuthorityRootApproval` circuit. Compact 0.31.1 recompiles that source
+as thirteen provable circuits. The two governors still sign and submit separate
+transactions; only the duplicated verifier entry point is removed. The new
+deployment transaction fell from 36,225 to 33,809 bytes but was still rejected
+with the same block-limit error. Public node constants allow normal extrinsics
+up to 786,432 bytes, so transaction length is not the limiting dimension; the
+remaining failure was execution weight. This mitigation alone was insufficient.
+
+The user then approved consolidating the two remaining equivalent lifecycle
+pairs. `terminateProofModule` selects deprecation authority kind 8 only for
+`active -> deprecated`, and emergency authority kind 10 only for
+`active|deprecated -> revoked`. `terminateTemplate` similarly selects retirer
+kind 12 only for `active -> retired`, and emergency kind 5 only for
+`active|retired -> revoked`. The signed target status determines the branch;
+each branch retains its original source-status and authority checks.
+
+That build contains eleven provable circuits and deployed successfully on the
+same unmodified ledger-8 Local Dev stack. The complete live run finalized both
+root approvals, module deprecation/revocation, template retirement/revocation,
+and all associated privilege-collapse rejections. The deployment-weight
+boundary is resolved for the implemented governance slice, but remaining
+runtime circuits must still be measured promptly as they are added.
+
+The required measurement was repeated as soon as the generic
+`updateRuntimeCredentialStatus` circuit was added. Compact 0.31.1 compiled the
+twelve-circuit contract and all simulator tests passed, but the same unmodified
+Local Dev node rejected its 31,837-byte deployment transaction with RPC 1010
+before contract creation. This means the current single-contract ledger-8
+architecture has not demonstrated capacity for one required runtime-state
+circuit, before either of the two required runtime proof entry points is added.
+No alternative architecture has been adopted. Further entry-point
+consolidation, a multi-contract boundary, or activation of the documented
+ledger-9 investigation requires a user decision.
+
+The user approved further same-contract consolidation. Module approval,
+activation, deprecation, and emergency revocation now share one
+`governProofModule` dispatcher. The signed target state selects the branch;
+each branch retains its original authority kind, source-state rules, threshold,
+unique-approval check, and nonce protection. The standalone staging cleanup
+circuit was removed because the existing begin, stage, and finalize entries
+now remove only expired or stale sessions automatically. The resulting nine
+transaction circuits compiled with Compact 0.31.1 and deployed on the unchanged
+ledger-8 stack at
+`131ed4886a6419a949728289de8c67e176fddfb15f7bf2d058c12812de2627d7`.
+The live run completed credential-status activation and revocation plus the
+full governance/admission regression. No local limit or trust rule changed.
+
+Implementation then reached a different runtime representation boundary. M5
+permits capability chains through depth 16. The current runtime capability
+credential binds its immediate parent, but a terminal-action proof must also
+establish that every ancestor remains active under the exact current
+credential-status root. Checking only the terminal leaf would fail prospective
+ancestor revocation; silently reducing M5's supported depth would change the
+product contract. The choice between a fixed maximum-depth witness, a new
+revocation-accumulator/epoch representation, or an explicitly narrower first
+protocol version therefore required user approval before runtime-circuit code
+continued.
+
+The user approved the first option: preserve M5's complete depth-16 semantics
+with a fixed-size private witness and use real compilation plus Local Dev
+deployment as the immediate feasibility gate. A temporary, non-mutating probe
+was added to the existing nine-circuit contract rather than compiled as an
+isolated toy. It carried 17 fixed entries (one root plus 16 delegated
+credentials), contiguous private presence markers, exact parent and issuer
+bindings, one Schnorr issuance signature and depth-20 current-status proof per
+present capability, exact time/depth attenuation, the current authority and
+credential-status root sequences, and an active terminal-account proof. It
+returned only a constant `true` and wrote no ledger state, so the private chain
+length was not a public output.
+
+Compact 0.31.1 accepted the source, type rules, bounded vector iteration, and
+privacy analysis and announced ten transaction circuits. The generated probe
+intermediate was 483,918 bytes of ZKIR and 44,311 bytes of binary ZKIR, compared
+with 206,700 bytes of ZKIR for the existing `governProofModule` dispatcher.
+During proving-key generation, `zkir compile-many` accumulated 13 minutes 45
+seconds of CPU time, then stopped accruing CPU time for more than eleven
+additional wall-clock minutes. The process had 26 threads and its main thread
+reported `futex_do_wait`. Both probe key files remained at zero bytes. A final
+snapshot at 24 minutes 57 seconds showed the same CPU time, wait state, and
+empty files. The process was interrupted only after that stable no-progress
+interval.
+
+This was not recorded as a successful compile, deployment failure, or ledger
+limit result. The temporary probe source was removed and the original
+nine-circuit contract was recompiled successfully on the same machine and
+toolchain; that restoration used multiple cores productively and completed in
+about five minutes. The baseline generated bindings and keys are therefore
+known-good again, and no probe artifact remains.
+
+The exact approved option has failed its first feasibility gate before Local
+Dev deployment and before adding session and intent signatures, seven scope
+membership checks, allocation evidence, action nullifier/state ordering, or
+the common receipt. Continuing by adopting a lineage accumulator, lowering the
+delegation depth, raising local limits, omitting ancestor checks, or splitting
+the contract would change an approved architecture or product guarantee.
+Those alternatives require a new user decision; M6 remains incomplete.
 
 ## Common receipt and gateway consequence
 
