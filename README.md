@@ -86,7 +86,10 @@ The implemented off-chain packages form a concrete dependency chain:
 - `@permio/scenario-governance` separates five authorities and governs exact
   template versions and hashes; and
 - `@permio/context-accounts` consumes an active allocation, attenuates
-  capabilities, issues fresh scoped sessions, and authorizes signed actions.
+  capabilities, issues fresh scoped sessions, and authorizes signed actions;
+- `@permio/gateway` provides the M6-independent M7 foundation for strict public
+  source/receipt-byte validation, exact source allowlisting, domain-separated
+  outbox identity, and verifier-key rotation windows.
 
 M6 has a separate `admit-m4-activation-v1` registry circuit plus the initial
 runtime modules `delegated-capability-action-v1` and
@@ -250,7 +253,8 @@ Midnight 上重复这些检查。命名空间范围内的 M4 治理／激活权�
 `@permio/scenario-generator` 生成确定性的合成实例，并扫描公开产物中的私有值泄漏；
 `@permio/scenario-governance` 分离五类权限，并治理精确的模板版本与哈希；
 `@permio/context-accounts` 消费已激活的分配，收窄能力范围，签发新鲜的有限会话，并授权
-签名操作。
+签名操作；`@permio/gateway` 提供不依赖 M6 的 M7 基础能力，包括严格验证公开来源与收据字节、
+精确来源 allowlist、域分离的 outbox 身份，以及验证者密钥轮换时间窗。
 
 M6 使用独立的 `admit-m4-activation-v1` 注册电路，以及首批运行时模块
 `delegated-capability-action-v1` 和 `private-state-transition-v1`。运行时模块统一输出最小

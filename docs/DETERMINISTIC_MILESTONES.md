@@ -856,7 +856,14 @@ independently verified every M4 Ed25519 reviewer signature.
 
 ## 10 M7 — Gateway and durable receipt transport
 
-Status: `NOT_STARTED`; depends on M6
+Status: `IN_PROGRESS`; live receipt ingestion still depends on M6
+
+The M6-independent foundation is implemented in `@permio/gateway`: strict
+public source and opaque receipt-byte validation, exact source allowlisting,
+byte-bound receipt hashing, the versioned domain-separated outbox uniqueness
+key, and deterministic verifier-key epoch overlap and cutoff rules. It does not
+yet claim the finalized-event observer, M6 wire decoder, durable store,
+transport signature, delivery worker, or crash/reorg integration tests.
 
 ### Artifacts
 
@@ -1950,7 +1957,12 @@ fixture 绝不能成为收据字段。
 
 ## 10 M7——网关与持久化收据传输
 
-状态：`NOT_STARTED`；依赖 M6
+状态：`IN_PROGRESS`；实时收据摄取仍依赖 M6
+
+不依赖 M6 的基础能力已在 `@permio/gateway` 中实现：严格验证公开来源与不透明收据字节、精确
+来源 allowlist、与字节绑定的收据哈希、版本化且域分离的 outbox 唯一键，以及确定性的验证者
+密钥 epoch 重叠与截止规则。当前尚不声明已完成最终事件观察器、M6 线格式解码器、持久化存储、
+传输签名、交付 worker，或崩溃／重组集成测试。
 
 ### 产物
 

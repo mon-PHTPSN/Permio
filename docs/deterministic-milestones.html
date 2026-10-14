@@ -2,7 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-  Source SHA-256: 1ecf7fb836806f556435f4ae80a03373716b45106ae232f9f2e8b485a1bd7917
+  Source SHA-256: 78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-  <meta name="source-sha256" content="1ecf7fb836806f556435f4ae80a03373716b45106ae232f9f2e8b485a1bd7917">
+  <meta name="source-sha256" content="78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -1007,7 +1007,13 @@ independently verified every M4 Ed25519 reviewer signature.</p>
 <section aria-labelledby="10-m7-gateway-and-durable-receipt-transport">
 <h2 id="10-m7-gateway-and-durable-receipt-transport">10 M7 — Gateway and durable receipt transport</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on M6</p>
+<p>Status: <code>IN_PROGRESS</code>; live receipt ingestion still depends on M6</p>
+<p>The M6-independent foundation is implemented in <code>@permio/gateway</code>: strict
+public source and opaque receipt-byte validation, exact source allowlisting,
+byte-bound receipt hashing, the versioned domain-separated outbox uniqueness
+key, and deterministic verifier-key epoch overlap and cutoff rules. It does not
+yet claim the finalized-event observer, M6 wire decoder, durable store,
+transport signature, delivery worker, or crash/reorg integration tests.</p>
 <h3 id="artifacts-7">Artifacts</h3>
 
 <ul>
@@ -1507,7 +1513,7 @@ hide an environmental failure.</p>
         </article>
         <footer>
           Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-          Source SHA-256: <code>1ecf7fb836806f556435f4ae80a03373716b45106ae232f9f2e8b485a1bd7917</code>.
+          Source SHA-256: <code>78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
@@ -2053,7 +2059,11 @@ fixture 绝不能成为收据字段。</p>
 <section aria-labelledby="zh-10-m7-网关与持久化收据传输">
 <h2 id="zh-10-m7-网关与持久化收据传输">10 M7——网关与持久化收据传输</h2>
 
-<p>状态：<code>NOT_STARTED</code>；依赖 M6</p>
+<p>状态：<code>IN_PROGRESS</code>；实时收据摄取仍依赖 M6</p>
+<p>不依赖 M6 的基础能力已在 <code>@permio/gateway</code> 中实现：严格验证公开来源与不透明收据字节、精确
+来源 allowlist、与字节绑定的收据哈希、版本化且域分离的 outbox 唯一键，以及确定性的验证者
+密钥 epoch 重叠与截止规则。当前尚不声明已完成最终事件观察器、M6 线格式解码器、持久化存储、
+传输签名、交付 worker，或崩溃／重组集成测试。</p>
 <h3 id="zh-产物-3">产物</h3>
 
 <ul>
@@ -2317,7 +2327,7 @@ npm run compile
         </article>
         <footer>
           由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
-          源文件 SHA-256：<code>1ecf7fb836806f556435f4ae80a03373716b45106ae232f9f2e8b485a1bd7917</code>。
+          源文件 SHA-256：<code>78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea</code>。
         </footer>
       </div>
     </main>
