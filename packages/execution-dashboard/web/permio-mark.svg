@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-labelledby="title">
+  <title id="title">Permio</title>
+  <defs>
+    <linearGradient id="blue" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#a9d8ff"/>
+      <stop offset="1" stop-color="#5988f5"/>
+    </linearGradient>
+    <linearGradient id="coral" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#b7d6ff"/>
+      <stop offset="1" stop-color="#ffb7ae"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6fa6ff"/>
+      <stop offset="1" stop-color="#9f7ce8"/>
+    </linearGradient>
+  </defs>
+  <path d="M56 10h25c22 0 37 15 37 37S103 84 81 84H56z" fill="url(#coral)"/>
+  <path d="M10 65c0-22 15-37 37-37h9v45c0 27-16 45-42 45h-4z" fill="url(#blue)"/>
+  <path d="M10 65c0-22 15-37 37-37 20 0 36 15 36 35 0 18-13 32-31 32-24 0-42-12-42-30z" fill="url(#violet)" opacity=".78"/>
+</svg>

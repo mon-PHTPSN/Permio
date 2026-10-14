@@ -2,7 +2,7 @@
 
 Date: 2026-10-13<br>
 Branch: `feat/m8-execution-registry`<br>
-Status: local fixture contract/indexer verification complete; upstream and product acceptance remains blocked
+Status: local fixture contract/indexer/browser verification complete; upstream and product acceptance remains blocked
 
 This log records the dependency-neutral M8 work performed against explicitly
 labeled expected M6/M7 fixtures, including a live local Envio fixture drill. It
@@ -170,6 +170,66 @@ restore the original counts and aggregate exactly. This verifies the configured
 fixture indexer's GraphQL, restart, backfill, and pre-finality rollback behavior;
 it does not verify the future authoritative M6/M7 pipeline or a product consumer.
 
+## GraphQL product consumer and browser evidence
+
+`packages/execution-dashboard` adds a dependency-free Node server and responsive
+browser interface at `http://127.0.0.1:4178`. The server issues one fixed,
+public-only query to `http://127.0.0.1:8080/v1/graphql`, keeps the local Hasura
+secret out of the browser, and returns HTTP 503 with empty arrays when the
+endpoint is unavailable. Per-chain `_meta.isReady`, `progressBlock`, and
+`sourceBlock` drive the visible freshness and lag state; these values never
+enter an authorization decision.
+
+The recording run used Ubuntu WSL Node.js 22.23.2 and npm 10.9.8, Hardhat
+3.14.0 on chain 31337, Envio 3.14.0, PostgreSQL 18.3, Hasura 2.43.0, registry
+`0x5FbDB2315678afecb367f032d93F642f64180aa3`, and the fixture-only verifier and
+adapter documented above. The first displayed receipt was
+`0xe95798e093f8421298ae3cbcec87763c452d042f859a0da9be28f72351c7aac0`;
+its registration transaction was
+`0x61ce2659544fb05f0d75682ce46290d23287ea05e79072a68f2d81a3e034ace3`
+at block 8 and its execution transaction was
+`0xb5fde80de71c26352438db48269253ee0dddab188b4d373936db3fbd8f12118c`
+at block 9.
+
+A second `npm run seed:m8:fixture:local` produced receipt
+`0xcece98f6d3bc2a9d478a8a132abb50b8998f414634379dc2f3fc1eff08374462`,
+registration transaction
+`0x33e2f4cec72c3fc4c106ceb12d6de40ff1930d530daee2d17a9a5a5b48f42d93`
+at block 10, and execution transaction
+`0x97202c0f0802e38776193f261f9216e1e33bde97748e7e9f1d541eba1087e41d`
+at block 11. After Envio detected block 11, the real browser changed from one
+receipt/execution to two, kept the fixture success rate at 100%, advanced the
+latest indexed block from 9 to 11, and reported zero-block lag. The ledger
+displayed both source and registry transaction references, while the side panel
+displayed the hourly aggregate and both adapter results.
+
+Stopping only `envio-hasura` and clicking **Refresh data** removed every receipt,
+execution, aggregate, and numeric metric from the browser. The page displayed
+“Envio unavailable,” “No cached or fabricated rows are displayed,” and
+“Execution authority is unchanged.” Restarting Hasura and refreshing restored
+the same indexed projections. The original five dashboard tests cover fresh, lagging,
+unavailable, boundary, and summary behavior. The concise recording sequence is
+in `docs/evidence/M8/envio-recording-runbook.md`.
+
+## Product presentation revision
+
+The user's 2026-10-13 review rejected the separate observatory design and
+developer-facing product copy. Activity and Reports now reuse the actual
+Information Flow app shell, sidebar/topbar layout, colour tokens, button styles,
+list/detail patterns, and existing SVG logo. Slogans, milestone labels,
+deployment/fixture notices, and explanatory engineering copy are removed from
+the interface. The API retains the fixture boundary for integration, and this
+log retains the authoritative implementation limits.
+
+The revised view adds combined search/status filtering, native accessible
+receipt dialogs, source/registration/execution references in details, explicit
+hourly totals, automatic refresh, and concise retry states. Seven consumer tests
+include missing-execution outcome handling and combined filtering. Browser
+acceptance checked desktop and 390px mobile layouts, detail opening and Escape
+dismissal, search/no-match/clear, status filtering, report navigation, and a
+separate server pointed at an unreachable endpoint. No shared Docker or WSL
+service was stopped for this revision.
+
 ## Dependency audit
 
 `npm audit --omit=dev --json` reported 10 production dependency findings in
@@ -314,6 +374,45 @@ Envio 3.14.0 已拉取并启动 PostgreSQL 18.3 与 Hasura GraphQL Engine 2.43.0
 区块 11 哈希不一致，回滚五个被孤立的事件至区块 9，删除第二条收据与执行，并精确恢复原始计数与
 聚合。这验证了已配置 fixture 索引器的 GraphQL、重启、backfill 与最终确认前回滚行为；它没有验证
 未来的权威 M6/M7 流水线或产品消费者。
+
+## GraphQL 产品消费者与浏览器证据
+
+`packages/execution-dashboard` 添加了无额外依赖的 Node 服务器和响应式浏览器界面，地址为
+`http://127.0.0.1:4178`。服务器只向 `http://127.0.0.1:8080/v1/graphql` 发出一条固定、只含公开
+字段的查询，将本地 Hasura 密钥留在浏览器之外，并在端点不可用时返回 HTTP 503 与空数组。按链统计
+的 `_meta.isReady`、`progressBlock` 与 `sourceBlock` 驱动可见的新鲜度和延迟状态；这些值永远不会
+进入授权决策。
+
+录制验证使用 Ubuntu WSL Node.js 22.23.2、npm 10.9.8、chain 31337 上的 Hardhat 3.14.0、
+Envio 3.14.0、PostgreSQL 18.3、Hasura 2.43.0、注册表
+`0x5FbDB2315678afecb367f032d93F642f64180aa3`，以及上文记录的仅限 fixture 验证器和 adapter。
+第一条显示的收据为 `0xe95798e093f8421298ae3cbcec87763c452d042f859a0da9be28f72351c7aac0`；
+其区块 8 注册交易为 `0x61ce2659544fb05f0d75682ce46290d23287ea05e79072a68f2d81a3e034ace3`，
+区块 9 执行交易为 `0xb5fde80de71c26352438db48269253ee0dddab188b4d373936db3fbd8f12118c`。
+
+第二次运行 `npm run seed:m8:fixture:local` 生成收据
+`0xcece98f6d3bc2a9d478a8a132abb50b8998f414634379dc2f3fc1eff08374462`、区块 10 注册交易
+`0x33e2f4cec72c3fc4c106ceb12d6de40ff1930d530daee2d17a9a5a5b48f42d93` 和区块 11 执行交易
+`0x97202c0f0802e38776193f261f9216e1e33bde97748e7e9f1d541eba1087e41d`。Envio 检测到区块 11 后，
+真实浏览器从一条收据／执行更新为两条，fixture 成功率保持 100%，最新索引区块从 9 推进到 11，
+并报告零区块延迟。账本显示两类来源与注册表交易引用，侧栏显示小时聚合和两次 adapter 结果。
+
+仅停止 `envio-hasura` 并点击 **Refresh data** 后，浏览器移除了全部收据、执行、聚合和数字指标，
+显示“Envio unavailable”、“No cached or fabricated rows are displayed”和“Execution authority is
+unchanged.”。重启 Hasura 并刷新后，相同索引投影恢复。原来的五项仪表板测试覆盖新鲜、延迟、不可用、
+边界和汇总行为。简明录制流程位于 `docs/evidence/M8/envio-recording-runbook.md`。
+
+## 产品呈现修订
+
+用户在 2026-10-13 的反馈中否定了独立观测仪表板设计和面向开发者的产品文案。Activity 和 Reports
+现在复用实际 Information Flow 应用框架、侧栏／顶栏布局、配色变量、按钮样式、列表／详情模式和
+现有 SVG 标志。宣传语、里程碑标签、部署／fixture 提示和工程解释文案已从界面移除。API 保留
+fixture 边界供集成使用，本文档保留权威实现限制。
+
+修订后的页面支持搜索与状态组合筛选、原生可访问收据对话框、详情中的来源／注册／执行交易引用、
+明确的小时统计、自动刷新和简洁重试状态。七项消费端测试包括缺失执行结果处理和组合筛选。浏览器
+验收检查了桌面及 390px 移动布局、详情打开与 Escape 关闭、搜索／无结果／清空、状态筛选、报表
+导航，以及指向不可达端点的独立服务器。本次修订没有停止共享 Docker 或 WSL 服务。
 
 ## 依赖审计
 

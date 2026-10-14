@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f8f8fc" />
+    <title>Permio</title>
+    <link rel="icon" href="/permio-mark.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/context.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <main id="auth-page" class="auth-page" hidden>
+      <section class="auth-story"><a href="#login" class="logo"><img src="/permio-mark.svg" alt="" /><span>Permio</span></a><div class="auth-art" aria-hidden="true"><div class="flow-shape shape-blue"></div><div class="flow-shape shape-coral"></div><div class="flow-shape shape-violet"></div></div><div class="auth-caption"><h1>Welcome to<br/>Permio.</h1><p>Your information, permissions, and disclosures.</p></div></section>
+      <section class="auth-side"><div class="auth-card">
+        <div class="auth-tabs" role="tablist" aria-label="Account access"><button type="button" id="login-tab" role="tab" aria-selected="true" class="active">Log in</button><button type="button" id="register-tab" role="tab" aria-selected="false">Create account</button></div>
+        <form id="auth-form" class="auth-form"><h2 id="auth-title">Welcome back</h2>
+          <label>Username<input name="username" minlength="3" maxlength="32" pattern="[a-zA-Z0-9][a-zA-Z0-9_-]{2,31}" autocomplete="username" required /></label>
+          <label id="display-name-field" hidden>Display name <small>optional</small><input name="displayName" maxlength="80" autocomplete="name" /></label>
+          <label>Password<input name="password" type="password" minlength="4" maxlength="128" autocomplete="current-password" required /></label>
+          <button class="button primary" id="auth-submit">Log in</button><p id="auth-error" class="notice" role="alert" hidden></p>
+        </form>
+      </div></section>
+    </main>
+    <div id="boot-panel" class="boot-panel" role="status">Loading your workspace…</div>
+    <div class="app-frame" id="application" hidden>
+      <header class="app-header">
+        <a class="brand-button logo" href="#overview" aria-label="Permio home">
+          <img src="/permio-mark.svg" alt="" width="30" height="30" />
+          <span>Permio</span>
+        </a>
+        <nav aria-label="Main navigation">
+          <a href="#overview" data-page="overview"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="9" cy="10" r="6"/><circle cx="15" cy="14" r="6"/></svg>Contexts</a>
+          <a href="#permissions" data-page="permissions"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3-8 3v6c0 5 8 9 8 9s8-4 8-9V6l-8-3Z"/><path d="m8 12 3 3 5-6"/></svg>Permissions</a>
+          <a href="#disclosures" data-page="disclosures"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 6h18v14H3zM3 6l9 7 9-7"/></svg>Disclosures<span id="disclosure-count" class="nav-count" hidden></span></a>
+          <a href="#verification" data-page="verification"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="m8 12 3 3 5-6"/></svg>Verification</a>
+        </nav>
+        <div class="header-account"><a href="#account" class="account-link" data-page="account" aria-label="Account"><span id="account-avatar" class="avatar" aria-hidden="true"></span><span class="account-name"><span id="account-display"></span><small id="account-username"></small></span></a><button type="button" id="logout-button" class="text-link">Log out</button></div>
+      </header>
+
+      <div class="workspace">
+        <header class="topbar">
+          <span id="section-name">Activity</span>
+          <div class="header-actions">
+            <p id="update-status" class="update-status" role="status"><span class="status-dot loading" aria-hidden="true"></span><span id="freshness-label">Loading…</span></p>
+            <button type="button" id="refresh-button" class="button secondary">Refresh</button>
+          </div>
+        </header>
+        <main class="main-content" id="main-content" aria-busy="true" tabindex="-1">
+          <section id="product-page" hidden></section>
+          <div id="activity-shell">
+          <header class="page-title"><div><h1 id="page-title">Activity</h1><p id="observed-at">Loading history…</p></div><div class="view-tabs"><a href="#activity">History</a><a href="#reports">Reports</a></div></header>
+          <div id="loading-panel" class="empty" role="status">Loading activity…</div>
+          <section id="error-panel" class="empty error-state" role="alert" hidden>
+            <h2>Activity is temporarily unavailable</h2><p>Please try again in a moment.</p>
+            <button type="button" id="retry-button" class="button primary">Try again</button>
+          </section>
+          <div id="content" hidden>
+            <section class="metrics" aria-label="Recent activity summary">
+              <div><span>Recent receipts</span><strong id="receipt-count">—</strong></div>
+              <div><span>Executions</span><strong id="execution-count">—</strong></div>
+              <div><span>Successful</span><strong id="success-count">—</strong></div>
+              <div><span>Failed</span><strong id="failure-count">—</strong></div>
+            </section>
+            <section id="activity-page" aria-labelledby="history-title">
+              <header class="section-head"><h2 id="history-title">History</h2><span id="receipt-range" class="muted"></span></header>
+              <div class="filters">
+                <label class="search-field"><span class="sr-only">Search history</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/></svg><input id="search-input" type="search" placeholder="Search receipt or recipient" autocomplete="off" /></label>
+                <label class="status-filter"><span class="sr-only">Filter by status</span><select id="status-filter"><option value="all">All statuses</option><option value="success">Successful</option><option value="failed">Failed</option><option value="pending">Not executed</option><option value="revoked">Revoked</option></select></label>
+              </div>
+              <div id="history-empty" class="empty" hidden><p>No activity yet.</p></div>
+              <div id="search-empty" class="empty" hidden><p>No matching activity.</p><button type="button" class="text-link" id="clear-filters">Clear filters</button></div>
+              <div class="history-heading" aria-hidden="true"><span>Receipt</span><span>Recipient</span><span>Date</span><span>Status</span><span></span></div>
+              <div id="receipts" class="history-list"></div>
+            </section>
+            <section id="reports-page" aria-labelledby="report-title" hidden>
+              <header class="section-head"><h2 id="report-title">Hourly activity</h2><span class="muted">Most recent 24 periods</span></header>
+              <div id="aggregate-empty" class="empty" hidden>No reports yet.</div>
+              <div id="aggregate-report"></div>
+            </section>
+          </div>
+          </div>
+        </main>
+      </div>
+    </div>
+    <dialog id="receipt-dialog" aria-labelledby="receipt-detail-title">
+      <header class="dialog-header"><h2 id="receipt-detail-title">Receipt details</h2><button type="button" class="icon-button" id="close-dialog" aria-label="Close receipt details">×</button></header>
+      <div id="receipt-detail"></div>
+    </dialog>
+    <dialog id="product-dialog" aria-labelledby="product-dialog-title"><header class="dialog-header"><h2 id="product-dialog-title"></h2><button type="button" class="icon-button" id="close-product-dialog" aria-label="Close">×</button></header><div id="product-dialog-content"></div><p id="dialog-error" class="notice" role="alert" hidden></p></dialog>
+    <div id="toast" class="toast" role="status" hidden></div>
+    <script type="module" src="/site.js"></script>
+  </body>
+</html>
