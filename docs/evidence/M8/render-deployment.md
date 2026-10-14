@@ -70,6 +70,13 @@ The local navigation index was initialized, but reported 61 parse failures
 out of 123 indexed files; its source-symbol coverage is incomplete. Exact
 source and executable checks were used for this preparation.
 
+The first GitHub CI run failed on a fresh checkout because the original
+`check` command type-checked contract tests before generating Hardhat ABI types.
+Local generated artifacts had masked this ordering defect. After
+`npx hardhat clean`, standalone type checking reproduced the CI errors.
+The corrected check builds Solidity before type checking, preserving all
+strict type checks and tests; generated artifacts remain ignored.
+
 References: [Render web services](https://render.com/docs/web-services),
 [Blueprint specification](https://render.com/docs/blueprint-spec),
 [persistent disks](https://render.com/docs/disks),
@@ -119,3 +126,7 @@ Activity/Reports 明确返回不可用状态；新账户只有经可信上游绑
 固定 Envio 依赖树仍有此前记录的十项审计问题：三项低危、一项中危、六项高危，详见 M8 开发日志。
 未执行依赖升级或自动破坏性降级。本地导航索引已初始化，但 123 个文件中报告 61 项解析失败，
 符号覆盖不完整；本次以精确源码和可执行检查作为验证依据。
+
+首轮 GitHub CI 在全新检出后失败，因为旧 `check` 命令在生成 Hardhat ABI 类型前就检查合约测试。
+本地已有生成文件掩盖了顺序缺陷。执行 `npx hardhat clean` 后单独运行类型检查复现了相同错误。
+修复后的完整检查先编译 Solidity 再检查类型，保留严格类型检查和全部测试，生成产物仍不提交。

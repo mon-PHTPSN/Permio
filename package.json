@@ -28,7 +28,7 @@
     "dashboard:test": "npm test --workspace @permio/execution-dashboard",
     "test:contracts": "hardhat test nodejs",
     "test": "npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:contracts && npm run dashboard:test",
-    "check": "npm run docs:check && npm run typecheck && npm run compile && npm test",
+    "check": "npm run docs:check && npm run compile && npm run typecheck && npm test",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
     "deploy:m8:local": "hardhat ignition deploy ignition/modules/ExecutionRegistry.ts",

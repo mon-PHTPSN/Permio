@@ -186,6 +186,10 @@ npm install
 npm run check
 ```
 
+The complete check compiles Solidity before TypeScript checking: Hardhat
+generates contract ABI types under ignored `artifacts/`. On a clean checkout,
+run `npm run compile` before invoking `npm run typecheck` separately.
+
 Local compilation and tests do not require a private key.
 
 ## Deployment
