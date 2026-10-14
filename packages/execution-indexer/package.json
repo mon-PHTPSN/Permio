@@ -1,0 +1,28 @@
+{
+  "name": "@permio/execution-indexer",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Public-only Envio HyperIndex read model for the Permio M8 execution registry",
+  "scripts": {
+    "codegen": "envio codegen",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "node --test test/*.test.ts",
+    "dev": "envio dev",
+    "backfill": "envio dev --restart",
+    "start": "envio start"
+  },
+  "dependencies": {
+    "envio": "3.14.0"
+  },
+  "devDependencies": {
+    "@types/node": "22.19.11",
+    "typescript": "5.9.3"
+  },
+  "engines": {
+    "node": ">=22.15.0"
+  },
+  "optionalDependencies": {
+    "envio-linux-x64": "3.14.0"
+  }
+}
