@@ -1,0 +1,471 @@
+// One consolidated entry point: begin, bounded ancestry step, finalization.
+// All identities, assignment edges, map openings and progress stay private.
+export struct RuntimeSlotCommand {
+    commandVersion: Uint<16>;
+    // 1 issue; 2 revoke. Management-operation dispatch is separately public.
+    kind: Uint<8>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    allocationCommitment: Bytes<32>;
+    stateCommitment: Bytes<32>;
+    stateSequence: Uint<64>;
+    authorityRootVersion: Uint<64>;
+    authorityRootSequence: Uint<64>;
+    credentialStatusRootSequence: Uint<64>;
+    contextHash: Bytes<32>;
+    slotIdHash: Bytes<32>;
+    subjectAccountCredentialCommitment: Bytes<32>;
+    subjectAccountIdHash: Bytes<32>;
+    assignmentIdHash: Bytes<32>;
+    parentAssignmentIdHash: Bytes<32>;
+    assignerAccountCredentialCommitment: Bytes<32>;
+    authorityKind: Uint<8>;
+    namespaceAuthorityCommitment: Bytes<32>;
+    m5AssignmentCommitment: Bytes<32>;
+    effectiveAt: Uint<64>;
+    validBefore: Uint<64>;
+    commandNonce: Bytes<32>;
+}
+
+export struct RuntimeSlotAssignment {
+    assignmentVersion: Uint<16>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    contextHash: Bytes<32>;
+    slotIdHash: Bytes<32>;
+    subjectAccountCredentialCommitment: Bytes<32>;
+    subjectAccountIdHash: Bytes<32>;
+    assignmentIdHash: Bytes<32>;
+    parentAssignmentIdHash: Bytes<32>;
+    assignerAccountCredentialCommitment: Bytes<32>;
+    authorityKind: Uint<8>;
+    namespaceAuthorityCommitment: Bytes<32>;
+    m5AssignmentCommitment: Bytes<32>;
+    assignedAt: Uint<64>;
+    issuedSequence: Uint<64>;
+}
+
+export struct RuntimeSlotRecord {
+    assignment: RuntimeSlotAssignment;
+    status: Uint<8>;
+    revokedAt: Uint<64>;
+}
+
+export struct RuntimeSlotPolicyWitness {
+    policy: RuntimeTemplateActionPolicy;
+    binding: ProofModuleBinding;
+    bindingPath: MerkleTreePath<20, Bytes<32>>;
+    rule: RuntimeParticipantSlotRule;
+    rulePath: MerkleTreePath<20, Bytes<32>>;
+}
+
+export struct RuntimeSlotAncestryStep {
+    record: RuntimeSlotRecord;
+    opening: RuntimePrivateMapWitness;
+    account: RuntimeAccountCredential;
+    accountStatus: Uint<8>;
+    accountStatusPath: MerkleTreePath<20, Bytes<32>>;
+}
+
+export struct RuntimeSlotProgress {
+    // 1: signing occupied-slot ancestry; 2: previous binding activity; 3: complete.
+    phase: Uint<8>;
+    nextAssignmentIdHash: Bytes<32>;
+    expectedAccountCommitment: Bytes<32>;
+    childIssuedSequence: Uint<64>;
+    previousBindingAssignmentIdHash: Bytes<32>;
+    previousBindingAccountCommitment: Bytes<32>;
+    inactive: Boolean;
+    steps: Uint<32>;
+}
+
+export struct RuntimeSlotSession {
+    commandCommitment: Bytes<32>;
+    progressCommitment: Bytes<32>;
+    expiresAt: Uint<64>;
+}
+
+struct RuntimeSlotBindingKey {
+    domain: Bytes<32>;
+    contextHash: Bytes<32>;
+    slotIdHash: Bytes<32>;
+    subjectAccountIdHash: Bytes<32>;
+}
+
+export pure circuit runtimeSlotBindingKey(command: RuntimeSlotCommand): Bytes<32> {
+    return persistentHash<RuntimeSlotBindingKey>(RuntimeSlotBindingKey{
+        domain: pad(32, "permio:slot-binding:v1"), contextHash: command.contextHash,
+        slotIdHash: command.slotIdHash, subjectAccountIdHash: command.subjectAccountIdHash
+    });
+}
+
+export pure circuit runtimeSlotCommandCommitment(command: RuntimeSlotCommand): Bytes<32> {
+    return persistentHash<RuntimeSlotCommand>(command);
+}
+
+pure circuit runtimeSlotCommandMessage(command: RuntimeSlotCommand): Vector<1, Field> {
+    return [transientHash<RuntimeSlotCommand>(command)];
+}
+
+export pure circuit runtimeSlotCommandSignatureChallenge(
+    announcement: JubjubPoint, publicKey: JubjubPoint, command: RuntimeSlotCommand
+): Field {
+    return Schnorr_schnorrChallenge(jubjubPointX(announcement), jubjubPointY(announcement),
+        jubjubPointX(publicKey), jubjubPointY(publicKey), runtimeSlotCommandMessage(command));
+}
+
+export pure circuit runtimeSlotRecordCommitment(record: RuntimeSlotRecord): Bytes<32> {
+    return persistentHash<RuntimeSlotRecord>(record);
+}
+
+export pure circuit runtimeSlotProgressCommitment(progress: RuntimeSlotProgress): Bytes<32> {
+    return persistentHash<RuntimeSlotProgress>(progress);
+}
+
+export pure circuit runtimeSlotInitialProgress(
+    command: RuntimeSlotCommand, previousBinding: Bytes<32>, previousAccount: Bytes<32>
+): RuntimeSlotProgress {
+    const occupied = command.authorityKind == 3;
+    const bindingExists = previousBinding != default<Bytes<32>>;
+    return RuntimeSlotProgress{
+        phase: occupied ? 1 : (bindingExists ? 2 : 3),
+        nextAssignmentIdHash: occupied ? command.parentAssignmentIdHash : previousBinding,
+        expectedAccountCommitment: occupied ? command.assignerAccountCredentialCommitment :
+            (bindingExists ? previousAccount : default<Bytes<32>>),
+        childIssuedSequence: occupied || bindingExists ? (command.stateSequence + 1) as Uint<64> : 0,
+        previousBindingAssignmentIdHash: previousBinding, previousBindingAccountCommitment: previousAccount,
+        inactive: false, steps: 0
+    };
+}
+
+export pure circuit runtimeSlotAssignmentFromCommand(command: RuntimeSlotCommand): RuntimeSlotAssignment {
+    return RuntimeSlotAssignment{
+        assignmentVersion: 1, target: command.target, instanceCommitment: command.instanceCommitment,
+        contextHash: command.contextHash, slotIdHash: command.slotIdHash,
+        subjectAccountCredentialCommitment: command.subjectAccountCredentialCommitment,
+        subjectAccountIdHash: command.subjectAccountIdHash,
+        assignmentIdHash: command.assignmentIdHash, parentAssignmentIdHash: command.parentAssignmentIdHash,
+        assignerAccountCredentialCommitment: command.assignerAccountCredentialCommitment,
+        authorityKind: command.authorityKind, namespaceAuthorityCommitment: command.namespaceAuthorityCommitment,
+        m5AssignmentCommitment: command.m5AssignmentCommitment, assignedAt: command.effectiveAt,
+        issuedSequence: (command.stateSequence + 1) as Uint<64>
+    };
+}
+
+pure circuit assertRuntimeSlotAccountStatus(
+    account: RuntimeAccountCredential, status: Uint<8>, path: MerkleTreePath<20, Bytes<32>>,
+    command: RuntimeSlotCommand, root: MerkleTreeDigest
+): [] {
+    const commitment = runtimeAccountCredentialCommitment(account);
+    assert(account.credentialVersion == 1 && account.target == command.target &&
+        account.instanceCommitment == command.instanceCommitment && account.contextHash == command.contextHash &&
+        account.principalKind >= 1 && account.principalKind <= 4 && account.statusIndex < 1048576 &&
+        runtimeCredentialStatusPathIndex(path) == account.statusIndex && (status == 1 || status == 2),
+        "Slot account substitutes its exact scope, version, kind or status position");
+    assert(path.leaf == runtimeCredentialStatusLeafCommitment(RuntimeCredentialStatusLeaf{
+        leafVersion: 1, namespaceHash: command.target.namespaceHash, credentialKind: 1,
+        credentialCommitment: commitment, revocationAuthorityAccountCredentialCommitment: commitment,
+        statusIndex: account.statusIndex, status: status
+    }) && merkleTreePathRoot<20, Bytes<32>>(path) == root,
+        "Slot account is not certified under the current credential-status root");
+}
+
+export pure circuit assertRuntimeSlotRecord(
+    record: RuntimeSlotRecord, opening: RuntimePrivateMapWitness,
+    state: RuntimeStateOpening, command: RuntimeSlotCommand
+): [] {
+    assertRuntimeSlotRecordWithCommitments(record, opening, state, command,
+        runtimeSlotRecordCommitment(record), runtimePrivateMapNodeCommitment(opening.node));
+}
+
+pure circuit assertRuntimeSlotRecordWithCommitments(
+    record: RuntimeSlotRecord, opening: RuntimePrivateMapWitness,
+    state: RuntimeStateOpening, command: RuntimeSlotCommand,
+    recordCommitment: Bytes<32>, nodeCommitment: Bytes<32>
+): [] {
+    const assignment = record.assignment;
+    assertRuntimePrivateMapNodeWithCommitment(state.slotAssignmentsRoot, state.slotAssignmentCount, opening, nodeCommitment);
+    assert(assignment.assignmentVersion == 1 && assignment.target == command.target &&
+        assignment.instanceCommitment == command.instanceCommitment && assignment.contextHash == command.contextHash &&
+        assignment.assignmentIdHash != default<Bytes<32>> &&
+        assignment.subjectAccountCredentialCommitment != default<Bytes<32>> &&
+        assignment.subjectAccountIdHash != default<Bytes<32>> &&
+        assignment.m5AssignmentCommitment != default<Bytes<32>> &&
+        assignment.assignedAt <= command.effectiveAt && assignment.issuedSequence > 0 &&
+        assignment.issuedSequence <= command.stateSequence &&
+        opening.node.key == assignment.assignmentIdHash && opening.node.value == recordCommitment &&
+        ((record.status == 1 && record.revokedAt == 0) ||
+            (record.status == 2 && record.revokedAt >= assignment.assignedAt && record.revokedAt <= command.effectiveAt)),
+        "Slot record does not match its exact admitted assignment and current private state");
+    assert((assignment.authorityKind == 3 && assignment.parentAssignmentIdHash != default<Bytes<32>> &&
+        assignment.assignerAccountCredentialCommitment != default<Bytes<32>> &&
+        assignment.namespaceAuthorityCommitment == default<Bytes<32>>) ||
+        ((assignment.authorityKind == 1 || assignment.authorityKind == 2) &&
+            assignment.parentAssignmentIdHash == default<Bytes<32>> &&
+            assignment.assignerAccountCredentialCommitment == default<Bytes<32>> &&
+            assignment.namespaceAuthorityCommitment != default<Bytes<32>>),
+        "Slot record authority/parent fields are not canonical");
+}
+
+export pure circuit runtimeSlotAdvanceProgress(
+    progress: RuntimeSlotProgress, step: RuntimeSlotAncestryStep,
+    state: RuntimeStateOpening, command: RuntimeSlotCommand, statusRoot: MerkleTreeDigest
+): RuntimeSlotProgress {
+    return runtimeSlotAdvanceProgressWithCommitments(progress, step, state, command, statusRoot,
+        runtimeSlotRecordCommitment(step.record), runtimePrivateMapNodeCommitment(step.opening.node));
+}
+
+pure circuit runtimeSlotAdvanceProgressWithCommitments(
+    progress: RuntimeSlotProgress, step: RuntimeSlotAncestryStep,
+    state: RuntimeStateOpening, command: RuntimeSlotCommand, statusRoot: MerkleTreeDigest,
+    recordCommitment: Bytes<32>, nodeCommitment: Bytes<32>
+): RuntimeSlotProgress {
+    assert((progress.phase == 1 || progress.phase == 2) && progress.nextAssignmentIdHash != default<Bytes<32>>,
+        "Slot ancestry has no next step or is already complete");
+    assertRuntimeSlotRecordWithCommitments(step.record, step.opening, state, command, recordCommitment, nodeCommitment);
+    const assignment = step.record.assignment;
+    assert(assignment.assignmentIdHash == progress.nextAssignmentIdHash &&
+        assignment.subjectAccountCredentialCommitment == progress.expectedAccountCommitment &&
+        assignment.issuedSequence < progress.childIssuedSequence &&
+        runtimeAccountCredentialCommitment(step.account) == assignment.subjectAccountCredentialCommitment &&
+        step.account.accountIdHash == assignment.subjectAccountIdHash &&
+        step.account.issuedAt <= assignment.assignedAt,
+        "Slot ancestry omits, repeats, substitutes or reorders an exact parent/account link");
+    assertRuntimeSlotAccountStatus(step.account, step.accountStatus, step.accountStatusPath, command, statusRoot);
+    const active = step.record.status == 1 && step.accountStatus == 1 &&
+        command.effectiveAt >= step.account.issuedAt && command.effectiveAt < step.account.validBefore;
+    if (progress.phase == 1) assert(active, "Signing slot ancestor or holder has been revoked or expired");
+    // A too-long chosen deadline cannot falsely mark a currently active holder inactive.
+    if (active) assert(command.validBefore <= step.account.validBefore,
+        "Slot proof deadline exceeds an active ancestor account window");
+    const inactive = progress.inactive || !active;
+    const rootReached = assignment.parentAssignmentIdHash == default<Bytes<32>>;
+    const changeToPreviousBinding = progress.phase == 1 && rootReached &&
+        progress.previousBindingAssignmentIdHash != default<Bytes<32>>;
+    return RuntimeSlotProgress{
+        phase: rootReached ? (changeToPreviousBinding ? 2 : 3) : progress.phase,
+        nextAssignmentIdHash: changeToPreviousBinding ? progress.previousBindingAssignmentIdHash :
+            (rootReached ? default<Bytes<32>> : assignment.parentAssignmentIdHash),
+        expectedAccountCommitment: changeToPreviousBinding ? progress.previousBindingAccountCommitment :
+            (rootReached ? default<Bytes<32>> : assignment.assignerAccountCredentialCommitment),
+        childIssuedSequence: changeToPreviousBinding ? (command.stateSequence + 1) as Uint<64> :
+            (rootReached ? 0 : assignment.issuedSequence),
+        previousBindingAssignmentIdHash: progress.previousBindingAssignmentIdHash,
+        previousBindingAccountCommitment: progress.previousBindingAccountCommitment,
+        inactive: changeToPreviousBinding ? false : inactive,
+        steps: (progress.steps + 1) as Uint<32>
+    };
+}
+
+export ledger runtimeSlotSessions: Map<Bytes<32>, RuntimeSlotSession>;
+export ledger usedRuntimeSlotCommandNonces: Set<Bytes<32>>;
+
+export circuit manageRuntimeParticipantSlots(
+    operation: Uint<8>, command: RuntimeSlotCommand, signature: Schnorr_SchnorrSignature,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening, nextStateNonce: Bytes<32>,
+    policyOpening: RuntimeSlotPolicyWitness,
+    namespaceAuthority: GovernanceActivatorLeaf, namespaceAuthorityPath: MerkleTreePath<20, Bytes<32>>,
+    accountAuthority: RuntimeAccountCredential, accountAuthorityStatusPath: MerkleTreePath<20, Bytes<32>>,
+    subjectAccount: RuntimeAccountCredential, subjectAccountStatusPath: MerkleTreePath<20, Bytes<32>>,
+    progress: RuntimeSlotProgress, step: RuntimeSlotAncestryStep, targetRecord: RuntimeSlotRecord,
+    assignmentOpening: RuntimePrivateMapWitness, assignmentAppendPath: MerkleTreePath<20, Bytes<32>>,
+    bindingOpening: RuntimePrivateMapWitness, bindingAppendPath: MerkleTreePath<20, Bytes<32>>,
+    previousBindingOpening: RuntimePrivateMapWitness
+): Uint<64> {
+    assert(operation >= 1 && operation <= 3, "Unsupported slot management operation");
+    const commandCommitment = runtimeSlotCommandCommitment(command);
+    const stepRecordCommitment = runtimeSlotRecordCommitment(step.record);
+    const stepNodeCommitment = runtimePrivateMapNodeCommitment(step.opening.node);
+    const targetRecordCommitment = runtimeSlotRecordCommitment(targetRecord);
+    const assignmentNodeCommitment = runtimePrivateMapNodeCommitment(assignmentOpening.node);
+    const bindingNodeCommitment = runtimePrivateMapNodeCommitment(bindingOpening.node);
+    const previousBindingNodeCommitment = runtimePrivateMapNodeCommitment(previousBindingOpening.node);
+    // Expiry cleanup is permissionless and cannot mutate an instance or authorize.
+    if (runtimeSlotSessions.member(disclose(command.commandNonce))) {
+        const previousSession = runtimeSlotSessions.lookup(disclose(command.commandNonce));
+        if (blockTimeGte(previousSession.expiresAt)) {
+            runtimeSlotSessions.remove(disclose(command.commandNonce));
+            return 0;
+        }
+    }
+    assert(command.commandVersion == 1 && (command.kind == 1 || command.kind == 2) &&
+        command.commandNonce != default<Bytes<32>> && command.assignmentIdHash != default<Bytes<32>> &&
+        command.subjectAccountCredentialCommitment != default<Bytes<32>> &&
+        command.subjectAccountIdHash != default<Bytes<32>> &&
+        command.m5AssignmentCommitment != default<Bytes<32>> && command.validBefore > command.effectiveAt,
+        "Slot command version, kind, identity or proof window is invalid");
+    assert(!usedRuntimeSlotCommandNonces.member(disclose(command.commandNonce)), "Slot command nonce was already consumed");
+    assert(runtimeInstances.member(disclose(command.instanceCommitment)), "Slot command requires an allocated instance");
+    const instance = runtimeInstances.lookup(disclose(command.instanceCommitment));
+    assert(allocation.targetNetworkHash == targetNetworkHash,
+        "Slot allocation targets another network");
+    assert(allocation.targetContractIdentity == kernel.self().bytes,
+        "Slot allocation targets another deployment");
+    assert(allocation.allocationVersion == 1 && allocation.target == command.target &&
+        allocation.instanceCommitment == command.instanceCommitment &&
+        runtimeInstanceAllocationCommitment(allocation) == instance.allocationCommitment &&
+        command.allocationCommitment == instance.allocationCommitment &&
+        state.stateVersion == 2 && state.instanceCommitment == command.instanceCommitment &&
+        runtimeStateCommitment(state) == command.stateCommitment && instance.currentStateCommitment == command.stateCommitment &&
+        instance.transitionSequence == command.stateSequence && instance.lifecycleStatus == 1 &&
+        command.effectiveAt >= state.lastMutationAt &&
+        command.effectiveAt >= allocation.createdAt && command.validBefore <= allocation.expiresAt,
+        "Slot command substitutes or is stale against the exact allocation/private instance state");
+    assert(blockTimeGte(disclose(command.effectiveAt)),
+        "Slot command is not yet effective or its proof window expired");
+    assert(blockTimeLt(disclose(command.validBefore)),
+        "Slot command is not yet effective or its proof window expired");
+    assert(authorityRoots.member(disclose(command.target.namespaceHash)) &&
+        credentialStatusRoots.member(disclose(command.target.namespaceHash)), "Slot namespace roots are not registered");
+    const authority = authorityRoots.lookup(disclose(command.target.namespaceHash));
+    const status = credentialStatusRoots.lookup(disclose(command.target.namespaceHash));
+    assert(command.authorityRootVersion == authority.rootVersion && command.authorityRootSequence == authority.rootSequence &&
+        command.credentialStatusRootSequence == status.rootSequence,
+        "Slot command authority/account-status root is stale");
+
+    if (disclose(operation == 2)) {
+        assert(runtimeSlotSessions.member(disclose(command.commandNonce)), "Slot verification session does not exist");
+        const session = runtimeSlotSessions.lookup(disclose(command.commandNonce));
+        assert(session.commandCommitment == commandCommitment &&
+            session.progressCommitment == runtimeSlotProgressCommitment(progress),
+            "Slot ancestry progress is not the exact staged opening");
+        const next = runtimeSlotAdvanceProgressWithCommitments(progress, step, state, command, status.root,
+            stepRecordCommitment, stepNodeCommitment);
+        runtimeSlotSessions.insert(disclose(command.commandNonce), disclose(RuntimeSlotSession{
+            commandCommitment: commandCommitment, progressCommitment: runtimeSlotProgressCommitment(next),
+            expiresAt: session.expiresAt
+        }));
+        return 0;
+    }
+
+    // Begin and finalization authenticate exact policy and signer independently.
+    const templateKey = persistentHash<TemplateRegistryTarget>(command.target);
+    assert(activeTemplates.member(disclose(templateKey)), "Slot template is not registered");
+    const template = activeTemplates.lookup(disclose(templateKey));
+    assert(command.kind == 2 || template.lifecycleStatus != 3, "Revoked template cannot grant new slots");
+    assertRuntimeTemplatePolicyBinding(command.target, policyOpening.policy, policyOpening.binding,
+        policyOpening.bindingPath, template.proofModuleBindingRoot, template.proofModuleBindingCount);
+    assertRuntimeParticipantSlotRule(policyOpening.policy, policyOpening.rule, policyOpening.rulePath,
+        command.contextHash, command.slotIdHash);
+    assert(policyOpening.rule.authorityKind == command.authorityKind,
+        "Slot signer authority does not match the exact template rule alternative");
+    const occupied = command.authorityKind == 3;
+    const accountCommitment = runtimeAccountCredentialCommitment(accountAuthority);
+    if (occupied) {
+        assert(command.parentAssignmentIdHash != default<Bytes<32>> &&
+            command.assignerAccountCredentialCommitment == accountCommitment &&
+            command.namespaceAuthorityCommitment == default<Bytes<32>>,
+            "Occupied slot signer must bind its exact parent assignment and context account");
+        assertRuntimeSlotAccountStatus(accountAuthority, 1, accountAuthorityStatusPath, command, status.root);
+        assert(command.effectiveAt >= accountAuthority.issuedAt && command.validBefore <= accountAuthority.validBefore,
+            "Slot signing account is outside its active proof window");
+        // Open the first parent now: the authenticated rule requires its exact slot.
+        assertRuntimeSlotRecordWithCommitments(step.record, step.opening, state, command,
+            stepRecordCommitment, stepNodeCommitment);
+        assert(step.record.assignment.assignmentIdHash == command.parentAssignmentIdHash &&
+            step.record.assignment.subjectAccountCredentialCommitment == accountCommitment &&
+            step.record.assignment.slotIdHash == policyOpening.rule.authoritySlotIdHash,
+            "Assigning parent is not the exact holder and template-permitted slot");
+    } else {
+        assert((command.authorityKind == 1 || command.authorityKind == 2) &&
+            command.parentAssignmentIdHash == default<Bytes<32>> &&
+            command.assignerAccountCredentialCommitment == default<Bytes<32>> &&
+            namespaceAuthority.leafVersion == 1 && namespaceAuthority.namespaceHash == command.target.namespaceHash &&
+            namespaceAuthority.governancePolicyHash == authority.governancePolicyHash &&
+            governanceActivatorLeafCommitment(namespaceAuthority) == command.namespaceAuthorityCommitment &&
+            namespaceAuthority.authorityKind == (command.authorityKind == 1 ? 4 : 13),
+            "Slot namespace signer is not the separately scoped creator or slot governor");
+        assert(command.authorityKind != 1 || command.namespaceAuthorityCommitment == allocation.allocatorAuthorityCommitment,
+            "A different eligible allocator is not the original instance creator");
+        assert(namespaceAuthorityPath.leaf == command.namespaceAuthorityCommitment &&
+            merkleTreePathRoot<20, Bytes<32>>(namespaceAuthorityPath) == authority.root &&
+            command.effectiveAt >= namespaceAuthority.validAfter && command.validBefore <= namespaceAuthority.validBefore,
+            "Slot namespace signer is not currently eligible for this exact proof window");
+    }
+    Schnorr_schnorrVerify<1>(runtimeSlotCommandMessage(command), signature,
+        occupied ? accountAuthority.runtimePublicKey : namespaceAuthority.publicKey);
+    const bindingKey = runtimeSlotBindingKey(command);
+    if (command.kind == 1) {
+        assertRuntimeSlotAccountStatus(subjectAccount, 1, subjectAccountStatusPath, command, status.root);
+        assert(runtimeAccountCredentialCommitment(subjectAccount) == command.subjectAccountCredentialCommitment &&
+            subjectAccount.accountIdHash == command.subjectAccountIdHash &&
+            command.effectiveAt >= subjectAccount.issuedAt && command.validBefore <= subjectAccount.validBefore,
+            "Slot subject is not the exact active context account");
+        assertRuntimePrivateMapAbsenceWithCommitment(state.slotAssignmentsRoot, state.slotAssignmentCount,
+            command.assignmentIdHash, assignmentOpening, assignmentNodeCommitment);
+    } else {
+        assertRuntimeSlotRecordWithCommitments(targetRecord, assignmentOpening, state, command,
+            targetRecordCommitment, assignmentNodeCommitment);
+        assert(targetRecord.status == 1 && targetRecord.assignment.assignmentIdHash == command.assignmentIdHash &&
+            targetRecord.assignment.slotIdHash == command.slotIdHash &&
+            targetRecord.assignment.subjectAccountCredentialCommitment == command.subjectAccountCredentialCommitment &&
+            targetRecord.assignment.subjectAccountIdHash == command.subjectAccountIdHash &&
+            targetRecord.assignment.m5AssignmentCommitment == command.m5AssignmentCommitment,
+            "Revocation must name the exact unreplaced assignment; already revoked records cannot be rewritten");
+    }
+
+    const bindingExists = command.kind == 1 && bindingOpening.node.key == bindingKey;
+    if (command.kind == 1) {
+        if (bindingExists) {
+            assertRuntimePrivateMapNodeWithCommitment(state.slotBindingsRoot, state.slotBindingCount, bindingOpening, bindingNodeCommitment);
+            assertRuntimeSlotRecordWithCommitments(targetRecord, previousBindingOpening, state, command,
+                targetRecordCommitment, previousBindingNodeCommitment);
+            assert(targetRecord.assignment.assignmentIdHash == bindingOpening.node.value &&
+                targetRecord.assignment.slotIdHash == command.slotIdHash &&
+                targetRecord.assignment.subjectAccountIdHash == command.subjectAccountIdHash,
+                "Previous slot binding substitutes its exact assignment or holder identity");
+        }
+        else assertRuntimePrivateMapAbsenceWithCommitment(state.slotBindingsRoot, state.slotBindingCount, bindingKey, bindingOpening, bindingNodeCommitment);
+    }
+    const previousBinding = bindingExists ? bindingOpening.node.value : default<Bytes<32>>;
+    if (disclose(operation == 1)) {
+        assert(!runtimeSlotSessions.member(disclose(command.commandNonce)), "Slot verification session already exists");
+        const initial = runtimeSlotInitialProgress(command, previousBinding,
+            bindingExists ? targetRecord.assignment.subjectAccountCredentialCommitment : default<Bytes<32>>);
+        runtimeSlotSessions.insert(disclose(command.commandNonce), disclose(RuntimeSlotSession{
+            commandCommitment: commandCommitment, progressCommitment: runtimeSlotProgressCommitment(initial),
+            expiresAt: command.validBefore
+        }));
+        return 0;
+    }
+    assert(runtimeSlotSessions.member(disclose(command.commandNonce)), "Slot verification session does not exist");
+    const session = runtimeSlotSessions.lookup(disclose(command.commandNonce));
+    assert(session.commandCommitment == commandCommitment && session.progressCommitment == runtimeSlotProgressCommitment(progress) &&
+        progress.phase == 3 && progress.nextAssignmentIdHash == default<Bytes<32>> &&
+        progress.expectedAccountCommitment == default<Bytes<32>> && progress.childIssuedSequence == 0 &&
+        progress.previousBindingAssignmentIdHash == previousBinding &&
+        progress.previousBindingAccountCommitment == (bindingExists ? targetRecord.assignment.subjectAccountCredentialCommitment : default<Bytes<32>>),
+        "Slot verification is incomplete or substitutes the exact prior binding");
+    assert(!bindingExists || progress.inactive, "Subject already occupies this slot through an active assignment ancestry");
+    assert(nextStateNonce != default<Bytes<32>> && nextStateNonce != state.nonce,
+        "Slot finalization requires a fresh private state nonce");
+    const changedRecord = RuntimeSlotRecord{
+        assignment: command.kind == 1 ? runtimeSlotAssignmentFromCommand(command) : targetRecord.assignment,
+        status: command.kind == 1 ? 1 : 2, revokedAt: command.kind == 1 ? 0 : command.effectiveAt
+    };
+    // Exact current membership/absence and replacement authorization are checked
+    // above. Share the map mutation and hash the selected record once, rather
+    // than duplicating all checked insert/replace predicates in private branches.
+    const assignmentRoot = runtimePrivateMapApplyCheckedMutation(command.kind == 1, state.slotAssignmentCount,
+        command.assignmentIdHash, runtimeSlotRecordCommitment(changedRecord), assignmentOpening, assignmentAppendPath);
+    const bindingRoot = command.kind == 2 ? state.slotBindingsRoot :
+        runtimePrivateMapApplyCheckedMutation(!bindingExists, state.slotBindingCount,
+            bindingKey, command.assignmentIdHash, bindingOpening, bindingAppendPath);
+    const nextState = RuntimeStateOpening{
+        stateVersion: 2, instanceCommitment: state.instanceCommitment, stateIdHash: state.stateIdHash,
+        lastMutationAt: command.effectiveAt,
+        slotAssignmentsRoot: assignmentRoot,
+        slotAssignmentCount: command.kind == 1 ? (state.slotAssignmentCount + 1) as Uint<32> : state.slotAssignmentCount,
+        slotBindingsRoot: bindingRoot,
+        slotBindingCount: command.kind == 1 && !bindingExists ? (state.slotBindingCount + 1) as Uint<32> : state.slotBindingCount,
+        nonce: nextStateNonce
+    };
+    const nextSequence = (instance.transitionSequence + 1) as Uint<64>;
+    runtimeInstances.insert(disclose(command.instanceCommitment), disclose(RuntimeInstanceRecord{
+        allocationCommitment: instance.allocationCommitment, currentStateCommitment: runtimeStateCommitment(nextState),
+        transitionSequence: nextSequence, lifecycleStatus: instance.lifecycleStatus
+    }));
+    usedRuntimeSlotCommandNonces.insert(disclose(command.commandNonce));
+    runtimeSlotSessions.remove(disclose(command.commandNonce));
+    return disclose(nextSequence);
+}

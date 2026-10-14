@@ -1,0 +1,152 @@
+// Private, data-only projection authenticated by the activation binding root.
+// The namespace activator attests its correspondence to the exact M2 JSON hash;
+// this circuit does not reparse arbitrary JSON or re-run M4 reviewer signatures.
+export struct RuntimeTemplateActionPolicy {
+    policyVersion: Uint<16>;
+    target: TemplateRegistryTarget;
+    actionIndex: Uint<32>;
+    bindingActionIdHash: Bytes<32>;
+    actionIdHash: Bytes<32>;
+    proofProfileIdHash: Bytes<32>;
+    proofFamilyHash: Bytes<32>;
+    contextHash: Bytes<32>;
+    actorSlotIdHash: Bytes<32>;
+    slotAssignmentRulesRoot: MerkleTreeDigest;
+    slotAssignmentRuleCount: Uint<32>;
+    initialStateIdHash: Bytes<32>;
+    resourceSelectorHash: Bytes<32>;
+    purposeHash: Bytes<32>;
+    recipientKindHash: Bytes<32>;
+    disclosurePolicyIdHash: Bytes<32>;
+    capabilityRuleIdHash: Bytes<32>;
+    maxCapabilityDuration: Uint<64>;
+    maxDelegationDepth: Uint<8>;
+    revocable: Boolean;
+    inputRecordTypesHash: Bytes<32>;
+    outputClaimTypesHash: Bytes<32>;
+    executionAdapterHash: Bytes<32>;
+    transitionRoot: MerkleTreeDigest;
+    transitionCount: Uint<32>;
+}
+
+// Private template data, not an assignment or a grant of authority.
+// 1 = exact instance creator, 2 = namespace governance, 3 = occupied slot.
+export struct RuntimeParticipantSlotRule {
+    ruleVersion: Uint<16>;
+    contextHash: Bytes<32>;
+    slotIdHash: Bytes<32>;
+    authorityKind: Uint<8>;
+    authoritySlotIdHash: Bytes<32>;
+}
+
+struct RuntimeParticipantSlotRuleHashInput {
+    domain: Bytes<32>;
+    rule: RuntimeParticipantSlotRule;
+}
+
+export pure circuit runtimeParticipantSlotRuleCommitment(
+    rule: RuntimeParticipantSlotRule
+): Bytes<32> {
+    return persistentHash<RuntimeParticipantSlotRuleHashInput>(RuntimeParticipantSlotRuleHashInput{
+        domain: pad(32, "permio:slot-rule:v1"), rule: rule
+    });
+}
+
+// Prepared rule-opening predicate, not a ledger assignment authorization.
+export pure circuit assertRuntimeParticipantSlotRule(
+    policy: RuntimeTemplateActionPolicy,
+    rule: RuntimeParticipantSlotRule,
+    path: MerkleTreePath<20, Bytes<32>>,
+    contextHash: Bytes<32>,
+    slotIdHash: Bytes<32>
+): [] {
+    assert(policy.policyVersion == 2 && policy.slotAssignmentRuleCount > 0 &&
+        policy.slotAssignmentRuleCount <= 1048576 && rule.ruleVersion == 1 &&
+        rule.contextHash == contextHash && rule.slotIdHash == slotIdHash &&
+        rule.authorityKind >= 1 && rule.authorityKind <= 3,
+        "Participant slot rule is unsupported or outside the exact context and slot");
+    assert((rule.authorityKind == 3 && rule.authoritySlotIdHash != default<Bytes<32>>) ||
+        (rule.authorityKind != 3 && rule.authoritySlotIdHash == default<Bytes<32>>),
+        "Participant slot authority discriminant is not canonical");
+    assert(runtimeCredentialStatusPathIndex(path) < policy.slotAssignmentRuleCount &&
+        path.leaf == runtimeParticipantSlotRuleCommitment(rule) &&
+        merkleTreePathRoot<20, Bytes<32>>(path) == policy.slotAssignmentRulesRoot,
+        "Participant slot rule is absent from the authenticated template policy");
+}
+
+export struct RuntimeTemplateTransition {
+    transitionVersion: Uint<16>;
+    actionIdHash: Bytes<32>;
+    fromStateIdHash: Bytes<32>;
+    toStateIdHash: Bytes<32>;
+}
+
+struct RuntimeTemplatePolicyHashInput {
+    domain: Bytes<32>;
+    policy: RuntimeTemplateActionPolicy;
+}
+
+export pure circuit runtimeTemplateActionPolicyCommitment(
+    policy: RuntimeTemplateActionPolicy
+): Bytes<32> {
+    return persistentHash<RuntimeTemplatePolicyHashInput>(RuntimeTemplatePolicyHashInput{
+        domain: pad(32, "permio:runtime-policy:v2"), policy: policy
+    });
+}
+
+export pure circuit runtimeTemplateTransitionCommitment(
+    transition: RuntimeTemplateTransition
+): Bytes<32> {
+    return persistentHash<RuntimeTemplateTransition>(transition);
+}
+
+export pure circuit assertRuntimeTemplatePolicyBinding(
+    target: TemplateRegistryTarget,
+    policy: RuntimeTemplateActionPolicy,
+    binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>,
+    bindingRoot: MerkleTreeDigest,
+    bindingCount: Uint<32>
+): [] {
+    assert(policy.policyVersion == 2 && policy.target == target &&
+        binding.bindingVersion == 1 && policy.actionIndex == binding.actionIndex &&
+        binding.actionIndex < bindingCount && policy.bindingActionIdHash == binding.actionIdHash &&
+        policy.proofProfileIdHash == binding.proofProfileIdHash &&
+        policy.proofFamilyHash == binding.moduleIdHash &&
+        policy.maxCapabilityDuration > 0 && policy.maxDelegationDepth <= 16 &&
+        policy.slotAssignmentRuleCount > 0 && policy.slotAssignmentRuleCount <= 1048576,
+        "Runtime policy does not match the exact template action binding");
+    assert(runtimeTemplateActionPolicyCommitment(policy) == binding.configurationHash,
+        "Runtime policy configuration hash does not match activation");
+    assert(bindingPath.leaf == proofModuleBindingCommitment(binding) &&
+        merkleTreePathRoot<20, Bytes<32>>(bindingPath) == bindingRoot,
+        "Runtime policy binding is absent from the activated manifest");
+}
+
+// Prepared action predicate, not a ledger authorization entry point.
+export pure circuit assertRuntimeTemplateActionIntent(
+    policy: RuntimeTemplateActionPolicy,
+    intent: RuntimeActionIntent
+): [] {
+    assert(policy.policyVersion == 2 && policy.target == intent.target &&
+        policy.actionIdHash == intent.actionIdHash && policy.contextHash == intent.contextHash &&
+        policy.resourceSelectorHash == intent.resourceSelectorHash &&
+        policy.purposeHash == intent.purposeHash && policy.recipientKindHash == intent.recipientKindHash &&
+        policy.disclosurePolicyIdHash == intent.disclosurePolicyIdHash,
+        "Action intent violates the exact template policy");
+}
+
+export pure circuit assertRuntimeTemplateTransition(
+    policy: RuntimeTemplateActionPolicy,
+    transition: RuntimeTemplateTransition,
+    path: MerkleTreePath<20, Bytes<32>>,
+    fromStateIdHash: Bytes<32>,
+    toStateIdHash: Bytes<32>
+): [] {
+    assert(policy.policyVersion == 2 && policy.transitionCount > 0 &&
+        transition.transitionVersion == 1 && transition.actionIdHash == policy.actionIdHash &&
+        transition.fromStateIdHash == fromStateIdHash && transition.toStateIdHash == toStateIdHash &&
+        path.leaf == runtimeTemplateTransitionCommitment(transition) &&
+        merkleTreePathRoot<20, Bytes<32>>(path) == policy.transitionRoot,
+        "State pair is not an exact template-declared transition");
+}

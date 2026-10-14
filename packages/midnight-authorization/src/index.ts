@@ -1,4 +1,5 @@
 export * from "./canonical.ts";
+export * from "./compiled-assets.ts";
 export * from "./compact-crypto.ts";
 export * from "./authority-root.ts";
 export * from "./binding-manifest.ts";
@@ -7,3 +8,11 @@ export * from "./midnight-contract.ts";
 export * from "./model.ts";
 export * from "./runtime-credentials.ts";
 export * from "./credential-status.ts";
+export * from "./scope-attenuation.ts";
+export * from "./status-multiproof-program.ts";
+export * from "./active-ancestry.ts";
+export * from "./action-scope.ts";
+export * from "./instance-allocation.ts";
+export * from "./template-policy.ts";
+export * from "./slot-assignments.ts";
+export * from "./private-map.ts";

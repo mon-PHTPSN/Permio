@@ -1,0 +1,205 @@
+// Private shared-branch witness for at most 35 status leaves: 17 capability
+// credentials, 17 context accounts, and one session at M5 delegation depth 16.
+// Membership is not active-status or ancestry validation; callers must bind
+// every required leaf to the exact certified credential before using this root.
+export struct RuntimeStatusMembership {
+    statusIndex: Uint<20>;
+    leaf: Bytes<32>;
+}
+
+export struct RuntimeStatusProofNode {
+    level: Uint<8>;
+    index: Uint<20>;
+    digest: MerkleTreeDigest;
+}
+
+export struct RuntimeStatusProofStep {
+    // 0: canonical trailing padding; 1: push the next required leaf;
+    // 2: merge adjacent children, supplied as shared side nodes or stack nodes.
+    kind: Uint<8>;
+    leftFromStack: Boolean;
+    rightFromStack: Boolean;
+    left: RuntimeStatusProofNode;
+    right: RuntimeStatusProofNode;
+    parentIndex: Uint<20>;
+    stackTail: Field;
+}
+
+export struct RuntimeStatusMultiproof {
+    witnessVersion: Uint<16>;
+    rootSequence: Uint<64>;
+    leafCount: Uint<8>;
+    leaves: Vector<35, RuntimeStatusMembership>;
+    // At depth d there are at most min(2^d,35) marked internal nodes.
+    // sum(d=0..19,min(2^d,35)) + 35 leaf pushes = 553 + 35 = 588.
+    steps: Vector<588, RuntimeStatusProofStep>;
+}
+
+struct RuntimeStatusProofState {
+    leafCount: Uint<8>;
+    nextLeaf: Uint<8>;
+    leafAccumulator: Field;
+    stackCommitment: Field;
+    top: RuntimeStatusProofNode;
+    stackSize: Uint<8>;
+    finished: Boolean;
+}
+
+struct RuntimeStatusLeafAccumulator {
+    leafCount: Uint<8>;
+    offset: Uint<8>;
+    value: Field;
+}
+
+pure circuit runtimeStatusAccumulateLeaf(previous: Field, node: RuntimeStatusProofNode): Field {
+    // Bind the exact ordered pushes to the separately hashed required leaves.
+    // This avoids a private dynamic vector lookup at every program step.
+    return transientHash<Vector<4, Field>>([
+        transientHash<Bytes<23>>("permio:status-leaves:v1"),
+        previous, node.index as Field, node.digest.field
+    ]);
+}
+
+export pure circuit runtimeStatusStackPush(previous: Field, node: RuntimeStatusProofNode): Field {
+    // Private working memory only, not a credential/root/lineage authority.
+    // A pop proves the exact hash opening against the previous stack head.
+    return transientHash<Vector<5, Field>>([
+        transientHash<Bytes<22>>("permio:status-stack:v1"), previous,
+        node.level as Field, node.index as Field, node.digest.field
+    ]);
+}
+
+pure circuit runtimeStatusExpectedLeaves(
+    state: RuntimeStatusLeafAccumulator,
+    node: RuntimeStatusProofNode
+): RuntimeStatusLeafAccumulator {
+    return RuntimeStatusLeafAccumulator{
+        leafCount: state.leafCount, offset: (state.offset + 1) as Uint<8>,
+        value: state.offset < state.leafCount ? runtimeStatusAccumulateLeaf(state.value, node) : state.value
+    };
+}
+
+export pure circuit runtimeStatusMembershipLeafDigest(leaf: Bytes<32>): MerkleTreeDigest {
+    return merkleTreePathRoot<0, Bytes<32>>(
+        MerkleTreePath<0, Bytes<32>>{leaf: leaf, path: []}
+    );
+}
+
+pure circuit runtimeStatusMembershipNode(
+    membership: RuntimeStatusMembership
+): RuntimeStatusProofNode {
+    return RuntimeStatusProofNode{
+        level: 0,
+        index: membership.statusIndex,
+        digest: runtimeStatusMembershipLeafDigest(membership.leaf)
+    };
+}
+
+pure circuit runtimeStatusMultiproofStep(
+    state: RuntimeStatusProofState,
+    step: RuntimeStatusProofStep
+): RuntimeStatusProofState {
+    const padding = step.kind == 0;
+    const pushing = step.kind == 1;
+    const merging = step.kind == 2;
+    assert(padding || pushing || merging, "Unsupported status multiproof instruction");
+    assert(padding || !state.finished, "Status multiproof cannot resume after padding");
+    assert(
+        !padding || (state.stackSize == 1 && state.nextLeaf == state.leafCount &&
+            state.top.level == 20 && state.top.index == 0),
+        "Status multiproof padding cannot precede its complete root"
+    );
+    assert(!padding || step == default<RuntimeStatusProofStep>, "Status multiproof padding is not canonical");
+    assert(
+        !pushing || (state.nextLeaf < state.leafCount && state.stackSize < 21),
+        "Status multiproof leaf push exceeds its private bounds"
+    );
+    assert(
+        !pushing || (!step.leftFromStack && !step.rightFromStack && step.left.level == 0 &&
+            step.right == default<RuntimeStatusProofNode> && step.parentIndex == 0 && step.stackTail == 0),
+        "Status multiproof leaf instruction has unused input"
+    );
+    assert(
+        !merging || step.leftFromStack || step.rightFromStack,
+        "Status multiproof merge must cover a required leaf"
+    );
+    const popped = (step.leftFromStack as Uint<8>) + (step.rightFromStack as Uint<8>);
+    assert(!merging || state.stackSize >= popped, "Status multiproof stack underflow");
+    const right = step.right;
+    const left = step.left;
+    const opened = step.leftFromStack && step.rightFromStack
+        ? runtimeStatusStackPush(runtimeStatusStackPush(step.stackTail, left), right)
+        : runtimeStatusStackPush(step.stackTail, step.leftFromStack ? left : right);
+    assert(!merging || opened == state.stackCommitment, "Status multiproof stack opening is altered");
+    assert(
+        !merging || state.stackSize != popped || step.stackTail == 0,
+        "Status multiproof empty stack tail is not canonical"
+    );
+    assert(
+        !merging || (left.level == right.level && left.level < 20 &&
+        left.index == step.parentIndex * 2 && right.index == step.parentIndex * 2 + 1),
+        "Status multiproof children are not adjacent at the same exact level"
+    );
+    const parent = RuntimeStatusProofNode{
+        level: (left.level + 1) as Uint<8>, index: step.parentIndex,
+        digest: MerkleTreeDigest{field: transientHash<Vector<2, Field>>(
+            [left.digest.field, right.digest.field]
+        )}
+    };
+    return RuntimeStatusProofState{
+        leafCount: state.leafCount,
+        leafAccumulator: pushing ? runtimeStatusAccumulateLeaf(state.leafAccumulator, left) : state.leafAccumulator,
+        nextLeaf: (state.nextLeaf + (pushing as Uint<8>)) as Uint<8>,
+        stackCommitment: padding ? state.stackCommitment
+            : (pushing ? runtimeStatusStackPush(state.stackCommitment, left) : runtimeStatusStackPush(step.stackTail, parent)),
+        top: padding ? state.top : (pushing ? left : parent),
+        stackSize: padding ? state.stackSize : (state.stackSize + 1 - popped) as Uint<8>,
+        finished: state.finished || padding
+    };
+}
+
+export pure circuit runtimeStatusMultiproofRoot(
+    proof: RuntimeStatusMultiproof
+): MerkleTreeDigest {
+    assert(proof.witnessVersion == 1, "Unsupported status multiproof version");
+    assert(proof.leafCount > 0 && proof.leafCount <= 35, "Status multiproof requires one to 35 leaves");
+    for (const i of 1..35) {
+        if (i < proof.leafCount) {
+            assert(
+                proof.leaves[i - 1].statusIndex < proof.leaves[i].statusIndex,
+                "Status multiproof leaves must be unique and canonically ordered"
+            );
+        }
+    }
+    for (const i of 0..35) {
+        if (i >= proof.leafCount) {
+            assert(proof.leaves[i] == default<RuntimeStatusMembership>, "Status multiproof unused leaf is not canonical");
+        }
+    }
+    const expectedLeaves = fold(runtimeStatusExpectedLeaves, RuntimeStatusLeafAccumulator{
+        leafCount: proof.leafCount, offset: 0, value: 0
+    }, map(runtimeStatusMembershipNode, proof.leaves));
+    const initial = RuntimeStatusProofState{
+        leafCount: proof.leafCount, nextLeaf: 0, leafAccumulator: 0,
+        stackCommitment: 0, top: default<RuntimeStatusProofNode>,
+        stackSize: 0, finished: false
+    };
+    const final = fold(runtimeStatusMultiproofStep, initial, proof.steps);
+    assert(
+        final.stackSize == 1 && final.nextLeaf == proof.leafCount &&
+        final.leafAccumulator == expectedLeaves.value &&
+        final.top.level == 20 && final.top.index == 0 &&
+        final.stackCommitment == runtimeStatusStackPush(0, final.top),
+        "Status multiproof did not consume every leaf into one complete root"
+    );
+    return final.top.digest;
+}
+
+export pure circuit assertRuntimeStatusMultiproof(
+    proof: RuntimeStatusMultiproof,
+    expectedRoot: MerkleTreeDigest,
+    expectedSequence: Uint<64>
+): [] {
+    assert(proof.rootSequence == expectedSequence, "Status multiproof sequence is stale");
+    assert(runtimeStatusMultiproofRoot(proof) == expectedRoot, "Status multiproof root is stale or altered");
+}

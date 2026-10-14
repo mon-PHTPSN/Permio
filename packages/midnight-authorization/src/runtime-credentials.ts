@@ -1,10 +1,6 @@
 import { createHash } from "node:crypto";
 
 import {
-  Bytes32Descriptor,
-  CompactTypeMerkleTreeDigest,
-  CompactTypeMerkleTreePath,
-  StateBoundedMerkleTree,
   type JubjubPoint,
   type MerkleTreeDigest,
   type MerkleTreePath,
@@ -17,6 +13,7 @@ import {
   type ScenarioInstance,
   type SessionGrant,
   type SignedActionIntent,
+  type ParticipantSlotAssignment,
 } from "@permio/context-accounts";
 import { encodeCanonical } from "@permio/protocol";
 import { parseSemanticVersion } from "@permio/scenario-domain";
@@ -27,14 +24,18 @@ import {
   type RuntimeAccountCredential,
   type RuntimeActionIntent,
   type RuntimeCapabilityCredential,
+  type RuntimeScopeCounts,
   type RuntimeScopeRoots,
   type RuntimeSessionCredential,
   type TemplateRegistryTarget,
 } from "../contracts/managed/permio-authorization/contract/index.js";
 import type { Hex32 } from "./model.ts";
 import { hashProtocolIdentifier } from "./canonical.ts";
+import { sparseBytes32MerklePath } from "./credential-status.ts";
 
 export const MIDNIGHT_RUNTIME_CREDENTIAL_VERSION = 1 as const;
+export const MIDNIGHT_RUNTIME_CAPABILITY_CREDENTIAL_VERSION = 3 as const;
+export const MIDNIGHT_RUNTIME_SESSION_CREDENTIAL_VERSION = 2 as const;
 export const MIDNIGHT_RUNTIME_INTENT_VERSION = 1 as const;
 export const RUNTIME_SCOPE_TREE_DEPTH = 20;
 export const ZERO_COMMITMENT = new Uint8Array(32);
@@ -58,10 +59,12 @@ export interface RuntimeScopeTree {
   readonly root: MerkleTreeDigest;
   readonly valueHashes: readonly Uint8Array[];
   pathFor(value: string): MerkleTreePath<Uint8Array>;
+  pathForHash(valueHash: Uint8Array): MerkleTreePath<Uint8Array>;
 }
 
 export interface RuntimeScopeTrees {
   readonly roots: RuntimeScopeRoots;
+  readonly counts: RuntimeScopeCounts;
   readonly actions: RuntimeScopeTree;
   readonly resourceSelectors: RuntimeScopeTree;
   readonly resources: RuntimeScopeTree;
@@ -85,6 +88,8 @@ export interface CreateRuntimeCapabilityCredentialInput {
   readonly subjectAccountCredential: RuntimeAccountCredential;
   readonly parentCapabilityCredential?: RuntimeCapabilityCredential;
   readonly issuerAccountCredential?: RuntimeAccountCredential;
+  /** Exact allocated namespace issuer for a root grant; descendants inherit it. */
+  readonly namespaceIssuer?: { readonly principalId: string; readonly authority: import("./midnight-contract.ts").GovernanceActivatorLeaf };
   readonly statusIndex: bigint;
 }
 
@@ -111,6 +116,38 @@ function hex(value: Uint8Array): string {
 
 function equalBytes(left: Uint8Array, right: Uint8Array): boolean {
   return left.length === right.length && left.every((value, index) => value === right[index]);
+}
+
+export function runtimeScopeOrderKey(valueHash: Uint8Array): bigint {
+  if (!(valueHash instanceof Uint8Array) || valueHash.length !== 32) {
+    throw new TypeError("runtime scope value hash must be exactly 32 bytes");
+  }
+  let result = 0n;
+  for (let index = 31; index >= 24; index -= 1) {
+    result = (result << 8n) | BigInt(valueHash[index]!);
+  }
+  return result;
+}
+
+export function assertRuntimeScopeHashesCanonicallyOrderable(
+  valueHashes: readonly Uint8Array[],
+): void {
+  const seenHashes = new Set<string>();
+  const seenOrderKeys = new Set<bigint>();
+  for (const valueHash of valueHashes) {
+    const orderKey = runtimeScopeOrderKey(valueHash);
+    const hashHex = hex(valueHash);
+    if (seenHashes.has(hashHex)) {
+      throw new TypeError("runtime scope contains duplicate value hashes");
+    }
+    seenHashes.add(hashHex);
+    if (seenOrderKeys.has(orderKey)) {
+      throw new TypeError(
+        "runtime scope contains distinct hashes with the same 64-bit ordering key",
+      );
+    }
+    seenOrderKeys.add(orderKey);
+  }
 }
 
 function canonicalJson(value: unknown): string {
@@ -144,13 +181,6 @@ function assertTime(value: number, label: string): void {
   if (!Number.isSafeInteger(value) || value < 0) {
     throw new TypeError(`${label} must be a non-negative safe integer`);
   }
-}
-
-function alignedBytes32(value: Uint8Array) {
-  return {
-    value: Bytes32Descriptor.toValue(value),
-    alignment: Bytes32Descriptor.alignment(),
-  };
 }
 
 function principalKind(kind: ContextAccount["kind"]): bigint {
@@ -207,6 +237,11 @@ export function hashM5ContextAccount(account: ContextAccount): Uint8Array {
   return hashM5("permio:m5-context-account:v1", account);
 }
 
+/** Canonical private evidence only; does not authenticate the M5 caller or grant a slot. */
+export function hashM5ParticipantSlotAssignment(assignment: ParticipantSlotAssignment): Uint8Array {
+  return hashM5("permio:m5-participant-slot:v1", assignment);
+}
+
 export function hashM5CapabilityGrant(grant: CapabilityGrant): Uint8Array {
   return hashM5("permio:m5-capability-grant:v1", grant);
 }
@@ -227,40 +262,44 @@ export function buildRuntimeScopeTree(
     throw new TypeError(`${kind} scope must not be empty`);
   }
   const byHash = values
-    .map((value) => ({ value, valueHash: hashRuntimeIdentifier(kind, value) }))
-    .sort((left, right) => hex(left.valueHash).localeCompare(hex(right.valueHash)));
+    .map((value) => ({
+      value,
+      valueHash: hashRuntimeIdentifier(kind, value),
+    }));
   if (new Set(byHash.map(({ valueHash }) => hex(valueHash))).size !== byHash.length) {
     throw new TypeError(`${kind} scope contains duplicate values`);
   }
+  assertRuntimeScopeHashesCanonicallyOrderable(byHash.map(({ valueHash }) => valueHash));
+  byHash.sort((left, right) => {
+    const leftKey = runtimeScopeOrderKey(left.valueHash);
+    const rightKey = runtimeScopeOrderKey(right.valueHash);
+    return leftKey < rightKey ? -1 : leftKey > rightKey ? 1 : 0;
+  });
   const leafCommitments = byHash.map(({ valueHash }) =>
     pureCircuits.runtimeScopeValueCommitment(valueHash));
-  let tree = new StateBoundedMerkleTree(RUNTIME_SCOPE_TREE_DEPTH);
-  leafCommitments.forEach((commitment, index) => {
-    tree = tree.update(BigInt(index), alignedBytes32(commitment));
-  });
-  tree = tree.rehash();
-  const rootValue = tree.root();
-  if (rootValue === undefined) {
-    throw new Error("runtime scope tree did not produce a root");
-  }
-  const root = CompactTypeMerkleTreeDigest.fromValue(rootValue.value);
-  const pathType = new CompactTypeMerkleTreePath(
-    RUNTIME_SCOPE_TREE_DEPTH,
-    Bytes32Descriptor,
+  const rawLeaves = new Map(
+    leafCommitments.map((commitment, index) => [BigInt(index), commitment] as const),
+  );
+  const root = pureCircuits.runtimeCredentialStatusPathRoot(
+    sparseBytes32MerklePath(rawLeaves, 0n),
   );
   return {
     root,
     valueHashes: byHash.map(({ valueHash }) => valueHash.slice()),
     pathFor(value) {
       const valueHash = hashRuntimeIdentifier(kind, value);
+      return this.pathForHash(valueHash);
+    },
+    pathForHash(valueHash) {
+      if (!(valueHash instanceof Uint8Array) || valueHash.length !== 32) {
+        throw new TypeError("runtime scope value hash must be exactly 32 bytes");
+      }
       const index = byHash.findIndex((candidate) =>
         equalBytes(candidate.valueHash, valueHash));
       if (index < 0) {
-        throw new TypeError(`'${value}' is not present in the ${kind} scope`);
+        throw new TypeError("value hash is not present in the runtime scope");
       }
-      return pathType.fromValue(
-        tree.pathForLeaf(BigInt(index), alignedBytes32(leafCommitments[index]!)).value,
-      );
+      return sparseBytes32MerklePath(rawLeaves, BigInt(index));
     },
   };
 }
@@ -291,6 +330,15 @@ export function buildRuntimeScopeTrees(scope: CapabilityScope): RuntimeScopeTree
       recipientKindsRoot: recipientKinds.root,
       recipientsRoot: recipients.root,
       disclosurePolicyIdsRoot: disclosurePolicyIds.root,
+    },
+    counts: {
+      actionsCount: BigInt(actions.valueHashes.length),
+      resourceSelectorsCount: BigInt(resourceSelectors.valueHashes.length),
+      resourcesCount: BigInt(resources.valueHashes.length),
+      purposesCount: BigInt(purposes.valueHashes.length),
+      recipientKindsCount: BigInt(recipientKinds.valueHashes.length),
+      recipientsCount: BigInt(recipients.valueHashes.length),
+      disclosurePolicyIdsCount: BigInt(disclosurePolicyIds.valueHashes.length),
     },
     actions,
     resourceSelectors,
@@ -348,6 +396,11 @@ export function createRuntimeCapabilityCredential(
     throw new TypeError("runtime capability does not match its active M5 subject account");
   }
   const isRoot = grant.parentGrantId === null;
+  if (isRoot && (!input.namespaceIssuer || input.namespaceIssuer.principalId !== grant.issuerRef ||
+      input.namespaceIssuer.authority.leafVersion !== 1n || input.namespaceIssuer.authority.authorityKind !== 6n ||
+      !equalBytes(input.namespaceIssuer.authority.namespaceHash, compactTarget.namespaceHash))) {
+    throw new TypeError("root capability requires its exact profiled M5 namespace issuer");
+  }
   if (isRoot !== (input.parentCapabilityCredential === undefined)) {
     throw new TypeError("root and delegated capability ancestry are inconsistent");
   }
@@ -376,7 +429,7 @@ export function createRuntimeCapabilityCredential(
   const scope = buildRuntimeScopeTrees(grant.scope);
   return {
     credential: {
-      credentialVersion: BigInt(MIDNIGHT_RUNTIME_CREDENTIAL_VERSION),
+      credentialVersion: BigInt(MIDNIGHT_RUNTIME_CAPABILITY_CREDENTIAL_VERSION),
       target: compactTarget,
       instanceCommitment: input.instanceCommitment.slice(),
       contextHash: hashRuntimeIdentifier("context-id", grant.contextId),
@@ -386,7 +439,11 @@ export function createRuntimeCapabilityCredential(
         pureCircuits.runtimeAccountCredentialCommitment(subjectAccountCredential),
       parentCapabilityCredentialCommitment: parentCommitment,
       issuerAccountCredentialCommitment: issuerCommitment,
+      namespaceIssuerAuthorityCommitment: isRoot
+        ? pureCircuits.governanceActivatorLeafCommitment(input.namespaceIssuer!.authority)
+        : input.parentCapabilityCredential!.namespaceIssuerAuthorityCommitment.slice(),
       scopeRoots: scope.roots,
+      scopeCounts: scope.counts,
       notBefore: BigInt(grant.notBefore),
       expiresAt: BigInt(grant.expiresAt),
       delegationDepth: BigInt(grant.delegationDepth),
@@ -424,7 +481,7 @@ export function createRuntimeSessionCredential(
   const scope = buildRuntimeScopeTrees(session.scope);
   return {
     credential: {
-      credentialVersion: BigInt(MIDNIGHT_RUNTIME_CREDENTIAL_VERSION),
+      credentialVersion: BigInt(MIDNIGHT_RUNTIME_SESSION_CREDENTIAL_VERSION),
       target: compactTarget,
       instanceCommitment: input.instanceCommitment.slice(),
       contextHash: hashRuntimeIdentifier("context-id", session.contextId),
@@ -435,6 +492,7 @@ export function createRuntimeSessionCredential(
       capabilityCredentialCommitment:
         pureCircuits.runtimeCapabilityCredentialCommitment(capabilityCredential),
       scopeRoots: scope.roots,
+      scopeCounts: scope.counts,
       runtimePublicKey: input.runtimePublicKey,
       notBefore: BigInt(session.notBefore),
       expiresAt: BigInt(session.expiresAt),
@@ -445,16 +503,42 @@ export function createRuntimeSessionCredential(
   };
 }
 
+/** Canonical unused dispatcher argument, never a credential eligible for issuance. */
+export function createEmptyRuntimeSessionCredential(): RuntimeSessionCredential {
+  const zero = () => new Uint8Array(32);
+  return {
+    credentialVersion: 0n,
+    target: { namespaceHash: zero(), templateIdHash: zero(),
+      semanticVersion: { major: 0n, minor: 0n, patch: 0n }, templateContentHash: zero() },
+    instanceCommitment: zero(), contextHash: zero(), sessionIdHash: zero(), m5SessionCommitment: zero(),
+    subjectAccountCredentialCommitment: zero(), capabilityCredentialCommitment: zero(),
+    scopeRoots: { actionsRoot: { field: 0n }, resourceSelectorsRoot: { field: 0n },
+      resourcesRoot: { field: 0n }, purposesRoot: { field: 0n }, recipientKindsRoot: { field: 0n },
+      recipientsRoot: { field: 0n }, disclosurePolicyIdsRoot: { field: 0n } },
+    scopeCounts: { actionsCount: 0n, resourceSelectorsCount: 0n, resourcesCount: 0n,
+      purposesCount: 0n, recipientKindsCount: 0n, recipientsCount: 0n, disclosurePolicyIdsCount: 0n },
+    runtimePublicKey: { x: 0n, y: 1n }, notBefore: 0n, expiresAt: 0n, statusIndex: 0n, issuedAt: 0n,
+  };
+}
+
 export function createRuntimeActionIntent(
   intent: SignedActionIntent,
   m5SessionPublicKeyPem: string,
   sessionCredential: RuntimeSessionCredential,
+  allocatedInstance: ScenarioInstance,
 ): RuntimeActionIntent {
   if (!verifySignedActionIntent(intent, m5SessionPublicKeyPem)) {
     throw new TypeError("M5 ActionIntent Ed25519 signature is invalid");
   }
   const payload = intent.payload;
   const compactTarget = target(payload);
+  if (
+    payload.instanceId !== allocatedInstance.instanceId ||
+    !sameTarget(target(allocatedInstance), sessionCredential.target) ||
+    !equalBytes(hashM5ScenarioInstance(allocatedInstance), sessionCredential.instanceCommitment)
+  ) {
+    throw new TypeError("runtime action intent does not match its exact allocated M5 instance");
+  }
   if (
     !sameTarget(compactTarget, sessionCredential.target) ||
     !equalBytes(hashRuntimeIdentifier("session-id", payload.sessionId), sessionCredential.sessionIdHash) ||
@@ -465,8 +549,8 @@ export function createRuntimeActionIntent(
   return {
     intentVersion: BigInt(MIDNIGHT_RUNTIME_INTENT_VERSION),
     target: compactTarget,
-    instanceCommitment: sessionCredential.instanceCommitment,
-    contextHash: sessionCredential.contextHash,
+    instanceCommitment: sessionCredential.instanceCommitment.slice(),
+    contextHash: sessionCredential.contextHash.slice(),
     sessionCredentialCommitment:
       pureCircuits.runtimeSessionCredentialCommitment(sessionCredential),
     actionIdHash: hashRuntimeIdentifier("action-id", payload.actionId),

@@ -1,0 +1,3 @@
+# Preserve the recorded patch checksum on Windows and Linux checkouts.
+scripts/proof-server-memory/cache.patch text eol=lf whitespace=-blank-at-eol
+scripts/proof-server-memory/Dockerfile text eol=lf

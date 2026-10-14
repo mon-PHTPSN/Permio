@@ -1,9 +1,17 @@
 import assert from "node:assert/strict";
-import { generateKeyPairSync } from "node:crypto";
+import { generateKeyPairSync, randomBytes } from "node:crypto";
+import { appendFileSync, mkdirSync } from "node:fs";
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { parseLiveM6Arguments, startProverMemorySampler } from "./m6-prover-memory.ts";
+import { runBoundCredentialWorkflow } from "./m6-bound-credential-workflow.ts";
+import { runSlotStateWorkflow } from "./m6-slot-state-workflow.ts";
 
 import { parseScenarioTemplate } from "@permio/scenario-domain";
+import {
+  ContextAccountSystem,
+  SlotBoundContextAccountSystem,
+} from "@permio/context-accounts";
 import {
   createReviewerAttestation,
   ScenarioGovernanceRegistry,
@@ -14,8 +22,9 @@ import {
   buildProofModuleBindingTree,
   connectPermioAuthorizationContract,
   createActivationAdmissionArtifact,
-  createRuntimeAccountCredential,
-  createRuntimeCredentialStatusCommand,
+  createRuntimeInstanceAllocation,
+  createRuntimePolicyBindingManifest,
+  createRuntimeAllocationPolicyWitness,
   CredentialStatusTree,
   createFundedLocalWallet,
   createLocalAuthorizationProviders,
@@ -31,7 +40,7 @@ import {
   signAuthorityRootUpdateCommand,
   signProofModuleLifecycleCommand,
   signProofModuleReview,
-  signRuntimeCredentialStatusCommand,
+  signRuntimeInstanceAllocation,
   signTemplateLifecycleCommand,
   toCompactActivationAdmissionEnvelope,
   toCompactProofModuleProposal,
@@ -40,6 +49,11 @@ import {
   type GovernanceActivatorLeaf,
   type ProofModuleLifecycleCommand,
   type ProofModuleReview,
+  type RuntimeInstanceAllocation,
+  type RuntimeAllocationPolicyWitness,
+  PERMIO_AUTHORIZATION_ASSETS_PATH,
+  PERMIO_AUTHORIZATION_CONTRACT_TAG,
+  verifyPermioAuthorizationAssets,
   type TemplateLifecycleCommand,
 } from "@permio/midnight-authorization";
 
@@ -49,17 +63,33 @@ interface LocalAccountFile {
   }[];
 }
 
+const { accountFile: accountFileArgument, governanceOnly, allocationOnly, credentialBinding, slotState, memorySmoke, profileMemory } =
+  parseLiveM6Arguments(process.argv.slice(2));
+const verificationScope = slotState ? "private-slot-state-and-governance-not-action-acceptance" : credentialBinding || (!governanceOnly && !memorySmoke)
+  ? "allocation-and-credential-binding-not-action-acceptance" :
+  allocationOnly ? "allocation-and-governance-not-action-acceptance" :
+  memorySmoke ? "memory-smoke-not-acceptance" :
+  governanceOnly ? "governance-only" : "governance-and-runtime-scope";
+
 function hexBytes(value: `0x${string}`): Uint8Array {
   return Uint8Array.from(Buffer.from(value.slice(2), "hex"));
 }
 
+const publicEvidencePath = path.resolve(
+  "logs",
+  `m6-live-${new Date().toISOString().replaceAll(":", "-")}.jsonl`,
+);
+
 function milestone(event: string, evidence: Readonly<Record<string, unknown>>): void {
-  process.stdout.write(
-    `${JSON.stringify({ timestamp: new Date().toISOString(), event, ...evidence })}\n`,
-  );
+  const line = `${JSON.stringify({ timestamp: new Date().toISOString(), event, ...evidence })}\n`;
+  mkdirSync(path.dirname(publicEvidencePath), { recursive: true });
+  appendFileSync(publicEvidencePath, line, "utf8");
+  process.stdout.write(line);
 }
 
 function createM4Activation() {
+  const initialState = `private-ready-${randomBytes(12).toString("hex")}`;
+  const completedState = `private-completed-${randomBytes(12).toString("hex")}`;
   const reviewerOne = generateKeyPairSync("ed25519");
   const reviewerTwo = generateKeyPairSync("ed25519");
   const publicKey = (key: typeof reviewerOne.publicKey) =>
@@ -119,8 +149,8 @@ function createM4Activation() {
         purposes: ["bounded-purpose"],
       },
     ],
-    states: ["ready", "completed"],
-    initialState: "ready",
+    states: [initialState, completedState],
+    initialState,
     actions: [
       {
         id: "perform-action",
@@ -139,9 +169,9 @@ function createM4Activation() {
     transitions: [
       {
         id: "complete",
-        fromState: "ready",
+        fromState: initialState,
         actionId: "perform-action",
-        toState: "completed",
+        toState: completedState,
       },
     ],
     capabilityRules: [
@@ -152,7 +182,8 @@ function createM4Activation() {
         resourceSelector: "selected-record",
         purpose: "bounded-purpose",
         recipientConstraint: "named-recipient",
-        validForSeconds: 900,
+        // Long-lived synthetic setup profile, not a short interactive user grant.
+        validForSeconds: 14_400,
         maxDelegationDepth: 1,
         disclosurePolicyId: "minimum-result",
         revocable: true,
@@ -219,12 +250,22 @@ function createM4Activation() {
       },
     ],
   };
-  return { activation, bindings, policy, record };
+  const configuredBindings = createRuntimePolicyBindingManifest(record.template,
+    bindings.bindings.map(({ configurationHash: _unused, ...selection }) => selection));
+  return { activation, bindings: configuredBindings, policy, record, registry };
 }
 
 async function main(): Promise<void> {
+  if (memorySmoke) {
+    milestone("historical-memory-smoke-unavailable", {
+      reason: "The old unallocated credential fixture is incompatible with the current deployment; use --credential-binding.",
+      milestoneComplete: false,
+    });
+    throw new Error("unsupported-historical-memory-workload");
+  }
+  await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
   const accountFilePath = path.resolve(
-    process.argv[2] ?? "../midnight-local-dev/accounts.example.json",
+    accountFileArgument ?? "../midnight-local-dev/accounts.example.json",
   );
   const accountFile = JSON.parse(
     await readFile(accountFilePath, "utf8"),
@@ -260,6 +301,10 @@ async function main(): Promise<void> {
   const templateEmergencyRevokerSecret = 163n;
   const rotatedActivatorSecret = 167n;
   const capabilityIssuerSecret = 173n;
+  const allocatorSecret = 191n;
+  const secondaryIssuerSecret = 197n;
+  const outsiderIssuerSecret = 199n;
+  const slotGovernorSecret = 211n;
   const moduleAuthority = (
     authorityKind: bigint,
     secret: bigint,
@@ -316,6 +361,10 @@ async function main(): Promise<void> {
     MIDNIGHT_AUTHORITY_KINDS.capabilityIssuer,
     capabilityIssuerSecret,
   );
+  const allocator = moduleAuthority(MIDNIGHT_AUTHORITY_KINDS.allocator, allocatorSecret);
+  const secondaryIssuer = moduleAuthority(MIDNIGHT_AUTHORITY_KINDS.capabilityIssuer, secondaryIssuerSecret);
+  const outsiderIssuer = moduleAuthority(MIDNIGHT_AUTHORITY_KINDS.capabilityIssuer, outsiderIssuerSecret);
+  const slotGovernor = moduleAuthority(MIDNIGHT_AUTHORITY_KINDS.participantSlotGovernor, slotGovernorSecret);
   const rotatedActivator: GovernanceActivatorLeaf = {
     ...activator,
     publicKey: governanceActivatorPublicKey(rotatedActivatorSecret),
@@ -333,6 +382,10 @@ async function main(): Promise<void> {
     templateRetirer,
     templateEmergencyRevoker,
     capabilityIssuer,
+    allocator,
+    secondaryIssuer,
+    outsiderIssuer,
+    slotGovernor,
   ]);
   const rotatedAuthorityRoot = buildAuthorityRoot([
     rotatedActivator,
@@ -347,10 +400,18 @@ async function main(): Promise<void> {
     templateRetirer,
     templateEmergencyRevoker,
     capabilityIssuer,
+    allocator,
+    secondaryIssuer,
+    outsiderIssuer,
+    slotGovernor,
   ]);
   const initialBinding = m4.bindings.bindings[0]!;
 
-  const wallet = await createFundedLocalWallet(mnemonic);
+  const memorySampler = profileMemory ? await startProverMemorySampler(milestone) : undefined;
+  const wallet = await createFundedLocalWallet(mnemonic).catch(async (error: unknown) => {
+    await memorySampler?.stop();
+    throw error;
+  });
   try {
     const providers = createLocalAuthorizationProviders(wallet);
     milestone("local-stack-ready", {
@@ -359,6 +420,7 @@ async function main(): Promise<void> {
       indexer: "indexer-standalone:4.3.3",
       proofServer: "proof-server:8.1.0",
       compiler: "0.31.1",
+      verificationScope,
     });
     const credentialStatus = new CredentialStatusTree();
     const deployed = await deployPermioAuthorizationContract(providers, {
@@ -380,166 +442,9 @@ async function main(): Promise<void> {
       providers,
       contractAddress,
     );
+    let allocation: RuntimeInstanceAllocation | undefined;
+    let privateAllocationSentinels: readonly string[] = [];
     const governanceTime = Math.floor(Date.now() / 1_000) - 5;
-    const runtimeAccountSecret = 179n;
-    const runtimeIdentity = generateKeyPairSync("ed25519");
-    const liveInstance = {
-      namespace: m4.activation.namespace,
-      templateId: m4.activation.templateId,
-      templateVersion: m4.activation.templateVersion,
-      templateHash: m4.activation.templateHash,
-      instanceId: "live-instance-one",
-      instantiationRequestId: "live-allocation-one",
-      allocatedBy: "allocator-one",
-      state: "ready",
-      createdAt: governanceTime - 10,
-      expiresAt: governanceTime + 7_200,
-      revokedAt: null,
-      capabilityIssuers: [{ principalId: "capability-issuer-one", kind: "service" as const }],
-    };
-    const liveAccount = {
-      accountId: "live-account-one",
-      instanceId: liveInstance.instanceId,
-      contextId: "bounded-context",
-      kind: "human" as const,
-      publicKeyPem: runtimeIdentity.publicKey
-        .export({ type: "spki", format: "pem" })
-        .toString(),
-      registeredAt: governanceTime - 5,
-      revokedAt: null,
-    };
-    const runtimeAccount = createRuntimeAccountCredential({
-      account: liveAccount,
-      instance: liveInstance,
-      runtimePublicKey: governanceActivatorPublicKey(runtimeAccountSecret),
-      statusIndex: 7n,
-      validBefore: governanceTime + 3_600,
-    });
-    const runtimeAccountCommitment =
-      pureCircuits.runtimeAccountCredentialCommitment(runtimeAccount);
-    const issueRuntimeAccount = createRuntimeCredentialStatusCommand({
-      namespace: m4.activation.namespace,
-      governancePolicyHash,
-      authorityRootVersion: 1,
-      authorityRootSequence: 1,
-      credentialStatusRootSequence: credentialStatus.sequence,
-      kind: "account",
-      credentialCommitment: runtimeAccountCommitment,
-      subjectAccountCredentialCommitment: runtimeAccountCommitment,
-      revocationAuthorityAccountCredentialCommitment: runtimeAccountCommitment,
-      statusIndex: runtimeAccount.statusIndex,
-      expectedStatus: "empty",
-      nextStatus: "active",
-      effectiveAt: governanceTime,
-      commandNonce: `0x${"91".repeat(32)}`,
-    });
-    const emptyStatusPath = credentialStatus.pathFor(runtimeAccount.statusIndex);
-    const issuedRuntimeAccount = await connected.callTx.updateRuntimeCredentialStatus(
-      issueRuntimeAccount,
-      signRuntimeCredentialStatusCommand(
-        issueRuntimeAccount,
-        capabilityIssuerSecret,
-        181n,
-      ),
-      capabilityIssuer,
-      authorityRoot.pathFor(
-        pureCircuits.governanceActivatorLeafCommitment(capabilityIssuer),
-      ),
-      runtimeAccount,
-      emptyStatusPath,
-      emptyStatusPath,
-    );
-    const issuedStatusTransition = credentialStatus.issue({
-      namespace: m4.activation.namespace,
-      kind: "account",
-      credentialCommitment: runtimeAccountCommitment,
-      revocationAuthorityAccountCredentialCommitment: runtimeAccountCommitment,
-      statusIndex: runtimeAccount.statusIndex,
-    });
-    let indexedState = await providers.publicDataProvider.queryContractState(
-      contractAddress,
-    );
-    assert(indexedState, "credential-status issuance must be indexed");
-    let indexedStatus = ledger(indexedState.data).credentialStatusRoots.lookup(
-      hexBytes(namespaceHash),
-    );
-    assert.equal(indexedStatus.root.field, issuedStatusTransition.nextRoot.field);
-    assert.equal(indexedStatus.rootSequence, 1n);
-    milestone("runtime-account-status-activated", {
-      contractAddress,
-      transactionId: issuedRuntimeAccount.public.txId,
-      credentialStatusRootSequence: 1,
-    });
-
-    const revokeRuntimeAccount = createRuntimeCredentialStatusCommand({
-      namespace: m4.activation.namespace,
-      governancePolicyHash,
-      authorityRootVersion: 1,
-      authorityRootSequence: 1,
-      credentialStatusRootSequence: credentialStatus.sequence,
-      kind: "account",
-      credentialCommitment: runtimeAccountCommitment,
-      subjectAccountCredentialCommitment: runtimeAccountCommitment,
-      revocationAuthorityAccountCredentialCommitment: runtimeAccountCommitment,
-      statusIndex: runtimeAccount.statusIndex,
-      expectedStatus: "active",
-      nextStatus: "revoked",
-      effectiveAt: governanceTime,
-      commandNonce: `0x${"92".repeat(32)}`,
-    });
-    const activeStatusPath = credentialStatus.pathFor(runtimeAccount.statusIndex);
-    await assert.rejects(
-      connected.callTx.updateRuntimeCredentialStatus(
-        revokeRuntimeAccount,
-        signRuntimeCredentialStatusCommand(revokeRuntimeAccount, 191n, 193n),
-        capabilityIssuer,
-        authorityRoot.pathFor(
-          pureCircuits.governanceActivatorLeafCommitment(capabilityIssuer),
-        ),
-        runtimeAccount,
-        activeStatusPath,
-        activeStatusPath,
-      ),
-      /invalid governance activation signature/i,
-    );
-    milestone("runtime-account-unauthorized-revocation-rejected", {
-      contractAddress,
-    });
-    const revokedRuntimeAccount = await connected.callTx.updateRuntimeCredentialStatus(
-      revokeRuntimeAccount,
-      signRuntimeCredentialStatusCommand(
-        revokeRuntimeAccount,
-        runtimeAccountSecret,
-        197n,
-      ),
-      capabilityIssuer,
-      authorityRoot.pathFor(
-        pureCircuits.governanceActivatorLeafCommitment(capabilityIssuer),
-      ),
-      runtimeAccount,
-      activeStatusPath,
-      activeStatusPath,
-    );
-    const revokedStatusTransition = credentialStatus.revoke({
-      namespace: m4.activation.namespace,
-      kind: "account",
-      credentialCommitment: runtimeAccountCommitment,
-      revocationAuthorityAccountCredentialCommitment: runtimeAccountCommitment,
-      statusIndex: runtimeAccount.statusIndex,
-    });
-    indexedState = await providers.publicDataProvider.queryContractState(contractAddress);
-    assert(indexedState, "credential-status revocation must be indexed");
-    indexedStatus = ledger(indexedState.data).credentialStatusRoots.lookup(
-      hexBytes(namespaceHash),
-    );
-    assert.equal(indexedStatus.root.field, revokedStatusTransition.nextRoot.field);
-    assert.equal(indexedStatus.rootSequence, 2n);
-    milestone("runtime-account-status-revoked", {
-      contractAddress,
-      transactionId: revokedRuntimeAccount.public.txId,
-      credentialStatusRootSequence: 2,
-    });
-
     const moduleProposal = toCompactProofModuleProposal({
       moduleId: initialBinding.moduleId,
       moduleVersion: initialBinding.moduleVersion,
@@ -550,7 +455,7 @@ async function main(): Promise<void> {
       authorityRootSequence: 1,
       implementationReferenceHash: hashProtocolIdentifier(
         "contract-identity",
-        `${contractAddress}:permio-authorization-v1:test-only-admission-binding`,
+        `${contractAddress}:${PERMIO_AUTHORIZATION_CONTRACT_TAG}:test-only-admission-binding`,
       ),
       sourceHash: `0x${"62".repeat(32)}`,
       inputSchemaHash: `0x${"63".repeat(32)}`,
@@ -635,6 +540,7 @@ async function main(): Promise<void> {
       approvalCount: Number(firstApproval.private.result),
       syntheticLocalFixture: true,
     });
+    await memorySampler?.capture("first-governance-approval-indexed");
     moduleRecord = await readModuleRecord();
     assert.equal(moduleRecord.lifecycleStatus, 2n);
     const prematureActivation: ProofModuleLifecycleCommand = {
@@ -815,6 +721,7 @@ async function main(): Promise<void> {
       contractAddress,
       transactionId: begun.public.txId,
       bindingCount: artifact.bindings.length,
+      stagingExpiresAt: Number(envelope.stagingExpiresAt),
       expiredPriorSessionCleaned: true,
     });
     for (let index = 0; index < artifact.bindings.length; index += 1) {
@@ -845,6 +752,120 @@ async function main(): Promise<void> {
       authorityRootSequence: 1,
     });
 
+    // Test nonce replay while the signed envelope is still timely. A complete
+    // credential regression can outlive this one-hour admission window;
+    // replaying after that correctly fails the earlier expiry guard instead.
+    await assert.rejects(
+      connected.callTx.beginM4Activation(envelope, signature, activator,
+        authorityRoot.pathFor(activatorCommitment)),
+      /nonce already used/i,
+    );
+    milestone("replay-rejected", { contractAddress,
+      negativeCheckBoundary: "generated-Compact-preflight-not-node-rejected-transaction" });
+
+    if (allocationOnly || credentialBinding || slotState || !governanceOnly) {
+      const createdAt = Math.floor(Date.now() / 1_000) - 1;
+      const requestId = `private-allocation-${randomBytes(12).toString("hex")}`;
+      const instanceId = `private-instance-${randomBytes(12).toString("hex")}`;
+      const authorization = m4.registry.authorizeInstantiation(
+        "allocator-one", m4.activation, requestId, createdAt);
+      const instances = new ContextAccountSystem(m4.registry);
+      const instance = instances.createScenarioInstance({ instanceId,
+        instantiationRequestId: requestId, template: m4.record.template, expiresAt: createdAt + 7200,
+        capabilityIssuers: [{ principalId: "fixture-capability-issuer", kind: "service" },
+          { principalId: "fixture-secondary-issuer", kind: "service" }] }, createdAt);
+      const prepared = createRuntimeInstanceAllocation({ authorization, templateRecord: m4.record, instance,
+        allocatorAuthority: allocator,
+        capabilityIssuers: [{ principalId: "fixture-capability-issuer", kind: "service", authority: capabilityIssuer },
+          { principalId: "fixture-secondary-issuer", kind: "service", authority: secondaryIssuer }],
+        authorityRootVersion: 1n, authorityRootSequence: 1n, targetNetworkHash: hexBytes(networkHash),
+        targetContractIdentity: Uint8Array.from(Buffer.from(contractAddress, "hex")),
+        allocationValidBefore: createdAt + 3600 });
+      allocation = prepared.allocation;
+      const allocationPolicy = createRuntimeAllocationPolicyWitness(m4.record.template, m4.bindings, prepared.stateOpening);
+      privateAllocationSentinels = [requestId, instanceId, "fixture-capability-issuer", "fixture-secondary-issuer",
+        Buffer.from(prepared.stateOpening.nonce).toString("hex"), Buffer.from(allocation.allocationNonce).toString("hex"),
+        ...m4.record.template.states, Buffer.from(allocationPolicy.policy.initialStateIdHash).toString("hex")];
+      const allocatorPath = authorityRoot.pathFor(allocation.allocatorAuthorityCommitment);
+      const signed = signRuntimeInstanceAllocation(allocation, allocatorSecret);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation,
+        signRuntimeInstanceAllocation(allocation, activatorSecret), allocator, allocatorPath, allocationPolicy),
+      /Invalid governance activation signature/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance({ ...allocation,
+        initialStateCommitment: randomBytes(32) }, signed, allocator, allocatorPath, allocationPolicy),
+      /Invalid governance activation signature/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance({ ...allocation,
+        authorityRootSequence: 0n }, signed, allocator, allocatorPath, allocationPolicy), /stale or mismatched/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance({ ...allocation,
+        target: { ...allocation.target, templateContentHash: randomBytes(32) } }, signed, allocator, allocatorPath, allocationPolicy),
+      /not registered/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath,
+        { ...allocationPolicy, policy: { ...allocationPolicy.policy, maxCapabilityDuration: allocationPolicy.policy.maxCapabilityDuration + 1n } }),
+      /configuration hash/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath,
+        { ...allocationPolicy, policy: { ...allocationPolicy.policy, policyVersion: 1n } }),
+      /exact template action binding/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath,
+        { ...allocationPolicy, policy: { ...allocationPolicy.policy,
+          slotAssignmentRulesRoot: { field: allocationPolicy.policy.slotAssignmentRulesRoot.field + 1n } } }),
+      /configuration hash/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath,
+        { ...allocationPolicy, policy: { ...allocationPolicy.policy,
+          slotAssignmentRuleCount: allocationPolicy.policy.slotAssignmentRuleCount + 1n } }),
+      /configuration hash/u);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath,
+        { ...allocationPolicy, initialState: { ...allocationPolicy.initialState, stateIdHash: randomBytes(32) } }),
+      /exact initial state/u);
+      const arbitraryState = { ...allocationPolicy.initialState, stateIdHash: randomBytes(32) };
+      const arbitraryAllocation = { ...allocation, initialStateCommitment: pureCircuits.runtimeStateCommitment(arbitraryState) };
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(arbitraryAllocation,
+        signRuntimeInstanceAllocation(arbitraryAllocation, allocatorSecret), allocator, allocatorPath,
+        { ...allocationPolicy, initialState: arbitraryState }), /exact initial state/u);
+      const accepted = await connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath, allocationPolicy);
+      const state = await providers.publicDataProvider.queryContractState(contractAddress);
+      assert(state, "allocation must be indexed");
+      const view = ledger(state.data);
+      const allocated = view.runtimeInstances.lookup(allocation.instanceCommitment);
+      assert.deepEqual(allocated.allocationCommitment, pureCircuits.runtimeInstanceAllocationCommitment(allocation));
+      assert.deepEqual(allocated.currentStateCommitment, allocation.initialStateCommitment);
+      assert.equal(allocated.transitionSequence, 0n);
+      assert.equal(view.usedAllocationRequestNullifiers.size(), 1n);
+      assert.equal(view.usedInstanceIdentityNullifiers.size(), 1n);
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(allocation, signed, allocator, allocatorPath, allocationPolicy),
+        /already consumed/u);
+      milestone("private-instance-allocation-accepted", { contractAddress, transactionId: accepted.public.txId,
+        instanceCommitment: Buffer.from(allocation.instanceCommitment).toString("hex"),
+        allocationCommitment: Buffer.from(allocated.allocationCommitment).toString("hex"),
+        transitionSequence: 0, allocatedInstances: 1,
+        preflightNegativeChecks: ["wrong-signature", "altered-state-commitment", "stale-root", "altered-template-hash", "altered-policy-configuration", "legacy-policy-version", "altered-slot-rule-root", "altered-slot-rule-count", "wrong-initial-state", "correctly-signed-arbitrary-initial-state", "replay"],
+        negativeCheckBoundary: "generated-Compact-preflight-not-node-rejected-transactions",
+        credentialDispatcherConsumesAllocation: true, ordinaryActionAcceptance: false });
+      milestone("template-policy-initial-state-binding-verified", { contractAddress,
+        policyVersion: 2, slotAssignmentRulesCommitted: true, slotAssignmentAuthorityProved: false,
+        initialStateOpeningVerified: true, exactActivationConfigurationVerified: true,
+        privatePolicyPublished: false, ordinaryActionAcceptance: false });
+      if (slotState) {
+        const slots = new SlotBoundContextAccountSystem(m4.registry);
+        const slotInstance = slots.createScenarioInstance({ instanceId,
+          instantiationRequestId: requestId, template: m4.record.template, expiresAt: instance.expiresAt,
+          capabilityIssuers: instance.capabilityIssuers }, createdAt);
+        const checked = await runSlotStateWorkflow({ system: slots, instance: slotInstance, template: m4.record.template,
+          allocation, stateOpening: prepared.stateOpening, issuers: prepared.issuers, authority: authorityRoot,
+          issuer: capabilityIssuer, issuerSecret: capabilityIssuerSecret, allocator, allocatorSecret,
+          slotGovernor, slotGovernorSecret, activator, activatorSecret, contract: connected, providers,
+          address: contractAddress, governancePolicyHash, binding: allocationPolicy, emit: milestone });
+        privateAllocationSentinels = [...privateAllocationSentinels, ...checked.privateSentinels];
+      }
+      if (credentialBinding || !governanceOnly) {
+        const checked = await runBoundCredentialWorkflow({ system: instances, instance, template: m4.record.template,
+          allocation, issuers: prepared.issuers, authority: authorityRoot, issuer: capabilityIssuer,
+          issuerSecret: capabilityIssuerSecret, secondaryIssuer, secondaryIssuerSecret,
+          outsiderIssuer, outsiderIssuerSecret, contract: connected, providers, address: contractAddress,
+          governancePolicyHash, emit: milestone });
+        privateAllocationSentinels = [...privateAllocationSentinels, ...checked.privateSentinels];
+      }
+    }
+
     const state = await providers.publicDataProvider.queryContractState(
       contractAddress,
     );
@@ -870,17 +891,6 @@ async function main(): Promise<void> {
       proofModuleRegistrySequence: Number(indexed.proofModuleRegistrySequence),
     });
 
-    await assert.rejects(
-      connected.callTx.beginM4Activation(
-        envelope,
-        signature,
-        activator,
-        authorityRoot.pathFor(activatorCommitment),
-      ),
-      /nonce already used/i,
-    );
-    milestone("replay-rejected", { contractAddress });
-
     const reconnected = await connectPermioAuthorizationContract(
       providers,
       contractAddress,
@@ -894,10 +904,28 @@ async function main(): Promise<void> {
     );
     assert(reconnectedState, "reconnected contract state must remain indexed");
     const afterReconnect = ledger(reconnectedState.data);
+    const expectedCredentialSequence = slotState ? 1n : credentialBinding || !governanceOnly ? 5n : 0n;
+    assert.equal(afterReconnect.credentialStatusRoots.lookup(hexBytes(namespaceHash)).rootSequence,
+      expectedCredentialSequence);
+    assert.equal(afterReconnect.capabilityAttenuationSessions.size(), 0n);
     assert.equal(afterReconnect.activeTemplates.size(), 1n);
     assert.equal(afterReconnect.templateActivationSequence, 1n);
+    if (allocation) {
+      assert.deepEqual(afterReconnect.runtimeInstances.lookup(allocation.instanceCommitment).allocationCommitment,
+        pureCircuits.runtimeInstanceAllocationCommitment(allocation));
+      assert.equal(afterReconnect.usedAllocationRequestNullifiers.size(), 1n);
+      const reconnectedInstance = afterReconnect.runtimeInstances.lookup(allocation.instanceCommitment);
+      assert.equal(reconnectedInstance.transitionSequence, slotState ? 4n : 0n);
+      if (slotState) {
+        assert.equal(afterReconnect.runtimeSlotSessions.size(), 0n);
+        assert.equal(afterReconnect.usedRuntimeSlotCommandNonces.size(), 4n);
+      }
+      milestone("allocation-reconnect-verified", { contractAddress, allocatedInstances: 1,
+        transitionSequence: Number(reconnectedInstance.transitionSequence) });
+    }
     milestone("reconnect-verified", {
       contractAddress,
+      credentialStatusRootSequence: Number(expectedCredentialSequence),
       activeTemplateCount: Number(afterReconnect.activeTemplates.size()),
       activationSequence: Number(afterReconnect.templateActivationSequence),
     });
@@ -1091,6 +1119,33 @@ async function main(): Promise<void> {
     const activeTemplate = ledger(
       templateStateBeforeRetirement.data,
     ).activeTemplates.lookup(admitted.private.result.registryKey);
+    // Prepare a genuinely valid new M4/M5 allocation just before retirement.
+    // Reusing the original allocation's hour-old deadline would make these
+    // negatives invalid for a second reason and obscure the lifecycle check.
+    let prospectiveAllocation: RuntimeInstanceAllocation | undefined;
+    let prospectivePolicy: RuntimeAllocationPolicyWitness | undefined;
+    if (allocation) {
+      const createdAt = Math.floor(Date.now() / 1000) - 1;
+      const requestId = `private-prospective-${randomBytes(12).toString("hex")}`;
+      const instanceId = `private-prospective-instance-${randomBytes(12).toString("hex")}`;
+      const authorization = m4.registry.authorizeInstantiation("allocator-one",
+        m4.activation, requestId, createdAt);
+      const instances = new ContextAccountSystem(m4.registry);
+      const instance = instances.createScenarioInstance({ instanceId,
+        instantiationRequestId: requestId, template: m4.record.template, expiresAt: createdAt + 7200,
+        capabilityIssuers: [{ principalId: "fixture-capability-issuer", kind: "service" }] }, createdAt);
+      const prepared = createRuntimeInstanceAllocation({ authorization, templateRecord: m4.record, instance,
+        allocatorAuthority: allocator,
+        capabilityIssuers: [{ principalId: "fixture-capability-issuer", kind: "service", authority: capabilityIssuer }],
+        authorityRootVersion: 2n, authorityRootSequence: 2n, targetNetworkHash: hexBytes(networkHash),
+        targetContractIdentity: Uint8Array.from(Buffer.from(contractAddress, "hex")),
+        allocationValidBefore: createdAt + 3600 });
+      prospectiveAllocation = prepared.allocation;
+      prospectivePolicy = createRuntimeAllocationPolicyWitness(m4.record.template, m4.bindings, prepared.stateOpening);
+      privateAllocationSentinels = [...privateAllocationSentinels, requestId, instanceId,
+        Buffer.from(prepared.stateOpening.nonce).toString("hex"),
+        Buffer.from(prepared.allocation.allocationNonce).toString("hex")];
+    }
     const retirement: TemplateLifecycleCommand = {
       commandVersion: 1n,
       registryKey: admitted.private.result.registryKey,
@@ -1154,6 +1209,15 @@ async function main(): Promise<void> {
     assert.equal(retiredTemplate.activatedAt, activeTemplate.activatedAt);
     assert.equal(retiredTemplate.retiredAt, retirement.effectiveAt);
     assert.equal(retiredTemplate.terminationEffectiveSequence, 2n);
+    if (allocation) {
+      assert(prospectiveAllocation && prospectivePolicy);
+      const next = prospectiveAllocation;
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(next,
+        signRuntimeInstanceAllocation(next, allocatorSecret), allocator,
+        rotatedAuthorityRoot.pathFor(allocation.allocatorAuthorityCommitment), prospectivePolicy), /active exact template/u);
+      milestone("retired-template-allocation-preflight-rejected", { contractAddress,
+        negativeCheckBoundary: "generated-Compact-preflight-not-node-rejected-transaction" });
+    }
 
     const templateRevocation: TemplateLifecycleCommand = {
       ...retirement,
@@ -1210,6 +1274,10 @@ async function main(): Promise<void> {
     );
     assert(finalPublicState, "final governance state must remain indexed");
     const finalLedger = ledger(finalPublicState.data);
+    assert.equal(finalLedger.credentialStatusRoots.lookup(hexBytes(namespaceHash)).rootSequence,
+      expectedCredentialSequence);
+    assert.equal(finalLedger.capabilityAttenuationSessions.size(), 0n);
+    assert.equal(finalLedger.usedCredentialStatusCommandNonces.size(), expectedCredentialSequence);
     const finalModule = finalLedger.proofModules.lookup(moduleKey);
     const finalTemplate = finalLedger.activeTemplates.lookup(
       admitted.private.result.registryKey,
@@ -1233,8 +1301,25 @@ async function main(): Promise<void> {
     assert.equal(finalAuthorityRoot.rootSequence, 2n);
     assert.equal(finalLedger.authorityRootUpdateApprovals.size(), 2n);
     assert.equal(finalLedger.authorityRootUpdateProgress.size(), 0n);
+    if (allocation) {
+      assert(prospectiveAllocation && prospectivePolicy);
+      const next = prospectiveAllocation;
+      await assert.rejects(connected.callTx.allocateRuntimeInstance(next,
+        signRuntimeInstanceAllocation(next, allocatorSecret), allocator,
+        rotatedAuthorityRoot.pathFor(allocation.allocatorAuthorityCommitment), prospectivePolicy), /active exact template/u);
+      assert.deepEqual(finalLedger.runtimeInstances.lookup(allocation.instanceCommitment).allocationCommitment,
+        pureCircuits.runtimeInstanceAllocationCommitment(allocation));
+      assert.equal(finalLedger.runtimeInstances.size(), 1n);
+      const publicLog = await readFile(publicEvidencePath, "utf8");
+      assert(privateAllocationSentinels.every((sentinel) => !publicLog.includes(sentinel)),
+        "allocation witness appeared in public evidence");
+      milestone("allocation-history-and-log-privacy-verified", { contractAddress, allocatedInstances: 1,
+        capturedLogSentinelsChecked: privateAllocationSentinels.length,
+        revokedTemplatePreflightRejected: true, ordinaryActionAcceptance: false });
+    }
     milestone("final-governance-state-verified", {
       contractAddress,
+      verificationScope,
       proofModuleLifecycleStatus: Number(finalModule.lifecycleStatus),
       proofModuleRegistrySequence: Number(
         finalLedger.proofModuleRegistrySequence,
@@ -1253,10 +1338,26 @@ async function main(): Promise<void> {
         finalLedger.authorityRootUpdateApprovals.size(),
       ),
       historicalActiveTemplateCount: Number(finalLedger.activeTemplates.size()),
+      credentialStatusRootSequence: Number(expectedCredentialSequence),
+      remainingCredentialStagingSessions: Number(finalLedger.capabilityAttenuationSessions.size()),
     });
   } finally {
-    await wallet.stop();
+    try {
+      await wallet.stop();
+    } finally {
+      await memorySampler?.stop();
+    }
   }
 }
 
-await main();
+try {
+  await main();
+} catch (error: unknown) {
+  const message = error instanceof Error ? error.message : "";
+  milestone("failed", {
+    category: /ENOENT|Compact asset|Compact prov|Compact key|Compact generated|real-key/.test(message)
+      ? "missing-or-mismatched-build-assets" : "unclassified-private-error",
+    milestoneComplete: false, detailsWithheldToProtectPrivateWitness: true,
+  });
+  process.exitCode = 1;
+}

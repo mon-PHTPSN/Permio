@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "status": "LOCAL_STACK_RECOVERED_CURRENT_SLOT_KEYS_AND_CHAIN_PENDING",
+  "observedAtUtc": "2026-10-14T12:47:07.6042599Z",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "subsequentKeyAndRegressionEvidence": "docs/evidence/M6/slot-key-resource-attempt-verification.json",
+  "authorization": "User restarted Docker Desktop, asked about WSL, then explicitly requested continue after the three-container recovery proposal.",
+  "engine": {
+    "version": "29.8.0",
+    "wslEngineEnabled": true,
+    "ubuntuIntegrationEnabled": true,
+    "distribution": "Ubuntu-24.04",
+    "windowsAndWslEngineIdsMatched": true,
+    "separateUbuntuDockerEngineInstalled": false,
+    "previousDisabledIntegrationNoteIsHistorical": true
+  },
+  "restartCommand": "wsl.exe -d Ubuntu-24.04 bash -lic \"docker start midnight-node midnight-indexer permio-m6-proof-server\"",
+  "containers": [
+    { "name": "midnight-node", "image": "midnightntwrk/midnight-node:1.0.0", "previousExitCode": 255, "status": "running", "health": "healthy", "restartCount": 0 },
+    { "name": "midnight-indexer", "image": "midnightntwrk/indexer-standalone:4.3.3", "previousExitCode": 255, "status": "running", "health": "healthy", "restartCount": 0 },
+    { "name": "permio-m6-proof-server", "image": "permio/proof-server:8.1.0-weak-cache", "previousExitCode": 255, "status": "running", "health": "healthy", "restartCount": 0 }
+  ],
+  "http": {
+    "nodeHealth": { "url": "http://127.0.0.1:9944/health", "peers": 0, "isSyncing": false, "shouldHavePeers": false },
+    "proofVersion": { "url": "http://127.0.0.1:6300/version", "value": "8.1.0" },
+    "proofReady": { "url": "http://127.0.0.1:6300/ready", "statusCode": 200, "status": "ok", "jobsProcessing": 0, "jobsPending": 0, "jobCapacity": 1 },
+    "indexer": { "url": "http://127.0.0.1:8088/api/v4/graphql", "method": "POST", "query": "{ block { height hash } }", "height": 42256, "hash": "8efdfa96edb6ae6e7d38a99253acab6863d65d825026cb7ce616951234d564b7", "errors": null },
+    "ubuntuLocalhostNodeAndProverAccessible": true
+  },
+  "wslMemorySnapshotMiB": { "total": 7831, "available": 6450, "swapTotal": 2048, "swapUsed": 0 },
+  "toolchain": { "wslNode": "22.23.2", "wslNpm": "10.9.8", "compactCompiler": "0.31.1", "compactRuntime": "0.16.0", "contractProfile": "permio-authorization-v7" },
+  "unchanged": {
+    "containerIdentitiesAndVolumes": true,
+    "existingPatchedProofImage": true,
+    "memoryCpuAndConcurrencyLimits": true,
+    "nodeIndexerHistoryNotReset": true,
+    "unrelatedStoppedOfficialProver": true,
+    "M5AndM5P1": true,
+    "contractArchitecture": true,
+    "sharedMilestoneMarkdownAndGeneratedHtml": true
+  },
+  "notPerformed": [ "factory reset", "WSL restart", "directory rename or deletion", "container recreation", "image pull", "Docker configuration change", "account funding or mnemonic access", "commit or push" ],
+  "limitations": [
+    "Exit code 255 does not establish the original crash cause; no AF_UNIX or OOM attribution is made.",
+    "Restart/health evidence does not establish persistent wallet/private-state recovery or current v7 slot proof acceptance.",
+    "The pre-recovery engine-unavailable observation in runtime-slot-state-verification.json remains historical, not the current status.",
+    "A guarded actual k20 key attempt is separate from container proof generation; matching eleven-circuit keys and a readiness manifest are still prerequisites."
+  ]
+}

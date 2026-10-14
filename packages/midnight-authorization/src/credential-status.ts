@@ -49,6 +49,23 @@ export interface CredentialStatusTransition {
   readonly nextSequence: bigint;
 }
 
+/** Private witness preparation only; this is not an authorization or receipt. */
+export interface CredentialStatusMultiproof {
+  readonly witnessVersion: 1;
+  readonly rootSequence: bigint;
+  readonly leaves: readonly {
+    readonly statusIndex: bigint;
+    readonly leaf: Uint8Array;
+  }[];
+  /** Missing siblings in ascending (level, parent-index) order. */
+  readonly siblings: readonly MerkleTreeDigest[];
+}
+
+export interface CredentialStatusMembershipPath {
+  readonly statusIndex: bigint;
+  readonly path: MerkleTreePath<Uint8Array>;
+}
+
 export interface CreateCredentialStatusCommandInput {
   readonly namespace: string;
   readonly governancePolicyHash: Hex32;
@@ -62,6 +79,7 @@ export interface CreateCredentialStatusCommandInput {
   readonly expectedStatus: "empty" | "active";
   readonly nextStatus: RuntimeCredentialStatus;
   readonly effectiveAt: number;
+  readonly stagingExpiresAt?: number;
   readonly commandNonce: Hex32;
   readonly subjectAccountCredentialCommitment?: Uint8Array;
 }
@@ -109,13 +127,164 @@ function nodeDigest(
   return { field: transientHash(MERKLE_NODE_TYPE, [left.field, right.field]) };
 }
 
+function assertRootSequence(sequence: bigint): void {
+  if (typeof sequence !== "bigint" || sequence < 0n || sequence >= 2n ** 64n) {
+    throw new RangeError("credential status root sequence must fit Uint<64>");
+  }
+}
+
+/** Reconstructs membership only; callers must separately check exact active leaves. */
+export function credentialStatusMultiproofRoot(
+  proof: CredentialStatusMultiproof,
+): MerkleTreeDigest {
+  if (proof.witnessVersion !== 1 || proof.leaves.length === 0) {
+    throw new TypeError("credential status multiproof must contain v1 membership leaves");
+  }
+  assertRootSequence(proof.rootSequence);
+  let previousIndex = -1n;
+  let frontier = proof.leaves.map(({ statusIndex, leaf }) => {
+    assertIndex(statusIndex);
+    assertBytes32(leaf, "multiproof leaf");
+    if (statusIndex <= previousIndex) {
+      throw new TypeError("multiproof indices must be unique and strictly increasing");
+    }
+    previousIndex = statusIndex;
+    return { index: statusIndex, digest: leafDigest(leaf), leaf };
+  });
+  let siblingOffset = 0;
+  for (let level = 0; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+    const parents: typeof frontier = [];
+    for (let offset = 0; offset < frontier.length; offset += 1) {
+      const current = frontier[offset]!;
+      const goesLeft = (current.index & 1n) === 0n;
+      const next = frontier[offset + 1];
+      let sibling: MerkleTreeDigest;
+      if (goesLeft && next?.index === current.index + 1n) {
+        sibling = next.digest;
+        offset += 1;
+      } else {
+        const supplied = proof.siblings[siblingOffset];
+        if (supplied === undefined) {
+          throw new TypeError("credential status multiproof is missing a sibling");
+        }
+        sibling = supplied;
+        siblingOffset += 1;
+      }
+      // Bytes<32> leaves and interior Field nodes have different Compact
+      // alignment. Use the generated leaf primitive at level zero exactly.
+      const digest = level === 0
+        ? pureCircuits.runtimeCredentialStatusLeafParent({
+          leaf: current.leaf,
+          path: [{ sibling, goes_left: goesLeft }],
+        })
+        : nodeDigest(
+          goesLeft ? current.digest : sibling,
+          goesLeft ? sibling : current.digest,
+        );
+      parents.push({ index: current.index >> 1n, digest, leaf: current.leaf });
+    }
+    frontier = parents;
+  }
+  if (siblingOffset !== proof.siblings.length || frontier.length !== 1) {
+    throw new TypeError("credential status multiproof contains unused siblings or roots");
+  }
+  return frontier[0]!.digest;
+}
+
+export function verifyCredentialStatusMultiproof(
+  proof: CredentialStatusMultiproof,
+  expectedRoot: MerkleTreeDigest,
+  expectedSequence: bigint,
+): boolean {
+  try {
+    assertRootSequence(expectedSequence);
+    return proof.rootSequence === expectedSequence &&
+      credentialStatusMultiproofRoot(proof).field === expectedRoot.field;
+  } catch {
+    // Malformed private witnesses are rejection, never a trust grant.
+    return false;
+  }
+}
+
+export function buildCredentialStatusMultiproof(
+  memberships: readonly CredentialStatusMembershipPath[],
+  rootSequence: bigint,
+): CredentialStatusMultiproof {
+  assertRootSequence(rootSequence);
+  if (memberships.length === 0) {
+    throw new TypeError("credential status multiproof requires at least one leaf");
+  }
+  const sorted = [...memberships].sort((left, right) =>
+    left.statusIndex < right.statusIndex ? -1 : left.statusIndex > right.statusIndex ? 1 : 0,
+  );
+  const firstRoot = pureCircuits.runtimeCredentialStatusPathRoot(sorted[0]!.path);
+  const availableSiblings = new Map<string, MerkleTreeDigest>();
+  let previousIndex = -1n;
+  for (const { statusIndex, path } of sorted) {
+    assertIndex(statusIndex);
+    assertBytes32(path.leaf, "multiproof leaf");
+    if (statusIndex <= previousIndex) {
+      throw new TypeError("multiproof indices must be unique");
+    }
+    previousIndex = statusIndex;
+    if (path.path.length !== CREDENTIAL_STATUS_TREE_DEPTH) {
+      throw new TypeError("multiproof membership path must have depth 20");
+    }
+    let index = statusIndex;
+    for (let level = 0; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+      const step = path.path[level]!;
+      if (step.goes_left !== ((index & 1n) === 0n)) {
+        throw new TypeError("multiproof path does not match its exact status index");
+      }
+      const key = `${level}:${index ^ 1n}`;
+      const existing = availableSiblings.get(key);
+      if (existing !== undefined && existing.field !== step.sibling.field) {
+        throw new TypeError("multiproof membership paths disagree on a shared branch");
+      }
+      availableSiblings.set(key, { field: step.sibling.field });
+      index >>= 1n;
+    }
+    if (pureCircuits.runtimeCredentialStatusPathRoot(path).field !== firstRoot.field) {
+      throw new TypeError("multiproof membership paths must share one exact root");
+    }
+  }
+  let frontier = sorted.map(({ statusIndex }) => statusIndex);
+  const siblings: MerkleTreeDigest[] = [];
+  for (let level = 0; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+    const parents: bigint[] = [];
+    for (let offset = 0; offset < frontier.length; offset += 1) {
+      const index = frontier[offset]!;
+      if ((index & 1n) === 0n && frontier[offset + 1] === index + 1n) {
+        offset += 1;
+      } else {
+        siblings.push(availableSiblings.get(`${level}:${index ^ 1n}`)!);
+      }
+      parents.push(index >> 1n);
+    }
+    frontier = parents;
+  }
+  const proof: CredentialStatusMultiproof = {
+    witnessVersion: 1,
+    rootSequence,
+    leaves: sorted.map(({ statusIndex, path }) => ({
+      statusIndex,
+      leaf: path.leaf.slice(),
+    })),
+    siblings,
+  };
+  if (!verifyCredentialStatusMultiproof(proof, firstRoot, rootSequence)) {
+    throw new TypeError("credential status multiproof does not reconstruct its source root");
+  }
+  return proof;
+}
+
 function statusCode(status: "empty" | RuntimeCredentialStatus): bigint {
   return RUNTIME_CREDENTIAL_STATUSES[status];
 }
 
 function toLeaf(entry: CredentialStatusEntry): RuntimeCredentialStatusLeaf {
   return {
-    leafVersion: 1n,
+    leafVersion: entry.kind === "account" ? 1n : entry.kind === "capability" ? 3n : 2n,
     namespaceHash: bytes(hashProtocolIdentifier("namespace", entry.namespace)),
     credentialKind: RUNTIME_CREDENTIAL_KINDS[entry.kind],
     credentialCommitment: entry.credentialCommitment,
@@ -130,18 +299,22 @@ export function createRuntimeCredentialStatusCommand(
   input: CreateCredentialStatusCommandInput,
 ): RuntimeCredentialStatusCommand {
   assertIndex(input.statusIndex);
+  assertRootSequence(input.credentialStatusRootSequence);
   assertBytes32(input.credentialCommitment, "credentialCommitment");
   assertBytes32(
     input.revocationAuthorityAccountCredentialCommitment,
     "revocationAuthorityAccountCredentialCommitment",
   );
+  const stagingExpiresAt = input.stagingExpiresAt ?? 0;
   if (
     !Number.isSafeInteger(input.authorityRootVersion) ||
     !Number.isSafeInteger(input.authorityRootSequence) ||
     !Number.isSafeInteger(input.effectiveAt) ||
+    !Number.isSafeInteger(stagingExpiresAt) ||
     input.authorityRootVersion < 0 ||
     input.authorityRootSequence < 0 ||
-    input.effectiveAt < 0
+    input.effectiveAt < 0 ||
+    stagingExpiresAt < 0
   ) {
     throw new TypeError("credential-status versions, sequences, and time must be non-negative safe integers");
   }
@@ -154,7 +327,7 @@ export function createRuntimeCredentialStatusCommand(
   const subject = input.subjectAccountCredentialCommitment ?? new Uint8Array(32);
   assertBytes32(subject, "subjectAccountCredentialCommitment");
   return {
-    commandVersion: 1n,
+    commandVersion: 3n,
     namespaceHash: bytes(hashProtocolIdentifier("namespace", input.namespace)),
     governancePolicyHash: bytes(input.governancePolicyHash),
     authorityRootVersion: BigInt(input.authorityRootVersion),
@@ -169,12 +342,93 @@ export function createRuntimeCredentialStatusCommand(
     expectedStatus: statusCode(input.expectedStatus),
     nextStatus: statusCode(input.nextStatus),
     effectiveAt: BigInt(input.effectiveAt),
+    stagingExpiresAt: BigInt(stagingExpiresAt),
     commandNonce: bytes(input.commandNonce),
   };
 }
 
+function sparseBytes32MerklePaths(
+  rawLeaves: ReadonlyMap<bigint, Uint8Array>,
+  statusIndexes: readonly bigint[],
+): readonly MerkleTreePath<Uint8Array>[] {
+  for (const statusIndex of statusIndexes) assertIndex(statusIndex);
+  const emptyLeaf = new Uint8Array(32);
+  const emptyDigests: MerkleTreeDigest[] = [leafDigest(emptyLeaf)];
+  emptyDigests.push(
+    pureCircuits.runtimeCredentialStatusLeafParent({
+      leaf: emptyLeaf,
+      path: [{ sibling: emptyDigests[0]!, goes_left: true }],
+    }),
+  );
+  for (let level = 2; level <= CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+    const child = emptyDigests[level - 1]!;
+    emptyDigests.push(nodeDigest(child, child));
+  }
+
+  const nodeLevels: Array<Map<bigint, MerkleTreeDigest>> = [new Map()];
+  for (const [index, leaf] of rawLeaves) {
+    assertIndex(index);
+    assertBytes32(leaf, "sparse Merkle leaf");
+    nodeLevels[0]!.set(index, leafDigest(leaf));
+  }
+  const leafParentIndexes = new Set(
+    [...rawLeaves.keys()].map((index) => index >> 1n),
+  );
+  const firstParents = new Map<bigint, MerkleTreeDigest>();
+  for (const parentIndex of leafParentIndexes) {
+    const leftIndex = parentIndex << 1n;
+    const left = rawLeaves.get(leftIndex) ?? emptyLeaf;
+    const right = nodeLevels[0]!.get(leftIndex + 1n) ?? emptyDigests[0]!;
+    firstParents.set(
+      parentIndex,
+      pureCircuits.runtimeCredentialStatusLeafParent({
+        leaf: left,
+        path: [{ sibling: right, goes_left: true }],
+      }),
+    );
+  }
+  nodeLevels.push(firstParents);
+  for (let level = 1; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+    const current = nodeLevels[level]!;
+    const parentIndexes = new Set(
+      [...current.keys()].map((index) => index >> 1n),
+    );
+    const parents = new Map<bigint, MerkleTreeDigest>();
+    for (const parentIndex of parentIndexes) {
+      const leftIndex = parentIndex << 1n;
+      const left = current.get(leftIndex) ?? emptyDigests[level]!;
+      const right = current.get(leftIndex + 1n) ?? emptyDigests[level]!;
+      parents.set(parentIndex, nodeDigest(left, right));
+    }
+    nodeLevels.push(parents);
+  }
+
+  return statusIndexes.map((statusIndex) => {
+    const leaf = (rawLeaves.get(statusIndex) ?? emptyLeaf).slice();
+    const path = [] as MerkleTreePath<Uint8Array>["path"];
+    let index = statusIndex;
+    for (let level = 0; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
+      const siblingIndex = index ^ 1n;
+      path.push({
+        sibling: nodeLevels[level]!.get(siblingIndex) ?? emptyDigests[level]!,
+        goes_left: (index & 1n) === 0n,
+      });
+      index >>= 1n;
+    }
+    return { leaf, path };
+  });
+}
+
+export function sparseBytes32MerklePath(
+  rawLeaves: ReadonlyMap<bigint, Uint8Array>,
+  statusIndex: bigint,
+): MerkleTreePath<Uint8Array> {
+  return sparseBytes32MerklePaths(rawLeaves, [statusIndex])[0]!;
+}
+
 export class CredentialStatusTree {
   #entries = new Map<bigint, CredentialStatusEntry>();
+  #rawLeaves = new Map<bigint, Uint8Array>();
   #sequence = 0n;
 
   get root(): MerkleTreeDigest {
@@ -187,75 +441,19 @@ export class CredentialStatusTree {
   }
 
   pathFor(statusIndex: bigint): MerkleTreePath<Uint8Array> {
-    assertIndex(statusIndex);
-    const rawLeaves = new Map<bigint, Uint8Array>();
-    for (const [index, entry] of this.#entries) {
-      rawLeaves.set(
-        index,
-        pureCircuits.runtimeCredentialStatusLeafCommitment(toLeaf(entry)),
-      );
-    }
-    const emptyLeaf = new Uint8Array(32);
-    const emptyDigests: MerkleTreeDigest[] = [leafDigest(emptyLeaf)];
-    emptyDigests.push(
-      pureCircuits.runtimeCredentialStatusLeafParent({
-        leaf: emptyLeaf,
-        path: [{ sibling: emptyDigests[0]!, goes_left: true }],
-      }),
-    );
-    for (let level = 2; level <= CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
-      const child = emptyDigests[level - 1]!;
-      emptyDigests.push(nodeDigest(child, child));
-    }
+    return sparseBytes32MerklePath(this.#rawLeaves, statusIndex);
+  }
 
-    const nodeLevels: Array<Map<bigint, MerkleTreeDigest>> = [new Map()];
-    for (const [index, leaf] of rawLeaves) {
-      nodeLevels[0]!.set(index, leafDigest(leaf));
-    }
-    const leafParentIndexes = new Set(
-      [...rawLeaves.keys()].map((index) => index >> 1n),
+  /** Private membership preparation, including revoked/empty leaves if requested. */
+  multiproofFor(statusIndexes: readonly bigint[]): CredentialStatusMultiproof {
+    const paths = sparseBytes32MerklePaths(this.#rawLeaves, statusIndexes);
+    return buildCredentialStatusMultiproof(
+      statusIndexes.map((statusIndex, offset) => ({
+        statusIndex,
+        path: paths[offset]!,
+      })),
+      this.#sequence,
     );
-    const firstParents = new Map<bigint, MerkleTreeDigest>();
-    for (const parentIndex of leafParentIndexes) {
-      const leftIndex = parentIndex << 1n;
-      const left = rawLeaves.get(leftIndex) ?? emptyLeaf;
-      const right = nodeLevels[0]!.get(leftIndex + 1n) ?? emptyDigests[0]!;
-      firstParents.set(
-        parentIndex,
-        pureCircuits.runtimeCredentialStatusLeafParent({
-          leaf: left,
-          path: [{ sibling: right, goes_left: true }],
-        }),
-      );
-    }
-    nodeLevels.push(firstParents);
-    for (let level = 1; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
-      const current = nodeLevels[level]!;
-      const parentIndexes = new Set(
-        [...current.keys()].map((index) => index >> 1n),
-      );
-      const parents = new Map<bigint, MerkleTreeDigest>();
-      for (const parentIndex of parentIndexes) {
-        const leftIndex = parentIndex << 1n;
-        const left = current.get(leftIndex) ?? emptyDigests[level]!;
-        const right = current.get(leftIndex + 1n) ?? emptyDigests[level]!;
-        parents.set(parentIndex, nodeDigest(left, right));
-      }
-      nodeLevels.push(parents);
-    }
-
-    const leaf = rawLeaves.get(statusIndex) ?? emptyLeaf;
-    const path = [] as MerkleTreePath<Uint8Array>["path"];
-    let index = statusIndex;
-    for (let level = 0; level < CREDENTIAL_STATUS_TREE_DEPTH; level += 1) {
-      const siblingIndex = index ^ 1n;
-      path.push({
-        sibling: nodeLevels[level]!.get(siblingIndex) ?? emptyDigests[level]!,
-        goes_left: (index & 1n) === 0n,
-      });
-      index >>= 1n;
-    }
-    return { leaf, path };
   }
 
   issue(entry: Omit<CredentialStatusEntry, "status">): CredentialStatusTransition {
@@ -290,14 +488,19 @@ export class CredentialStatusTree {
   }
 
   #replace(next: CredentialStatusEntry): CredentialStatusTransition {
-    const previousRoot = this.root;
-    const path = this.pathFor(next.statusIndex);
-    this.#entries.set(next.statusIndex, {
+    const copied = {
       ...next,
       credentialCommitment: next.credentialCommitment.slice(),
       revocationAuthorityAccountCredentialCommitment:
         next.revocationAuthorityAccountCredentialCommitment.slice(),
-    });
+    };
+    // Validate/hash before mutating. Exact immutable leaf bytes can then be
+    // reused across shared-path preparation instead of rehashing every entry.
+    const leaf = pureCircuits.runtimeCredentialStatusLeafCommitment(toLeaf(copied));
+    const previousRoot = this.root;
+    const path = this.pathFor(next.statusIndex);
+    this.#entries.set(next.statusIndex, copied);
+    this.#rawLeaves.set(next.statusIndex, leaf);
     const previousSequence = this.#sequence;
     this.#sequence += 1n;
     return {

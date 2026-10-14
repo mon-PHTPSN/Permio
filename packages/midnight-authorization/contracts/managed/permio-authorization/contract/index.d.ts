@@ -1,5 +1,28 @@
 import type * as __compactRuntime from '@midnight-ntwrk/compact-runtime';
 
+export type RuntimeStatusMembership = { statusIndex: bigint; leaf: Uint8Array };
+
+export type RuntimeStatusProofNode = { level: bigint;
+                                       index: bigint;
+                                       digest: { field: bigint }
+                                     };
+
+export type RuntimeStatusProofStep = { kind: bigint;
+                                       leftFromStack: boolean;
+                                       rightFromStack: boolean;
+                                       left: RuntimeStatusProofNode;
+                                       right: RuntimeStatusProofNode;
+                                       parentIndex: bigint;
+                                       stackTail: bigint
+                                     };
+
+export type RuntimeStatusMultiproof = { witnessVersion: bigint;
+                                        rootSequence: bigint;
+                                        leafCount: bigint;
+                                        leaves: RuntimeStatusMembership[];
+                                        steps: RuntimeStatusProofStep[]
+                                      };
+
 export type SemanticVersion = { major: bigint; minor: bigint; patch: bigint };
 
 export type ActivationAdmissionEnvelope = { envelopeVersion: bigint;
@@ -268,6 +291,26 @@ export type RuntimeScopeRoots = { actionsRoot: { field: bigint };
                                   disclosurePolicyIdsRoot: { field: bigint }
                                 };
 
+export type RuntimeScopeCounts = { actionsCount: bigint;
+                                   resourceSelectorsCount: bigint;
+                                   resourcesCount: bigint;
+                                   purposesCount: bigint;
+                                   recipientKindsCount: bigint;
+                                   recipientsCount: bigint;
+                                   disclosurePolicyIdsCount: bigint
+                                 };
+
+export type RuntimeScopeProgress = { roots: RuntimeScopeRoots;
+                                     counts: RuntimeScopeCounts;
+                                     lastDimension: bigint;
+                                     lastOrderKey: Uint8Array
+                                   };
+
+export type RuntimeScopeElement = { elementVersion: bigint;
+                                    dimension: bigint;
+                                    valueHash: Uint8Array
+                                  };
+
 export type RuntimeAccountCredential = { credentialVersion: bigint;
                                          target: TemplateRegistryTarget;
                                          instanceCommitment: Uint8Array;
@@ -290,7 +333,9 @@ export type RuntimeCapabilityCredential = { credentialVersion: bigint;
                                             subjectAccountCredentialCommitment: Uint8Array;
                                             parentCapabilityCredentialCommitment: Uint8Array;
                                             issuerAccountCredentialCommitment: Uint8Array;
+                                            namespaceIssuerAuthorityCommitment: Uint8Array;
                                             scopeRoots: RuntimeScopeRoots;
+                                            scopeCounts: RuntimeScopeCounts;
                                             notBefore: bigint;
                                             expiresAt: bigint;
                                             delegationDepth: bigint;
@@ -308,6 +353,7 @@ export type RuntimeSessionCredential = { credentialVersion: bigint;
                                          subjectAccountCredentialCommitment: Uint8Array;
                                          capabilityCredentialCommitment: Uint8Array;
                                          scopeRoots: RuntimeScopeRoots;
+                                         scopeCounts: RuntimeScopeCounts;
                                          runtimePublicKey: __compactRuntime.JubjubPoint;
                                          notBefore: bigint;
                                          expiresAt: bigint;
@@ -359,10 +405,288 @@ export type RuntimeCredentialStatusCommand = { commandVersion: bigint;
                                                expectedStatus: bigint;
                                                nextStatus: bigint;
                                                effectiveAt: bigint;
+                                               stagingExpiresAt: bigint;
                                                commandNonce: Uint8Array
                                              };
 
+export type CapabilityAttenuationCertification = { certificationVersion: bigint;
+                                                   commandCommitment: Uint8Array;
+                                                   capabilityCredentialCommitment: Uint8Array;
+                                                   parentCapabilityCredentialCommitment: Uint8Array;
+                                                   issuerAccountCredentialCommitment: Uint8Array;
+                                                   totalScopeElementCount: bigint;
+                                                   stagingExpiresAt: bigint
+                                                 };
+
+export type CapabilityAttenuationSession = { certificationCommitment: Uint8Array;
+                                             progressCommitment: Uint8Array;
+                                             nextElementIndex: bigint;
+                                             totalScopeElementCount: bigint;
+                                             expiresAt: bigint
+                                           };
+
 export type FinalizationResult = { activated: boolean; registryKey: Uint8Array
+                                 };
+
+export type RuntimeActiveAncestry = { witnessVersion: bigint;
+                                      capabilityCount: bigint;
+                                      capabilities: RuntimeCapabilityCredential[];
+                                      accounts: RuntimeAccountCredential[];
+                                      session: RuntimeSessionCredential;
+                                      statusProof: RuntimeStatusMultiproof
+                                    };
+
+export type RuntimeActionScopePaths = { actions: { leaf: Uint8Array,
+                                                   path: { sibling: { field: bigint
+                                                                    },
+                                                           goes_left: boolean
+                                                         }[]
+                                                 };
+                                        resourceSelectors: { leaf: Uint8Array,
+                                                             path: { sibling: { field: bigint
+                                                                              },
+                                                                     goes_left: boolean
+                                                                   }[]
+                                                           };
+                                        resources: { leaf: Uint8Array,
+                                                     path: { sibling: { field: bigint
+                                                                      },
+                                                             goes_left: boolean
+                                                           }[]
+                                                   };
+                                        purposes: { leaf: Uint8Array,
+                                                    path: { sibling: { field: bigint
+                                                                     },
+                                                            goes_left: boolean
+                                                          }[]
+                                                  };
+                                        recipientKinds: { leaf: Uint8Array,
+                                                          path: { sibling: { field: bigint
+                                                                           },
+                                                                  goes_left: boolean
+                                                                }[]
+                                                        };
+                                        recipients: { leaf: Uint8Array,
+                                                      path: { sibling: { field: bigint
+                                                                       },
+                                                              goes_left: boolean
+                                                            }[]
+                                                    };
+                                        disclosurePolicyIds: { leaf: Uint8Array,
+                                                               path: { sibling: { field: bigint
+                                                                                },
+                                                                       goes_left: boolean
+                                                                     }[]
+                                                             }
+                                      };
+
+export type RuntimeTemplateActionPolicy = { policyVersion: bigint;
+                                            target: TemplateRegistryTarget;
+                                            actionIndex: bigint;
+                                            bindingActionIdHash: Uint8Array;
+                                            actionIdHash: Uint8Array;
+                                            proofProfileIdHash: Uint8Array;
+                                            proofFamilyHash: Uint8Array;
+                                            contextHash: Uint8Array;
+                                            actorSlotIdHash: Uint8Array;
+                                            slotAssignmentRulesRoot: { field: bigint
+                                                                     };
+                                            slotAssignmentRuleCount: bigint;
+                                            initialStateIdHash: Uint8Array;
+                                            resourceSelectorHash: Uint8Array;
+                                            purposeHash: Uint8Array;
+                                            recipientKindHash: Uint8Array;
+                                            disclosurePolicyIdHash: Uint8Array;
+                                            capabilityRuleIdHash: Uint8Array;
+                                            maxCapabilityDuration: bigint;
+                                            maxDelegationDepth: bigint;
+                                            revocable: boolean;
+                                            inputRecordTypesHash: Uint8Array;
+                                            outputClaimTypesHash: Uint8Array;
+                                            executionAdapterHash: Uint8Array;
+                                            transitionRoot: { field: bigint };
+                                            transitionCount: bigint
+                                          };
+
+export type RuntimeParticipantSlotRule = { ruleVersion: bigint;
+                                           contextHash: Uint8Array;
+                                           slotIdHash: Uint8Array;
+                                           authorityKind: bigint;
+                                           authoritySlotIdHash: Uint8Array
+                                         };
+
+export type RuntimeTemplateTransition = { transitionVersion: bigint;
+                                          actionIdHash: Uint8Array;
+                                          fromStateIdHash: Uint8Array;
+                                          toStateIdHash: Uint8Array
+                                        };
+
+export type RuntimePrivateMapNode = { nodeVersion: bigint;
+                                      key: Uint8Array;
+                                      value: Uint8Array;
+                                      nextKey: Uint8Array;
+                                      nextIndex: bigint
+                                    };
+
+export type RuntimePrivateMapWitness = { node: RuntimePrivateMapNode;
+                                         path: { leaf: Uint8Array,
+                                                 path: { sibling: { field: bigint
+                                                                  },
+                                                         goes_left: boolean
+                                                       }[]
+                                               }
+                                       };
+
+export type RuntimeInstanceAllocation = { allocationVersion: bigint;
+                                          target: TemplateRegistryTarget;
+                                          instanceCommitment: Uint8Array;
+                                          instanceIdHash: Uint8Array;
+                                          allocationRequestIdHash: Uint8Array;
+                                          m4AuthorizationCommitment: Uint8Array;
+                                          allocatorAuthorityCommitment: Uint8Array;
+                                          capabilityIssuersRoot: { field: bigint
+                                                                 };
+                                          capabilityIssuerCount: bigint;
+                                          initialStateCommitment: Uint8Array;
+                                          governancePolicyHash: Uint8Array;
+                                          authorityRootVersion: bigint;
+                                          authorityRootSequence: bigint;
+                                          targetNetworkHash: Uint8Array;
+                                          targetContractIdentity: Uint8Array;
+                                          authorizedAt: bigint;
+                                          createdAt: bigint;
+                                          expiresAt: bigint;
+                                          allocationValidBefore: bigint;
+                                          allocationNonce: Uint8Array
+                                        };
+
+export type RuntimeInstanceRecord = { allocationCommitment: Uint8Array;
+                                      currentStateCommitment: Uint8Array;
+                                      transitionSequence: bigint;
+                                      lifecycleStatus: bigint
+                                    };
+
+export type RuntimeCredentialInstanceBinding = { allocation: RuntimeInstanceAllocation;
+                                                 issuerPath: { leaf: Uint8Array,
+                                                               path: { sibling: { field: bigint
+                                                                                },
+                                                                       goes_left: boolean
+                                                                     }[]
+                                                             };
+                                                 validBefore: bigint
+                                               };
+
+export type RuntimeStateOpening = { stateVersion: bigint;
+                                    instanceCommitment: Uint8Array;
+                                    stateIdHash: Uint8Array;
+                                    lastMutationAt: bigint;
+                                    slotAssignmentsRoot: { field: bigint };
+                                    slotAssignmentCount: bigint;
+                                    slotBindingsRoot: { field: bigint };
+                                    slotBindingCount: bigint;
+                                    nonce: Uint8Array
+                                  };
+
+export type RuntimeAllocationPolicyWitness = { policy: RuntimeTemplateActionPolicy;
+                                               binding: ProofModuleBinding;
+                                               bindingPath: { leaf: Uint8Array,
+                                                              path: { sibling: { field: bigint
+                                                                               },
+                                                                      goes_left: boolean
+                                                                    }[]
+                                                            };
+                                               initialState: RuntimeStateOpening
+                                             };
+
+export type RuntimeSlotCommand = { commandVersion: bigint;
+                                   kind: bigint;
+                                   target: TemplateRegistryTarget;
+                                   instanceCommitment: Uint8Array;
+                                   allocationCommitment: Uint8Array;
+                                   stateCommitment: Uint8Array;
+                                   stateSequence: bigint;
+                                   authorityRootVersion: bigint;
+                                   authorityRootSequence: bigint;
+                                   credentialStatusRootSequence: bigint;
+                                   contextHash: Uint8Array;
+                                   slotIdHash: Uint8Array;
+                                   subjectAccountCredentialCommitment: Uint8Array;
+                                   subjectAccountIdHash: Uint8Array;
+                                   assignmentIdHash: Uint8Array;
+                                   parentAssignmentIdHash: Uint8Array;
+                                   assignerAccountCredentialCommitment: Uint8Array;
+                                   authorityKind: bigint;
+                                   namespaceAuthorityCommitment: Uint8Array;
+                                   m5AssignmentCommitment: Uint8Array;
+                                   effectiveAt: bigint;
+                                   validBefore: bigint;
+                                   commandNonce: Uint8Array
+                                 };
+
+export type RuntimeSlotAssignment = { assignmentVersion: bigint;
+                                      target: TemplateRegistryTarget;
+                                      instanceCommitment: Uint8Array;
+                                      contextHash: Uint8Array;
+                                      slotIdHash: Uint8Array;
+                                      subjectAccountCredentialCommitment: Uint8Array;
+                                      subjectAccountIdHash: Uint8Array;
+                                      assignmentIdHash: Uint8Array;
+                                      parentAssignmentIdHash: Uint8Array;
+                                      assignerAccountCredentialCommitment: Uint8Array;
+                                      authorityKind: bigint;
+                                      namespaceAuthorityCommitment: Uint8Array;
+                                      m5AssignmentCommitment: Uint8Array;
+                                      assignedAt: bigint;
+                                      issuedSequence: bigint
+                                    };
+
+export type RuntimeSlotRecord = { assignment: RuntimeSlotAssignment;
+                                  status: bigint;
+                                  revokedAt: bigint
+                                };
+
+export type RuntimeSlotPolicyWitness = { policy: RuntimeTemplateActionPolicy;
+                                         binding: ProofModuleBinding;
+                                         bindingPath: { leaf: Uint8Array,
+                                                        path: { sibling: { field: bigint
+                                                                         },
+                                                                goes_left: boolean
+                                                              }[]
+                                                      };
+                                         rule: RuntimeParticipantSlotRule;
+                                         rulePath: { leaf: Uint8Array,
+                                                     path: { sibling: { field: bigint
+                                                                      },
+                                                             goes_left: boolean
+                                                           }[]
+                                                   }
+                                       };
+
+export type RuntimeSlotAncestryStep = { record: RuntimeSlotRecord;
+                                        opening: RuntimePrivateMapWitness;
+                                        account: RuntimeAccountCredential;
+                                        accountStatus: bigint;
+                                        accountStatusPath: { leaf: Uint8Array,
+                                                             path: { sibling: { field: bigint
+                                                                              },
+                                                                     goes_left: boolean
+                                                                   }[]
+                                                           }
+                                      };
+
+export type RuntimeSlotProgress = { phase: bigint;
+                                    nextAssignmentIdHash: Uint8Array;
+                                    expectedAccountCommitment: Uint8Array;
+                                    childIssuedSequence: bigint;
+                                    previousBindingAssignmentIdHash: Uint8Array;
+                                    previousBindingAccountCommitment: Uint8Array;
+                                    inactive: boolean;
+                                    steps: bigint
+                                  };
+
+export type RuntimeSlotSession = { commandCommitment: Uint8Array;
+                                   progressCommitment: Uint8Array;
+                                   expiresAt: bigint
                                  };
 
 export type Witnesses<PS> = {
@@ -371,6 +695,81 @@ export type Witnesses<PS> = {
 }
 
 export type ImpureCircuits<PS> = {
+  verifyRuntimeActionAuthorization(context: __compactRuntime.CircuitContext<PS>,
+                                   ancestry_0: RuntimeActiveAncestry,
+                                   intent_0: RuntimeActionIntent,
+                                   sessionSignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                         response: bigint
+                                                       },
+                                   intentSignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                        response: bigint
+                                                      },
+                                   capabilityPaths_0: RuntimeActionScopePaths,
+                                   sessionPaths_0: RuntimeActionScopePaths,
+                                   expectedRoot_0: { field: bigint },
+                                   expectedSequence_0: bigint,
+                                   now_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  allocateRuntimeInstance(context: __compactRuntime.CircuitContext<PS>,
+                          allocation_0: RuntimeInstanceAllocation,
+                          signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                         response: bigint
+                                       },
+                          allocator_0: GovernanceActivatorLeaf,
+                          allocatorPath_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           },
+                          policyWitness_0: RuntimeAllocationPolicyWitness): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  manageRuntimeParticipantSlots(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
+                                command_0: RuntimeSlotCommand,
+                                signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                               response: bigint
+                                             },
+                                allocation_0: RuntimeInstanceAllocation,
+                                state_0: RuntimeStateOpening,
+                                nextStateNonce_0: Uint8Array,
+                                policyOpening_0: RuntimeSlotPolicyWitness,
+                                namespaceAuthority_0: GovernanceActivatorLeaf,
+                                namespaceAuthorityPath_0: { leaf: Uint8Array,
+                                                            path: { sibling: { field: bigint
+                                                                             },
+                                                                    goes_left: boolean
+                                                                  }[]
+                                                          },
+                                accountAuthority_0: RuntimeAccountCredential,
+                                accountAuthorityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                subjectAccount_0: RuntimeAccountCredential,
+                                subjectAccountStatusPath_0: { leaf: Uint8Array,
+                                                              path: { sibling: { field: bigint
+                                                                               },
+                                                                      goes_left: boolean
+                                                                    }[]
+                                                            },
+                                progress_0: RuntimeSlotProgress,
+                                step_0: RuntimeSlotAncestryStep,
+                                targetRecord_0: RuntimeSlotRecord,
+                                assignmentOpening_0: RuntimePrivateMapWitness,
+                                assignmentAppendPath_0: { leaf: Uint8Array,
+                                                          path: { sibling: { field: bigint
+                                                                           },
+                                                                  goes_left: boolean
+                                                                }[]
+                                                        },
+                                bindingOpening_0: RuntimePrivateMapWitness,
+                                bindingAppendPath_0: { leaf: Uint8Array,
+                                                       path: { sibling: { field: bigint
+                                                                        },
+                                                               goes_left: boolean
+                                                             }[]
+                                                     },
+                                previousBindingOpening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, bigint>;
   verifyGovernanceActivationSignature(context: __compactRuntime.CircuitContext<PS>,
                                       envelope_0: ActivationAdmissionEnvelope,
                                       signature_0: { announcement: __compactRuntime.JubjubPoint,
@@ -455,6 +854,7 @@ export type ImpureCircuits<PS> = {
                                                 }[]
                                         }): __compactRuntime.CircuitResults<PS, FinalizationResult>;
   updateRuntimeCredentialStatus(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
                                 command_0: RuntimeCredentialStatusCommand,
                                 signature_0: { announcement: __compactRuntime.JubjubPoint,
                                                response: bigint
@@ -478,10 +878,98 @@ export type ImpureCircuits<PS> = {
                                                                         },
                                                                goes_left: boolean
                                                              }[]
-                                                     }): __compactRuntime.CircuitResults<PS, bigint>;
+                                                     },
+                                capability_0: RuntimeCapabilityCredential,
+                                capabilitySignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                         response: bigint
+                                                       },
+                                parentCapability_0: RuntimeCapabilityCredential,
+                                parentCapabilityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                scopeProgress_0: RuntimeScopeProgress,
+                                scopeElement_0: RuntimeScopeElement,
+                                childScopePath_0: { leaf: Uint8Array,
+                                                    path: { sibling: { field: bigint
+                                                                     },
+                                                            goes_left: boolean
+                                                          }[]
+                                                  },
+                                parentScopePath_0: { leaf: Uint8Array,
+                                                     path: { sibling: { field: bigint
+                                                                      },
+                                                             goes_left: boolean
+                                                           }[]
+                                                   },
+                                sessionCredential_0: RuntimeSessionCredential,
+                                instanceBinding_0: RuntimeCredentialInstanceBinding): __compactRuntime.CircuitResults<PS, bigint>;
 }
 
 export type ProvableCircuits<PS> = {
+  allocateRuntimeInstance(context: __compactRuntime.CircuitContext<PS>,
+                          allocation_0: RuntimeInstanceAllocation,
+                          signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                         response: bigint
+                                       },
+                          allocator_0: GovernanceActivatorLeaf,
+                          allocatorPath_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           },
+                          policyWitness_0: RuntimeAllocationPolicyWitness): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  manageRuntimeParticipantSlots(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
+                                command_0: RuntimeSlotCommand,
+                                signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                               response: bigint
+                                             },
+                                allocation_0: RuntimeInstanceAllocation,
+                                state_0: RuntimeStateOpening,
+                                nextStateNonce_0: Uint8Array,
+                                policyOpening_0: RuntimeSlotPolicyWitness,
+                                namespaceAuthority_0: GovernanceActivatorLeaf,
+                                namespaceAuthorityPath_0: { leaf: Uint8Array,
+                                                            path: { sibling: { field: bigint
+                                                                             },
+                                                                    goes_left: boolean
+                                                                  }[]
+                                                          },
+                                accountAuthority_0: RuntimeAccountCredential,
+                                accountAuthorityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                subjectAccount_0: RuntimeAccountCredential,
+                                subjectAccountStatusPath_0: { leaf: Uint8Array,
+                                                              path: { sibling: { field: bigint
+                                                                               },
+                                                                      goes_left: boolean
+                                                                    }[]
+                                                            },
+                                progress_0: RuntimeSlotProgress,
+                                step_0: RuntimeSlotAncestryStep,
+                                targetRecord_0: RuntimeSlotRecord,
+                                assignmentOpening_0: RuntimePrivateMapWitness,
+                                assignmentAppendPath_0: { leaf: Uint8Array,
+                                                          path: { sibling: { field: bigint
+                                                                           },
+                                                                  goes_left: boolean
+                                                                }[]
+                                                        },
+                                bindingOpening_0: RuntimePrivateMapWitness,
+                                bindingAppendPath_0: { leaf: Uint8Array,
+                                                       path: { sibling: { field: bigint
+                                                                        },
+                                                               goes_left: boolean
+                                                             }[]
+                                                     },
+                                previousBindingOpening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, bigint>;
   submitAuthorityRootApproval(context: __compactRuntime.CircuitContext<PS>,
                               command_0: AuthorityRootUpdateCommand,
                               signature_0: { announcement: __compactRuntime.JubjubPoint,
@@ -560,6 +1048,7 @@ export type ProvableCircuits<PS> = {
                                                 }[]
                                         }): __compactRuntime.CircuitResults<PS, FinalizationResult>;
   updateRuntimeCredentialStatus(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
                                 command_0: RuntimeCredentialStatusCommand,
                                 signature_0: { announcement: __compactRuntime.JubjubPoint,
                                                response: bigint
@@ -583,10 +1072,167 @@ export type ProvableCircuits<PS> = {
                                                                         },
                                                                goes_left: boolean
                                                              }[]
-                                                     }): __compactRuntime.CircuitResults<PS, bigint>;
+                                                     },
+                                capability_0: RuntimeCapabilityCredential,
+                                capabilitySignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                         response: bigint
+                                                       },
+                                parentCapability_0: RuntimeCapabilityCredential,
+                                parentCapabilityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                scopeProgress_0: RuntimeScopeProgress,
+                                scopeElement_0: RuntimeScopeElement,
+                                childScopePath_0: { leaf: Uint8Array,
+                                                    path: { sibling: { field: bigint
+                                                                     },
+                                                            goes_left: boolean
+                                                          }[]
+                                                  },
+                                parentScopePath_0: { leaf: Uint8Array,
+                                                     path: { sibling: { field: bigint
+                                                                      },
+                                                             goes_left: boolean
+                                                           }[]
+                                                   },
+                                sessionCredential_0: RuntimeSessionCredential,
+                                instanceBinding_0: RuntimeCredentialInstanceBinding): __compactRuntime.CircuitResults<PS, bigint>;
 }
 
 export type PureCircuits = {
+  runtimeStatusStackPush(previous_0: bigint, node_0: RuntimeStatusProofNode): bigint;
+  runtimeStatusMembershipLeafDigest(leaf_0: Uint8Array): { field: bigint };
+  runtimeStatusMultiproofRoot(proof_0: RuntimeStatusMultiproof): { field: bigint
+                                                                 };
+  assertRuntimeStatusMultiproof(proof_0: RuntimeStatusMultiproof,
+                                expectedRoot_0: { field: bigint },
+                                expectedSequence_0: bigint): [];
+  assertRuntimeActiveAncestry(ancestry_0: RuntimeActiveAncestry,
+                              expectedRoot_0: { field: bigint },
+                              expectedSequence_0: bigint,
+                              now_0: bigint): [];
+  runtimeParticipantSlotRuleCommitment(rule_0: RuntimeParticipantSlotRule): Uint8Array;
+  assertRuntimeParticipantSlotRule(policy_0: RuntimeTemplateActionPolicy,
+                                   rule_0: RuntimeParticipantSlotRule,
+                                   path_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           },
+                                   contextHash_0: Uint8Array,
+                                   slotIdHash_0: Uint8Array): [];
+  runtimeTemplateActionPolicyCommitment(policy_0: RuntimeTemplateActionPolicy): Uint8Array;
+  runtimeTemplateTransitionCommitment(transition_0: RuntimeTemplateTransition): Uint8Array;
+  assertRuntimeTemplatePolicyBinding(target_0: TemplateRegistryTarget,
+                                     policy_0: RuntimeTemplateActionPolicy,
+                                     binding_0: ProofModuleBinding,
+                                     bindingPath_0: { leaf: Uint8Array,
+                                                      path: { sibling: { field: bigint
+                                                                       },
+                                                              goes_left: boolean
+                                                            }[]
+                                                    },
+                                     bindingRoot_0: { field: bigint },
+                                     bindingCount_0: bigint): [];
+  assertRuntimeTemplateActionIntent(policy_0: RuntimeTemplateActionPolicy,
+                                    intent_0: RuntimeActionIntent): [];
+  assertRuntimeTemplateTransition(policy_0: RuntimeTemplateActionPolicy,
+                                  transition_0: RuntimeTemplateTransition,
+                                  path_0: { leaf: Uint8Array,
+                                            path: { sibling: { field: bigint },
+                                                    goes_left: boolean
+                                                  }[]
+                                          },
+                                  fromStateIdHash_0: Uint8Array,
+                                  toStateIdHash_0: Uint8Array): [];
+  runtimePrivateMapKeyLess(left_0: Uint8Array, right_0: Uint8Array): boolean;
+  runtimePrivateMapNodeCommitment(node_0: RuntimePrivateMapNode): Uint8Array;
+  runtimePrivateMapEmptyRoot(): { field: bigint };
+  assertRuntimePrivateMapNode(root_0: { field: bigint },
+                              count_0: bigint,
+                              opening_0: RuntimePrivateMapWitness): [];
+  assertRuntimePrivateMapAbsence(root_0: { field: bigint },
+                                 count_0: bigint,
+                                 key_0: Uint8Array,
+                                 opening_0: RuntimePrivateMapWitness): [];
+  runtimePrivateMapInsert(root_0: { field: bigint },
+                          count_0: bigint,
+                          key_0: Uint8Array,
+                          value_0: Uint8Array,
+                          predecessor_0: RuntimePrivateMapWitness,
+                          appendPath_0: { leaf: Uint8Array,
+                                          path: { sibling: { field: bigint },
+                                                  goes_left: boolean
+                                                }[]
+                                        }): { field: bigint };
+  runtimePrivateMapReplace(root_0: { field: bigint },
+                           count_0: bigint,
+                           key_0: Uint8Array,
+                           oldValue_0: Uint8Array,
+                           nextValue_0: Uint8Array,
+                           opening_0: RuntimePrivateMapWitness): { field: bigint
+                                                                 };
+  runtimeInstanceAllocationCommitment(allocation_0: RuntimeInstanceAllocation): Uint8Array;
+  runtimeInstanceAllocationSignatureChallenge(announcement_0: __compactRuntime.JubjubPoint,
+                                              publicKey_0: __compactRuntime.JubjubPoint,
+                                              allocation_0: RuntimeInstanceAllocation): bigint;
+  runtimeAllocationRequestNullifier(allocation_0: RuntimeInstanceAllocation): Uint8Array;
+  runtimeInstanceIdentityNullifier(allocation_0: RuntimeInstanceAllocation): Uint8Array;
+  runtimeStateCommitment(opening_0: RuntimeStateOpening): Uint8Array;
+  assertRuntimeInstanceIssuerMembership(allocation_0: RuntimeInstanceAllocation,
+                                        issuer_0: GovernanceActivatorLeaf,
+                                        instanceIssuerPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                        currentAuthorityRoot_0: AuthorityRootRecord,
+                                        namespaceIssuerPath_0: { leaf: Uint8Array,
+                                                                 path: { sibling: { field: bigint
+                                                                                  },
+                                                                         goes_left: boolean
+                                                                       }[]
+                                                               }): [];
+  assertRuntimeInstanceIssuer(allocation_0: RuntimeInstanceAllocation,
+                              issuer_0: GovernanceActivatorLeaf,
+                              instanceIssuerPath_0: { leaf: Uint8Array,
+                                                      path: { sibling: { field: bigint
+                                                                       },
+                                                              goes_left: boolean
+                                                            }[]
+                                                    },
+                              currentAuthorityRoot_0: AuthorityRootRecord,
+                              namespaceIssuerPath_0: { leaf: Uint8Array,
+                                                       path: { sibling: { field: bigint
+                                                                        },
+                                                               goes_left: boolean
+                                                             }[]
+                                                     },
+                              effectiveAt_0: bigint): [];
+  runtimeSlotBindingKey(command_0: RuntimeSlotCommand): Uint8Array;
+  runtimeSlotCommandCommitment(command_0: RuntimeSlotCommand): Uint8Array;
+  runtimeSlotCommandSignatureChallenge(announcement_0: __compactRuntime.JubjubPoint,
+                                       publicKey_0: __compactRuntime.JubjubPoint,
+                                       command_0: RuntimeSlotCommand): bigint;
+  runtimeSlotRecordCommitment(record_0: RuntimeSlotRecord): Uint8Array;
+  runtimeSlotProgressCommitment(progress_0: RuntimeSlotProgress): Uint8Array;
+  runtimeSlotInitialProgress(command_0: RuntimeSlotCommand,
+                             previousBinding_0: Uint8Array,
+                             previousAccount_0: Uint8Array): RuntimeSlotProgress;
+  runtimeSlotAssignmentFromCommand(command_0: RuntimeSlotCommand): RuntimeSlotAssignment;
+  assertRuntimeSlotRecord(record_0: RuntimeSlotRecord,
+                          opening_0: RuntimePrivateMapWitness,
+                          state_0: RuntimeStateOpening,
+                          command_0: RuntimeSlotCommand): [];
+  runtimeSlotAdvanceProgress(progress_0: RuntimeSlotProgress,
+                             step_0: RuntimeSlotAncestryStep,
+                             state_0: RuntimeStateOpening,
+                             command_0: RuntimeSlotCommand,
+                             statusRoot_0: { field: bigint }): RuntimeSlotProgress;
   activationAdmissionMessage(envelope_0: ActivationAdmissionEnvelope): bigint[];
   activationAdmissionEnvelopeCommitment(envelope_0: ActivationAdmissionEnvelope): Uint8Array;
   governanceActivatorLeafCommitment(leaf_0: GovernanceActivatorLeaf): Uint8Array;
@@ -601,6 +1247,11 @@ export type PureCircuits = {
                                                     goes_left: boolean
                                                   }[]
                                           }): { field: bigint };
+  runtimeCredentialStatusPathIndex(path_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           }): bigint;
   runtimeCredentialStatusLeafParent(path_0: { leaf: Uint8Array,
                                               path: { sibling: { field: bigint },
                                                       goes_left: boolean
@@ -612,6 +1263,10 @@ export type PureCircuits = {
                                                     }[]
                                             }): { field: bigint };
   runtimeCredentialStatusCommandMessage(command_0: RuntimeCredentialStatusCommand): bigint[];
+  runtimeCredentialStatusCommandCommitment(command_0: RuntimeCredentialStatusCommand): Uint8Array;
+  runtimeScopeProgressCommitment(progress_0: RuntimeScopeProgress): Uint8Array;
+  runtimeScopeElementCommitment(element_0: RuntimeScopeElement): Uint8Array;
+  capabilityAttenuationCertificationCommitment(certification_0: CapabilityAttenuationCertification): Uint8Array;
   runtimeCapabilityCredentialCommitment(credential_0: RuntimeCapabilityCredential): Uint8Array;
   runtimeSessionCredentialCommitment(credential_0: RuntimeSessionCredential): Uint8Array;
   runtimeActionIntentCommitment(intent_0: RuntimeActionIntent): Uint8Array;
@@ -660,6 +1315,250 @@ export type PureCircuits = {
 }
 
 export type Circuits<PS> = {
+  runtimeStatusStackPush(context: __compactRuntime.CircuitContext<PS>,
+                         previous_0: bigint,
+                         node_0: RuntimeStatusProofNode): __compactRuntime.CircuitResults<PS, bigint>;
+  runtimeStatusMembershipLeafDigest(context: __compactRuntime.CircuitContext<PS>,
+                                    leaf_0: Uint8Array): __compactRuntime.CircuitResults<PS, { field: bigint
+                                                                                             }>;
+  runtimeStatusMultiproofRoot(context: __compactRuntime.CircuitContext<PS>,
+                              proof_0: RuntimeStatusMultiproof): __compactRuntime.CircuitResults<PS, { field: bigint
+                                                                                                     }>;
+  assertRuntimeStatusMultiproof(context: __compactRuntime.CircuitContext<PS>,
+                                proof_0: RuntimeStatusMultiproof,
+                                expectedRoot_0: { field: bigint },
+                                expectedSequence_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  assertRuntimeActiveAncestry(context: __compactRuntime.CircuitContext<PS>,
+                              ancestry_0: RuntimeActiveAncestry,
+                              expectedRoot_0: { field: bigint },
+                              expectedSequence_0: bigint,
+                              now_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  verifyRuntimeActionAuthorization(context: __compactRuntime.CircuitContext<PS>,
+                                   ancestry_0: RuntimeActiveAncestry,
+                                   intent_0: RuntimeActionIntent,
+                                   sessionSignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                         response: bigint
+                                                       },
+                                   intentSignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                        response: bigint
+                                                      },
+                                   capabilityPaths_0: RuntimeActionScopePaths,
+                                   sessionPaths_0: RuntimeActionScopePaths,
+                                   expectedRoot_0: { field: bigint },
+                                   expectedSequence_0: bigint,
+                                   now_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  runtimeParticipantSlotRuleCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                       rule_0: RuntimeParticipantSlotRule): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  assertRuntimeParticipantSlotRule(context: __compactRuntime.CircuitContext<PS>,
+                                   policy_0: RuntimeTemplateActionPolicy,
+                                   rule_0: RuntimeParticipantSlotRule,
+                                   path_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           },
+                                   contextHash_0: Uint8Array,
+                                   slotIdHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+  runtimeTemplateActionPolicyCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                        policy_0: RuntimeTemplateActionPolicy): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeTemplateTransitionCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                      transition_0: RuntimeTemplateTransition): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  assertRuntimeTemplatePolicyBinding(context: __compactRuntime.CircuitContext<PS>,
+                                     target_0: TemplateRegistryTarget,
+                                     policy_0: RuntimeTemplateActionPolicy,
+                                     binding_0: ProofModuleBinding,
+                                     bindingPath_0: { leaf: Uint8Array,
+                                                      path: { sibling: { field: bigint
+                                                                       },
+                                                              goes_left: boolean
+                                                            }[]
+                                                    },
+                                     bindingRoot_0: { field: bigint },
+                                     bindingCount_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  assertRuntimeTemplateActionIntent(context: __compactRuntime.CircuitContext<PS>,
+                                    policy_0: RuntimeTemplateActionPolicy,
+                                    intent_0: RuntimeActionIntent): __compactRuntime.CircuitResults<PS, []>;
+  assertRuntimeTemplateTransition(context: __compactRuntime.CircuitContext<PS>,
+                                  policy_0: RuntimeTemplateActionPolicy,
+                                  transition_0: RuntimeTemplateTransition,
+                                  path_0: { leaf: Uint8Array,
+                                            path: { sibling: { field: bigint },
+                                                    goes_left: boolean
+                                                  }[]
+                                          },
+                                  fromStateIdHash_0: Uint8Array,
+                                  toStateIdHash_0: Uint8Array): __compactRuntime.CircuitResults<PS, []>;
+  runtimePrivateMapKeyLess(context: __compactRuntime.CircuitContext<PS>,
+                           left_0: Uint8Array,
+                           right_0: Uint8Array): __compactRuntime.CircuitResults<PS, boolean>;
+  runtimePrivateMapNodeCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                  node_0: RuntimePrivateMapNode): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimePrivateMapEmptyRoot(context: __compactRuntime.CircuitContext<PS>): __compactRuntime.CircuitResults<PS, { field: bigint
+                                                                                                                }>;
+  assertRuntimePrivateMapNode(context: __compactRuntime.CircuitContext<PS>,
+                              root_0: { field: bigint },
+                              count_0: bigint,
+                              opening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, []>;
+  assertRuntimePrivateMapAbsence(context: __compactRuntime.CircuitContext<PS>,
+                                 root_0: { field: bigint },
+                                 count_0: bigint,
+                                 key_0: Uint8Array,
+                                 opening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, []>;
+  runtimePrivateMapInsert(context: __compactRuntime.CircuitContext<PS>,
+                          root_0: { field: bigint },
+                          count_0: bigint,
+                          key_0: Uint8Array,
+                          value_0: Uint8Array,
+                          predecessor_0: RuntimePrivateMapWitness,
+                          appendPath_0: { leaf: Uint8Array,
+                                          path: { sibling: { field: bigint },
+                                                  goes_left: boolean
+                                                }[]
+                                        }): __compactRuntime.CircuitResults<PS, { field: bigint
+                                                                                }>;
+  runtimePrivateMapReplace(context: __compactRuntime.CircuitContext<PS>,
+                           root_0: { field: bigint },
+                           count_0: bigint,
+                           key_0: Uint8Array,
+                           oldValue_0: Uint8Array,
+                           nextValue_0: Uint8Array,
+                           opening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, { field: bigint
+                                                                                                     }>;
+  runtimeInstanceAllocationCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                      allocation_0: RuntimeInstanceAllocation): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeInstanceAllocationSignatureChallenge(context: __compactRuntime.CircuitContext<PS>,
+                                              announcement_0: __compactRuntime.JubjubPoint,
+                                              publicKey_0: __compactRuntime.JubjubPoint,
+                                              allocation_0: RuntimeInstanceAllocation): __compactRuntime.CircuitResults<PS, bigint>;
+  runtimeAllocationRequestNullifier(context: __compactRuntime.CircuitContext<PS>,
+                                    allocation_0: RuntimeInstanceAllocation): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeInstanceIdentityNullifier(context: __compactRuntime.CircuitContext<PS>,
+                                   allocation_0: RuntimeInstanceAllocation): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeStateCommitment(context: __compactRuntime.CircuitContext<PS>,
+                         opening_0: RuntimeStateOpening): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  assertRuntimeInstanceIssuerMembership(context: __compactRuntime.CircuitContext<PS>,
+                                        allocation_0: RuntimeInstanceAllocation,
+                                        issuer_0: GovernanceActivatorLeaf,
+                                        instanceIssuerPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                        currentAuthorityRoot_0: AuthorityRootRecord,
+                                        namespaceIssuerPath_0: { leaf: Uint8Array,
+                                                                 path: { sibling: { field: bigint
+                                                                                  },
+                                                                         goes_left: boolean
+                                                                       }[]
+                                                               }): __compactRuntime.CircuitResults<PS, []>;
+  assertRuntimeInstanceIssuer(context: __compactRuntime.CircuitContext<PS>,
+                              allocation_0: RuntimeInstanceAllocation,
+                              issuer_0: GovernanceActivatorLeaf,
+                              instanceIssuerPath_0: { leaf: Uint8Array,
+                                                      path: { sibling: { field: bigint
+                                                                       },
+                                                              goes_left: boolean
+                                                            }[]
+                                                    },
+                              currentAuthorityRoot_0: AuthorityRootRecord,
+                              namespaceIssuerPath_0: { leaf: Uint8Array,
+                                                       path: { sibling: { field: bigint
+                                                                        },
+                                                               goes_left: boolean
+                                                             }[]
+                                                     },
+                              effectiveAt_0: bigint): __compactRuntime.CircuitResults<PS, []>;
+  allocateRuntimeInstance(context: __compactRuntime.CircuitContext<PS>,
+                          allocation_0: RuntimeInstanceAllocation,
+                          signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                         response: bigint
+                                       },
+                          allocator_0: GovernanceActivatorLeaf,
+                          allocatorPath_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           },
+                          policyWitness_0: RuntimeAllocationPolicyWitness): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeSlotBindingKey(context: __compactRuntime.CircuitContext<PS>,
+                        command_0: RuntimeSlotCommand): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeSlotCommandCommitment(context: __compactRuntime.CircuitContext<PS>,
+                               command_0: RuntimeSlotCommand): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeSlotCommandSignatureChallenge(context: __compactRuntime.CircuitContext<PS>,
+                                       announcement_0: __compactRuntime.JubjubPoint,
+                                       publicKey_0: __compactRuntime.JubjubPoint,
+                                       command_0: RuntimeSlotCommand): __compactRuntime.CircuitResults<PS, bigint>;
+  runtimeSlotRecordCommitment(context: __compactRuntime.CircuitContext<PS>,
+                              record_0: RuntimeSlotRecord): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeSlotProgressCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                progress_0: RuntimeSlotProgress): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeSlotInitialProgress(context: __compactRuntime.CircuitContext<PS>,
+                             command_0: RuntimeSlotCommand,
+                             previousBinding_0: Uint8Array,
+                             previousAccount_0: Uint8Array): __compactRuntime.CircuitResults<PS, RuntimeSlotProgress>;
+  runtimeSlotAssignmentFromCommand(context: __compactRuntime.CircuitContext<PS>,
+                                   command_0: RuntimeSlotCommand): __compactRuntime.CircuitResults<PS, RuntimeSlotAssignment>;
+  assertRuntimeSlotRecord(context: __compactRuntime.CircuitContext<PS>,
+                          record_0: RuntimeSlotRecord,
+                          opening_0: RuntimePrivateMapWitness,
+                          state_0: RuntimeStateOpening,
+                          command_0: RuntimeSlotCommand): __compactRuntime.CircuitResults<PS, []>;
+  runtimeSlotAdvanceProgress(context: __compactRuntime.CircuitContext<PS>,
+                             progress_0: RuntimeSlotProgress,
+                             step_0: RuntimeSlotAncestryStep,
+                             state_0: RuntimeStateOpening,
+                             command_0: RuntimeSlotCommand,
+                             statusRoot_0: { field: bigint }): __compactRuntime.CircuitResults<PS, RuntimeSlotProgress>;
+  manageRuntimeParticipantSlots(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
+                                command_0: RuntimeSlotCommand,
+                                signature_0: { announcement: __compactRuntime.JubjubPoint,
+                                               response: bigint
+                                             },
+                                allocation_0: RuntimeInstanceAllocation,
+                                state_0: RuntimeStateOpening,
+                                nextStateNonce_0: Uint8Array,
+                                policyOpening_0: RuntimeSlotPolicyWitness,
+                                namespaceAuthority_0: GovernanceActivatorLeaf,
+                                namespaceAuthorityPath_0: { leaf: Uint8Array,
+                                                            path: { sibling: { field: bigint
+                                                                             },
+                                                                    goes_left: boolean
+                                                                  }[]
+                                                          },
+                                accountAuthority_0: RuntimeAccountCredential,
+                                accountAuthorityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                subjectAccount_0: RuntimeAccountCredential,
+                                subjectAccountStatusPath_0: { leaf: Uint8Array,
+                                                              path: { sibling: { field: bigint
+                                                                               },
+                                                                      goes_left: boolean
+                                                                    }[]
+                                                            },
+                                progress_0: RuntimeSlotProgress,
+                                step_0: RuntimeSlotAncestryStep,
+                                targetRecord_0: RuntimeSlotRecord,
+                                assignmentOpening_0: RuntimePrivateMapWitness,
+                                assignmentAppendPath_0: { leaf: Uint8Array,
+                                                          path: { sibling: { field: bigint
+                                                                           },
+                                                                  goes_left: boolean
+                                                                }[]
+                                                        },
+                                bindingOpening_0: RuntimePrivateMapWitness,
+                                bindingAppendPath_0: { leaf: Uint8Array,
+                                                       path: { sibling: { field: bigint
+                                                                        },
+                                                               goes_left: boolean
+                                                             }[]
+                                                     },
+                                previousBindingOpening_0: RuntimePrivateMapWitness): __compactRuntime.CircuitResults<PS, bigint>;
   activationAdmissionMessage(context: __compactRuntime.CircuitContext<PS>,
                              envelope_0: ActivationAdmissionEnvelope): __compactRuntime.CircuitResults<PS, bigint[]>;
   activationAdmissionEnvelopeCommitment(context: __compactRuntime.CircuitContext<PS>,
@@ -685,6 +1584,12 @@ export type Circuits<PS> = {
                                                   }[]
                                           }): __compactRuntime.CircuitResults<PS, { field: bigint
                                                                                   }>;
+  runtimeCredentialStatusPathIndex(context: __compactRuntime.CircuitContext<PS>,
+                                   path_0: { leaf: Uint8Array,
+                                             path: { sibling: { field: bigint },
+                                                     goes_left: boolean
+                                                   }[]
+                                           }): __compactRuntime.CircuitResults<PS, bigint>;
   runtimeCredentialStatusLeafParent(context: __compactRuntime.CircuitContext<PS>,
                                     path_0: { leaf: Uint8Array,
                                               path: { sibling: { field: bigint },
@@ -701,6 +1606,14 @@ export type Circuits<PS> = {
                                                                                     }>;
   runtimeCredentialStatusCommandMessage(context: __compactRuntime.CircuitContext<PS>,
                                         command_0: RuntimeCredentialStatusCommand): __compactRuntime.CircuitResults<PS, bigint[]>;
+  runtimeCredentialStatusCommandCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                           command_0: RuntimeCredentialStatusCommand): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeScopeProgressCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                 progress_0: RuntimeScopeProgress): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  runtimeScopeElementCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                element_0: RuntimeScopeElement): __compactRuntime.CircuitResults<PS, Uint8Array>;
+  capabilityAttenuationCertificationCommitment(context: __compactRuntime.CircuitContext<PS>,
+                                               certification_0: CapabilityAttenuationCertification): __compactRuntime.CircuitResults<PS, Uint8Array>;
   runtimeCapabilityCredentialCommitment(context: __compactRuntime.CircuitContext<PS>,
                                         credential_0: RuntimeCapabilityCredential): __compactRuntime.CircuitResults<PS, Uint8Array>;
   runtimeSessionCredentialCommitment(context: __compactRuntime.CircuitContext<PS>,
@@ -855,6 +1768,7 @@ export type Circuits<PS> = {
                                                 }[]
                                         }): __compactRuntime.CircuitResults<PS, FinalizationResult>;
   updateRuntimeCredentialStatus(context: __compactRuntime.CircuitContext<PS>,
+                                operation_0: bigint,
                                 command_0: RuntimeCredentialStatusCommand,
                                 signature_0: { announcement: __compactRuntime.JubjubPoint,
                                                response: bigint
@@ -878,7 +1792,34 @@ export type Circuits<PS> = {
                                                                         },
                                                                goes_left: boolean
                                                              }[]
-                                                     }): __compactRuntime.CircuitResults<PS, bigint>;
+                                                     },
+                                capability_0: RuntimeCapabilityCredential,
+                                capabilitySignature_0: { announcement: __compactRuntime.JubjubPoint,
+                                                         response: bigint
+                                                       },
+                                parentCapability_0: RuntimeCapabilityCredential,
+                                parentCapabilityStatusPath_0: { leaf: Uint8Array,
+                                                                path: { sibling: { field: bigint
+                                                                                 },
+                                                                        goes_left: boolean
+                                                                      }[]
+                                                              },
+                                scopeProgress_0: RuntimeScopeProgress,
+                                scopeElement_0: RuntimeScopeElement,
+                                childScopePath_0: { leaf: Uint8Array,
+                                                    path: { sibling: { field: bigint
+                                                                     },
+                                                            goes_left: boolean
+                                                          }[]
+                                                  },
+                                parentScopePath_0: { leaf: Uint8Array,
+                                                     path: { sibling: { field: bigint
+                                                                      },
+                                                             goes_left: boolean
+                                                           }[]
+                                                   },
+                                sessionCredential_0: RuntimeSessionCredential,
+                                instanceBinding_0: RuntimeCredentialInstanceBinding): __compactRuntime.CircuitResults<PS, bigint>;
 }
 
 export type Ledger = {
@@ -975,6 +1916,45 @@ export type Ledger = {
     [Symbol.iterator](): Iterator<[Uint8Array, CredentialStatusRootRecord]>
   };
   usedCredentialStatusCommandNonces: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(elem_0: Uint8Array): boolean;
+    [Symbol.iterator](): Iterator<Uint8Array>
+  };
+  capabilityAttenuationSessions: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: Uint8Array): boolean;
+    lookup(key_0: Uint8Array): CapabilityAttenuationSession;
+    [Symbol.iterator](): Iterator<[Uint8Array, CapabilityAttenuationSession]>
+  };
+  runtimeInstances: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: Uint8Array): boolean;
+    lookup(key_0: Uint8Array): RuntimeInstanceRecord;
+    [Symbol.iterator](): Iterator<[Uint8Array, RuntimeInstanceRecord]>
+  };
+  usedAllocationRequestNullifiers: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(elem_0: Uint8Array): boolean;
+    [Symbol.iterator](): Iterator<Uint8Array>
+  };
+  usedInstanceIdentityNullifiers: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(elem_0: Uint8Array): boolean;
+    [Symbol.iterator](): Iterator<Uint8Array>
+  };
+  runtimeSlotSessions: {
+    isEmpty(): boolean;
+    size(): bigint;
+    member(key_0: Uint8Array): boolean;
+    lookup(key_0: Uint8Array): RuntimeSlotSession;
+    [Symbol.iterator](): Iterator<[Uint8Array, RuntimeSlotSession]>
+  };
+  usedRuntimeSlotCommandNonces: {
     isEmpty(): boolean;
     size(): bigint;
     member(elem_0: Uint8Array): boolean;

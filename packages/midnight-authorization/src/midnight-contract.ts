@@ -29,10 +29,34 @@ export type {
   CredentialStatusRootRecord,
   RuntimeCredentialStatusCommand,
   RuntimeCredentialStatusLeaf,
+  RuntimeActiveAncestry,
+  RuntimeActionScopePaths,
+  RuntimeAccountCredential,
+  RuntimeCapabilityCredential,
+  RuntimeSessionCredential,
+  RuntimeActionIntent,
+  RuntimeInstanceAllocation,
+  RuntimeInstanceRecord,
+  RuntimeStateOpening,
+  RuntimeCredentialInstanceBinding,
+  RuntimeTemplateActionPolicy,
+  RuntimeTemplateTransition,
+  RuntimeParticipantSlotRule,
+  RuntimePrivateMapNode,
+  RuntimePrivateMapWitness,
+  RuntimeSlotCommand,
+  RuntimeSlotAssignment,
+  RuntimeSlotRecord,
+  RuntimeSlotPolicyWitness,
+  RuntimeSlotAncestryStep,
+  RuntimeSlotProgress,
+  RuntimeSlotSession,
+  RuntimeAllocationPolicyWitness,
 } from "../contracts/managed/permio-authorization/contract/index.js";
 export const readPermioAuthorizationLedger = readGeneratedLedger;
 export const permioAuthorizationPureCircuits = generatedPureCircuits;
 import { permioAuthorizationWitnesses } from "./compact-crypto.ts";
+import { verifyPermioAuthorizationAssets } from "./compiled-assets.ts";
 
 export type PermioAuthorizationContract = GeneratedContract<undefined>;
 export type PermioAuthorizationProviders =
@@ -43,7 +67,7 @@ export type ConnectedPermioAuthorizationContract =
   FoundContract<PermioAuthorizationContract>;
 
 export const PERMIO_AUTHORIZATION_CONTRACT_TAG =
-  "permio-authorization-v1";
+  "permio-authorization-v7";
 export const PERMIO_AUTHORIZATION_ASSETS_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../contracts/managed/permio-authorization",
@@ -77,6 +101,7 @@ export async function deployPermioAuthorizationContract(
   providers: PermioAuthorizationProviders,
   args: PermioAuthorizationConstructorArgs,
 ): Promise<DeployedPermioAuthorizationContract> {
+  await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
   return deployContract(providers, {
     compiledContract: permioAuthorizationCompiledContract,
     args: [
@@ -98,6 +123,7 @@ export async function connectPermioAuthorizationContract(
   providers: PermioAuthorizationProviders,
   contractAddress: ContractAddress,
 ): Promise<ConnectedPermioAuthorizationContract> {
+  await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
   return findDeployedContract(providers, {
     compiledContract: permioAuthorizationCompiledContract,
     contractAddress,

@@ -18,6 +18,8 @@ import {
   type RuntimeCapabilityCredential,
   type RuntimeSessionCredential,
   type RuntimeCredentialStatusCommand,
+  type RuntimeInstanceAllocation,
+  type RuntimeSlotCommand,
   type TemplateLifecycleCommand,
   type Witnesses,
 } from "../contracts/managed/permio-authorization/contract/index.js";
@@ -49,6 +51,7 @@ export const MIDNIGHT_AUTHORITY_KINDS = {
   proofModuleEmergencyRevoker: 10n,
   authorityRootGovernor: 11n,
   templateRetirer: 12n,
+  participantSlotGovernor: 13n,
 } as const;
 
 export const permioAuthorizationWitnesses: Witnesses<undefined> = {
@@ -241,6 +244,8 @@ export function signTemplateLifecycleCommand(
 }
 
 type RuntimeSignedValue =
+  | { readonly kind: "slot-command"; readonly value: RuntimeSlotCommand }
+  | { readonly kind: "allocation"; readonly value: RuntimeInstanceAllocation }
   | { readonly kind: "account"; readonly value: RuntimeAccountCredential }
   | { readonly kind: "capability"; readonly value: RuntimeCapabilityCredential }
   | { readonly kind: "session"; readonly value: RuntimeSessionCredential }
@@ -252,6 +257,10 @@ function runtimeSignatureChallenge(
   publicKey: JubjubPoint,
 ): bigint {
   switch (signed.kind) {
+    case "slot-command":
+      return pureCircuits.runtimeSlotCommandSignatureChallenge(announcement, publicKey, signed.value);
+    case "allocation":
+      return pureCircuits.runtimeInstanceAllocationSignatureChallenge(announcement, publicKey, signed.value);
     case "account":
       return pureCircuits.runtimeAccountCredentialSignatureChallenge(
         announcement,
@@ -297,6 +306,18 @@ function signRuntimeValue(
     announcement,
     response: (nonce + challenge * secret) % JUBJUB_SCALAR_ORDER,
   };
+}
+
+export function signRuntimeSlotCommand(command: RuntimeSlotCommand, secret: bigint, nonce = randomScalar()): GovernanceActivationSignature {
+  return signRuntimeValue({ kind: "slot-command", value: command }, secret, nonce);
+}
+
+export function signRuntimeInstanceAllocation(
+  allocation: RuntimeInstanceAllocation,
+  allocatorSecret: bigint,
+  nonce?: bigint,
+): GovernanceActivationSignature {
+  return signRuntimeValue({ kind: "allocation", value: allocation }, allocatorSecret, nonce);
 }
 
 export function signRuntimeAccountCredential(

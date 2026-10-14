@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { generateKeyPairSync } from "node:crypto";
 import { describe, it } from "node:test";
 
 import { hashScenarioTemplate, parseScenarioTemplate } from "@permio/scenario-domain";
@@ -9,8 +10,32 @@ import type {
 } from "@permio/scenario-governance";
 
 import {
+  CapabilityAttenuationPlan,
+  CredentialStatusTree,
+  createEmptyRuntimeScopeProgress,
+  createEmptyRuntimeSessionCredential,
+  createRuntimeAccountCredential,
+  createRuntimeCapabilityCredential,
+  createRuntimeCredentialInstanceBinding,
+  createRuntimeCredentialStatusCommand,
+  signRuntimeCapabilityCredential,
+  signRuntimeCredentialStatusCommand,
   createActivationAdmissionArtifact,
   createPermioAuthorizationContract,
+  createRuntimeInstanceAllocation,
+  createRuntimePolicyBindingManifest,
+  createRuntimeAllocationPolicyWitness,
+  hashM5ScenarioInstance,
+  signRuntimeInstanceAllocation,
+  signRuntimeSlotCommand,
+  RuntimePrivateMap,
+  createRuntimeTemplateActionPolicy,
+  hashRuntimeIdentifier,
+  type RuntimeStateOpening,
+  type RuntimeSlotCommand,
+  type RuntimeSlotRecord,
+  type RuntimeSlotAncestryStep,
+  type RuntimeSlotProgress,
   buildAuthorityRoot,
   buildProofModuleBindingTree,
   governanceActivatorPublicKey,
@@ -25,6 +50,11 @@ import {
   toCompactProofModuleProposal,
   type ActivationAdmissionInput,
   type ProofModuleBindingManifest,
+  type RuntimeCredentialStatusCommand,
+  type RuntimeCredentialInstanceBinding,
+  type RuntimeAccountCredential,
+  type RuntimeCapabilityCredential,
+  type RuntimeScopeStage,
 } from "../src/index.ts";
 import {
   createCircuitContext,
@@ -139,8 +169,7 @@ function template() {
   });
 }
 
-function fixture() {
-  const value = template();
+function fixture(value = template()) {
   const templateHash = hashScenarioTemplate(value).value;
   const target = {
     namespace: value.namespace,
@@ -245,6 +274,7 @@ function moduleProposal(
 
 function moduleGovernance(
   activator: GovernanceActivatorLeaf,
+  additionalAuthorities: readonly GovernanceActivatorLeaf[] = [],
 ) {
   const common = {
     leafVersion: 1n,
@@ -326,6 +356,7 @@ function moduleGovernance(
       rootGovernorTwo,
       templateRetirer,
       templateEmergencyRevoker,
+      ...additionalAuthorities,
     ]),
     reviewerOne,
     reviewerOneSecret,
@@ -349,6 +380,599 @@ function moduleGovernance(
     templateEmergencyRevokerSecret,
   };
 }
+
+function allocationFixture(includeSecondaryIssuer = false, slotTemplate = template()) {
+  const { input, record } = fixture(slotTemplate);
+  const configuredBindings = createRuntimePolicyBindingManifest(record.template,
+    input.proofModuleBindings.bindings.map(({ configurationHash: _unused, ...selection }) => selection));
+  const artifact = createActivationAdmissionArtifact(record, { ...input,
+    proofModuleBindings: configuredBindings,
+    targetContractIdentity: `0x${"00".repeat(32)}` });
+  const envelope = toCompactActivationAdmissionEnvelope(artifact.envelope);
+  const leaf = (authorityKind: bigint, secret: bigint): GovernanceActivatorLeaf => ({
+    leafVersion: 1n, namespaceHash: envelope.namespaceHash,
+    governancePolicyHash: envelope.governancePolicyHash, authorityKind,
+    publicKey: governanceActivatorPublicKey(secret), validAfter: 0n, validBefore: 2_000_000_000n,
+  });
+  const activator = leaf(3n, 29n), allocator = leaf(4n, 181n);
+  const issuer = leaf(6n, 191n), otherIssuer = leaf(6n, 193n);
+  const slotGovernor = leaf(13n, 211n), otherAllocator = leaf(4n, 199n);
+  const governance = moduleGovernance(activator, [allocator, issuer, otherIssuer, slotGovernor, otherAllocator]);
+  const contract = createPermioAuthorizationContract();
+  const initialized = contract.initialState(createConstructorContext(undefined, "00".repeat(32)),
+    envelope.targetNetworkHash, envelope.namespaceHash, envelope.governancePolicyHash,
+    governance.authority.root, envelope.authorityRootVersion, envelope.authorityRootSequence,
+    new CredentialStatusTree().root, 2n, 2n, 2n);
+  let context = createCircuitContext(dummyContractAddress(), "00".repeat(32),
+    initialized.currentContractState, undefined, undefined, undefined, 1_800_000_100);
+  context = activateFixtureModule(contract, context, governance,
+    moduleProposal(configuredBindings.bindings[0]!, envelope));
+  const signature = signActivationAdmissionEnvelope(envelope, 29n, 53n);
+  const activatorPath = governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(activator));
+  const begun = contract.circuits.beginM4Activation(context, envelope, signature, activator, activatorPath);
+  const bindings = buildProofModuleBindingTree(artifact.bindings);
+  context = contract.circuits.stageM4ActivationBinding(begun.context, begun.result,
+    bindings.compactBindingAt(0), bindings.pathFor(0)).context;
+  const finalized = contract.circuits.finalizeM4Activation(context, envelope, signature, activator, activatorPath);
+  context = finalized.context;
+  const instance = { ...record.target, instanceId: "private-instance", instantiationRequestId: "allocation-one",
+    allocatedBy: "allocator-one", state: record.template.initialState, createdAt: 1_800_000_100,
+    expiresAt: 1_800_001_000, revokedAt: null,
+    capabilityIssuers: [{ principalId: "issuer-one", kind: "service" as const },
+      ...(includeSecondaryIssuer ? [{ principalId: "issuer-two", kind: "service" as const }] : [])] };
+  const adapterInput = { authorization: { ...record.target, requestId: instance.instantiationRequestId,
+    allocatorId: instance.allocatedBy, authorizedAt: 1_800_000_010 }, templateRecord: record, instance,
+    allocatorAuthority: allocator,
+    capabilityIssuers: [{ principalId: "issuer-one", kind: "service" as const, authority: issuer },
+      ...(includeSecondaryIssuer ? [{ principalId: "issuer-two", kind: "service" as const, authority: otherIssuer }] : [])],
+    authorityRootVersion: envelope.authorityRootVersion, authorityRootSequence: envelope.authorityRootSequence,
+    targetNetworkHash: envelope.targetNetworkHash, targetContractIdentity: envelope.targetContractIdentity,
+    allocationValidBefore: 1_800_000_500,
+    allocationNonce: new Uint8Array(32).fill(21), initialStateNonce: new Uint8Array(32).fill(22) };
+  const prepared = createRuntimeInstanceAllocation(adapterInput);
+  const policyWitness = createRuntimeAllocationPolicyWitness(record.template, configuredBindings, prepared.stateOpening);
+  function call(allocation = prepared.allocation, signer = 181n, authority = allocator,
+    signature = signRuntimeInstanceAllocation(allocation, signer, 197n), witness = policyWitness) {
+    return contract.circuits.allocateRuntimeInstance(context, allocation,
+      signature, authority,
+      governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(authority)), witness);
+  }
+  return { adapterInput, ...prepared, policyWitness, allocator, issuer, otherIssuer, slotGovernor, otherAllocator, governance, contract, call,
+    context: () => context,
+    view: () => ledger(context.currentQueryContext.state),
+    apply: () => { context = call().context; },
+    at: (time: number) => { context = createCircuitContext(dummyContractAddress(), "00".repeat(32),
+      context.currentQueryContext.state, undefined, undefined, undefined, time); },
+    terminate: (status: 2n | 3n) => {
+      const state = ledger(context.currentQueryContext.state);
+      const current = state.activeTemplates.lookup(finalized.result.registryKey);
+      const authority = status === 2n ? governance.templateRetirer : governance.templateEmergencyRevoker;
+      const secret = status === 2n ? governance.templateRetirerSecret : governance.templateEmergencyRevokerSecret;
+      const command: TemplateLifecycleCommand = { commandVersion: 1n,
+        registryKey: finalized.result.registryKey, recordCommitment: pureCircuits.activeTemplateRecordCommitment(current),
+        namespaceHash: envelope.namespaceHash, governancePolicyHash: envelope.governancePolicyHash,
+        authorityRootVersion: envelope.authorityRootVersion, authorityRootSequence: envelope.authorityRootSequence,
+        expectedLifecycleStatus: 1n, nextLifecycleStatus: status, effectiveAt: 1_800_000_100n,
+        effectiveSequence: 2n, reasonHash: new Uint8Array(32).fill(23), commandNonce: new Uint8Array(32).fill(24) };
+      context = contract.circuits.terminateTemplate(context, command,
+        signTemplateLifecycleCommand(command, secret, 199n), authority,
+        governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(authority))).context;
+    } };
+}
+
+function allocatedCredentialFixture(includeSecondaryIssuer = false, slotTemplate = template()) {
+  const f = allocationFixture(includeSecondaryIssuer, slotTemplate);
+  let context = f.call().context;
+  const status = new CredentialStatusTree();
+  const instance = f.adapterInput.instance;
+  const source = { accountId: "private-bound-holder", instanceId: instance.instanceId,
+    contextId: "access", kind: "human" as const, registeredAt: instance.createdAt,
+    publicKeyPem: generateKeyPairSync("ed25519").publicKey.export({ type: "spki", format: "pem" }).toString(),
+    revokedAt: null };
+  const account = createRuntimeAccountCredential({ account: source, instance,
+    runtimePublicKey: governanceActivatorPublicKey(223n), statusIndex: 7n, validBefore: instance.expiresAt - 1 });
+  const accountHash = pureCircuits.runtimeAccountCredentialCommitment(account);
+  const grant = { namespace: instance.namespace, templateId: instance.templateId,
+    templateVersion: instance.templateVersion, templateHash: instance.templateHash,
+    grantId: "private-bound-root", parentGrantId: null, instanceId: instance.instanceId,
+    contextId: source.contextId, subjectAccountId: source.accountId, issuerRef: "issuer-one",
+    scope: { actions: ["authorize-access"], resourceSelectors: ["instance-resource"], resources: ["private-resource"],
+      purposes: ["access-check"], recipientKinds: ["specific-recipient"], recipients: ["private-recipient"],
+      disclosurePolicyIds: ["minimum-eligible-claim"] },
+    notBefore: instance.createdAt, expiresAt: instance.expiresAt - 2, delegationDepth: 0,
+    maxDelegationDepth: 0, issuedAt: instance.createdAt, revokedAt: null };
+  const capability = createRuntimeCapabilityCredential({ grant, instanceCommitment: f.allocation.instanceCommitment,
+    subjectAccountCredential: account, statusIndex: 8n, namespaceIssuer: { principalId: grant.issuerRef, authority: f.issuer } });
+  const capabilityHash = pureCircuits.runtimeCapabilityCredentialCommitment(capability.credential);
+  const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.issuer, instance.expiresAt - 2);
+  let nonce = 60;
+  const command = (kind: "account" | "capability", revoke = false): RuntimeCredentialStatusCommand =>
+    createRuntimeCredentialStatusCommand({ namespace: instance.namespace,
+      governancePolicyHash: `0x${Buffer.from(f.allocation.governancePolicyHash).toString("hex")}`,
+      authorityRootVersion: Number(f.allocation.authorityRootVersion),
+      authorityRootSequence: Number(f.allocation.authorityRootSequence), credentialStatusRootSequence: status.sequence,
+      kind, credentialCommitment: kind === "account" ? accountHash : capabilityHash,
+      subjectAccountCredentialCommitment: accountHash,
+      revocationAuthorityAccountCredentialCommitment: kind === "account" ? accountHash : new Uint8Array(32),
+      statusIndex: kind === "account" ? 7n : 8n, expectedStatus: revoke ? "active" : "empty",
+      nextStatus: revoke ? "revoked" : "active", effectiveAt: instance.createdAt,
+      stagingExpiresAt: kind === "capability" && !revoke ? instance.createdAt + 500 : 0,
+      commandNonce: `0x${(++nonce).toString(16).padStart(2, "0").repeat(32)}` });
+  const entry = (kind: "account" | "capability") => ({ namespace: instance.namespace, kind,
+    credentialCommitment: kind === "account" ? accountHash : capabilityHash,
+    revocationAuthorityAccountCredentialCommitment: kind === "account" ? accountHash : new Uint8Array(32),
+    statusIndex: kind === "account" ? 7n : 8n });
+  function invoke(operation: bigint, cmd: RuntimeCredentialStatusCommand, options: {
+    binding?: RuntimeCredentialInstanceBinding; authority?: GovernanceActivatorLeaf; secret?: bigint;
+    account?: RuntimeAccountCredential; capability?: RuntimeCapabilityCredential;
+    pathIndex?: bigint; context?: typeof context; plan?: CapabilityAttenuationPlan; stage?: RuntimeScopeStage;
+  } = {}) {
+    const authority = options.authority ?? f.issuer;
+    const cap = options.capability ?? capability.credential;
+    const path = status.pathFor(options.pathIndex ?? cmd.statusIndex);
+    return f.contract.circuits.updateRuntimeCredentialStatus(options.context ?? context, operation, cmd,
+      signRuntimeCredentialStatusCommand(cmd, options.secret ?? 191n), authority,
+      f.governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(authority)),
+      options.account ?? account, status.pathFor(7n), path, cap,
+      signRuntimeCapabilityCredential(cap, options.secret ?? 191n), capability.credential, status.pathFor(8n),
+      options.stage?.progress ?? options.plan?.currentProgress ?? createEmptyRuntimeScopeProgress(),
+      options.stage?.element ?? { elementVersion: 1n, dimension: 1n, valueHash: new Uint8Array(32) },
+      options.stage?.childPath ?? path, options.stage?.parentPath ?? path,
+      createEmptyRuntimeSessionCredential(), options.binding ?? binding);
+  }
+  const apply = (result: ReturnType<typeof invoke>) => { context = result.context; };
+  const issueAccount = () => { apply(invoke(1n, command("account"))); status.issue(entry("account")); };
+  function certifyRoot() {
+    const cmd = command("capability");
+    const plan = new CapabilityAttenuationPlan(capability.scope);
+    apply(invoke(2n, cmd, { plan }));
+    while (!plan.complete) apply(invoke(3n, cmd, { plan, stage: plan.stageNext() }));
+    apply(invoke(4n, cmd, { plan })); status.issue(entry("capability"));
+  }
+  return { ...f, account, accountHash, capability, binding, command, invoke, apply, issueAccount, certifyRoot, status,
+    currentContext: () => context,
+    currentView: () => ledger(context.currentQueryContext.state),
+    at: (time: number) => { context = createCircuitContext(dummyContractAddress(), "00".repeat(32),
+      context.currentQueryContext.state, undefined, undefined, undefined, time); } };
+}
+
+describe("allocation-bound credential issuance (generated Compact, not node acceptance)", () => {
+  it("issues an exact allocated account and root, preserving immutable allocation", () => {
+    const f = allocatedCredentialFixture(); f.issueAccount(); f.certifyRoot();
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 2n);
+    assert.deepEqual(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).allocationCommitment,
+      pureCircuits.runtimeInstanceAllocationCommitment(f.allocation));
+    assert.equal(f.capability.credential.credentialVersion, 3n);
+  });
+
+  it("rejects absent, altered, cross-instance and cross-template allocations before issuance", () => {
+    const f = allocatedCredentialFixture(); const cmd = f.command("account");
+    assert.throws(() => f.invoke(1n, cmd, { context: f.context() }), /allocated exact instance/);
+    for (const allocation of [
+      { ...f.allocation, allocationNonce: new Uint8Array(32).fill(201) },
+      { ...f.allocation, instanceCommitment: new Uint8Array(32).fill(202) },
+      { ...f.allocation, target: { ...f.allocation.target, templateContentHash: new Uint8Array(32).fill(203) } },
+    ]) assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding, allocation } }), /immutable private allocation/);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+  });
+
+  it("rejects a current namespace issuer not on this instance's exact issuer list", () => {
+    const f = allocatedCredentialFixture();
+    assert.throws(() => f.invoke(1n, f.command("account"), { authority: f.otherIssuer, secret: 193n }), /not explicitly authorized/);
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 0n);
+  });
+
+  it("rejects another empty slot even when it reconstructs the exact current root", () => {
+    const f = allocatedCredentialFixture();
+    assert.deepEqual(pureCircuits.runtimeCredentialStatusPathRoot(f.status.pathFor(7n)),
+      pureCircuits.runtimeCredentialStatusPathRoot(f.status.pathFor(99n)));
+    assert.throws(() => f.invoke(1n, f.command("account"), { pathIndex: 99n }), /path position/);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+  });
+
+  it("binds every direction bit to its physical status index", () => {
+    const tree = new CredentialStatusTree();
+    for (const index of [0n, 1n, 7n, 99n, 1_048_575n]) {
+      assert.equal(pureCircuits.runtimeCredentialStatusPathIndex(tree.pathFor(index)), index);
+    }
+  });
+
+  it("rejects expired and overlong proof windows, credential lifetime extension and pre-allocation accounts", () => {
+    const f = allocatedCredentialFixture(); const cmd = f.command("account");
+    assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding, validBefore: f.allocation.expiresAt + 1n } }), /allocated instance lifetime/);
+    const account = { ...f.account, issuedAt: f.allocation.createdAt - 1n };
+    const hash = pureCircuits.runtimeAccountCredentialCommitment(account);
+    assert.throws(() => f.invoke(1n, { ...cmd, credentialCommitment: hash,
+      revocationAuthorityAccountCredentialCommitment: hash }, { account }), /self-revocation authority/);
+    const extended = { ...f.account, validBefore: f.allocation.expiresAt + 1n };
+    const extendedHash = pureCircuits.runtimeAccountCredentialCommitment(extended);
+    assert.throws(() => f.invoke(1n, { ...cmd, credentialCommitment: extendedHash,
+      revocationAuthorityAccountCredentialCommitment: extendedHash }, { account: extended }), /self-revocation authority/);
+    f.at(Number(f.binding.validBefore));
+    assert.throws(() => f.invoke(1n, cmd), /submission window has expired/);
+  });
+
+  it("only the original issuer may revoke, even when a second issuer is allocated and signs correctly", () => {
+    const f = allocatedCredentialFixture(true); f.issueAccount(); f.certifyRoot();
+    const cmd = f.command("capability", true);
+    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore));
+    assert.throws(() => f.invoke(1n, cmd, { authority: f.otherIssuer, secret: 193n, binding }), /exact original namespace issuer/);
+    assert.equal(f.status.sequence, 2n);
+    f.apply(f.invoke(1n, cmd));
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 3n);
+  });
+
+  it("rejects legacy capability version and issuer substitution at certification begin and finalization", () => {
+    const f = allocatedCredentialFixture(true); f.issueAccount();
+    const cmd = f.command("capability");
+    assert.throws(() => f.invoke(2n, cmd, { capability: { ...f.capability.credential, credentialVersion: 2n } }), /exact original namespace issuer/);
+    const plan = new CapabilityAttenuationPlan(f.capability.scope);
+    f.apply(f.invoke(2n, cmd, { plan }));
+    while (!plan.complete) f.apply(f.invoke(3n, cmd, { plan, stage: plan.stageNext() }));
+    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore));
+    assert.throws(() => f.invoke(4n, cmd, { plan, binding, authority: f.otherIssuer, secret: 193n }), /exact original namespace issuer/);
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 1n);
+    f.apply(f.invoke(4n, cmd, { plan }));
+  });
+});
+
+function slotManagementFixture() {
+  const original = template();
+  const slotTemplate = parseScenarioTemplate({ ...original, participantSlots: [
+    { ...original.participantSlots[0]!, assignableBy: ["@instance-creator", "@namespace-governance", "manager"] },
+    original.participantSlots[1]!,
+    { id: "manager", description: "A purpose-bound assigning slot.", assignableBy: ["@instance-creator", "manager"] },
+  ], contexts: [{ ...original.contexts[0]!, allowedSlotIds: ["subject", "verifier", "manager"] }] });
+  const f = allocatedCredentialFixture(false, slotTemplate); f.issueAccount();
+  const assignments = new RuntimePrivateMap(), bindings = new RuntimePrivateMap();
+  const records = new Map<string, RuntimeSlotRecord>();
+  let state: RuntimeStateOpening = structuredClone(f.stateOpening);
+  let nonce = 80;
+  const hex = (value: Uint8Array) => Buffer.from(value).toString("hex");
+  const zero = () => new Uint8Array(32);
+  const projection = createRuntimeTemplateActionPolicy(slotTemplate, "authorize-access");
+  const authorityPath = (leaf: GovernanceActivatorLeaf) => f.governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(leaf));
+  function request(options: { kind?: 1n | 2n; slot?: string; parent?: RuntimeSlotRecord;
+    id?: Uint8Array; authority?: GovernanceActivatorLeaf; authorityKind?: bigint; secret?: bigint; effectiveAt?: bigint } = {}) {
+    const slot = options.slot ?? "subject", authorityKind = options.authorityKind ?? (options.parent ? 3n : 1n);
+    const authority = options.authority ?? (authorityKind === 2n ? f.slotGovernor : f.allocator);
+    const secret = options.secret ?? (authorityKind === 3n ? 223n : authorityKind === 2n ? 211n : 181n);
+    const kind = options.kind ?? 1n, id = options.id ?? new Uint8Array(32).fill(++nonce);
+    const target = records.get(hex(id));
+    const rule = projection.slotRules.witnessFor("access", slot,
+      authorityKind === 1n ? "@instance-creator" : authorityKind === 2n ? "@namespace-governance" : "manager");
+    const command: RuntimeSlotCommand = {
+      commandVersion: 1n, kind, target: f.allocation.target, instanceCommitment: f.allocation.instanceCommitment,
+      allocationCommitment: pureCircuits.runtimeInstanceAllocationCommitment(f.allocation),
+      stateCommitment: pureCircuits.runtimeStateCommitment(state), stateSequence: f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).transitionSequence,
+      authorityRootVersion: f.allocation.authorityRootVersion,
+      authorityRootSequence: f.allocation.authorityRootSequence, credentialStatusRootSequence: f.status.sequence,
+      contextHash: f.account.contextHash, slotIdHash: rule.rule.slotIdHash, subjectAccountCredentialCommitment: f.accountHash,
+      subjectAccountIdHash: f.account.accountIdHash, assignmentIdHash: id,
+      parentAssignmentIdHash: options.parent?.assignment.assignmentIdHash ?? zero(),
+      assignerAccountCredentialCommitment: authorityKind === 3n ? f.accountHash : zero(),
+      authorityKind, namespaceAuthorityCommitment: authorityKind === 3n ? zero() : pureCircuits.governanceActivatorLeafCommitment(authority),
+      m5AssignmentCommitment: target?.assignment.m5AssignmentCommitment ?? new Uint8Array(32).fill(210),
+      effectiveAt: options.effectiveAt ?? f.allocation.createdAt, validBefore: f.allocation.createdAt + 400n,
+      commandNonce: new Uint8Array(32).fill(++nonce),
+    };
+    const record: RuntimeSlotRecord = { assignment: pureCircuits.runtimeSlotAssignmentFromCommand(command), status: 1n, revokedAt: 0n };
+    const bindingKey = pureCircuits.runtimeSlotBindingKey(command), bindingOpening = bindings.witnessFor(bindingKey);
+    const bindingExists = hex(bindingOpening.node.key) === hex(bindingKey);
+    const previous = bindingExists ? records.get(hex(bindingOpening.node.value))! : undefined;
+    const targetRecord = kind === 2n ? target! : previous ?? record;
+    const assignmentPlan = kind === 1n ? assignments.planInsert(id, pureCircuits.runtimeSlotRecordCommitment(record)) : undefined;
+    const assignmentOpening = assignmentPlan?.predecessor ?? assignments.witnessFor(id);
+    const bindingPlan = kind === 1n && !bindingExists ? bindings.planInsert(bindingKey, id) : undefined;
+    const previousBindingOpening = previous ? assignments.witnessFor(previous.assignment.assignmentIdHash) : assignmentOpening;
+    let progress: RuntimeSlotProgress = pureCircuits.runtimeSlotInitialProgress(command,
+      kind === 1n && previous ? previous.assignment.assignmentIdHash : zero(),
+      kind === 1n && previous ? previous.assignment.subjectAccountCredentialCommitment : zero());
+    const openingFor = (rec: RuntimeSlotRecord): RuntimeSlotAncestryStep => ({
+      record: rec, opening: assignments.witnessFor(rec.assignment.assignmentIdHash),
+      account: f.account, accountStatus: 1n, accountStatusPath: f.status.pathFor(f.account.statusIndex),
+    });
+    const step = options.parent ? openingFor(options.parent) : {
+      record, opening: assignmentOpening, account: f.account,
+      accountStatus: 1n, accountStatusPath: f.status.pathFor(f.account.statusIndex),
+    };
+    const policyOpening = { policy: projection.policy, binding: f.policyWitness.binding,
+      bindingPath: f.policyWitness.bindingPath, rule: rule.rule, rulePath: rule.path };
+    const nextNonce = new Uint8Array(32).fill(++nonce);
+    function call(operation: bigint, overrides: { command?: RuntimeSlotCommand; progress?: RuntimeSlotProgress;
+      step?: RuntimeSlotAncestryStep; secret?: bigint; state?: RuntimeStateOpening; nextNonce?: Uint8Array } = {}) {
+      const cmd = overrides.command ?? command;
+      return f.contract.circuits.manageRuntimeParticipantSlots(f.currentContext(), operation, cmd,
+        signRuntimeSlotCommand(cmd, overrides.secret ?? secret), f.allocation, overrides.state ?? state,
+        overrides.nextNonce ?? nextNonce, policyOpening, authority, authorityPath(authority), f.account,
+        f.status.pathFor(f.account.statusIndex), f.account, f.status.pathFor(f.account.statusIndex),
+        overrides.progress ?? progress, overrides.step ?? step, targetRecord, assignmentOpening,
+        assignmentPlan?.appendPath ?? assignmentOpening.path, bindingOpening,
+        bindingPlan?.appendPath ?? bindingOpening.path, previousBindingOpening);
+    }
+    function advance(overrides: Partial<RuntimeSlotAncestryStep> = {}) {
+      const nextRecord = records.get(hex(progress.nextAssignmentIdHash))!;
+      const nextStep = { ...openingFor(nextRecord), ...overrides };
+      const next = pureCircuits.runtimeSlotAdvanceProgress(progress, nextStep, state, command, f.status.root);
+      f.apply(call(2n, { step: nextStep })); progress = next;
+    }
+    function finalize() {
+      const result = call(3n); f.apply(result);
+      if (kind === 1n) {
+        assignments.insert(id, pureCircuits.runtimeSlotRecordCommitment(record)); records.set(hex(id), record);
+        if (bindingExists) bindings.replace(bindingKey, bindingOpening.node.value, id); else bindings.insert(bindingKey, id);
+      } else {
+        const revoked = { ...targetRecord, status: 2n, revokedAt: command.effectiveAt };
+        assignments.replace(id, pureCircuits.runtimeSlotRecordCommitment(targetRecord), pureCircuits.runtimeSlotRecordCommitment(revoked));
+        records.set(hex(id), revoked);
+      }
+      state = { ...state, slotAssignmentsRoot: assignments.root, slotAssignmentCount: assignments.count,
+        lastMutationAt: command.effectiveAt,
+        slotBindingsRoot: bindings.root, slotBindingCount: bindings.count, nonce: nextNonce };
+      assert.deepEqual(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).currentStateCommitment,
+        pureCircuits.runtimeStateCommitment(state));
+      return records.get(hex(id))!;
+    }
+    return { command, record, call, advance, finalize, begin: () => f.apply(call(1n)), progress: () => progress };
+  }
+  return { f, assignments, bindings, records, request, state: () => state };
+}
+
+describe("staged private participant slots (generated Compact, not node acceptance)", () => {
+  it("begins without granting a role, then atomically issues/revokes while retaining exact history", () => {
+    const s = slotManagementFixture(), issue = s.request();
+    issue.begin();
+    assert.equal(s.f.currentView().runtimeSlotSessions.size(), 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+    const original = issue.finalize();
+    assert.equal(s.f.currentView().runtimeSlotSessions.size(), 0n);
+    assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 1n);
+    assert.equal(s.assignments.count, 2n); assert.equal(s.bindings.count, 2n);
+    const revoke = s.request({ kind: 2n, id: original.assignment.assignmentIdHash }); revoke.begin(); const revoked = revoke.finalize();
+    assert.deepEqual(revoked.assignment, original.assignment); assert.equal(revoked.status, 2n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+    assert.equal(s.assignments.count, 2n); assert.equal(s.bindings.count, 2n);
+    assert.throws(() => issue.call(3n), /nonce was already consumed/);
+    assert.throws(() => s.request({ id: original.assignment.assignmentIdHash }), /already exists/);
+  });
+
+  it("keeps slot governance separately scoped rather than inheriting activation or issuer powers", () => {
+    const s = slotManagementFixture(), approved = s.request({ authorityKind: 2n });
+    approved.begin(); approved.finalize();
+    const other = slotManagementFixture();
+    for (const [authority, secret] of [[other.f.allocator, 181n], [other.f.issuer, 191n], [other.f.governance.moduleActivator, other.f.governance.moduleActivatorSecret]] as const) {
+      assert.throws(() => other.request({ authorityKind: 2n, authority, secret }).call(1n), /separately scoped/);
+    }
+    assert.equal(other.f.currentView().runtimeSlotSessions.size(), 0n);
+    assert.throws(() => other.request({ authority: other.f.otherAllocator, secret: 199n }).call(1n), /original instance creator/);
+  });
+
+  it("verifies exact occupied-slot ancestry before permitting finalization", () => {
+    const s = slotManagementFixture(), root = s.request({ slot: "manager" }); root.begin(); const manager = root.finalize();
+    const child = s.request({ parent: manager }); child.begin();
+    assert.throws(() => child.call(3n), /verification is incomplete/);
+    assert.throws(() => child.call(2n, { progress: { ...child.progress(), nextAssignmentIdHash: new Uint8Array(32).fill(99) } }), /exact staged opening/);
+    child.advance(); assert.equal(child.progress().phase, 3n); child.finalize();
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+    assert.throws(() => child.call(2n), /nonce was already consumed/);
+  });
+
+  it("rejects duplicate active bindings, but permits a new exact ID after revocation without reviving old descendants", () => {
+    const s = slotManagementFixture(), first = s.request(); first.begin(); const record = first.finalize();
+    const duplicate = s.request(); duplicate.begin(); duplicate.advance();
+    assert.throws(() => duplicate.call(3n), /already occupies/);
+    const revoke = s.request({ kind: 2n, id: record.assignment.assignmentIdHash }); revoke.begin(); revoke.finalize();
+    assert.throws(() => duplicate.call(3n), /stale against/);
+    const replacement = s.request(); replacement.begin(); replacement.advance(); const next = replacement.finalize();
+    assert.notDeepEqual(next.assignment.assignmentIdHash, record.assignment.assignmentIdHash);
+    assert.equal(s.assignments.count, 3n); assert.equal(s.bindings.count, 2n);
+    assert.equal(s.records.get(Buffer.from(record.assignment.assignmentIdHash).toString("hex"))!.status, 2n);
+  });
+
+  it("invalidates staged descendant authority after ancestor revocation changes private state", () => {
+    const s = slotManagementFixture(), root = s.request({ slot: "manager" }); root.begin(); const manager = root.finalize();
+    const child = s.request({ parent: manager }); child.begin(); child.advance();
+    const revoke = s.request({ kind: 2n, slot: "manager", id: manager.assignment.assignmentIdHash }); revoke.begin(); revoke.finalize();
+    assert.throws(() => child.call(3n), /stale against/);
+    const fresh = s.request({ parent: s.records.get(Buffer.from(manager.assignment.assignmentIdHash).toString("hex"))! }); fresh.begin();
+    assert.throws(() => fresh.advance(), /ancestor or holder has been revoked/);
+  });
+
+  it("rejects wrong signatures, altered exact hashes, stale roots, wrong state and forged completion", () => {
+    const s = slotManagementFixture(), request = s.request(), cmd = request.command;
+    assert.throws(() => request.call(1n, { secret: 211n }), /Invalid governance activation signature/);
+    for (const changed of [
+      { ...cmd, authorityRootSequence: 0n }, { ...cmd, credentialStatusRootSequence: 0n },
+      { ...cmd, stateSequence: 1n }, { ...cmd, stateCommitment: new Uint8Array(32).fill(2) },
+      { ...cmd, allocationCommitment: new Uint8Array(32).fill(9) },
+      { ...cmd, target: { ...cmd.target, templateContentHash: new Uint8Array(32).fill(3) } },
+    ]) assert.throws(() => request.call(1n, { command: changed }), /stale|substitutes/);
+    assert.throws(() => request.call(1n, { state: { ...s.state(), slotAssignmentCount: 2n } }), /stale against/);
+    request.begin();
+    assert.throws(() => request.call(3n, { progress: { ...request.progress(), steps: 99n } }), /verification is incomplete/);
+    assert.throws(() => request.call(3n, { nextNonce: s.state().nonce }), /fresh private state nonce/);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+  });
+
+  it("cleans an expired verification session without consuming a nonce, granting a slot or advancing state", () => {
+    const s = slotManagementFixture(), request = s.request(); request.begin();
+    s.f.at(Number(request.command.validBefore));
+    s.f.apply(request.call(2n));
+    assert.equal(s.f.currentView().runtimeSlotSessions.size(), 0n);
+    assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 0n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+  });
+
+  it("cannot backdate a slot mutation before the committed instance watermark", () => {
+    const s = slotManagementFixture(); s.f.at(Number(s.f.allocation.createdAt + 100n));
+    const issue = s.request({ slot: "manager", effectiveAt: s.f.allocation.createdAt + 30n }); issue.begin(); issue.finalize();
+    assert.equal(s.state().lastMutationAt, s.f.allocation.createdAt + 30n);
+    assert.throws(() => s.request().call(1n), /stale against/);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
+  });
+
+  it("cannot finalize two different slot mutations from one state commitment and sequence", () => {
+    const s = slotManagementFixture(), first = s.request(), competing = s.request({ slot: "verifier", authorityKind: 2n });
+    first.begin(); competing.begin(); first.finalize();
+    assert.throws(() => competing.call(3n), /stale against/);
+    assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
+  });
+
+  it("invalidates staged authority after current account revocation advances the status root", () => {
+    const s = slotManagementFixture(), root = s.request({ slot: "manager" }); root.begin(); const manager = root.finalize();
+    const child = s.request({ parent: manager }); child.begin(); child.advance();
+    s.f.apply(s.f.invoke(1n, s.f.command("account", true), { secret: 223n }));
+    s.f.status.revoke({ namespace: s.f.adapterInput.instance.namespace, kind: "account", credentialCommitment: s.f.accountHash,
+      revocationAuthorityAccountCredentialCommitment: s.f.accountHash, statusIndex: s.f.account.statusIndex });
+    assert.throws(() => child.call(3n), /root is stale/);
+    assert.throws(() => s.request({ parent: manager }).call(1n), /current credential-status root/);
+  });
+
+  it("keeps duplicate-binding identity stable when only the runtime credential commitment changes", () => {
+    const s = slotManagementFixture(), command = s.request().command;
+    const changed = { ...command, subjectAccountCredentialCommitment: new Uint8Array(32).fill(254) };
+    assert.deepEqual(pureCircuits.runtimeSlotBindingKey(command), pureCircuits.runtimeSlotBindingKey(changed));
+    assert.notDeepEqual(pureCircuits.runtimeSlotBindingKey(command), pureCircuits.runtimeSlotBindingKey({ ...changed,
+      subjectAccountIdHash: new Uint8Array(32).fill(253) }));
+  });
+});
+
+describe("private runtime instance allocation (generated Compact, not live acceptance)", () => {
+  it("binds the original M4/M5 allocation and initializes only public commitments", () => {
+    const f = allocationFixture();
+    f.apply();
+    const record = f.view().runtimeInstances.lookup(f.allocation.instanceCommitment);
+    assert.deepEqual(f.allocation.instanceCommitment, hashM5ScenarioInstance(f.adapterInput.instance));
+    assert.deepEqual(record.allocationCommitment, pureCircuits.runtimeInstanceAllocationCommitment(f.allocation));
+    assert.deepEqual(record.currentStateCommitment, pureCircuits.runtimeStateCommitment(f.stateOpening));
+    assert.equal(record.transitionSequence, 0n);
+    assert.equal(record.lifecycleStatus, 1n);
+    assert.deepEqual(Object.keys(record).sort(), ["allocationCommitment", "currentStateCommitment", "lifecycleStatus", "transitionSequence"]);
+    assert.equal(f.view().usedAllocationRequestNullifiers.size(), 1n);
+    assert.equal(f.view().usedInstanceIdentityNullifiers.size(), 1n);
+  });
+
+  it("rejects an allocator-signed arbitrary initial state and altered authenticated policy", () => {
+    const f = allocationFixture(), witness = f.policyWitness;
+    const call = (allocation = f.allocation, policyWitness = witness) => f.call(allocation, 181n, f.allocator,
+      signRuntimeInstanceAllocation(allocation, 181n, 197n), policyWitness);
+    assert.throws(() => call({ ...f.allocation, initialStateCommitment: new Uint8Array(32).fill(99) }), /exact initial state/);
+    const wrongState = { ...witness.initialState, stateIdHash: new Uint8Array(32).fill(98) };
+    assert.throws(() => call({ ...f.allocation, initialStateCommitment: pureCircuits.runtimeStateCommitment(wrongState) },
+      { ...witness, initialState: wrongState }), /exact initial state/);
+    assert.throws(() => call(f.allocation, { ...witness,
+      policy: { ...witness.policy, maxCapabilityDuration: witness.policy.maxCapabilityDuration + 1n } }), /configuration hash/);
+    assert.throws(() => call(f.allocation, { ...witness, bindingPath: { ...witness.bindingPath, leaf: new Uint8Array(32) } }), /absent/);
+    assert.throws(() => call(f.allocation, { ...witness, initialState: { ...witness.initialState,
+      instanceCommitment: new Uint8Array(32).fill(97) } }), /exact initial state/);
+    assert.throws(() => call(f.allocation, { ...witness, initialState: { ...witness.initialState, nonce: new Uint8Array(32) } }), /exact initial state/);
+    assert.equal(f.view().runtimeInstances.size(), 0n);
+    assert.equal(f.view().usedAllocationRequestNullifiers.size(), 0n);
+  });
+
+  it("rejects replay, reusing a request for another instance, and reusing an instance with a different snapshot", () => {
+    const f = allocationFixture(); f.apply();
+    assert.throws(() => f.call(), /already consumed/);
+    assert.throws(() => f.call({ ...f.allocation, instanceCommitment: new Uint8Array(32).fill(30),
+      instanceIdHash: new Uint8Array(32).fill(31) }), /already consumed/);
+    assert.throws(() => f.call({ ...f.allocation, instanceCommitment: new Uint8Array(32).fill(32),
+      allocationRequestIdHash: new Uint8Array(32).fill(33) }), /already allocated/);
+    assert.equal(f.view().runtimeInstances.size(), 1n);
+  });
+
+  it("rejects ineligible signatures and governance/issuer privilege collapse", () => {
+    const f = allocationFixture();
+    assert.throws(() => f.call(f.allocation, 29n), /Invalid governance activation signature/);
+    for (const [authority, signer] of [
+      [f.issuer, 191n],
+      [f.governance.moduleActivator, f.governance.moduleActivatorSecret],
+    ] as const) {
+      const allocation = { ...f.allocation,
+        allocatorAuthorityCommitment: pureCircuits.governanceActivatorLeafCommitment(authority) };
+      assert.throws(() => f.call(allocation, signer, authority), /exact namespace allocator/);
+    }
+    assert.equal(f.view().runtimeInstances.size(), 0n);
+  });
+
+  it("rejects altered signed fields, stale roots, exact-hash substitution, and another deployment", () => {
+    const f = allocationFixture();
+    const signature = signRuntimeInstanceAllocation(f.allocation, 181n, 197n);
+    // Changes to all private signed bindings are rejected even when their local shapes are valid.
+    for (const field of ["instanceCommitment", "instanceIdHash", "allocationRequestIdHash",
+      "m4AuthorizationCommitment", "initialStateCommitment", "allocationNonce"] as const) {
+      assert.throws(() => f.call({ ...f.allocation, [field]: new Uint8Array(32).fill(34) }, 181n, f.allocator, signature),
+      /Invalid governance activation signature/);
+    }
+    for (const altered of [
+      { ...f.allocation, capabilityIssuersRoot: { field: f.allocation.capabilityIssuersRoot.field + 1n } },
+      { ...f.allocation, capabilityIssuerCount: f.allocation.capabilityIssuerCount + 1n },
+      { ...f.allocation, authorizedAt: f.allocation.authorizedAt + 1n },
+      { ...f.allocation, createdAt: f.allocation.createdAt - 1n },
+      { ...f.allocation, expiresAt: f.allocation.expiresAt + 1n },
+      { ...f.allocation, allocationValidBefore: f.allocation.allocationValidBefore - 1n },
+    ]) assert.throws(() => f.call(altered, 181n, f.allocator, signature), /Invalid governance activation signature/);
+    assert.throws(() => f.call({ ...f.allocation, authorityRootSequence: 6n }), /stale or mismatched/);
+    assert.throws(() => f.call({ ...f.allocation, target: { ...f.allocation.target,
+      templateContentHash: new Uint8Array(32).fill(35) } }), /not registered/);
+    assert.throws(() => f.call({ ...f.allocation, targetContractIdentity: new Uint8Array(32).fill(36) }), /another network or deployment/);
+    assert.equal(f.view().runtimeInstances.size(), 0n);
+  });
+
+  it("rejects expired/future submissions and malformed private allocation bounds", () => {
+    const f = allocationFixture();
+    for (const allocation of [
+      { ...f.allocation, capabilityIssuerCount: 0n },
+      { ...f.allocation, allocationNonce: new Uint8Array(32) },
+      { ...f.allocation, authorizedAt: f.allocation.createdAt + 1n },
+      { ...f.allocation, allocationValidBefore: f.allocation.expiresAt + 1n },
+    ]) assert.throws(() => f.call(allocation), /private bindings|lifetime|window/);
+    f.at(1_800_000_099); assert.throws(() => f.call(), /not yet effective/);
+    f.at(1_800_000_500); assert.throws(() => f.call(), /window expired/);
+  });
+
+  for (const status of [2n, 3n] as const) {
+    it(`blocks new allocation after template lifecycle ${status} while preserving existing history`, () => {
+      const f = allocationFixture(); f.apply();
+      const before = f.view().runtimeInstances.lookup(f.allocation.instanceCommitment);
+      f.terminate(status);
+      assert.throws(() => f.call({ ...f.allocation, instanceCommitment: new Uint8Array(32).fill(37) }), /active exact template/);
+      assert.deepEqual(f.view().runtimeInstances.lookup(f.allocation.instanceCommitment), before);
+    });
+  }
+
+  it("requires both exact instance issuer membership and current namespace eligibility", () => {
+    const f = allocationFixture();
+    const issuerCommitment = pureCircuits.governanceActivatorLeafCommitment(f.issuer);
+    const path = f.issuers.pathFor(issuerCommitment);
+    const root = f.view().authorityRoots.lookup(f.allocation.target.namespaceHash);
+    const verify = (issuer = f.issuer, current = root) => pureCircuits.assertRuntimeInstanceIssuer(
+      f.allocation, issuer, path, current,
+      f.governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(issuer)), f.allocation.createdAt);
+    assert.doesNotThrow(() => verify());
+    assert.throws(() => verify(f.otherIssuer), /not explicitly authorized/);
+    assert.throws(() => verify(f.allocator), /capability-issuer scope/);
+    assert.throws(() => verify(f.issuer, { ...root, root: buildAuthorityRoot([f.otherIssuer]).root }), /current namespace authority root/);
+  });
+
+  it("rejects M4/M5 mismatches, mutable snapshots, incomplete issuers, duplicate keys, and bad nonces in the adapter", () => {
+    const f = allocationFixture(), input = f.adapterInput;
+    for (const value of [
+      { ...input, authorization: { ...input.authorization, allocatorId: "wrong-allocator" } },
+      { ...input, instance: { ...input.instance, state: "authorized" } },
+      { ...input, templateRecord: { ...input.templateRecord, state: "retired" as const } },
+      { ...input, instance: { ...input.instance, templateHash: `0x${"ff".repeat(32)}` as const } },
+      { ...input, capabilityIssuers: [] },
+      { ...input, allocationNonce: new Uint8Array(32) },
+      { ...input, initialStateNonce: new Uint8Array(32) },
+    ]) assert.throws(() => createRuntimeInstanceAllocation(value));
+    assert.throws(() => createRuntimeInstanceAllocation({ ...input,
+      instance: { ...input.instance, capabilityIssuers: [...input.instance.capabilityIssuers,
+        { principalId: "issuer-two", kind: "human" }] },
+      capabilityIssuers: [...input.capabilityIssuers, { principalId: "issuer-two", kind: "human", authority: f.issuer }],
+    }), /unique, exact/);
+  });
+});
 
 function activateFixtureModule(
   contract: ReturnType<typeof createPermioAuthorizationContract>,
@@ -750,6 +1374,15 @@ describe("M4 activation admission envelope", () => {
         ),
       /nonce already used/i,
     );
+    // A long integration workflow may outlive admission's window. Expiry
+    // intentionally precedes nonce reuse; test replay promptly, not after
+    // an hour of unrelated credential proofs and with a loosened regex.
+    const lateContext = createCircuitContext(dummyContractAddress(), "00".repeat(32),
+      context.currentQueryContext.state, undefined, undefined, undefined,
+      Number(envelope.stagingExpiresAt) + 1);
+    assert.throws(() => contract.circuits.beginM4Activation(lateContext,
+      envelope, signature, activator, authority.pathFor(commitment)),
+    /Activation staging deadline has passed/);
   });
 
   it("rejects missing, altered, out-of-order, and duplicate staged bindings", () => {

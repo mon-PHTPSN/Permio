@@ -3,6 +3,8 @@ pragma language_version >= 0.23;
 import CompactStandardLibrary;
 import "schnorr" prefix Schnorr_;
 
+include "runtime-status-multiproof";
+
 export struct SemanticVersion {
     major: Uint<64>;
     minor: Uint<64>;
@@ -302,6 +304,29 @@ export struct RuntimeScopeRoots {
     disclosurePolicyIdsRoot: MerkleTreeDigest;
 }
 
+export struct RuntimeScopeCounts {
+    actionsCount: Uint<32>;
+    resourceSelectorsCount: Uint<32>;
+    resourcesCount: Uint<32>;
+    purposesCount: Uint<32>;
+    recipientKindsCount: Uint<32>;
+    recipientsCount: Uint<32>;
+    disclosurePolicyIdsCount: Uint<32>;
+}
+
+export struct RuntimeScopeProgress {
+    roots: RuntimeScopeRoots;
+    counts: RuntimeScopeCounts;
+    lastDimension: Uint<8>;
+    lastOrderKey: Bytes<32>;
+}
+
+export struct RuntimeScopeElement {
+    elementVersion: Uint<16>;
+    dimension: Uint<8>;
+    valueHash: Bytes<32>;
+}
+
 export struct RuntimeAccountCredential {
     credentialVersion: Uint<16>;
     target: TemplateRegistryTarget;
@@ -326,7 +351,9 @@ export struct RuntimeCapabilityCredential {
     subjectAccountCredentialCommitment: Bytes<32>;
     parentCapabilityCredentialCommitment: Bytes<32>;
     issuerAccountCredentialCommitment: Bytes<32>;
+    namespaceIssuerAuthorityCommitment: Bytes<32>;
     scopeRoots: RuntimeScopeRoots;
+    scopeCounts: RuntimeScopeCounts;
     notBefore: Uint<64>;
     expiresAt: Uint<64>;
     delegationDepth: Uint<16>;
@@ -345,6 +372,7 @@ export struct RuntimeSessionCredential {
     subjectAccountCredentialCommitment: Bytes<32>;
     capabilityCredentialCommitment: Bytes<32>;
     scopeRoots: RuntimeScopeRoots;
+    scopeCounts: RuntimeScopeCounts;
     runtimePublicKey: JubjubPoint;
     notBefore: Uint<64>;
     expiresAt: Uint<64>;
@@ -400,13 +428,57 @@ export struct RuntimeCredentialStatusCommand {
     expectedStatus: Uint<8>;
     nextStatus: Uint<8>;
     effectiveAt: Uint<64>;
+    stagingExpiresAt: Uint<64>;
     commandNonce: Bytes<32>;
+}
+
+export struct CapabilityAttenuationCertification {
+    certificationVersion: Uint<16>;
+    commandCommitment: Bytes<32>;
+    capabilityCredentialCommitment: Bytes<32>;
+    parentCapabilityCredentialCommitment: Bytes<32>;
+    issuerAccountCredentialCommitment: Bytes<32>;
+    totalScopeElementCount: Uint<32>;
+    stagingExpiresAt: Uint<64>;
+}
+
+export struct CapabilityAttenuationSession {
+    certificationCommitment: Bytes<32>;
+    progressCommitment: Bytes<32>;
+    nextElementIndex: Uint<32>;
+    totalScopeElementCount: Uint<32>;
+    expiresAt: Uint<64>;
+}
+
+// Shared private view avoids duplicating the scope and signature circuits for
+// capability and session issuance. The signed command pins the credential kind.
+struct RuntimeScopedCredential {
+    version: Uint<16>;
+    commitment: Bytes<32>;
+    message: Vector<1, Field>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    contextHash: Bytes<32>;
+    subject: Bytes<32>;
+    parent: Bytes<32>;
+    issuer: Bytes<32>;
+    roots: RuntimeScopeRoots;
+    counts: RuntimeScopeCounts;
+    notBefore: Uint<64>;
+    expiresAt: Uint<64>;
+    issuedAt: Uint<64>;
+    statusIndex: Uint<64>;
 }
 
 export struct FinalizationResult {
     activated: Boolean;
     registryKey: Bytes<32>;
 }
+
+include "runtime-active-ancestry";
+include "runtime-action-authorization";
+include "runtime-template-policy";
+include "runtime-private-map";
 
 export sealed ledger targetNetworkHash: Bytes<32>;
 export ledger authorityRoots: Map<Bytes<32>, AuthorityRootRecord>;
@@ -426,6 +498,10 @@ export ledger templateLifecycleSequence: Counter;
 export ledger usedTemplateLifecycleCommandNonces: Set<Bytes<32>>;
 export ledger credentialStatusRoots: Map<Bytes<32>, CredentialStatusRootRecord>;
 export ledger usedCredentialStatusCommandNonces: Set<Bytes<32>>;
+export ledger capabilityAttenuationSessions: Map<Bytes<32>, CapabilityAttenuationSession>;
+
+include "runtime-instance-allocation";
+include "runtime-participant-slots";
 
 constructor(
     networkHash: Bytes<32>,
@@ -531,6 +607,35 @@ export pure circuit runtimeCredentialStatusPathRoot(
     return merkleTreePathRoot<20, Bytes<32>>(path);
 }
 
+// Paths are leaf-first. Bind the physical Merkle position to the signed
+// credential index; an empty leaf elsewhere in the same tree is not its slot.
+export pure circuit runtimeCredentialStatusPathIndex(
+    path: MerkleTreePath<20, Bytes<32>>
+): Uint<64> {
+    return (
+        (path.path[0].goes_left ? 0 : 1) +
+        (path.path[1].goes_left ? 0 : 2) +
+        (path.path[2].goes_left ? 0 : 4) +
+        (path.path[3].goes_left ? 0 : 8) +
+        (path.path[4].goes_left ? 0 : 16) +
+        (path.path[5].goes_left ? 0 : 32) +
+        (path.path[6].goes_left ? 0 : 64) +
+        (path.path[7].goes_left ? 0 : 128) +
+        (path.path[8].goes_left ? 0 : 256) +
+        (path.path[9].goes_left ? 0 : 512) +
+        (path.path[10].goes_left ? 0 : 1024) +
+        (path.path[11].goes_left ? 0 : 2048) +
+        (path.path[12].goes_left ? 0 : 4096) +
+        (path.path[13].goes_left ? 0 : 8192) +
+        (path.path[14].goes_left ? 0 : 16384) +
+        (path.path[15].goes_left ? 0 : 32768) +
+        (path.path[16].goes_left ? 0 : 65536) +
+        (path.path[17].goes_left ? 0 : 131072) +
+        (path.path[18].goes_left ? 0 : 262144) +
+        (path.path[19].goes_left ? 0 : 524288)
+    ) as Uint<64>;
+}
+
 export pure circuit runtimeCredentialStatusLeafParent(
     path: MerkleTreePath<1, Bytes<32>>
 ): MerkleTreeDigest {
@@ -547,6 +652,30 @@ export pure circuit runtimeCredentialStatusCommandMessage(
     command: RuntimeCredentialStatusCommand
 ): Vector<1, Field> {
     return [transientHash<RuntimeCredentialStatusCommand>(command)];
+}
+
+export pure circuit runtimeCredentialStatusCommandCommitment(
+    command: RuntimeCredentialStatusCommand
+): Bytes<32> {
+    return persistentHash<RuntimeCredentialStatusCommand>(command);
+}
+
+export pure circuit runtimeScopeProgressCommitment(
+    progress: RuntimeScopeProgress
+): Bytes<32> {
+    return persistentHash<RuntimeScopeProgress>(progress);
+}
+
+export pure circuit runtimeScopeElementCommitment(
+    element: RuntimeScopeElement
+): Bytes<32> {
+    return persistentHash<RuntimeScopeElement>(element);
+}
+
+export pure circuit capabilityAttenuationCertificationCommitment(
+    certification: CapabilityAttenuationCertification
+): Bytes<32> {
+    return persistentHash<CapabilityAttenuationCertification>(certification);
 }
 
 export pure circuit runtimeCapabilityCredentialCommitment(
@@ -1963,16 +2092,239 @@ export circuit finalizeM4Activation(
     return disclose(FinalizationResult{activated: true, registryKey: registryKey});
 }
 
+pure circuit runtimeScopeEmptyRoot(): MerkleTreeDigest {
+    return MerkleTreeDigest{
+        field: 52274384359541146877995627861835454584404782604854329611890985703657106958449 as Field
+    };
+}
+
+pure circuit runtimeScopeTotalCount(counts: RuntimeScopeCounts): Uint<32> {
+    return (
+        counts.actionsCount +
+        counts.resourceSelectorsCount +
+        counts.resourcesCount +
+        counts.purposesCount +
+        counts.recipientKindsCount +
+        counts.recipientsCount +
+        counts.disclosurePolicyIdsCount
+    ) as Uint<32>;
+}
+
+pure circuit runtimeScopeValueHashLessThan(
+    left: Bytes<32>,
+    right: Bytes<32>
+): Boolean {
+    const leftOrderKey = slice<8>(left, 24) as Uint<64>;
+    const rightOrderKey = slice<8>(right, 24) as Uint<64>;
+    return leftOrderKey < rightOrderKey;
+}
+
+pure circuit runtimeScopeRootForDimension(
+    roots: RuntimeScopeRoots,
+    dimension: Uint<8>
+): MerkleTreeDigest {
+    if (dimension == 1) {
+        return roots.actionsRoot;
+    } else if (dimension == 2) {
+        return roots.resourceSelectorsRoot;
+    } else if (dimension == 3) {
+        return roots.resourcesRoot;
+    } else if (dimension == 4) {
+        return roots.purposesRoot;
+    } else if (dimension == 5) {
+        return roots.recipientKindsRoot;
+    } else if (dimension == 6) {
+        return roots.recipientsRoot;
+    } else {
+        return roots.disclosurePolicyIdsRoot;
+    }
+}
+
+pure circuit runtimeScopeCountForDimension(
+    counts: RuntimeScopeCounts,
+    dimension: Uint<8>
+): Uint<32> {
+    if (dimension == 1) {
+        return counts.actionsCount;
+    } else if (dimension == 2) {
+        return counts.resourceSelectorsCount;
+    } else if (dimension == 3) {
+        return counts.resourcesCount;
+    } else if (dimension == 4) {
+        return counts.purposesCount;
+    } else if (dimension == 5) {
+        return counts.recipientKindsCount;
+    } else if (dimension == 6) {
+        return counts.recipientsCount;
+    } else {
+        return counts.disclosurePolicyIdsCount;
+    }
+}
+
+pure circuit runtimeScopeRootsAfterInsert(
+    roots: RuntimeScopeRoots,
+    dimension: Uint<8>,
+    nextRoot: MerkleTreeDigest
+): RuntimeScopeRoots {
+    if (dimension == 1) {
+        return RuntimeScopeRoots{ actionsRoot: nextRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else if (dimension == 2) {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: nextRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else if (dimension == 3) {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: nextRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else if (dimension == 4) {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: nextRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else if (dimension == 5) {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: nextRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else if (dimension == 6) {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: nextRoot, disclosurePolicyIdsRoot: roots.disclosurePolicyIdsRoot };
+    } else {
+        return RuntimeScopeRoots{ actionsRoot: roots.actionsRoot, resourceSelectorsRoot: roots.resourceSelectorsRoot, resourcesRoot: roots.resourcesRoot, purposesRoot: roots.purposesRoot, recipientKindsRoot: roots.recipientKindsRoot, recipientsRoot: roots.recipientsRoot, disclosurePolicyIdsRoot: nextRoot };
+    }
+}
+
+pure circuit runtimeScopeCountsAfterInsert(
+    counts: RuntimeScopeCounts,
+    dimension: Uint<8>,
+    nextCount: Uint<32>
+): RuntimeScopeCounts {
+    if (dimension == 1) {
+        return RuntimeScopeCounts{ actionsCount: nextCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: counts.resourcesCount, purposesCount: counts.purposesCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else if (dimension == 2) {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: nextCount, resourcesCount: counts.resourcesCount, purposesCount: counts.purposesCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else if (dimension == 3) {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: nextCount, purposesCount: counts.purposesCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else if (dimension == 4) {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: counts.resourcesCount, purposesCount: nextCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else if (dimension == 5) {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: counts.resourcesCount, purposesCount: counts.purposesCount, recipientKindsCount: nextCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else if (dimension == 6) {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: counts.resourcesCount, purposesCount: counts.purposesCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: nextCount, disclosurePolicyIdsCount: counts.disclosurePolicyIdsCount };
+    } else {
+        return RuntimeScopeCounts{ actionsCount: counts.actionsCount, resourceSelectorsCount: counts.resourceSelectorsCount, resourcesCount: counts.resourcesCount, purposesCount: counts.purposesCount, recipientKindsCount: counts.recipientKindsCount, recipientsCount: counts.recipientsCount, disclosurePolicyIdsCount: nextCount };
+    }
+}
+
+pure circuit runtimeScopeProgressAfterInsert(
+    progress: RuntimeScopeProgress,
+    dimension: Uint<8>,
+    nextRoot: MerkleTreeDigest,
+    nextCount: Uint<32>,
+    nextOrderKey: Bytes<32>
+): RuntimeScopeProgress {
+    return RuntimeScopeProgress{
+        roots: runtimeScopeRootsAfterInsert(progress.roots, dimension, nextRoot),
+        counts: runtimeScopeCountsAfterInsert(progress.counts, dimension, nextCount),
+        lastDimension: dimension,
+        lastOrderKey: nextOrderKey
+    };
+}
+
+pure circuit runtimeCredentialStatusLeafVersion(credentialKind: Uint<16>): Uint<16> {
+    if (credentialKind == 2) {
+        return 3;
+    } else if (credentialKind == 3) {
+        return 2;
+    } else {
+        return 1;
+    }
+}
+
+pure circuit runtimeScopeProgressIsInitial(progress: RuntimeScopeProgress): Boolean {
+    const emptyRoot = runtimeScopeEmptyRoot();
+    return
+        progress.roots.actionsRoot == emptyRoot &&
+        progress.roots.resourceSelectorsRoot == emptyRoot &&
+        progress.roots.resourcesRoot == emptyRoot &&
+        progress.roots.purposesRoot == emptyRoot &&
+        progress.roots.recipientKindsRoot == emptyRoot &&
+        progress.roots.recipientsRoot == emptyRoot &&
+        progress.roots.disclosurePolicyIdsRoot == emptyRoot &&
+        runtimeScopeTotalCount(progress.counts) == 0 &&
+        progress.lastDimension == 0 &&
+        progress.lastOrderKey == default<Bytes<32>>;
+}
+
+pure circuit runtimeScopeProgressIsComplete(
+    progress: RuntimeScopeProgress,
+    credential: RuntimeScopedCredential
+): Boolean {
+    return
+        progress.roots == credential.roots &&
+        progress.counts == credential.counts;
+}
+
+pure circuit runtimeScopedCredential(
+    isSession: Boolean,
+    capability: RuntimeCapabilityCredential,
+    session: RuntimeSessionCredential
+): RuntimeScopedCredential {
+    if (isSession) {
+        return RuntimeScopedCredential{
+            version: session.credentialVersion,
+            commitment: runtimeSessionCredentialCommitment(session),
+            message: runtimeSessionCredentialMessage(session),
+            target: session.target, instanceCommitment: session.instanceCommitment,
+            contextHash: session.contextHash, subject: session.subjectAccountCredentialCommitment,
+            parent: session.capabilityCredentialCommitment, issuer: session.subjectAccountCredentialCommitment,
+            roots: session.scopeRoots, counts: session.scopeCounts,
+            notBefore: session.notBefore, expiresAt: session.expiresAt,
+            issuedAt: session.issuedAt, statusIndex: session.statusIndex
+        };
+    } else {
+        return RuntimeScopedCredential{
+            version: capability.credentialVersion,
+            commitment: runtimeCapabilityCredentialCommitment(capability),
+            message: runtimeCapabilityCredentialMessage(capability),
+            target: capability.target, instanceCommitment: capability.instanceCommitment,
+            contextHash: capability.contextHash, subject: capability.subjectAccountCredentialCommitment,
+            parent: capability.parentCapabilityCredentialCommitment, issuer: capability.issuerAccountCredentialCommitment,
+            roots: capability.scopeRoots, counts: capability.scopeCounts,
+            notBefore: capability.notBefore, expiresAt: capability.expiresAt,
+            issuedAt: capability.issuedAt, statusIndex: capability.statusIndex
+        };
+    }
+}
+
+pure circuit capabilityAttenuationCertification(
+    command: RuntimeCredentialStatusCommand,
+    credential: RuntimeScopedCredential,
+    parentCapabilityCommitment: Bytes<32>,
+    issuerAccountCommitment: Bytes<32>
+): CapabilityAttenuationCertification {
+    return CapabilityAttenuationCertification{
+        certificationVersion: 2,
+        commandCommitment: runtimeCredentialStatusCommandCommitment(command),
+        capabilityCredentialCommitment: credential.commitment,
+        parentCapabilityCredentialCommitment: parentCapabilityCommitment,
+        issuerAccountCredentialCommitment: issuerAccountCommitment,
+        totalScopeElementCount: runtimeScopeTotalCount(credential.counts),
+        stagingExpiresAt: command.stagingExpiresAt
+    };
+}
+
 export circuit updateRuntimeCredentialStatus(
+    operation: Uint<8>,
     command: RuntimeCredentialStatusCommand,
     signature: Schnorr_SchnorrSignature,
     namespaceAuthority: GovernanceActivatorLeaf,
     namespaceAuthorityPath: MerkleTreePath<20, Bytes<32>>,
     accountAuthority: RuntimeAccountCredential,
     accountAuthorityStatusPath: MerkleTreePath<20, Bytes<32>>,
-    currentStatusPath: MerkleTreePath<20, Bytes<32>>
+    currentStatusPath: MerkleTreePath<20, Bytes<32>>,
+    capability: RuntimeCapabilityCredential,
+    capabilitySignature: Schnorr_SchnorrSignature,
+    parentCapability: RuntimeCapabilityCredential,
+    parentCapabilityStatusPath: MerkleTreePath<20, Bytes<32>>,
+    scopeProgress: RuntimeScopeProgress,
+    scopeElement: RuntimeScopeElement,
+    childScopePath: MerkleTreePath<20, Bytes<32>>,
+    parentScopePath: MerkleTreePath<20, Bytes<32>>,
+    sessionCredential: RuntimeSessionCredential,
+    instanceBinding: RuntimeCredentialInstanceBinding
 ): Uint<64> {
-    assert(command.commandVersion == 1, "Unsupported credential-status command version");
+    assert(command.commandVersion == 3, "Unsupported credential-status command version");
+    assert(operation >= 1 && operation <= 4, "Unsupported credential-status operation");
     assert(
         command.credentialKind >= 1 && command.credentialKind <= 3,
         "Credential kind must be account, capability, or session"
@@ -1983,16 +2335,121 @@ export circuit updateRuntimeCredentialStatus(
         "Credential status transition must be empty-to-active or active-to-revoked"
     );
     assert(
-        !usedCredentialStatusCommandNonces.member(disclose(command.commandNonce)),
-        "Credential-status command nonce already used"
-    );
-    assert(
         authorityRoots.member(disclose(command.namespaceHash)) &&
         credentialStatusRoots.member(disclose(command.namespaceHash)),
         "Namespace root records are not registered"
     );
     const authorityRoot = authorityRoots.lookup(disclose(command.namespaceHash));
     const statusRoot = credentialStatusRoots.lookup(disclose(command.namespaceHash));
+    const isSession = command.credentialKind == 3;
+    const credential = runtimeScopedCredential(isSession, capability, sessionCredential);
+    const accountAuthorityCommitment = runtimeAccountCredentialCommitment(accountAuthority);
+    const parentCapabilityCommitment = runtimeCapabilityCredentialCommitment(parentCapability);
+    const isRootCapability = !isSession && capability.delegationDepth == 0;
+    const scopeValueOrderValid = runtimeScopeValueHashLessThan(
+        scopeProgress.lastOrderKey,
+        scopeElement.valueHash
+    );
+
+    if (disclose(operation == 3)) {
+        assert(
+            capabilityAttenuationSessions.member(disclose(command.commandNonce)),
+            "Capability attenuation session does not exist"
+        );
+        const session = capabilityAttenuationSessions.lookup(disclose(command.commandNonce));
+        if (blockTimeGte(session.expiresAt)) {
+            capabilityAttenuationSessions.remove(disclose(command.commandNonce));
+            return disclose(statusRoot.rootSequence);
+        }
+        const certification = capabilityAttenuationCertification(
+            command,
+            credential,
+            parentCapabilityCommitment,
+            accountAuthorityCommitment
+        );
+        assert(
+            capabilityAttenuationCertificationCommitment(certification) ==
+                session.certificationCommitment,
+            "Capability attenuation inputs do not match the opened session"
+        );
+        assert(
+            runtimeScopeProgressCommitment(scopeProgress) == session.progressCommitment,
+            "Capability attenuation progress does not match the staged commitment"
+        );
+        assert(
+            scopeElement.elementVersion == 1 &&
+            scopeElement.dimension >= 1 &&
+            scopeElement.dimension <= 7,
+            "Capability scope element is malformed"
+        );
+        const currentDimensionCount = runtimeScopeCountForDimension(
+            scopeProgress.counts,
+            scopeElement.dimension
+        );
+        const targetDimensionCount = runtimeScopeCountForDimension(
+            credential.counts,
+            scopeElement.dimension
+        );
+        const scopeValueOrderKey = scopeElement.valueHash;
+        assert(
+            session.nextElementIndex < session.totalScopeElementCount &&
+            currentDimensionCount < targetDimensionCount,
+            "Capability scope staging exceeds its exact committed count"
+        );
+        assert(
+            scopeElement.dimension >= scopeProgress.lastDimension &&
+            (scopeElement.dimension > scopeProgress.lastDimension ||
+                scopeValueOrderValid),
+            "Capability scope values must be unique and canonically ordered"
+        );
+        assert(
+            childScopePath.leaf == default<Bytes<32>> &&
+            merkleTreePathRoot<20, Bytes<32>>(childScopePath) ==
+                runtimeScopeRootForDimension(scopeProgress.roots, scopeElement.dimension),
+            "Capability child scope insertion does not start from the exact empty leaf"
+        );
+        const scopeValueCommitment = runtimeScopeValueCommitment(scopeElement.valueHash);
+        const childNextPath = MerkleTreePath<20, Bytes<32>>{
+            leaf: scopeValueCommitment,
+            path: childScopePath.path
+        };
+        if (disclose(!isRootCapability)) {
+            assert(
+                parentScopePath.leaf == scopeValueCommitment &&
+                merkleTreePathRoot<20, Bytes<32>>(parentScopePath) ==
+                    runtimeScopeRootForDimension(
+                        parentCapability.scopeRoots,
+                        scopeElement.dimension
+                    ),
+                "Delegated capability scope value is outside its parent scope"
+            );
+        }
+        const nextProgress = runtimeScopeProgressAfterInsert(
+            scopeProgress,
+            scopeElement.dimension,
+            merkleTreePathRoot<20, Bytes<32>>(childNextPath),
+            (currentDimensionCount + 1) as Uint<32>,
+            scopeValueOrderKey
+        );
+        capabilityAttenuationSessions.insert(
+            disclose(command.commandNonce),
+            disclose(
+                CapabilityAttenuationSession{
+                    certificationCommitment: session.certificationCommitment,
+                    progressCommitment: runtimeScopeProgressCommitment(nextProgress),
+                    nextElementIndex: (session.nextElementIndex + 1) as Uint<32>,
+                    totalScopeElementCount: session.totalScopeElementCount,
+                    expiresAt: session.expiresAt
+                }
+            )
+        );
+        return disclose(statusRoot.rootSequence);
+    }
+
+    assert(
+        !usedCredentialStatusCommandNonces.member(disclose(command.commandNonce)),
+        "Credential-status command nonce already used"
+    );
     assert(
         command.governancePolicyHash == authorityRoot.governancePolicyHash &&
         command.authorityRootVersion == authorityRoot.rootVersion &&
@@ -2000,14 +2457,369 @@ export circuit updateRuntimeCredentialStatus(
         "Credential-status command authority root is stale or mismatched"
     );
     assert(
-        command.credentialStatusRootSequence == statusRoot.rootSequence,
-        "Credential-status command root sequence is stale"
-    );
-    assert(
         blockTimeGte(disclose(command.effectiveAt)),
         "Credential-status command is not yet effective"
     );
 
+    // Expired certification cleanup cannot activate a credential. Keep it
+    // permissionless even if the instance, issuer or selected proof window expired.
+    if (disclose(operation == 4)) {
+        assert(capabilityAttenuationSessions.member(disclose(command.commandNonce)),
+            "Capability attenuation session does not exist");
+        const expiring = capabilityAttenuationSessions.lookup(disclose(command.commandNonce));
+        if (blockTimeGte(expiring.expiresAt)) {
+            capabilityAttenuationSessions.remove(disclose(command.commandNonce));
+            return disclose(statusRoot.rootSequence);
+        }
+    }
+    const directAccountAuthority = operation == 1 &&
+        (command.credentialKind == 1 ||
+            command.revocationAuthorityAccountCredentialCommitment != default<Bytes<32>>);
+    assert(runtimeCredentialStatusPathIndex(currentStatusPath) == command.statusIndex,
+        "Credential status path position does not match the signed index");
+    const boundTarget = directAccountAuthority ? accountAuthority.target : credential.target;
+    const boundInstance = directAccountAuthority ? accountAuthority.instanceCommitment : credential.instanceCommitment;
+    const allocation = instanceBinding.allocation;
+    assert(runtimeInstances.member(disclose(boundInstance)),
+        "Runtime credential requires an allocated exact instance");
+    const instance = runtimeInstances.lookup(disclose(boundInstance));
+    assert(
+        allocation.allocationVersion == 1 && allocation.target == boundTarget &&
+        allocation.target.namespaceHash == command.namespaceHash &&
+        allocation.instanceCommitment == boundInstance &&
+        runtimeInstanceAllocationCommitment(allocation) == instance.allocationCommitment,
+        "Runtime credential does not match the immutable private allocation"
+    );
+    assert(instanceBinding.validBefore > command.effectiveAt,
+        "Credential proof window must end after its effective time");
+    assert(blockTimeLt(disclose(instanceBinding.validBefore)),
+        "Credential proof submission window has expired");
+    if (command.expectedStatus == 0) {
+        assert(instance.lifecycleStatus == 1 && command.effectiveAt >= allocation.createdAt &&
+            instanceBinding.validBefore <= allocation.expiresAt &&
+            (operation == 1 || credential.expiresAt <= allocation.expiresAt),
+            "Credential activation is outside its allocated instance lifetime");
+    }
+    const namespaceOperation = (operation == 1 &&
+        (command.revocationAuthorityAccountCredentialCommitment == default<Bytes<32>> ||
+            (command.credentialKind == 1 && command.expectedStatus == 0))) ||
+        (operation != 1 && isRootCapability);
+    if (disclose(namespaceOperation)) {
+        assertRuntimeInstanceIssuerMembership(allocation, namespaceAuthority,
+            instanceBinding.issuerPath, authorityRoot, namespaceAuthorityPath);
+        assert(command.effectiveAt >= namespaceAuthority.validAfter &&
+            instanceBinding.validBefore <= namespaceAuthority.validBefore,
+            "Namespace issuer is outside the current credential proof window");
+        if (command.credentialKind == 2) {
+            assert(capability.credentialVersion == 3 && capability.delegationDepth == 0 &&
+                credential.commitment == command.credentialCommitment &&
+                capability.namespaceIssuerAuthorityCommitment == governanceActivatorLeafCommitment(namespaceAuthority),
+                "Only the exact original namespace issuer may manage this root capability");
+        }
+    } else {
+        assert(instanceBinding.validBefore <= accountAuthority.validBefore,
+            "Runtime account authority is outside the current credential proof window");
+    }
+    const commandIssuerKey = namespaceOperation ? namespaceAuthority.publicKey : accountAuthority.runtimePublicKey;
+    Schnorr_schnorrVerify<1>(runtimeCredentialStatusCommandMessage(command), signature, commandIssuerKey);
+
+    if (disclose(operation == 2)) {
+        assert(
+            (command.credentialKind == 2 || command.credentialKind == 3) &&
+            command.expectedStatus == 0 &&
+            command.nextStatus == 1,
+            "Capability attenuation begin requires capability activation"
+        );
+        assert(
+            command.credentialStatusRootSequence == statusRoot.rootSequence,
+            "Capability attenuation begin root sequence is stale"
+        );
+        assert(
+            command.stagingExpiresAt > command.effectiveAt &&
+            command.stagingExpiresAt <= credential.expiresAt,
+            "Capability attenuation staging deadline is outside the credential lifetime"
+        );
+        assert(
+            !blockTimeGte(disclose(command.stagingExpiresAt)),
+            "Capability attenuation staging deadline has expired"
+        );
+        assert(
+            credential.version == (isSession ? 2 : 3) &&
+            credential.target.namespaceHash == command.namespaceHash &&
+            credential.commitment == command.credentialCommitment &&
+            credential.subject ==
+                command.subjectAccountCredentialCommitment &&
+            credential.statusIndex == command.statusIndex &&
+            credential.issuedAt == command.effectiveAt &&
+            credential.notBefore >= credential.issuedAt && credential.expiresAt > credential.notBefore &&
+            credential.statusIndex < 1048576,
+            "Capability credential does not match its activation command"
+        );
+        assert(
+            credential.counts.actionsCount > 0 &&
+            credential.counts.resourceSelectorsCount > 0 &&
+            credential.counts.resourcesCount > 0 &&
+            credential.counts.purposesCount > 0 &&
+            credential.counts.recipientKindsCount > 0 &&
+            credential.counts.recipientsCount > 0 &&
+            credential.counts.disclosurePolicyIdsCount > 0,
+            "Every capability scope dimension must contain at least one value"
+        );
+        assert(
+            currentStatusPath.leaf == default<Bytes<32>> &&
+            merkleTreePathRoot<20, Bytes<32>>(currentStatusPath) == statusRoot.root,
+            "Capability activation requires the exact current empty status leaf"
+        );
+        assert(
+            runtimeScopeProgressIsInitial(scopeProgress),
+            "Capability attenuation must begin from seven exact empty scope trees"
+        );
+
+        if (disclose(isRootCapability)) {
+            assert(
+                capability.parentCapabilityCredentialCommitment == default<Bytes<32>> &&
+                capability.issuerAccountCredentialCommitment == default<Bytes<32>> &&
+                command.revocationAuthorityAccountCredentialCommitment == default<Bytes<32>>,
+                "Root capability must not name a parent or account issuer"
+            );
+            assert(
+                command.effectiveAt >= namespaceAuthority.validAfter &&
+                command.stagingExpiresAt <= namespaceAuthority.validBefore,
+                "Root capability issuer is outside the namespace authority scope"
+            );
+        } else {
+            const issuerAccountCommitment = accountAuthorityCommitment;
+            assert(
+                (isSession || capability.delegationDepth <= 16) &&
+                parentCapability.credentialVersion == 3 &&
+                (isSession || capability.namespaceIssuerAuthorityCommitment ==
+                    parentCapability.namespaceIssuerAuthorityCommitment) &&
+                credential.parent == parentCapabilityCommitment &&
+                credential.issuer == issuerAccountCommitment &&
+                parentCapability.subjectAccountCredentialCommitment == issuerAccountCommitment &&
+                command.revocationAuthorityAccountCredentialCommitment == issuerAccountCommitment &&
+                accountAuthority.credentialVersion == 1 &&
+                accountAuthority.target == credential.target &&
+                accountAuthority.instanceCommitment == credential.instanceCommitment &&
+                accountAuthority.contextHash == credential.contextHash &&
+                command.effectiveAt >= accountAuthority.issuedAt &&
+                command.stagingExpiresAt <= accountAuthority.validBefore,
+                "Delegated capability parent and issuer bindings are invalid"
+            );
+            assert(
+                credential.target == parentCapability.target &&
+                credential.instanceCommitment == parentCapability.instanceCommitment &&
+                credential.contextHash == parentCapability.contextHash &&
+                (isSession || (capability.delegationDepth == parentCapability.delegationDepth + 1 &&
+                    capability.maxDelegationDepth <= parentCapability.maxDelegationDepth)) &&
+                credential.notBefore >= parentCapability.notBefore &&
+                credential.expiresAt <= parentCapability.expiresAt &&
+                credential.issuedAt >= parentCapability.issuedAt,
+                "Delegated capability does not preserve exact ancestry and time attenuation"
+            );
+            assert(
+                credential.counts.actionsCount <= parentCapability.scopeCounts.actionsCount &&
+                credential.counts.resourceSelectorsCount <= parentCapability.scopeCounts.resourceSelectorsCount &&
+                credential.counts.resourcesCount <= parentCapability.scopeCounts.resourcesCount &&
+                credential.counts.purposesCount <= parentCapability.scopeCounts.purposesCount &&
+                credential.counts.recipientKindsCount <= parentCapability.scopeCounts.recipientKindsCount &&
+                credential.counts.recipientsCount <= parentCapability.scopeCounts.recipientsCount &&
+                credential.counts.disclosurePolicyIdsCount <= parentCapability.scopeCounts.disclosurePolicyIdsCount,
+                "Delegated capability scope counts cannot exceed the parent"
+            );
+            assert(
+                credential.notBefore > parentCapability.notBefore ||
+                credential.expiresAt < parentCapability.expiresAt ||
+                credential.counts.actionsCount < parentCapability.scopeCounts.actionsCount ||
+                credential.counts.resourceSelectorsCount < parentCapability.scopeCounts.resourceSelectorsCount ||
+                credential.counts.resourcesCount < parentCapability.scopeCounts.resourcesCount ||
+                credential.counts.purposesCount < parentCapability.scopeCounts.purposesCount ||
+                credential.counts.recipientKindsCount < parentCapability.scopeCounts.recipientKindsCount ||
+                credential.counts.recipientsCount < parentCapability.scopeCounts.recipientsCount ||
+                credential.counts.disclosurePolicyIdsCount < parentCapability.scopeCounts.disclosurePolicyIdsCount,
+                "Delegated capability must be strictly narrower than its parent"
+            );
+            const activeIssuerLeaf = runtimeCredentialStatusLeafCommitment(
+                RuntimeCredentialStatusLeaf{
+                    leafVersion: 1,
+                    namespaceHash: command.namespaceHash,
+                    credentialKind: 1,
+                    credentialCommitment: issuerAccountCommitment,
+                    revocationAuthorityAccountCredentialCommitment: issuerAccountCommitment,
+                    statusIndex: accountAuthority.statusIndex,
+                    status: 1
+                }
+            );
+            const activeParentLeaf = runtimeCredentialStatusLeafCommitment(
+                RuntimeCredentialStatusLeaf{
+                    leafVersion: 3,
+                    namespaceHash: command.namespaceHash,
+                    credentialKind: 2,
+                    credentialCommitment: parentCapabilityCommitment,
+                    revocationAuthorityAccountCredentialCommitment:
+                        parentCapability.issuerAccountCredentialCommitment,
+                    statusIndex: parentCapability.statusIndex,
+                    status: 1
+                }
+            );
+            assert(
+                accountAuthorityStatusPath.leaf == activeIssuerLeaf &&
+                runtimeCredentialStatusPathIndex(accountAuthorityStatusPath) == accountAuthority.statusIndex &&
+                merkleTreePathRoot<20, Bytes<32>>(accountAuthorityStatusPath) == statusRoot.root &&
+                parentCapabilityStatusPath.leaf == activeParentLeaf &&
+                runtimeCredentialStatusPathIndex(parentCapabilityStatusPath) == parentCapability.statusIndex &&
+                merkleTreePathRoot<20, Bytes<32>>(parentCapabilityStatusPath) == statusRoot.root,
+                "Delegated capability issuer and parent must be active under the current status root"
+            );
+        }
+
+        if (isSession) {
+            assert(
+                credential.subject == accountAuthorityCommitment &&
+                credential.expiresAt <= accountAuthority.validBefore &&
+                sessionCredential.runtimePublicKey != accountAuthority.runtimePublicKey,
+                "Session must bind its exact holder window and a distinct runtime key"
+            );
+        }
+        const issuerKey = isRootCapability ? namespaceAuthority.publicKey : accountAuthority.runtimePublicKey;
+        Schnorr_schnorrVerify<1>(credential.message, capabilitySignature, issuerKey);
+
+        if (capabilityAttenuationSessions.member(disclose(command.commandNonce))) {
+            const existingSession =
+                capabilityAttenuationSessions.lookup(disclose(command.commandNonce));
+            assert(
+                blockTimeGte(existingSession.expiresAt),
+                "Capability attenuation session already exists"
+            );
+            capabilityAttenuationSessions.remove(disclose(command.commandNonce));
+        }
+        const certification = capabilityAttenuationCertification(
+            command,
+            credential,
+            parentCapabilityCommitment,
+            accountAuthorityCommitment
+        );
+        capabilityAttenuationSessions.insert(
+            disclose(command.commandNonce),
+            disclose(
+                CapabilityAttenuationSession{
+                    certificationCommitment:
+                        capabilityAttenuationCertificationCommitment(certification),
+                    progressCommitment: runtimeScopeProgressCommitment(scopeProgress),
+                    nextElementIndex: 0,
+                    totalScopeElementCount: certification.totalScopeElementCount,
+                    expiresAt: certification.stagingExpiresAt
+                }
+            )
+        );
+        return disclose(statusRoot.rootSequence);
+    }
+
+    if (disclose(operation == 4)) {
+        assert(
+            capabilityAttenuationSessions.member(disclose(command.commandNonce)),
+            "Capability attenuation session does not exist"
+        );
+        const session = capabilityAttenuationSessions.lookup(disclose(command.commandNonce));
+        if (blockTimeGte(session.expiresAt)) {
+            capabilityAttenuationSessions.remove(disclose(command.commandNonce));
+            return disclose(statusRoot.rootSequence);
+        }
+        const certification = capabilityAttenuationCertification(
+            command,
+            credential,
+            parentCapabilityCommitment,
+            accountAuthorityCommitment
+        );
+        assert(
+            capabilityAttenuationCertificationCommitment(certification) ==
+                session.certificationCommitment &&
+            runtimeScopeProgressCommitment(scopeProgress) == session.progressCommitment &&
+            session.nextElementIndex == session.totalScopeElementCount &&
+            runtimeScopeProgressIsComplete(scopeProgress, credential),
+            "Capability attenuation session is incomplete or mismatched"
+        );
+        assert(
+            currentStatusPath.leaf == default<Bytes<32>> &&
+            merkleTreePathRoot<20, Bytes<32>>(currentStatusPath) == statusRoot.root,
+            "Capability finalization requires the exact current empty status leaf"
+        );
+        if (disclose(!isRootCapability)) {
+            const issuerAccountCommitment = accountAuthorityCommitment;
+            const activeIssuerLeaf = runtimeCredentialStatusLeafCommitment(
+                RuntimeCredentialStatusLeaf{
+                    leafVersion: 1,
+                    namespaceHash: command.namespaceHash,
+                    credentialKind: 1,
+                    credentialCommitment: issuerAccountCommitment,
+                    revocationAuthorityAccountCredentialCommitment: issuerAccountCommitment,
+                    statusIndex: accountAuthority.statusIndex,
+                    status: 1
+                }
+            );
+            const activeParentLeaf = runtimeCredentialStatusLeafCommitment(
+                RuntimeCredentialStatusLeaf{
+                    leafVersion: 3,
+                    namespaceHash: command.namespaceHash,
+                    credentialKind: 2,
+                    credentialCommitment: parentCapabilityCommitment,
+                    revocationAuthorityAccountCredentialCommitment:
+                        parentCapability.issuerAccountCredentialCommitment,
+                    statusIndex: parentCapability.statusIndex,
+                    status: 1
+                }
+            );
+            assert(
+                accountAuthorityStatusPath.leaf == activeIssuerLeaf &&
+                runtimeCredentialStatusPathIndex(accountAuthorityStatusPath) == accountAuthority.statusIndex &&
+                merkleTreePathRoot<20, Bytes<32>>(accountAuthorityStatusPath) == statusRoot.root &&
+                parentCapabilityStatusPath.leaf == activeParentLeaf &&
+                runtimeCredentialStatusPathIndex(parentCapabilityStatusPath) == parentCapability.statusIndex &&
+                merkleTreePathRoot<20, Bytes<32>>(parentCapabilityStatusPath) == statusRoot.root,
+                "Delegated capability issuer or parent was revoked during staging"
+            );
+        }
+        const activeCapabilityLeaf = runtimeCredentialStatusLeafCommitment(
+            RuntimeCredentialStatusLeaf{
+                leafVersion: runtimeCredentialStatusLeafVersion(command.credentialKind),
+                namespaceHash: command.namespaceHash,
+                credentialKind: command.credentialKind,
+                credentialCommitment: command.credentialCommitment,
+                revocationAuthorityAccountCredentialCommitment:
+                    command.revocationAuthorityAccountCredentialCommitment,
+                statusIndex: command.statusIndex,
+                status: 1
+            }
+        );
+        const activeCapabilityPath = MerkleTreePath<20, Bytes<32>>{
+            leaf: activeCapabilityLeaf,
+            path: currentStatusPath.path
+        };
+        const nextSequence = (statusRoot.rootSequence + 1) as Uint<64>;
+        credentialStatusRoots.insert(
+            disclose(command.namespaceHash),
+            disclose(
+                CredentialStatusRootRecord{
+                    root: merkleTreePathRoot<20, Bytes<32>>(activeCapabilityPath),
+                    rootSequence: nextSequence
+                }
+            )
+        );
+        capabilityAttenuationSessions.remove(disclose(command.commandNonce));
+        usedCredentialStatusCommandNonces.insert(disclose(command.commandNonce));
+        return disclose(nextSequence);
+    }
+
+    assert(operation == 1, "Direct credential transition requires operation one");
+    assert(command.stagingExpiresAt == 0, "Direct credential transition cannot stage scope");
+    assert(
+        command.credentialStatusRootSequence == statusRoot.rootSequence,
+        "Credential-status command root sequence is stale"
+    );
+    assert(
+        !(command.credentialKind >= 2 && command.expectedStatus == 0),
+        "Capability or session activation requires staged scope certification"
+    );
     const namespaceSigned =
         command.revocationAuthorityAccountCredentialCommitment == default<Bytes<32>> ||
         (command.credentialKind == 1 && command.expectedStatus == 0);
@@ -2033,17 +2845,19 @@ export circuit updateRuntimeCredentialStatus(
         if (disclose(command.credentialKind == 1)) {
             assert(
                 command.expectedStatus == 0 &&
-                command.revocationAuthorityAccountCredentialCommitment == command.credentialCommitment,
+                command.revocationAuthorityAccountCredentialCommitment == command.credentialCommitment &&
+                accountAuthority.credentialVersion == 1 &&
+                accountAuthorityCommitment == command.credentialCommitment &&
+                accountAuthority.statusIndex == command.statusIndex &&
+                accountAuthority.issuedAt >= allocation.createdAt &&
+                accountAuthority.issuedAt <= command.effectiveAt &&
+                accountAuthority.validBefore <= allocation.expiresAt &&
+                instanceBinding.validBefore <= accountAuthority.validBefore,
                 "Account issuance must bind self-revocation authority"
             );
         }
-        Schnorr_schnorrVerify<1>(
-            runtimeCredentialStatusCommandMessage(command),
-            signature,
-            namespaceAuthority.publicKey
-        );
     } else {
-        const accountCommitment = runtimeAccountCredentialCommitment(accountAuthority);
+        const accountCommitment = accountAuthorityCommitment;
         assert(
             accountCommitment == command.revocationAuthorityAccountCredentialCommitment &&
             accountAuthority.credentialVersion == 1 &&
@@ -2068,18 +2882,15 @@ export circuit updateRuntimeCredentialStatus(
         );
         assert(
             accountAuthorityStatusPath.leaf == activeAccountLeaf &&
+            runtimeCredentialStatusPathIndex(accountAuthorityStatusPath) == accountAuthority.statusIndex &&
             merkleTreePathRoot<20, Bytes<32>>(accountAuthorityStatusPath) == statusRoot.root,
             "Runtime account authority is not active under the current status root"
         );
-        Schnorr_schnorrVerify<1>(
-            runtimeCredentialStatusCommandMessage(command),
-            signature,
-            accountAuthority.runtimePublicKey
-        );
     }
 
+    const leafVersion = runtimeCredentialStatusLeafVersion(command.credentialKind);
     const currentLeaf = RuntimeCredentialStatusLeaf{
-        leafVersion: 1,
+        leafVersion: leafVersion,
         namespaceHash: command.namespaceHash,
         credentialKind: command.credentialKind,
         credentialCommitment: command.credentialCommitment,
@@ -2105,7 +2916,7 @@ export circuit updateRuntimeCredentialStatus(
     );
     const nextLeafCommitment = runtimeCredentialStatusLeafCommitment(
         RuntimeCredentialStatusLeaf{
-            leafVersion: 1,
+            leafVersion: leafVersion,
             namespaceHash: command.namespaceHash,
             credentialKind: command.credentialKind,
             credentialCommitment: command.credentialCommitment,
