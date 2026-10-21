@@ -29,7 +29,8 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     struct GatewayKeyEpoch {
         address signer;
         uint64 validAfter;
-        uint64 validBefore;
+        uint64 signingCutoff;
+        uint64 verificationCutoff;
         bool disabled;
     }
 
@@ -41,11 +42,11 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     struct ReceiptRecord {
         bytes32 receiptVersion;
         bytes32 proofModuleId;
-        bytes32 proofModuleVersion;
+        string proofModuleVersion;
         bytes32 proofModuleImplementationHash;
         bytes32 namespaceHash;
         bytes32 templateIdHash;
-        bytes32 templateVersion;
+        string templateVersion;
         bytes32 templateContentHash;
         bytes32 instanceCommitment;
         bytes32 previousStateCommitment;
@@ -54,14 +55,15 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         bytes32 contextHash;
         bytes32 actionSchemaId;
         bytes32 purposeHash;
-        address recipient;
+        bytes32 recipient;
         uint64 validAfter;
         uint64 validBefore;
         bytes32 scopedNullifier;
         bytes32 outputCommitment;
         bytes32 sourceNetwork;
+        string sourceNetworkName;
         bytes32 sourceContract;
-        bytes32 sourceTransaction;
+        bytes sourceTransaction;
         uint64 sourceLedgerSequence;
         bytes32 gatewayKeyId;
         uint64 gatewaySignedAt;
@@ -85,6 +87,7 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     mapping(bytes32 sourceKey => bool authorized) public authorizedSources;
     mapping(bytes32 gatewayKeyId => GatewayKeyEpoch epoch) public gatewayKeyEpochs;
     mapping(bytes32 adapterKey => AdapterRegistration registration) public adapters;
+    mapping(bytes32 bindingKey => AdapterRegistration registration) public recipientAdapters;
     mapping(bytes32 receiptId => ReceiptRecord record) private receiptRecords;
     mapping(bytes32 receiptId => bool exists) private receiptExists;
     mapping(bytes32 scopedUseKey => bool used) public usedScopedNullifiers;
@@ -108,6 +111,8 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     error GatewaySignerMismatch(address expected, address actual);
     error GatewaySignatureOutsideEpoch(bytes32 gatewayKeyId, uint64 signedAt);
     error GatewaySignatureFromFuture(uint64 signedAt);
+    error InvalidGatewayKeyEpoch(uint64 validAfter, uint64 signingCutoff, uint64 verificationCutoff);
+    error GatewayVerificationCutoffReached(bytes32 gatewayKeyId, uint64 verificationCutoff);
     error ReceiptAlreadyRegistered(bytes32 receiptId);
     error ScopedNullifierAlreadyUsed(bytes32 scopedUseKey);
     error ReceiptNotFound(bytes32 receiptId);
@@ -115,10 +120,11 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     error ReceiptAlreadyRevoked(bytes32 receiptId);
     error ReceiptAlreadyConsumed(bytes32 receiptId);
     error AdapterNotConfigured(bytes32 adapterKey);
-    error RecipientAdapterMismatch(address recipient, address adapter);
+    error RecipientAdapterMismatch(bytes32 recipient, address adapter);
     error GatewayKeyAlreadyRegistered(bytes32 gatewayKeyId);
     error ReceiptVersionAlreadyConfigured(bytes32 receiptVersion);
     error AdapterAlreadyRegistered(bytes32 adapterKey);
+    error RecipientBindingAlreadyRegistered(bytes32 bindingKey);
 
     event ReceiptVerifierConfigured(
         bytes32 indexed receiptVersion,
@@ -134,7 +140,8 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         bytes32 indexed gatewayKeyId,
         address indexed signer,
         uint64 validAfter,
-        uint64 validBefore
+        uint64 signingCutoff,
+        uint64 verificationCutoff
     );
     event GatewayKeyEpochDisabled(
         bytes32 indexed gatewayKeyId,
@@ -152,10 +159,24 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         bytes32 indexed actionSchemaId,
         address adapter
     );
+    event RecipientAdapterBound(
+        bytes32 indexed bindingKey,
+        bytes32 indexed receiptVersion,
+        bytes32 indexed actionSchemaId,
+        bytes32 recipient,
+        address adapter
+    );
+    event RecipientAdapterDisabled(
+        bytes32 indexed bindingKey,
+        bytes32 indexed receiptVersion,
+        bytes32 indexed actionSchemaId,
+        bytes32 recipient,
+        address adapter
+    );
     event ReceiptRegistered(
         bytes32 indexed receiptId,
         bytes32 indexed receiptVersion,
-        address indexed recipient,
+        bytes32 indexed recipient,
         bytes32 actionSchemaId,
         bytes32 purposeHash,
         uint64 validAfter,
@@ -169,8 +190,9 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
     event ReceiptSourceBound(
         bytes32 indexed receiptId,
         bytes32 sourceNetwork,
+        string sourceNetworkName,
         bytes32 sourceContract,
-        bytes32 sourceTransaction,
+        bytes sourceTransaction,
         uint64 sourceLedgerSequence,
         uint64 gatewaySignedAt
     );
@@ -178,10 +200,10 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         bytes32 indexed receiptId,
         bytes32 namespaceHash,
         bytes32 templateIdHash,
-        bytes32 templateVersion,
+        string templateVersion,
         bytes32 templateContentHash,
         bytes32 proofModuleId,
-        bytes32 proofModuleVersion,
+        string proofModuleVersion,
         bytes32 proofModuleImplementationHash
     );
     event ReceiptStateBound(
@@ -199,7 +221,7 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         address indexed adapter,
         bytes32 actionSchemaId,
         address relayer,
-        address recipient,
+        bytes32 recipient,
         bool success,
         bytes32 resultCommitment,
         bytes32 errorHash,
@@ -276,31 +298,32 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         bytes32 gatewayKeyId,
         address signer,
         uint64 validAfter,
-        uint64 validBefore
+        uint64 signingCutoff,
+        uint64 verificationCutoff
     ) external onlyRole(GATEWAY_KEY_MANAGER_ROLE) {
         if (gatewayKeyId == bytes32(0)) revert InvalidReceiptField();
         if (signer == address(0)) revert ZeroAddress();
-        if (validBefore <= validAfter) {
-            revert InvalidTimeWindow(validAfter, validBefore);
+        if (validAfter >= signingCutoff || signingCutoff > verificationCutoff) {
+            revert InvalidGatewayKeyEpoch(validAfter, signingCutoff, verificationCutoff);
         }
         if (gatewayKeyEpochs[gatewayKeyId].signer != address(0)) {
             revert GatewayKeyAlreadyRegistered(gatewayKeyId);
         }
-
         gatewayKeyEpochs[gatewayKeyId] = GatewayKeyEpoch({
             signer: signer,
             validAfter: validAfter,
-            validBefore: validBefore,
+            signingCutoff: signingCutoff,
+            verificationCutoff: verificationCutoff,
             disabled: false
         });
         emit GatewayKeyEpochRegistered(
             gatewayKeyId,
             signer,
             validAfter,
-            validBefore
+            signingCutoff,
+            verificationCutoff
         );
     }
-
     function disableGatewayKeyEpoch(
         bytes32 gatewayKeyId
     ) external onlyRole(GATEWAY_KEY_MANAGER_ROLE) {
@@ -344,6 +367,53 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
             actionSchemaId,
             registration.adapter
         );
+    }
+
+    /// Bind the exact runtime recipient within one receipt-version/action scope.
+    /// Bindings are immutable once created; disabling cannot enable a replacement.
+    function bindRecipientAdapter(
+        bytes32 receiptVersion,
+        bytes32 actionSchemaId,
+        bytes32 recipient,
+        address adapter
+    ) external onlyRole(ADAPTER_REGISTRAR_ROLE) {
+        if (recipient == bytes32(0)) revert InvalidReceiptField();
+        bytes32 key = adapterKey(receiptVersion, actionSchemaId);
+        AdapterRegistration memory registration = adapters[key];
+        if (registration.adapter == address(0) || !registration.enabled) {
+            revert AdapterNotConfigured(key);
+        }
+        if (registration.adapter != adapter) {
+            revert RecipientAdapterMismatch(recipient, adapter);
+        }
+        bytes32 bindingKey = recipientAdapterKey(receiptVersion, actionSchemaId, recipient);
+        if (recipientAdapters[bindingKey].adapter != address(0)) {
+            revert RecipientBindingAlreadyRegistered(bindingKey);
+        }
+        recipientAdapters[bindingKey] = AdapterRegistration(adapter, true);
+        emit RecipientAdapterBound(bindingKey, receiptVersion, actionSchemaId, recipient, adapter);
+    }
+
+    function disableRecipientAdapter(
+        bytes32 receiptVersion,
+        bytes32 actionSchemaId,
+        bytes32 recipient
+    ) external onlyRole(ADAPTER_REGISTRAR_ROLE) {
+        bytes32 key = recipientAdapterKey(receiptVersion, actionSchemaId, recipient);
+        AdapterRegistration storage registration = recipientAdapters[key];
+        if (registration.adapter == address(0) || !registration.enabled) {
+            revert RecipientAdapterMismatch(recipient, registration.adapter);
+        }
+        registration.enabled = false;
+        emit RecipientAdapterDisabled(key, receiptVersion, actionSchemaId, recipient, registration.adapter);
+    }
+
+    function recipientAdapterKey(
+        bytes32 receiptVersion,
+        bytes32 actionSchemaId,
+        bytes32 recipient
+    ) public pure returns (bytes32) {
+        return keccak256(abi.encode(receiptVersion, actionSchemaId, recipient));
     }
 
     function pause() external onlyRole(EMERGENCY_ROLE) {
@@ -408,6 +478,7 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
             scopedNullifier: receipt.scopedNullifier,
             outputCommitment: receipt.outputCommitment,
             sourceNetwork: receipt.sourceNetwork,
+            sourceNetworkName: receipt.sourceNetworkName,
             sourceContract: receipt.sourceContract,
             sourceTransaction: receipt.sourceTransaction,
             sourceLedgerSequence: receipt.sourceLedgerSequence,
@@ -437,6 +508,7 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         emit ReceiptSourceBound(
             receiptId,
             receipt.sourceNetwork,
+            receipt.sourceNetworkName,
             receipt.sourceContract,
             receipt.sourceTransaction,
             receipt.sourceLedgerSequence,
@@ -485,7 +557,10 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         if (registration.adapter == address(0) || !registration.enabled) {
             revert AdapterNotConfigured(key);
         }
-        if (record.recipient != registration.adapter) {
+        AdapterRegistration memory binding = recipientAdapters[
+            recipientAdapterKey(record.receiptVersion, record.actionSchemaId, record.recipient)
+        ];
+        if (!binding.enabled || binding.adapter != registration.adapter) {
             revert RecipientAdapterMismatch(
                 record.recipient,
                 registration.adapter
@@ -606,22 +681,22 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
             receipt.receiptId == bytes32(0) ||
             receipt.receiptVersion == bytes32(0) ||
             receipt.proofModuleId == bytes32(0) ||
-            receipt.proofModuleVersion == bytes32(0) ||
+            bytes(receipt.proofModuleVersion).length == 0 ||
             receipt.proofModuleImplementationHash == bytes32(0) ||
             receipt.namespaceHash == bytes32(0) ||
             receipt.templateIdHash == bytes32(0) ||
-            receipt.templateVersion == bytes32(0) ||
+            bytes(receipt.templateVersion).length == 0 ||
             receipt.templateContentHash == bytes32(0) ||
             receipt.instanceCommitment == bytes32(0) ||
             receipt.contextHash == bytes32(0) ||
             receipt.actionSchemaId == bytes32(0) ||
             receipt.purposeHash == bytes32(0) ||
-            receipt.recipient == address(0) ||
+            receipt.recipient == bytes32(0) ||
             receipt.scopedNullifier == bytes32(0) ||
             receipt.outputCommitment == bytes32(0) ||
             receipt.sourceNetwork == bytes32(0) ||
             receipt.sourceContract == bytes32(0) ||
-            receipt.sourceTransaction == bytes32(0) ||
+            receipt.sourceTransaction.length == 0 ||
             receipt.gatewayKeyId == bytes32(0) ||
             receipt.gatewaySigner == address(0)
         ) {
@@ -653,12 +728,15 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
         }
         if (
             receipt.gatewaySignedAt < epoch.validAfter ||
-            receipt.gatewaySignedAt >= epoch.validBefore
+            receipt.gatewaySignedAt >= epoch.signingCutoff
         ) {
             revert GatewaySignatureOutsideEpoch(
                 receipt.gatewayKeyId,
                 receipt.gatewaySignedAt
             );
+        }
+        if (block.timestamp >= epoch.verificationCutoff) {
+            revert GatewayVerificationCutoffReached(receipt.gatewayKeyId, epoch.verificationCutoff);
         }
         if (receipt.gatewaySignedAt > block.timestamp) {
             revert GatewaySignatureFromFuture(receipt.gatewaySignedAt);
@@ -694,6 +772,7 @@ contract ExecutionRegistry is AccessControl, Pausable, ReentrancyGuard {
                 scopedNullifier: record.scopedNullifier,
                 outputCommitment: record.outputCommitment,
                 sourceNetwork: record.sourceNetwork,
+                sourceNetworkName: record.sourceNetworkName,
                 sourceContract: record.sourceContract,
                 sourceTransaction: record.sourceTransaction,
                 sourceLedgerSequence: record.sourceLedgerSequence,

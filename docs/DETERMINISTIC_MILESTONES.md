@@ -884,9 +884,9 @@ outbox, an observer using M6's authoritative receipt decoder through trusted
 injected source interfaces, exact template/module allowlists, key-epoch-aware
 EIP-712 authentication, and local HTTP delivery/restart tests. Expired history
 is recorded as rejected without blocking catch-up; integrity conflicts halt
-processing. Discovery, exact historical-registry adapters, the final payload
-codec and persisted signed-envelope delivery remain integration work. These
-fixture/local checks do not establish live end-to-end acceptance. The M8 field
+processing. The lossless M6 v1 ABI codec and matching Solidity transport verifier are implemented;
+consecutive finalized-block discovery, exact-call historical registry adapters and persisted signed-envelope delivery are now implemented. Operational configuration and live acceptance remain open.
+These fixture/local checks do not establish live end-to-end acceptance. The approved M8 field
 compatibility decision is recorded in
 [the integration decision](evidence/integration/receipt-compatibility-decision-20261021.md).
 
@@ -956,15 +956,14 @@ source event is final or signable.
 
 ## 11 M8 — Execution registry and adapters
 
-Status: `IN_PROGRESS_UPSTREAM_BLOCKED`; the generalized registry, adapter
-boundary, expected-upstream receipt fixture, twenty-four Hardhat tests, and
-public-only HyperIndex projection with in-memory handler tests are implemented.
-The local fixture HyperIndex has also passed GraphQL, backfill, restart, and
-pre-finality reorg rollback drills. A fixture-only browser consumer now renders
-the receipt/execution history, aggregates, block lag, and explicit unavailable
-state without changing authorization. The authoritative M6 receipt codec, M7
-durable transport, required non-fixture deployments, and M11 GraphQL consumer
-remain required.
+Status: `IN_PROGRESS_UPSTREAM_BLOCKED`; the generalized registry, lossless M6 v1 verifier,
+exact recipient-to-adapter bindings, and public-only HyperIndex projections are implemented.
+The original Compact receipt ID, 32-byte recipient, full 33-byte source transaction,
+network name and exact semantic versions are retained. Local EVM tests use the real M6
+decoder and shared codec/signature path. The dashboard retains the full public references.
+Fixture HyperIndex GraphQL, backfill, restart and pre-finality reorg drills remain fixture evidence.
+Required non-fixture deployments, live operation of the integrated M7 discovery/historical adapters and durable signed transport,
+live Envio integration and the M11 GraphQL consumer remain required.
 
 ### Result required in plain language
 
@@ -2010,9 +2009,8 @@ fixture 绝不能成为收据字段。
 
 `@permio/gateway` 现包含 SQLite 完整最终确认区块检查点与发件箱、通过可信注入来源接口调用
 M6 权威收据解码器的观察器、精确模板／模块允许列表、遵守密钥 epoch 的 EIP-712 认证，及本地
-HTTP 交付／重启测试。过期历史会记录为拒绝而不阻塞追赶，完整性冲突会停止处理。真实发现、
-精确历史注册状态适配器、最终字节编码及已签名信封的持久化交付仍需集成。夹具／本地检查不代表
-实时端到端验收。M8 字段兼容性待决定事项见
+HTTP 交付／重启测试。过期历史会记录为拒绝而不阻塞追赶，完整性冲突会停止处理。连续最终确认区块发现、精确调用历史注册状态适配器及已签名信封持久化投递现已实现。实际运行配置及在线验收仍待完成。M6 v1 无损 ABI 编码及匹配的 Solidity 传输验证器已实现。夹具／本地检查不代表
+实时端到端验收。M8 字段兼容性方案已获用户批准，见
 [集成决策记录](evidence/integration/receipt-compatibility-decision-20261021.md)。
 
 ### 产物
@@ -2057,12 +2055,11 @@ HTTP 交付／重启测试。过期历史会记录为拒绝而不阻塞追赶，
 
 ## 11 M8——执行注册表与适配器
 
-状态：`IN_PROGRESS_UPSTREAM_BLOCKED`；泛化注册表、adapter 边界、预期上游收据 fixture、
-二十四个 Hardhat 测试，以及只含公开数据并带内存 handler 测试的 HyperIndex 投影已经实现。
-本地 fixture HyperIndex 也已通过 GraphQL、backfill、重启及最终确认前重组回滚演练。
-一个仅限 fixture 的浏览器消费者现已展示收据／执行历史、聚合、区块延迟和明确的不可用状态，且不会
-改变授权。权威 M6 收据 codec、M7 持久化传输、所需的非 fixture 部署及 M11 GraphQL 消费者仍是
-必需项。
+状态：`IN_PROGRESS_UPSTREAM_BLOCKED`；泛化注册表、M6 v1 无损验证器、精确接收方至适配器绑定及公开 HyperIndex 投影已实现。
+保留原始 Compact 回执 ID、32字节接收方、完整33字节来源交易、网络名称和精确语义版本。
+本地 EVM 测试贯通真实 M6 解码器与共享编码／签名路径，界面保留完整公开引用。
+此前 HyperIndex 的 GraphQL、backfill、重启和最终确认前重组演练仍属夹具证据。
+M7 发现／历史适配器及持久签名传输的实际运行、所需非夹具部署、在线 Envio 集成及 M11 GraphQL 消费者仍是必需项。
 
 ### 通俗结果要求
 

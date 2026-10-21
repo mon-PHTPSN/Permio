@@ -20,19 +20,21 @@ contracts:
     events:
       - event: "ReceiptVerifierConfigured(bytes32 indexed receiptVersion, address indexed verifier)"
       - event: "SourceAuthorizationChanged(bytes32 indexed sourceKey, bytes32 indexed sourceNetwork, bytes32 indexed sourceContract, bool authorized)"
-      - event: "GatewayKeyEpochRegistered(bytes32 indexed gatewayKeyId, address indexed signer, uint64 validAfter, uint64 validBefore)"
+      - event: "GatewayKeyEpochRegistered(bytes32 indexed gatewayKeyId, address indexed signer, uint64 validAfter, uint64 signingCutoff, uint64 verificationCutoff)"
       - event: "GatewayKeyEpochDisabled(bytes32 indexed gatewayKeyId, address indexed signer)"
       - event: "AdapterRegistered(bytes32 indexed adapterKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, address adapter)"
       - event: "AdapterDisabled(bytes32 indexed adapterKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, address adapter)"
-      - event: "ReceiptRegistered(bytes32 indexed receiptId, bytes32 indexed receiptVersion, address indexed recipient, bytes32 actionSchemaId, bytes32 purposeHash, uint64 validAfter, uint64 validBefore, bytes32 scopedNullifier, bytes32 outputCommitment, bytes32 gatewayKeyId, address gatewaySigner, uint64 registeredAt)"
+      - event: "RecipientAdapterBound(bytes32 indexed bindingKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, bytes32 recipient, address adapter)"
+      - event: "RecipientAdapterDisabled(bytes32 indexed bindingKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, bytes32 recipient, address adapter)"
+      - event: "ReceiptRegistered(bytes32 indexed receiptId, bytes32 indexed receiptVersion, bytes32 indexed recipient, bytes32 actionSchemaId, bytes32 purposeHash, uint64 validAfter, uint64 validBefore, bytes32 scopedNullifier, bytes32 outputCommitment, bytes32 gatewayKeyId, address gatewaySigner, uint64 registeredAt)"
         field_selection:
           transaction_fields:
             - hash
-      - event: "ReceiptSourceBound(bytes32 indexed receiptId, bytes32 sourceNetwork, bytes32 sourceContract, bytes32 sourceTransaction, uint64 sourceLedgerSequence, uint64 gatewaySignedAt)"
-      - event: "ReceiptImplementationBound(bytes32 indexed receiptId, bytes32 namespaceHash, bytes32 templateIdHash, bytes32 templateVersion, bytes32 templateContentHash, bytes32 proofModuleId, bytes32 proofModuleVersion, bytes32 proofModuleImplementationHash)"
+      - event: "ReceiptSourceBound(bytes32 indexed receiptId, bytes32 sourceNetwork, string sourceNetworkName, bytes32 sourceContract, bytes sourceTransaction, uint64 sourceLedgerSequence, uint64 gatewaySignedAt)"
+      - event: "ReceiptImplementationBound(bytes32 indexed receiptId, bytes32 namespaceHash, bytes32 templateIdHash, string templateVersion, bytes32 templateContentHash, bytes32 proofModuleId, string proofModuleVersion, bytes32 proofModuleImplementationHash)"
       - event: "ReceiptStateBound(bytes32 indexed receiptId, bytes32 instanceCommitment, bytes32 previousStateCommitment, bytes32 nextStateCommitment, uint64 transitionSequence, bytes32 contextHash)"
       - event: "ReceiptRevoked(bytes32 indexed receiptId, address indexed revokedBy)"
-      - event: "ExecutionRecorded(bytes32 indexed executionId, bytes32 indexed receiptId, address indexed adapter, bytes32 actionSchemaId, address relayer, address recipient, bool success, bytes32 resultCommitment, bytes32 errorHash, uint64 executedAt)"
+      - event: "ExecutionRecorded(bytes32 indexed executionId, bytes32 indexed receiptId, address indexed adapter, bytes32 actionSchemaId, address relayer, bytes32 recipient, bool success, bytes32 resultCommitment, bytes32 errorHash, uint64 executedAt)"
         field_selection:
           transaction_fields:
             - hash

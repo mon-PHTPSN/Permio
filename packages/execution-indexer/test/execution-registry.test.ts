@@ -6,7 +6,8 @@ import { createTestIndexer } from "envio";
 import "../src/handlers/execution-registry.ts";
 
 const registry = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
-const recipient = "0x0000000000000000000000000000000000000002";
+const recipient = `0x${"aa".repeat(12)}0000000000000000000000000000000000000002`;
+const adapterAddress = "0x0000000000000000000000000000000000000002";
 const relayer = "0x0000000000000000000000000000000000000003";
 const signer = "0x0000000000000000000000000000000000000004";
 
@@ -19,14 +20,14 @@ const outputCommitment = `0x${"16".repeat(32)}`;
 const gatewayKeyId = `0x${"17".repeat(32)}`;
 const sourceNetwork = `0x${"18".repeat(32)}`;
 const sourceContract = `0x${"19".repeat(32)}`;
-const sourceTransaction = `0x${"1a".repeat(32)}`;
+const sourceTransaction = `0x01${"1a".repeat(32)}`;
 const templateIdHash = `0x${"1b".repeat(32)}`;
 const templateContentHash = `0x${"1c".repeat(32)}`;
 const proofModuleId = `0x${"1d".repeat(32)}`;
 const proofModuleImplementationHash = `0x${"1e".repeat(32)}`;
 const namespaceHash = `0x${"61".repeat(32)}`;
-const templateVersion = `0x${"62".repeat(32)}`;
-const proofModuleVersion = `0x${"63".repeat(32)}`;
+const templateVersion = "18446744073709551615.2.3";
+const proofModuleVersion = "4.5.6";
 const instanceCommitment = `0x${"64".repeat(32)}`;
 const previousStateCommitment = `0x${"65".repeat(32)}`;
 const nextStateCommitment = `0x${"66".repeat(32)}`;
@@ -77,6 +78,7 @@ describe("ExecutionRegistry public read model", () => {
               params: {
                 receiptId,
                 sourceNetwork,
+                sourceNetworkName: "preprod",
                 sourceContract,
                 sourceTransaction,
                 sourceLedgerSequence: 44n,
@@ -122,7 +124,7 @@ describe("ExecutionRegistry public read model", () => {
               params: {
                 executionId,
                 receiptId,
-                adapter: recipient,
+                adapter: adapterAddress,
                 actionSchemaId,
                 relayer,
                 recipient,
@@ -208,7 +210,8 @@ describe("ExecutionRegistry public read model", () => {
                 gatewayKeyId,
                 signer,
                 validAfter: 7_000n,
-                validBefore: 9_000n,
+                signingCutoff: 9_000n,
+                verificationCutoff: 9_500n,
               },
             },
             {
@@ -227,7 +230,7 @@ describe("ExecutionRegistry public read model", () => {
                 adapterKey,
                 receiptVersion,
                 actionSchemaId,
-                adapter: recipient,
+                adapter: adapterAddress,
               },
             },
             {
@@ -239,7 +242,7 @@ describe("ExecutionRegistry public read model", () => {
                 adapterKey,
                 receiptVersion,
                 actionSchemaId,
-                adapter: recipient,
+                adapter: adapterAddress,
               },
             },
           ],
@@ -257,6 +260,8 @@ describe("ExecutionRegistry public read model", () => {
 
     const epoch = await testIndexer.GatewayKeyEpoch.getOrThrow(id(gatewayKeyId));
     assert.equal(epoch.disabled, true);
+    assert.equal(epoch.signingCutoff, 9_000n);
+    assert.equal(epoch.verificationCutoff, 9_500n);
 
     const adapter = await testIndexer.Adapter.getOrThrow(id(adapterKey));
     assert.equal(adapter.enabled, false);
@@ -301,7 +306,7 @@ describe("ExecutionRegistry public read model", () => {
               params: {
                 executionId: failedExecutionId,
                 receiptId,
-                adapter: recipient,
+                adapter: adapterAddress,
                 actionSchemaId,
                 relayer,
                 recipient,
@@ -362,6 +367,52 @@ describe("ExecutionRegistry public read model", () => {
 
     for (const fieldName of forbiddenFieldNames) {
       assert.doesNotMatch(schema, new RegExp(`\\b${fieldName}\\b`, "i"));
+    }
+  });
+});
+
+describe("exact recipient bindings", () => {
+  it("retains the full recipient separately from the adapter and projects disablement", async () => {
+    const testIndexer = createTestIndexer();
+    const bindingKey = `0x${"ab".repeat(32)}`;
+    await testIndexer.process({ chains: { 31337: { simulate: [
+      { contract: "ExecutionRegistry", event: "RecipientAdapterBound", srcAddress: registry, block: { number: 40, timestamp: 12000 }, params: { bindingKey, receiptVersion, actionSchemaId, recipient, adapter: adapterAddress } },
+      { contract: "ExecutionRegistry", event: "RecipientAdapterDisabled", srcAddress: registry, block: { number: 41, timestamp: 12001 }, params: { bindingKey, receiptVersion, actionSchemaId, recipient, adapter: adapterAddress } },
+    ] } } });
+    const binding = await testIndexer.RecipientAdapterBinding.getOrThrow(id(bindingKey));
+    assert.equal(binding.recipient, recipient);
+    assert.equal(binding.adapter, adapterAddress);
+    assert.notEqual(binding.recipient, binding.adapter);
+    assert.equal(binding.receiptVersion, receiptVersion);
+    assert.equal(binding.actionSchemaId, actionSchemaId);
+    assert.equal(binding.enabled, false);
+  });
+});
+
+
+describe("canonical absent M6 state", () => {
+  it("restores null only for the complete zero state triple", async () => {
+    for (const [previous, next, sequence, expectedPrevious, expectedNext, expectedSequence] of [
+      [zeroHash, zeroHash, 0n, undefined, undefined, undefined],
+      [zeroHash, nextStateCommitment, 0n, zeroHash, nextStateCommitment, 0n],
+      [zeroHash, zeroHash, 1n, zeroHash, zeroHash, 1n],
+    ] as const) {
+      const testIndexer = createTestIndexer();
+      await testIndexer.process({ chains: { 31337: { simulate: [
+        { contract: "ExecutionRegistry", event: "ReceiptRegistered", srcAddress: registry,
+          block: { number: 10, timestamp: 7205 }, transaction: { hash: transactionHash },
+          params: { receiptId, receiptVersion, recipient, actionSchemaId, purposeHash, validAfter: 7000n,
+            validBefore: 10000n, scopedNullifier, outputCommitment, gatewayKeyId, gatewaySigner: signer, registeredAt: 7205n } },
+        { contract: "ExecutionRegistry", event: "ReceiptStateBound", srcAddress: registry,
+          block: { number: 10, timestamp: 7205 }, params: { receiptId, instanceCommitment,
+            previousStateCommitment: previous, nextStateCommitment: next, transitionSequence: sequence, contextHash } },
+      ] } } });
+      const receipt = await testIndexer.ReceiptProjection.getOrThrow(id(receiptId));
+      assert.equal(receipt.instanceCommitment, instanceCommitment);
+      assert.equal(receipt.contextHash, contextHash);
+      assert.equal(receipt.previousStateCommitment, expectedPrevious);
+      assert.equal(receipt.nextStateCommitment, expectedNext);
+      assert.equal(receipt.transitionSequence, expectedSequence);
     }
   });
 });

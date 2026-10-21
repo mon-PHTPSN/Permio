@@ -1,0 +1,34 @@
+{
+  "tier": "RECORDED_PREPROD_PUBLIC_RECEIPTS_TO_SIMULATED_EVM",
+  "sourceSha256": "c8dd5774ed0ca60a20c3eac444c6612fb42343237cfd914b59addb811bec7a73",
+  "receipts": [
+    {
+      "receiptId": "0x3affb22ebf29fe0e3c829399e5cdc7a5c6f48b9cbfc3f5f554d5dcfe7ee3a2cf",
+      "originalFieldsPreserved": true,
+      "localRegistrations": 1,
+      "localExecutions": 1,
+      "deliveryAttempts": 2,
+      "signedPacketReusedAfterRestart": true
+    },
+    {
+      "receiptId": "0x996cb8c7a141e0c533d73bc30174ac9a1611c9853b1a0cc190a882430c23310f",
+      "originalFieldsPreserved": true,
+      "localRegistrations": 1,
+      "localExecutions": 1,
+      "deliveryAttempts": 2,
+      "signedPacketReusedAfterRestart": true
+    },
+    {
+      "receiptId": "0xed3440392a20161c3fa7d5a858f10338abf240511f4890cc382641009d6a0864",
+      "originalFieldsPreserved": true,
+      "localRegistrations": 1,
+      "localExecutions": 1,
+      "deliveryAttempts": 2,
+      "signedPacketReusedAfterRestart": true
+    }
+  ],
+  "sourceDiscoveryVerified": false,
+  "liveEndToEnd": false,
+  "newMidnightSubmissions": 0,
+  "newRemoteProofRequests": 0
+}

@@ -291,3 +291,23 @@ test("typed transient receipt-read outages retry in the same long-running observ
     assert.equal(reads, 2); assert.equal(store.rows().length, 1); assert.equal(store.sourceError(), null);
   } finally { store.close(); f.cleanup(); }
 });
+
+test("a source integrity error halts the store instead of becoming a retryable outage", async () => {
+  const { GatewaySourceError } = await import("../src/errors.ts");
+  const f = setup(), store = new GatewayStore(f.path, "preprod", hex(13));
+  try {
+    const observer = new GatewayObserver(store, { ...f.dependencies, discovery: { ...f.dependencies.discovery, scan: async () => { throw new GatewaySourceError("INTEGRITY"); } } });
+    await assert.rejects(observer.observeOnce(), /FINALITY_INTEGRITY/);
+    assert.equal(store.integrityError(), "FINALITY_INTEGRITY"); assert.equal(store.checkpoint(), null);
+  } finally { store.close(); f.cleanup(); }
+});
+
+test("historical semantic rejection is terminal and does not become a status outage", async () => {
+  const { GatewaySourceError } = await import("../src/errors.ts");
+  const f = setup(), store = new GatewayStore(f.path, "preprod", hex(13));
+  try {
+    const observer = new GatewayObserver(store, { ...f.dependencies, historicalStatus: { read: async () => { throw new GatewaySourceError("REJECTED"); } } });
+    await assert.rejects(observer.observeOnce(), /SOURCE_STATUS_REJECTED/);
+    assert.equal(store.checkpoint(), null); assert.equal(store.rows().length, 0);
+  } finally { store.close(); f.cleanup(); }
+});

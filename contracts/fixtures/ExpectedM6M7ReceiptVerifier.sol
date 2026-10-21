@@ -28,17 +28,17 @@ contract ExpectedM6M7ReceiptVerifier is EIP712, IReceiptVerifier {
     string public constant SIGNATURE_VERSION = "0";
 
     bytes32 public constant EXPECTED_RECEIPT_TYPEHASH = keccak256(
-        "ExpectedReceipt(bytes32 receiptVersion,bytes32 proofModuleId,bytes32 proofModuleVersion,bytes32 proofModuleImplementationHash,bytes32 namespaceHash,bytes32 templateIdHash,bytes32 templateVersion,bytes32 templateContentHash,bytes32 instanceCommitment,bytes32 previousStateCommitment,bytes32 nextStateCommitment,uint64 transitionSequence,bytes32 contextHash,bytes32 actionSchemaId,bytes32 purposeHash,address recipient,uint64 validAfter,uint64 validBefore,bytes32 scopedNullifier,bytes32 outputCommitment,bytes32 sourceNetwork,bytes32 sourceContract,bytes32 sourceTransaction,uint64 sourceLedgerSequence,bytes32 gatewayKeyId,uint64 gatewaySignedAt,uint256 targetChainId,address targetRegistry)"
+        "ExpectedReceipt(bytes32 receiptVersion,bytes32 proofModuleId,string proofModuleVersion,bytes32 proofModuleImplementationHash,bytes32 namespaceHash,bytes32 templateIdHash,string templateVersion,bytes32 templateContentHash,bytes32 instanceCommitment,bytes32 previousStateCommitment,bytes32 nextStateCommitment,uint64 transitionSequence,bytes32 contextHash,bytes32 actionSchemaId,bytes32 purposeHash,bytes32 recipient,uint64 validAfter,uint64 validBefore,bytes32 scopedNullifier,bytes32 outputCommitment,bytes32 sourceNetwork,string sourceNetworkName,bytes32 sourceContract,bytes sourceTransaction,uint64 sourceLedgerSequence,bytes32 gatewayKeyId,uint64 gatewaySignedAt,uint256 targetChainId,address targetRegistry)"
     );
 
     struct ExpectedReceipt {
         bytes32 receiptVersion;
         bytes32 proofModuleId;
-        bytes32 proofModuleVersion;
+        string proofModuleVersion;
         bytes32 proofModuleImplementationHash;
         bytes32 namespaceHash;
         bytes32 templateIdHash;
-        bytes32 templateVersion;
+        string templateVersion;
         bytes32 templateContentHash;
         bytes32 instanceCommitment;
         bytes32 previousStateCommitment;
@@ -47,14 +47,15 @@ contract ExpectedM6M7ReceiptVerifier is EIP712, IReceiptVerifier {
         bytes32 contextHash;
         bytes32 actionSchemaId;
         bytes32 purposeHash;
-        address recipient;
+        bytes32 recipient;
         uint64 validAfter;
         uint64 validBefore;
         bytes32 scopedNullifier;
         bytes32 outputCommitment;
         bytes32 sourceNetwork;
+        string sourceNetworkName;
         bytes32 sourceContract;
-        bytes32 sourceTransaction;
+        bytes sourceTransaction;
         uint64 sourceLedgerSequence;
         bytes32 gatewayKeyId;
         uint64 gatewaySignedAt;
@@ -130,6 +131,7 @@ contract ExpectedM6M7ReceiptVerifier is EIP712, IReceiptVerifier {
             scopedNullifier: expected.scopedNullifier,
             outputCommitment: expected.outputCommitment,
             sourceNetwork: expected.sourceNetwork,
+            sourceNetworkName: expected.sourceNetworkName,
             sourceContract: expected.sourceContract,
             sourceTransaction: expected.sourceTransaction,
             sourceLedgerSequence: expected.sourceLedgerSequence,
@@ -152,11 +154,11 @@ contract ExpectedM6M7ReceiptVerifier is EIP712, IReceiptVerifier {
             EXPECTED_RECEIPT_TYPEHASH,
             expected.receiptVersion,
             expected.proofModuleId,
-            expected.proofModuleVersion,
+            keccak256(bytes(expected.proofModuleVersion)),
             expected.proofModuleImplementationHash,
             expected.namespaceHash,
             expected.templateIdHash,
-            expected.templateVersion,
+            keccak256(bytes(expected.templateVersion)),
             expected.templateContentHash,
             expected.instanceCommitment
         );
@@ -175,8 +177,9 @@ contract ExpectedM6M7ReceiptVerifier is EIP712, IReceiptVerifier {
         bytes memory third = abi.encode(
             expected.outputCommitment,
             expected.sourceNetwork,
+            keccak256(bytes(expected.sourceNetworkName)),
             expected.sourceContract,
-            expected.sourceTransaction,
+            keccak256(expected.sourceTransaction),
             expected.sourceLedgerSequence,
             expected.gatewayKeyId,
             expected.gatewaySignedAt,

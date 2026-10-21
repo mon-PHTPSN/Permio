@@ -3,6 +3,7 @@ import { readFinalizedDecisionReceipt, type DecisionReceipt, type DecisionReceip
 import type { Hex32 } from "../../midnight-authorization/src/model.ts";
 import { IndexedReceiptUnavailableError } from "../../midnight-authorization/src/indexed-receipt-read.ts";
 import { GatewayStore, type GatewayCheckpoint } from "./durable-store.ts";
+import { GatewaySourceError } from "./errors.ts";
 
 /** Complete finalized block, including every receipt-producing call in that block. Never split one block across cursors. */
 export interface FinalizedReceiptBatch {
@@ -60,13 +61,20 @@ export class GatewayObserver {
     if (!Number.isSafeInteger(now) || now < 0) throw Error("INVALID_OBSERVER_TIME");
     return now;
   }
+  private sourceFailure(error: unknown, unavailable: string, rejected: string): never {
+    if (error instanceof GatewaySourceError) {
+      if (error.kind === "INTEGRITY") this.store.stopForIntegrity();
+      throw Error(rejected);
+    }
+    throw Error(unavailable);
+  }
   private async verifyCheckpoint(): Promise<void> {
     this.store.assertRunning();
     const checkpoint = this.store.checkpoint();
     if (checkpoint !== null) {
       let intact: boolean;
       try { intact = await this.dependencies.discovery.verifyCheckpoint(checkpoint); }
-      catch { throw Error("SOURCE_UNAVAILABLE"); }
+      catch (error) { this.sourceFailure(error, "SOURCE_UNAVAILABLE", "SOURCE_RECEIPT_REJECTED"); }
       if (!intact) this.store.stopForIntegrity();
     }
   }
@@ -74,11 +82,11 @@ export class GatewayObserver {
     await this.verifyCheckpoint();
     let batch: FinalizedReceiptBatch | null;
     try { batch = await this.dependencies.discovery.scan(this.store.checkpoint()); }
-    catch { throw Error("SOURCE_UNAVAILABLE"); }
+    catch (error) { this.sourceFailure(error, "SOURCE_UNAVAILABLE", "SOURCE_RECEIPT_REJECTED"); }
     if (batch === null) { this.store.recordSourceError(null); return 0; }
     let finalized: boolean;
     try { finalized = await this.dependencies.discovery.verifyCheckpoint(batch.checkpoint); }
-    catch { throw Error("SOURCE_UNAVAILABLE"); }
+    catch (error) { this.sourceFailure(error, "SOURCE_UNAVAILABLE", "SOURCE_RECEIPT_REJECTED"); }
     if (!finalized) this.store.stopForIntegrity();
     const observed = [];
     for (const event of batch.events) {
@@ -91,6 +99,7 @@ export class GatewayObserver {
           transactionId: event.transactionId, receiptId: event.receiptId,
         });
       } catch (error) {
+        if (error instanceof GatewaySourceError) this.sourceFailure(error, "SOURCE_UNAVAILABLE", "SOURCE_RECEIPT_REJECTED");
         if (error instanceof IndexedReceiptUnavailableError) throw Error("SOURCE_UNAVAILABLE");
         throw Error("SOURCE_RECEIPT_REJECTED");
       }
@@ -98,7 +107,7 @@ export class GatewayObserver {
       if (!this.isAllowlisted(receipt)) throw Error("RECEIPT_NOT_ALLOWLISTED");
       let status;
       try { status = await this.dependencies.historicalStatus.read(receipt); }
-      catch { throw Error("SOURCE_STATUS_UNAVAILABLE"); }
+      catch (error) { this.sourceFailure(error, "SOURCE_STATUS_UNAVAILABLE", "SOURCE_STATUS_REJECTED"); }
       if (status.sourceLedgerSequence !== receipt.sourceLedgerSequence || status.templateRegistry !== this.dependencies.contract ||
         status.proofModuleRegistry !== this.dependencies.contract || status.templateActive !== true || status.moduleActive !== true) {
         throw Error("SOURCE_STATUS_REJECTED");

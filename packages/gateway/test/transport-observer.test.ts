@@ -4,11 +4,12 @@ import { createServer } from "node:http";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, resolve } from "node:path";
 import { test } from "node:test";
-import { keccak256, stringToHex } from "viem";
+import { keccak256 } from "viem";
 import { generatePrivateKey, privateKeyToAccount } from "viem/accounts";
 import { hashProtocolIdentifier } from "../../midnight-authorization/src/canonical.ts";
 import { readFinalizedDecisionReceipt, runtimeDecisionReceiptId,
   type RuntimeDecisionReceiptBody } from "../../midnight-authorization/src/decision-receipt.ts";
+import { encodeM6ReceiptV1, decodeM6ReceiptV1, m6SourceIdentityHash } from "../src/m6-receipt-codec.ts";
 import { GatewayStore } from "../src/durable-store.ts";
 import { GatewayObserver, type GatewayObserverDependencies } from "../src/observer.ts";
 import { deriveGatewayOutboxKey } from "../src/outbox-key.ts";
@@ -37,11 +38,10 @@ test("fixture decoder -> durable observer -> signed loopback HTTP survives outag
   }) };
   // Receiver-owned expected values come from the known test source, never packet-supplied hashes.
   const knownReceipt = await readFinalizedDecisionReceipt(receiptReader, source);
-  const knownEncoded = stringToHex(JSON.stringify(knownReceipt));
+  const knownEncoded = encodeM6ReceiptV1(knownReceipt);
+  assert.deepEqual(decodeM6ReceiptV1(knownEncoded), knownReceipt);
   const receiptHash = keccak256(knownEncoded);
-  const sourceIdentityHash = keccak256(stringToHex(JSON.stringify([
-    source.network, source.contract, source.transactionId, 0, knownReceipt.sourceLedgerSequence,
-  ])));
+  const sourceIdentityHash = m6SourceIdentityHash(knownReceipt);
   const outboxKey = deriveGatewayOutboxKey({ networkId: source.network, contractId: source.contract,
     transactionId: source.transactionId, eventIndex: 0, ledgerSequence: 123n },
     { receiptVersion: "1", scopedNullifier: knownReceipt.scopedNullifier });
@@ -109,7 +109,7 @@ test("fixture decoder -> durable observer -> signed loopback HTTP survives outag
       deliver: async (receipt, key) => {
         assert.deepEqual(receipt, knownReceipt);
         const signed = await signGatewayTransport({ ...target, outboxKey: key, sourceIdentityHash,
-          encodedReceipt: stringToHex(JSON.stringify(receipt)), signedAt: now, epochs, account, forbiddenSigners: [] });
+          encodedReceipt: encodeM6ReceiptV1(receipt), signedAt: now, epochs, account, forbiddenSigners: [] });
         const ack = await deliverGatewayTransport(endpoint, signed);
         return { idempotencyKey: ack.outboxKey };
       }, now: () => now, retrySeconds: 5,

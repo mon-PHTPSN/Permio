@@ -1,5 +1,8 @@
 import { createHash } from "node:crypto";
 import { DatabaseSync } from "node:sqlite";
+import { getAddress, isAddress, keccak256 } from "viem";
+import { encodeM6ReceiptV1, m6SourceIdentityHash } from "./m6-receipt-codec.ts";
+import type { GatewayTransport } from "./transport.ts";
 import type { DecisionReceipt } from "../../midnight-authorization/src/decision-receipt.ts";
 import { deriveGatewayOutboxKey } from "./outbox-key.ts";
 
@@ -35,6 +38,20 @@ function unsigned(value: string): bigint {
   return BigInt(value);
 }
 
+const TRANSPORT_FIELDS = ["version", "outboxKey", "sourceIdentityHash", "receiptHash", "keyId", "signedAt", "targetChainId", "targetRegistry", "encodedReceipt", "signature"] as const;
+function canonicalTransport(packet: GatewayTransport): string {
+  if (!packet || Object.keys(packet).length !== TRANSPORT_FIELDS.length || TRANSPORT_FIELDS.some(field => !(field in packet)) ||
+      packet.version !== 1 || !Number.isSafeInteger(packet.signedAt) || packet.signedAt < 0 ||
+      typeof packet.keyId !== "string" || !/^[\x21-\x7e]{1,256}$/.test(packet.keyId) ||
+      typeof packet.targetChainId !== "string" || !/^[1-9][0-9]*$/.test(packet.targetChainId) || BigInt(packet.targetChainId) >= 2n ** 256n ||
+      !isAddress(packet.targetRegistry, { strict: true }) || getAddress(packet.targetRegistry) !== packet.targetRegistry || /^0x0{40}$/i.test(packet.targetRegistry) ||
+      ![packet.outboxKey, packet.sourceIdentityHash, packet.receiptHash].every(value => typeof value === "string" && /^0x[0-9a-f]{64}$/.test(value)) ||
+      typeof packet.signature !== "string" || !/^0x[0-9a-f]{130}$/.test(packet.signature) ||
+      typeof packet.encodedReceipt !== "string" || !/^0x(?:[0-9a-f]{2})+$/.test(packet.encodedReceipt) || packet.encodedReceipt.length > 2 * 1024 ** 2 + 2) {
+    throw Error("INVALID_SAVED_TRANSPORT");
+  }
+  return JSON.stringify(Object.fromEntries(TRANSPORT_FIELDS.map(field => [field, packet[field]])));
+}
 /** Single observer's public-only durable outbox. Delivery is at least once; consumers must persist the supplied idempotency key. */
 export class GatewayStore {
   private readonly database: DatabaseSync;
@@ -49,6 +66,11 @@ export class GatewayStore {
         key TEXT PRIMARY KEY, identity TEXT NOT NULL UNIQUE, receipt TEXT NOT NULL, receipt_hash TEXT NOT NULL,
         event_index INTEGER NOT NULL, state TEXT NOT NULL, attempts INTEGER NOT NULL DEFAULT 0,
         last_error TEXT, next_retry_at INTEGER NOT NULL DEFAULT 0
+      );
+      CREATE TABLE IF NOT EXISTS gateway_transports (
+        id INTEGER PRIMARY KEY, outbox_key TEXT NOT NULL, target_chain TEXT NOT NULL, target_registry TEXT NOT NULL,
+        key_id TEXT NOT NULL, packet TEXT NOT NULL, packet_hash TEXT NOT NULL,
+        UNIQUE(outbox_key, target_chain, target_registry, key_id)
       );`);
     const identity = JSON.stringify([network, contract, "decision-receipt-v1"]);
     this.database.prepare("INSERT OR IGNORE INTO gateway_meta VALUES ('source', ?)").run(identity);
@@ -125,6 +147,41 @@ export class GatewayStore {
   }
   rows(): readonly GatewayOutboxRow[] {
     return this.database.prepare("SELECT * FROM gateway_outbox ORDER BY rowid").all().map(row => this.decode(row));
+  }
+  outbox(key: string): GatewayOutboxRow | null {
+    this.assertRunning();
+    const row = this.database.prepare("SELECT * FROM gateway_outbox WHERE key = ?").get(key);
+    return row ? this.decode(row) : null;
+  }
+  private transport(row: Record<string, unknown>): GatewayTransport {
+    try {
+      const encoded = row.packet as string;
+      if (digest(encoded) !== row.packet_hash) throw Error();
+      const packet = JSON.parse(encoded) as GatewayTransport;
+      if (canonicalTransport(packet) !== encoded || packet.outboxKey !== row.outbox_key ||
+          packet.targetChainId !== row.target_chain || packet.targetRegistry !== row.target_registry || packet.keyId !== row.key_id) throw Error();
+      const outbox = this.outbox(packet.outboxKey);
+      if (!outbox || packet.encodedReceipt !== encodeM6ReceiptV1(outbox.receipt) ||
+          packet.sourceIdentityHash !== m6SourceIdentityHash(outbox.receipt) || packet.receiptHash !== keccak256(packet.encodedReceipt)) throw Error();
+      return Object.freeze(packet);
+    } catch { return this.stopForIntegrity(); }
+  }
+  /** Append-only public envelope history, independently keyed by destination and key epoch. */
+  transports(key: string, targetChainId: string, targetRegistry: string): readonly GatewayTransport[] {
+    this.assertRunning();
+    return this.database.prepare("SELECT * FROM gateway_transports WHERE outbox_key = ? AND target_chain = ? AND target_registry = ? ORDER BY id")
+      .all(key, targetChainId, getAddress(targetRegistry)).map(row => this.transport(row));
+  }
+  persistTransport(packet: GatewayTransport): GatewayTransport {
+    this.assertRunning();
+    const encoded = canonicalTransport(packet), outbox = this.outbox(packet.outboxKey);
+    if (!outbox || packet.encodedReceipt !== encodeM6ReceiptV1(outbox.receipt) ||
+        packet.sourceIdentityHash !== m6SourceIdentityHash(outbox.receipt) || packet.receiptHash !== keccak256(packet.encodedReceipt)) throw Error("INVALID_SAVED_TRANSPORT");
+    this.database.prepare("INSERT OR IGNORE INTO gateway_transports (outbox_key, target_chain, target_registry, key_id, packet, packet_hash) VALUES (?, ?, ?, ?, ?, ?)")
+      .run(packet.outboxKey, packet.targetChainId, packet.targetRegistry, packet.keyId, encoded, digest(encoded));
+    const saved = this.database.prepare("SELECT * FROM gateway_transports WHERE outbox_key = ? AND target_chain = ? AND target_registry = ? AND key_id = ?")
+      .get(packet.outboxKey, packet.targetChainId, packet.targetRegistry, packet.keyId)!;
+    return this.transport(saved);
   }
   claimDue(now: number): GatewayOutboxRow | null {
     this.assertRunning();

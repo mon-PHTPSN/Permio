@@ -51,14 +51,21 @@ export default buildModule("ExecutionRegistryLocalFixture", (m) => {
   m.call(
     registry,
     "registerGatewayKeyEpoch",
-    [FIXTURE_GATEWAY_KEY_ID, fixtureGatewaySigner, 1n, 18_446_744_073_709_551_615n],
+    [FIXTURE_GATEWAY_KEY_ID, fixtureGatewaySigner, 1n, 18_446_744_073_709_551_615n, 18_446_744_073_709_551_615n],
     { from: initialGatewayKeyManager },
   );
-  m.call(
+  const registeredAdapter = m.call(
     registry,
     "registerAdapter",
     [FIXTURE_RECEIPT_VERSION, FIXTURE_ACTION_SCHEMA_ID, adapter],
     { from: initialAdapterRegistrar },
+  );
+
+  m.call(
+    registry,
+    "bindRecipientAdapter",
+    [FIXTURE_RECEIPT_VERSION, FIXTURE_ACTION_SCHEMA_ID, hash("fixture-runtime-recipient"), adapter],
+    { from: initialAdapterRegistrar, after: [registeredAdapter] },
   );
 
   return { registry, verifier, adapter };
