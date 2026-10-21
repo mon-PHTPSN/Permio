@@ -56,6 +56,16 @@ success or failure. The approved boundary is recorded in the
 concrete implementation and live-chain record is maintained in the
 [`M6 development log`](docs/evidence/M6/development-log.md).
 
+The selected post-M6 sponsor scope is Envio, Mera, and Dynamic; Qwen and other
+external AI-agent runtimes are intentionally out of scope. M7 stays
+provider-neutral, M8 adds an Envio HyperIndex read model that drives the product
+dashboard, M10 uses Mera PRF for non-account custody of recipient evidence keys,
+and M11 uses Dynamic for authentication plus the supported 1AM Midnight-wallet
+connection and a separate Monad EVM-wallet binding. M12 requires live evidence
+for all three integrations. The exact Dynamic wallet key/connector, SDK version,
+and supported Midnight network must be recorded and verified in its sandbox
+before the 1AM integration is claimed complete.
+
 M4 continues to verify Ed25519 reviewer attestations, unique eligible
 reviewers, thresholds, rejection state, and separation of duties. Midnight
 does not repeat those checks in M6 v1. Instead, the namespace-scoped M4
@@ -91,6 +101,9 @@ The implemented off-chain packages form a concrete dependency chain:
   Dev-verified staged M4 admission, proof-module governance, authority-root
   rotation, prospective module/template termination, M5-to-M6 runtime
   credentials, and credential-status transition slices.
+- `@permio/gateway` provides the M6-independent M7 foundation for strict public
+  source/receipt-byte validation, exact source allowlisting, domain-separated
+  outbox identity, and verifier-key rotation windows.
 
 The approved entry-point consolidation reduced the ledger-8 single-contract
 build from twelve to nine transaction circuits. It now deploys on the unchanged
@@ -279,6 +292,8 @@ Midnight 上重复这些检查。命名空间范围内的 M4 治理／激活权�
 签名操作；`@permio/midnight-authorization` 实现了已经编译并在 Local Dev 验证的分阶段 M4
 激活准入、证明模块治理、权限根轮换、前瞻性模块／模板终止、M5 到 M6 运行时凭证以及
 credential-status 转换切片。
+签名操作；`@permio/gateway` 提供不依赖 M6 的 M7 基础能力，包括严格验证公开来源与收据字节、
+精确来源 allowlist、域分离的 outbox 身份，以及验证者密钥轮换时间窗。
 
 获批准的入口合并把 ledger-8 单合约从 12 个交易电路减少到 9 个。它现在能在未修改的 Local Dev
 环境中部署，并已完成 credential-status 激活、未授权撤销拒绝、授权撤销、治理、准入、重放拒绝、

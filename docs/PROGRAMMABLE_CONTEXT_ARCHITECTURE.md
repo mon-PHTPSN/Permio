@@ -538,6 +538,47 @@ change requires a new version and explicit compatibility rules.
 | Monad registry or application | Typed receipt | Signer, schema, recipient, expiry, and replay checks | Public action result |
 | Evidence vault | Ciphertext and manifest | Recipient decryption and integrity checks | Selected recipient view |
 
+### 7.1 Post-M6 sponsor integration boundaries
+
+The selected sponsor scope is Envio, Mera, and Dynamic. M6 remains unchanged,
+and M7 through M12 do not depend on Qwen or another external AI-agent runtime.
+The delegated-agent scenario remains an application-neutral authorization
+profile and may be exercised by a deterministic client rather than an LLM.
+
+| Integration | First required milestone | Permitted role | Must never become |
+| --- | --- | --- | --- |
+| Envio HyperIndex | M8 | Index the public Monad execution registry and derive a GraphQL read model used by the product | An authorization oracle, a source of private evidence, or an M7 finality/signing dependency |
+| Mera PRF vault | M10 | Reconstruct the key-encryption material that unlocks a recipient's normal, rotatable evidence-encryption private key | A blockchain wallet, transaction signer, public identity, or place to persist PRF output/plaintext keys |
+| Dynamic SDK | M11 | Authenticate the product session and orchestrate the supported 1AM Midnight-wallet connection plus a separate Monad EVM-wallet binding | A global Permio subject identifier, scenario authority, capability issuer, or proof that an action is authorized |
+
+M7 publishes a versioned, provider-neutral downstream event contract. Envio
+consumes only the public M8 events produced from that contract. Its
+`config.yaml`, `schema.graphql`, and handlers define receipt, execution,
+adapter, gateway-key-epoch, and time-bucket aggregate entities. The M11
+dashboard must obtain its receipt/execution history and operational aggregates
+from the Envio GraphQL API, so HyperIndex drives a real product feature. Envio
+lag or failure affects read-model freshness only; it cannot approve execution,
+change replay state, or widen a receipt.
+
+M10 defines a provider-neutral `RecipientKeyCustodyAdapter` and a concrete
+`mera-prf-v1` adapter. The recipient creates a normal rotatable encryption
+keypair; Mera uses the passkey PRF to unlock an encrypted vault containing the
+private key, while the public key and fingerprint remain the protocol-facing
+values. Every vault uses a fresh random 32-byte salt and a versioned namespace.
+Only salt, ciphertext, and non-sensitive recovery metadata may persist. PRF
+output, the unwrapped private key, and plaintext evidence remain memory-only
+and must never enter logs, servers, ledgers, or Envio.
+
+The approved M11 product path uses Dynamic's supported 1AM connection for the
+Midnight wallet. The exact Dynamic wallet key or connector version and the
+supported Midnight network must be recorded and tested in the Dynamic sandbox
+before the milestone is complete. Monad uses a distinct EVM wallet binding;
+the system must not assume that the 1AM key or address can sign Monad actions.
+A Dynamic user/session may associate both bindings privately, but that mapping
+does not replace a context account, capability, ActionIntent, or M6 decision.
+Wallet connection proves control of a wallet, not authorization under a Permio
+scenario.
+
 ## 8 Required first scenario profiles
 
 These three profiles are part of Permio's architecture and must run through the
@@ -673,6 +714,13 @@ classified private are absent from ledgers, receipts, logs, and generated HTML.
   structured fine-grained authorization details.
 - [W3C ODRL Information Model 2.2](https://www.w3.org/TR/odrl-model/) — parties,
   actions, assets, constraints, duties, and policy profiles.
+- [Envio HyperIndex overview](https://docs.envio.dev/docs/HyperIndex/overview) —
+  event-driven indexing into a schema-defined GraphQL read model.
+- [Mera passkeys and PRF](https://mera.category.xyz/concepts/passkeys-and-prf/) and
+  [secret vaults](https://mera.category.xyz/concepts/secret-vaults/) —
+  passkey-scoped deterministic key material and encrypted-vault construction.
+- [Dynamic wallet integration](https://docs.dynamic.xyz/wallets-and-chains/wallets) —
+  wallet discovery, connectors, and custom integration boundaries.
 
 These sources inform the required profiles. Permio's profile semantics are
 defined by this architecture; adopting an external serialization or runtime
@@ -1128,6 +1176,36 @@ schema；它们不重新解释私有策略，也不静默扩大模块特定输�
 | Monad 注册表或应用 | 类型化收据 | 验证签名者、模式、接收方、期限与重放 | 公开操作结果 |
 | 证据保险库 | 密文与 manifest | 接收方解密及完整性检查 | 选定接收方视图 |
 
+### 7.1 M6 之后的赞助商集成边界
+
+当前选定的赞助商范围只有 Envio、Mera 和 Dynamic。M6 保持不变，M7 至 M12 不依赖 Qwen 或
+其他外部 AI Agent 运行时。现有的委托 Agent 情境仍是应用无关的授权 profile，可以由确定性
+客户端执行，不要求接入 LLM。
+
+| 集成 | 首个必需里程碑 | 允许承担的职责 | 绝不能成为 |
+| --- | --- | --- | --- |
+| Envio HyperIndex | M8 | 索引公开 Monad 执行注册表，并生成供产品使用的 GraphQL 读模型 | 授权预言机、私有证据来源或 M7 最终性／签名依赖 |
+| Mera PRF 保险库 | M10 | 重建密钥加密材料，以解锁接收方正常、可轮换的证据加密私钥 | 区块链钱包、交易签名器、公开身份或持久化 PRF 输出／明文密钥的位置 |
+| Dynamic SDK | M11 | 验证产品 session，并协调受支持的 1AM Midnight 钱包连接和独立 Monad EVM 钱包绑定 | 全局 Permio 主体标识符、情境权限、capability 签发者或操作已获授权的证明 |
+
+M7 提供版本化、供应商中立的下游事件契约。Envio 只消费由该契约形成的公开 M8 事件；其
+`config.yaml`、`schema.graphql` 和 handlers 定义收据、执行、adapter、网关密钥 epoch 与时间桶
+聚合实体。M11 dashboard 必须从 Envio GraphQL API 获取收据／执行历史和运行聚合，使
+HyperIndex 真正驱动产品功能。Envio 延迟或故障只能影响读模型新鲜度，不能批准执行、改变
+重放状态或扩大收据。
+
+M10 定义供应商中立的 `RecipientKeyCustodyAdapter` 和具体 `mera-prf-v1` adapter。接收方创建
+正常、可轮换的加密密钥对；Mera 使用 passkey PRF 解锁包含私钥的加密保险库，而公钥与
+fingerprint 仍是协议面对的值。每个保险库使用全新随机 32 字节 salt 和版本化 namespace。
+只有 salt、密文与非敏感恢复元数据可以持久化；PRF 输出、解包后的私钥和明文证据只存在于
+内存，绝不能进入日志、服务器、账本或 Envio。
+
+M11 采用 Dynamic 已支持的 1AM 连接作为 Midnight 钱包路径。里程碑完成前，必须在 Dynamic
+sandbox 中记录并测试精确的钱包 key 或 connector 版本以及受支持的 Midnight 网络。Monad
+使用独立 EVM 钱包绑定；系统不得假设 1AM 密钥或地址能够签署 Monad 操作。一个 Dynamic
+用户／session 可以私下关联两个绑定，但该映射不能替代 context account、capability、
+`ActionIntent` 或 M6 决策。连接钱包只能证明钱包控制权，不能证明 Permio 情境下的授权。
+
 ## 8 首批必需情境 profile
 
 这三个 profile 是 Permio 架构的一部分，必须通过同一套模板、能力、隐私授权、收据和执行
@@ -1225,6 +1303,13 @@ Agent 和情境分配器都不持有治理密钥。
   结构化细粒度授权详情。
 - [W3C ODRL Information Model 2.2](https://www.w3.org/TR/odrl-model/)——参与方、操作、资产、
   约束、义务和策略 profile。
+- [Envio HyperIndex overview](https://docs.envio.dev/docs/HyperIndex/overview)——把事件索引为由
+  schema 定义的 GraphQL 读模型。
+- [Mera passkeys and PRF](https://mera.category.xyz/concepts/passkeys-and-prf/) 与
+  [secret vaults](https://mera.category.xyz/concepts/secret-vaults/)——passkey 限定的确定性密钥
+  材料与加密保险库构造。
+- [Dynamic wallet integration](https://docs.dynamic.xyz/wallets-and-chains/wallets)——钱包发现、
+  connector 和自定义集成边界。
 
 这些资料用于定义必需 profile。Permio 的 profile 语义由本架构确定；采用外部序列化格式或
 运行时依赖仍然需要明确的兼容性决策与测试。

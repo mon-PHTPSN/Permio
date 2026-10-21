@@ -35,12 +35,13 @@
     "inspect:m6:preprod-checkpoint": "node scripts/inspect-m6-preprod-checkpoint.ts",
     "benchmark:m6:user": "node scripts/run-m6-ordinary-user-benchmark.ts",
     "test:contracts": "hardhat test nodejs",
-    "test": "npm run test:diagnostics && npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:midnight-authorization && npm run test:contracts",
+    "test": "npm run test:diagnostics && npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:midnight-authorization && npm run test:gateway && npm run test:contracts",
     "check": "npm run docs:check && npm run typecheck && npm run compile && npm test",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
     "deploy:testnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadTestnet",
-    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet"
+    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet",
+    "test:gateway": "npm test --workspace @permio/gateway"
   },
   "engines": {
     "node": ">=22.13.0"

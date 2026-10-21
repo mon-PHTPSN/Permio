@@ -877,7 +877,14 @@ independently verified every M4 Ed25519 reviewer signature.
 
 ## 10 M7 — Gateway and durable receipt transport
 
-Status: `NOT_STARTED`; depends on M6
+Status: `IN_PROGRESS`; live receipt ingestion still depends on M6
+
+The M6-independent foundation is implemented in `@permio/gateway`: strict
+public source and opaque receipt-byte validation, exact source allowlisting,
+byte-bound receipt hashing, the versioned domain-separated outbox uniqueness
+key, and deterministic verifier-key epoch overlap and cutoff rules. It does not
+yet claim the finalized-event observer, M6 wire decoder, durable store,
+transport signature, delivery worker, or crash/reorg integration tests.
 
 ### Artifacts
 
@@ -894,6 +901,9 @@ Status: `NOT_STARTED`; depends on M6
 - an EIP-712 transport signer separated from governance, module approval,
   allocation, capability issuance, relaying, and registry ownership;
 - versioned verifier-key rotation with overlap and cutoff rules; and
+- a versioned, provider-neutral downstream event contract that classifies every
+  exposed field as authoritative receipt data or observational transport data
+  and contains only public M6 material;
 - restart, reorg, malformed-event, unknown-version, key-rotation, retry, and
   crash-boundary integration tests.
 
@@ -931,11 +941,14 @@ Status: `NOT_STARTED`; depends on M6
    second logical outbox record.
 8. Key rotation identifies which key signed every envelope and rejects keys
    before activation or after cutoff.
+9. Envio, Mera, Dynamic, and any other downstream service are absent from the
+   finality decision, receipt decoding, durable checkpoint, and signing path.
 
 ### Exit gate
 
 M7 fails if the gateway re-evaluates private policy, silently widens a receipt,
-or relies on in-memory retry state.
+relies on in-memory retry state, or requires a sponsor service to decide that a
+source event is final or signable.
 
 ## 11 M8 — Execution registry and adapters
 
@@ -957,6 +970,10 @@ named Monad recipient may consume it once for the exact declared purpose.
 - signer rotation and threshold-ready governance boundary;
 - recipient, purpose, expiry, schema, and replay checks;
 - adapter interface for Monad contracts and ordinary applications; and
+- an Envio HyperIndex project with `config.yaml`, `schema.graphql`, event
+  handlers, reproducible start/backfill commands, and deployment configuration;
+- public-only `ReceiptProjection`, `ExecutionProjection`, `Adapter`,
+  `GatewayKeyEpoch`, and time-bucket aggregate entities; and
 - negative tests for widening and replay.
 
 The generalized on-chain record stores the receipt ID, exact M6 source,
@@ -989,11 +1006,24 @@ or reinterpret `outputCommitment` as additional authority.
 9. A downstream execution failure records or returns that failure according to
    the adapter contract but does not rewrite the successful Midnight
    authorization receipt.
+10. HyperIndex reproduces the deployed Monad registry and adapter events
+    byte-for-byte, handles restart/backfill and documented reorg behavior, and
+    exposes the resulting entities through GraphQL.
+11. At least one real product feature consumes that GraphQL API: the M11
+    receipt/execution history and operational aggregate view must not bypass it
+    with direct RPC reads.
+12. Envio lag or outage is reported as stale/unavailable read data and cannot
+    approve, reject, revoke, replay, or otherwise change execution authority.
+13. The HyperIndex schema, handlers, logs, and exported data contain no stable
+    cross-context subject identifier, private M5 value, ciphertext, Dynamic
+    session identifier, or Mera vault material.
 
 ### Exit gate
 
 M8 fails if an execution adapter can reinterpret one receipt as a broader
-action or if the registry owner also acts as the receipt signer by default.
+action, if the registry owner also acts as the receipt signer by default, or if
+Envio is merely installed without driving the specified live product read
+model.
 
 ## 12 M9 — Cross-domain generated scenario packs
 
@@ -1008,6 +1038,11 @@ Status: `NOT_STARTED`; depends on M3 through M8
 Each pack contains a template, policy profile, generator rules, generated
 positive and negative instances, disclosure previews, expected receipts, and
 privacy scans. It contains no hand-authored participant or record fixture.
+
+The delegated-agent pack is a protocol-level authorization profile, not a Qwen
+or AI-runtime integration requirement. The selected sponsor scope introduces
+no external model dependency in M7 through M12; a deterministic client is
+sufficient to exercise this pack.
 
 ### Required contents of every pack
 
@@ -1077,6 +1112,11 @@ Status: `NOT_STARTED`; depends on M6 and M9
 
 - selected-record manifest;
 - recipient encryption and key-rotation interface;
+- a provider-neutral `RecipientKeyCustodyAdapter` plus the concrete
+  `mera-prf-v1` implementation;
+- a versioned Mera vault manifest containing only the relying-party binding,
+  namespace/version, fresh 32-byte salt, ciphertext, public-key fingerprint,
+  algorithm identifiers, and non-sensitive recovery metadata;
 - explicit cross-context `ActionIntent`;
 - bridge receipt and revocation/expiry behavior; and
 - evidence-vault verification API.
@@ -1104,6 +1144,13 @@ Status: `NOT_STARTED`; depends on M6 and M9
    encryption requires a new bridge intent and receipt unless the approved
    envelope explicitly contains the replacement key and re-encryption rule.
 
+The Mera adapter is deliberately non-account work. It reconstructs passkey-PRF
+key material to unlock the recipient's encrypted, rotatable evidence key; it
+does not derive a wallet account or sign a Midnight or Monad transaction. The
+vault persists salt and ciphertext, never PRF output, the unwrapped private key,
+or plaintext evidence. Relying-party/domain migration and authenticator support
+are explicit deployment constraints rather than silent recovery assumptions.
+
 ### Acceptance
 
 1. The user sees source context, destination context, recipient, purpose,
@@ -1119,11 +1166,21 @@ Status: `NOT_STARTED`; depends on M6 and M9
    plaintext from the other.
 7. Expiry or prospective revocation blocks new retrieval authorization without
    deleting immutable receipt history.
+8. The same synchronized passkey in a supported second device or fresh browser
+   profile unlocks the same test vault and decrypts the selected evidence.
+9. A wrong passkey credential, relying-party binding, namespace, salt,
+   ciphertext, or public-key fingerprint fails closed.
+10. Every new vault receives an independent random 32-byte salt; namespace
+    reuse or a hard-coded application-wide salt is rejected.
+11. Tests and logs prove that PRF output, unwrapped private keys, plaintext
+    evidence, and passkey secrets are never persisted or sent to a server.
 
 ### Exit gate
 
 M10 fails if a bridge is implicit, globally reusable, plaintext on a public
-ledger, or described as proving the truth of the underlying human claim.
+ledger, described as proving the truth of the underlying human claim, or if
+Mera is used as a blockchain account instead of non-account evidence-key
+custody.
 
 ## 14 M11 — Scenario-library product workflow
 
@@ -1135,6 +1192,11 @@ Status: `NOT_STARTED`; depends on M4, M5, and M9
 - draft, review, activation, retirement, and instantiation workflows;
 - slot-assignment and capability-delegation UI;
 - disclosure and execution preview;
+- Dynamic SDK authentication and session lifecycle integration;
+- a Dynamic-supported 1AM Midnight-wallet connection with its exact wallet key
+  or connector version and supported network recorded;
+- a separate Monad EVM-wallet binding, with both wallet purposes labelled in
+  the UI and stored only in the private account/session mapping;
 - Agent-session management and revocation; and
 - isolated multi-account browser journeys generated from scenario packs.
 
@@ -1160,6 +1222,10 @@ Status: `NOT_STARTED`; depends on M4, M5, and M9
 7. Retirement, emergency revocation, module deprecation/revocation, expired
    sessions, stale state, failed downstream execution, and retry recovery each
    have distinguishable user-visible results.
+8. A participant signs in through Dynamic, connects 1AM for user-approved
+   Midnight interactions, and separately connects or creates the EVM wallet
+   used for Monad interactions. Wrong-wallet and wrong-network states explain
+   which binding is missing without treating either wallet as the other.
 
 ### Acceptance
 
@@ -1176,11 +1242,27 @@ Status: `NOT_STARTED`; depends on M4, M5, and M9
    no perspective selector or test-only impersonation control is present.
 8. No page displays private keys, seed phrases, hidden witness values,
    bootstrap credentials, or full private fixture objects.
+9. The exact Dynamic environment, SDK version, 1AM wallet key/connector, and
+   supported Midnight network pass a sandbox integration test before support is
+   claimed complete.
+10. One Dynamic user may hold both bindings, but neither the Dynamic user ID nor
+    either wallet address becomes a public global Permio identity or replaces a
+    context account.
+11. Dynamic authentication and wallet control do not issue capabilities or
+    bypass the M5 ActionIntent and M6 authorization decision.
+12. Disconnect, session expiry, consent withdrawal, and wallet/network changes
+    invalidate only the affected product binding and produce explicit recovery
+    UI without silently changing scenario authority.
+13. Dynamic tokens, wallet private material, and the private cross-wallet
+    mapping are absent from ledgers, Envio, browser-visible diagnostics, and
+    application logs.
 
 ### Exit gate
 
 M11 fails if product navigation assumes one domain, if a perspective selector
-impersonates other users, or if administrator credentials appear in the UI.
+impersonates other users, if administrator credentials appear in the UI, if a
+single wallet is assumed to represent both Midnight and Monad, or if Dynamic
+identity is treated as authorization or a global public subject identifier.
 
 ## 15 M12 — Local and public-network evidence
 
@@ -1192,6 +1274,11 @@ Status: `NOT_STARTED`; depends on M7 through M11
 - configured public test-network deployment evidence;
 - restart, reorg, expiry, revocation, and replay drills;
 - redacted receipts and explorer references;
+- a deployed Envio endpoint and pinned indexer configuration/schema/handler
+  revision;
+- a Mera authenticator and cross-device/fresh-profile compatibility report;
+- a Dynamic deployment record containing non-secret environment identity, SDK
+  and connector versions, supported networks, and separate-wallet journeys;
 - generated-fixture provenance; and
 - final privacy-artifact scan.
 
@@ -1217,6 +1304,14 @@ identity, EVM receipt, redacted logs, and the public-artifact scan result. It
 does not record mnemonics, private keys, private generated values, credentials,
 capability scopes, session keys, or decrypted evidence.
 
+Sponsor evidence must show live behavior rather than package installation. The
+Envio GraphQL endpoint must display data emitted by the deployed M8 contracts;
+the Mera evidence must show the same supported passkey unlocking the vault in a
+second device or fresh browser profile; and the Dynamic evidence must show
+authentication plus the distinct 1AM Midnight and Monad EVM wallet bindings.
+No Qwen endpoint, model credential, article, or AI-agent runtime is required by
+this scope.
+
 ### Mandatory drills
 
 - stop and restart the M6 client after deployment, then reconnect and confirm
@@ -1231,6 +1326,12 @@ capability scopes, session keys, or decrypted evidence.
 - rotate gateway/verifier keys using the approved overlap and cutoff rules;
 - make downstream execution fail after valid Midnight authorization and prove
   the authorization history remains unchanged; and
+- stop or isolate Envio and prove execution authority remains correct while the
+  UI reports stale data, then restore/backfill to the same indexed state;
+- run the Mera wrong-credential/domain/namespace/salt cases and the supported
+  cross-device or fresh-profile recovery case;
+- expire a Dynamic session and exercise wrong Midnight wallet, wrong Monad
+  wallet, and wrong-network recovery without cross-binding either wallet; and
 - rerun the full public-artifact scanner over every publishable evidence file.
 
 ### Acceptance
@@ -1249,11 +1350,19 @@ capability scopes, session keys, or decrypted evidence.
    nullifier consumption, M7 source identity, and M8 one-time execution.
 7. Every mandatory failure is represented as a failed transaction or explicit
    rejection, never only as an in-memory unit-test result.
+8. Envio, Mera, and Dynamic each drive the feature and live evidence required by
+   M8, M10, and M11 respectively; none is represented only by an installed SDK,
+   mocked response, screenshot, or unverified configuration.
+9. The publishable evidence includes the Envio deployment/read-model revision,
+   Mera compatibility matrix, and Dynamic SDK/connector/network versions while
+   excluding all tokens, PRF output, private keys, wallet secrets, and private
+   account mappings.
 
 ### Exit gate
 
-M12 fails if either chain is mocked in public-network evidence, if private
-fixture data appears publicly, or if a failed transaction is presented as
+M12 fails if either chain is mocked in public-network evidence, if a selected
+sponsor integration is mocked or installation-only, if private fixture data
+appears publicly, or if a failed transaction is presented as
 success.
 
 ## 16 Required verification sequence
@@ -1882,7 +1991,12 @@ fixture 绝不能成为收据字段。
 
 ## 10 M7——网关与持久化收据传输
 
-状态：`NOT_STARTED`；依赖 M6
+状态：`IN_PROGRESS`；实时收据摄取仍依赖 M6
+
+不依赖 M6 的基础能力已在 `@permio/gateway` 中实现：严格验证公开来源与不透明收据字节、精确
+来源 allowlist、与字节绑定的收据哈希、版本化且域分离的 outbox 唯一键，以及确定性的验证者
+密钥 epoch 重叠与截止规则。当前尚不声明已完成最终事件观察器、M6 线格式解码器、持久化存储、
+传输签名、交付 worker，或崩溃／重组集成测试。
 
 ### 产物
 
@@ -1896,6 +2010,8 @@ fixture 绝不能成为收据字段。
   唯一键；
 - 与治理、模块批准、分配、capability 签发、中继和注册表所有权分离的 EIP-712 传输签名者；
 - 带重叠与截止规则的版本化验证者密钥轮换；以及
+- 一份版本化、供应商中立的下游事件契约，把每个公开字段分类为权威收据数据或观察性传输数据，
+  并且只包含公开 M6 材料；
 - 重启、重组、畸形事件、未知版本、密钥轮换、重试和崩溃边界集成测试。
 
 ### 处理顺序
@@ -1916,9 +2032,11 @@ fixture 绝不能成为收据字段。
 网关必须对 M6 字段和传输域链／合约绑定进行精确签名，不能修改接收方、用途、期限、模块、
 模板、commitment、nullifier 或来源引用。每个持久化、签名、交付和 acknowledgement 边界前后
 崩溃都必须恢复，不能丢失事件或创建第二条逻辑 outbox 记录。密钥轮换必须记录每个封装使用的
-密钥，并拒绝激活前或截止后的密钥。
+密钥，并拒绝激活前或截止后的密钥。Envio、Mera、Dynamic 和其他下游服务都不得参与最终性
+判断、收据解码、持久 checkpoint 或签名路径。
 
-如果网关重新评估私有策略、扩大收据或依赖内存重试状态，M7 失败。
+如果网关重新评估私有策略、扩大收据、依赖内存重试状态，或需要赞助商服务判断来源事件是否
+最终确认或可签名，M7 失败。
 
 ## 11 M8——执行注册表与适配器
 
@@ -1931,8 +2049,12 @@ M8 把现有 Solidity 注册表扩展为 M7 传输的精确通用收据消费者
 Midnight 已经作出该决定。它只验证网关对来自批准来源的未修改收据进行了签名，以及具名 Monad
 接收方只能为精确声明用途消费一次。
 
-产物包括版本化收据验证、签名者轮换、接收方/用途/期限/模式/重放检查、Monad 与普通应用适配器，
-以及扩大权限和重放的负向测试。
+产物包括版本化收据验证、签名者轮换、接收方/用途/期限/模式/重放检查、Monad 与普通应用适配器、
+包含 `config.yaml`、`schema.graphql`、事件 handlers、可复现启动／backfill 命令和部署配置的 Envio
+HyperIndex 项目，以及扩大权限和重放的负向测试。
+
+HyperIndex 必须生成只含公开数据的 `ReceiptProjection`、`ExecutionProjection`、`Adapter`、
+`GatewayKeyEpoch` 和时间桶聚合实体，并通过 GraphQL 提供这些实体。
 
 泛化后的链上记录保存 receipt ID、精确 M6 来源、模板与模块哈希、接收方、用途、有效期、限定
 范围 nullifier、输出 commitment、网关签名者、登记时间和撤销状态。它不保存稳定主体标识符
@@ -1951,7 +2073,14 @@ Midnight 已经作出该决定。它只验证网关对来自批准来源的未�
 合约执行全部拒绝路径。下游执行失败按照 adapter 合约记录或返回，但不改写成功的 Midnight
 授权收据。
 
-如果适配器能把一份收据解释为更宽操作，或注册表所有者默认同时担任收据签名者，M8 失败。
+HyperIndex 必须逐字节复现已部署 Monad 注册表／adapter 事件，正确处理重启、backfill 和已记录
+重组行为。M11 的收据／执行历史与运行聚合必须真正消费该 GraphQL API，不能用直接 RPC 绕过。
+Envio 延迟或故障只能表现为读数据陈旧／不可用，不能批准、拒绝、撤销、重放或改变执行权限。
+其 schema、handlers、日志和导出数据不得包含跨上下文稳定主体标识符、私有 M5 值、密文、
+Dynamic session 标识符或 Mera vault 材料。
+
+如果适配器能把一份收据解释为更宽操作、注册表所有者默认同时担任收据签名者，或 Envio 只是
+安装而没有驱动指定的实时产品读模型，M8 失败。
 
 ## 12 M9——跨领域生成式情境包
 
@@ -1961,6 +2090,9 @@ Midnight 已经作出该决定。它只验证网关对来自批准来源的未�
 
 每个包包含模板、策略 profile、生成规则、生成的正负实例、披露预览、预期收据和隐私扫描，
 不包含手写参与者或记录测试数据。
+
+委托 Agent 包是协议级授权 profile，不是 Qwen 或 AI 运行时集成要求。当前赞助商范围不会在
+M7 至 M12 引入外部模型依赖；确定性客户端足以执行该情境包。
 
 ### 每个情境包的必需内容
 
@@ -2000,8 +2132,11 @@ intent。
 
 状态：`NOT_STARTED`；依赖 M6 和 M9
 
-产物包括选定记录 manifest、接收方加密与密钥轮换接口、显式跨上下文 `ActionIntent`、桥接收据
-与撤销/到期行为，以及证据保险库验证 API。
+产物包括选定记录 manifest、接收方加密与密钥轮换接口、供应商中立的
+`RecipientKeyCustodyAdapter` 与具体 `mera-prf-v1` 实现、显式跨上下文 `ActionIntent`、桥接收据
+与撤销/到期行为，以及证据保险库验证 API。版本化 Mera vault manifest 只能包含 relying-party
+绑定、namespace／版本、全新随机 32 字节 salt、密文、公钥 fingerprint、算法标识符和非敏感
+恢复元数据。
 
 ### 具体桥接顺序
 
@@ -2019,20 +2154,34 @@ intent。
 7. 接收方密钥轮换绝不能静默改变已有密文的接收目标。除非已批准封装明确包含替代密钥与重加密
    规则，否则必须创建新的桥接 intent 和收据。
 
+Mera adapter 明确用于非账户工作：它重建 passkey PRF 密钥材料，以解锁接收方加密、可轮换的
+证据私钥；它不派生钱包账户，也不签署 Midnight 或 Monad 交易。Vault 只持久化 salt 与密文，
+绝不持久化 PRF 输出、解包私钥或明文证据。Relying-party／域迁移和 authenticator 支持属于显式
+部署约束，不能被暗中当成恢复保证。
+
 验收必须证明：授权前展示来源/目标上下文、接收方、用途、记录、期限和新增关联；密文与公开收据
 分开；接收方在解密前验证所有绑定；无关记录不可枚举；改变任何桥接维度都会失败。
 
 收据传输与密文交付使用不同通道和可独立重试的标识符；任一通道都不能从另一通道推断缺失明文。
 到期或前瞻性撤销阻止新的检索授权，但不删除不可变收据历史。
 
-如果桥接是隐式、全局复用、公开明文，或被描述为证明人类声明为真，M10 失败。
+同一受支持同步 passkey 必须能在第二台设备或全新浏览器 profile 中解锁同一测试 vault 并解密
+选定证据。错误 passkey credential、relying-party 绑定、namespace、salt、密文或公钥 fingerprint
+都必须 fail closed。每个新 vault 使用独立随机 32 字节 salt；复用 namespace 或全应用写死 salt
+必须被拒绝。测试与日志必须证明 PRF 输出、解包私钥、明文证据和 passkey 秘密从不持久化或发送
+到服务器。
+
+如果桥接是隐式、全局复用、公开明文、被描述为证明人类声明为真，或把 Mera 当作区块链账户而
+不是非账户证据密钥保管机制，M10 失败。
 
 ## 14 M11——情境库产品工作流
 
 状态：`NOT_STARTED`；依赖 M4、M5 和 M9
 
-产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Agent 会话撤销，
-以及由生成情境包创建的多账户浏览器旅程。
+产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Dynamic SDK
+身份验证与 session 生命周期集成、记录精确 wallet key／connector 版本和受支持网络的 1AM
+Midnight 钱包连接、独立 Monad EVM 钱包绑定、Agent 会话撤销，以及由生成情境包创建的多账户
+浏览器旅程。UI 必须明确标注两个钱包的不同用途，私有账户／session 映射之外不得存储二者关联。
 
 ### 必需用户旅程
 
@@ -2047,6 +2196,8 @@ intent。
 6. 桥接旅程在任何签名或加密发生前显示完整 M10 关联和披露预览。
 7. 模板退役、紧急撤销、模块弃用／撤销、session 过期、旧状态、下游执行失败和重试恢复各自具有
    可区分的用户结果。
+8. 参与者通过 Dynamic 登录，连接 1AM 以执行用户批准的 Midnight 交互，并单独连接或创建 Monad
+   所用 EVM 钱包。错误钱包和错误网络状态必须说明缺少哪个绑定，不能把一个钱包当成另一个。
 
 验收必须证明：注册不要求永久角色；用户能区分模板、实例、上下文、账户、能力、会话、证明、
 收据、执行和证据交付；敏感操作在确认前展示所有关键绑定；审核者看到精确哈希与版本；Agent
@@ -2055,14 +2206,24 @@ intent。
 浏览器测试必须以独立账户分别登录并证明 session 隔离；不得存在 perspective selector 或测试
 专用冒充控制。任何页面都不得显示私钥、助记词、隐藏见证值、bootstrap 凭证或完整私有 fixture。
 
-如果产品导航假定一个领域、透视选择器可以冒充用户，或管理员凭据出现在界面中，M11 失败。
+必须在完成前通过 sandbox 集成测试验证精确 Dynamic environment、SDK 版本、1AM wallet
+key／connector 和受支持 Midnight 网络。一个 Dynamic 用户可以具有两个钱包绑定，但 Dynamic
+用户 ID 和任一钱包地址都不能成为公开全局 Permio 身份或替代 context account。Dynamic 登录和
+钱包控制不能签发 capability，也不能绕过 M5 `ActionIntent` 与 M6 授权。断开连接、session 到期、
+撤回同意和钱包／网络变化只能使受影响产品绑定失效，并给出显式恢复 UI，不能静默改变情境权限。
+Dynamic token、钱包私密材料和私有跨钱包映射不得进入账本、Envio、浏览器诊断或应用日志。
+
+如果产品导航假定一个领域、透视选择器可以冒充用户、管理员凭据出现在界面中、假设单一钱包
+同时代表 Midnight 与 Monad，或把 Dynamic 身份当作授权或全局公开主体标识符，M11 失败。
 
 ## 15 M12——本地与公共网络证据
 
 状态：`NOT_STARTED`；依赖 M7 至 M11
 
 产物包括本地双链证据、公开测试网络部署证据、重启/重组/到期/撤销/重放演练、脱敏收据、
-浏览器引用、生成数据来源记录和最终隐私扫描。
+浏览器引用、已部署 Envio endpoint 及固定 indexer 配置／schema／handler revision、Mera
+authenticator 与跨设备／新 profile 兼容性报告、包含非秘密 environment 身份、SDK／connector
+版本、受支持网络和双钱包旅程的 Dynamic 部署记录、生成数据来源记录和最终隐私扫描。
 
 ### 必需环境与证据
 
@@ -2080,6 +2241,11 @@ fingerprint，以及 explorer 或索引状态引用。测试币只从官方 fauc
 扫描结果。不得记录助记词、私钥、生成私有值、credential、capability 范围、session 密钥或解密
 证据。
 
+赞助商证据必须展示实时行为，而非只安装 package。Envio GraphQL endpoint 必须展示已部署 M8
+合约发出的数据；Mera 证据必须展示同一受支持 passkey 在第二台设备或全新浏览器 profile 中解锁
+vault；Dynamic 证据必须展示身份验证以及彼此独立的 1AM Midnight 和 Monad EVM 钱包绑定。
+本范围不要求 Qwen endpoint、模型凭据、文章或 AI Agent 运行时。
+
 ### 强制演练
 
 - M6 部署后停止并重启客户端，重新连接并确认索引状态；
@@ -2088,7 +2254,11 @@ fingerprint，以及 explorer 或索引状态引用。测试币只从官方 fauc
   错误接收方、错误用途和重放 nullifier；
 - 模拟或观察已记录的最终确认前重组行为，证明 M7 不会签署未确认事件；
 - 按已批准重叠和截止规则轮换网关／验证者密钥；
-- 在有效 Midnight 授权后让下游执行失败，证明授权历史保持不变；以及
+- 在有效 Midnight 授权后让下游执行失败，证明授权历史保持不变；
+- 停止或隔离 Envio，证明执行权限保持正确而 UI 报告陈旧数据，再恢复／backfill 到相同索引状态；
+- 运行 Mera 错误 credential／域／namespace／salt 用例和受支持的跨设备或新 profile 恢复用例；
+- 让 Dynamic session 到期，并测试错误 Midnight 钱包、错误 Monad 钱包与错误网络恢复，不能交叉
+  绑定两个钱包；以及
 - 对每个可发布证据文件重新运行完整公开产物扫描器。
 
 验收必须证明：每个必需情境包至少一个生成实例走完授权到执行；公开证据无私有记录和跨上下文
@@ -2098,7 +2268,13 @@ fingerprint，以及 explorer 或索引状态引用。测试币只从官方 fauc
 nullifier 消费、M7 来源身份和 M8 一次性执行。每一种强制失败都必须表现为真实本地合约上的失败
 交易或显式拒绝，不能只以内存单元测试结果代表。
 
-如果公开网络证据模拟任一链、私有测试数据公开，或失败交易被展示为成功，M12 失败。
+Envio、Mera 和 Dynamic 必须分别驱动 M8、M10 与 M11 规定的功能和实时证据，不能只用已安装
+SDK、mock 响应、截图或未验证配置代表。可发布证据必须包含 Envio 部署／读模型 revision、Mera
+兼容性矩阵和 Dynamic SDK／connector／网络版本，同时排除 token、PRF 输出、私钥、钱包秘密和
+私有账户映射。
+
+如果公开网络证据模拟任一链、选定赞助商集成只使用 mock 或安装但未驱动功能、私有测试数据公开，
+或失败交易被展示为成功，M12 失败。
 
 ## 16 必需验证顺序
 
