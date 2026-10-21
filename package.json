@@ -40,7 +40,8 @@
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
     "deploy:testnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadTestnet",
-    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet"
+    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet",
+    "test:m6:real-assets": "node --test scripts/acceptance/*.test.ts"
   },
   "engines": {
     "node": ">=22.13.0"
