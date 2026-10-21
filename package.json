@@ -53,7 +53,8 @@
     "check:m6:preprod-transports": "node scripts/check-m6-preprod-transports.ts",
     "inspect:m6:preprod-checkpoint": "node scripts/inspect-m6-preprod-checkpoint.ts",
     "benchmark:m6:user": "node scripts/run-m6-ordinary-user-benchmark.ts",
-    "test:gateway": "npm test --workspace @permio/gateway"
+    "test:gateway": "npm test --workspace @permio/gateway",
+    "test:m6:real-assets": "node --test scripts/acceptance/*.test.ts"
   },
   "engines": {
     "node": ">=22.13.0"

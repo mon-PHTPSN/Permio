@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_PREPARATION_VERIFIED_ARCHITECTURE_DECISION_PENDING",
+  "milestonesComplete": false,
+  "productionReady": false,
+  "independentHumanReview": "OPEN",
+  "baseM6": "f96ed6e1795e4193a1bd05b2baa7bae79dccd64a",
+  "integratedM7": "bc2b93001cdb3bf90bfe0515848a44ce7da28509",
+  "integratedM8": "5142daf557064e86fd126f2fb5cfa29187cf98cf",
+  "newNativeSubmissions": 0,
+  "newProofRequests": 0,
+  "ecsUsed": false,
+  "validation": {
+    "command": "npm run check",
+    "node": "v24.13.1",
+    "nodePassCounts": [
+      142,
+      6,
+      15,
+      14,
+      16,
+      51,
+      207,
+      27,
+      38
+    ],
+    "hardhatPass": 30,
+    "totalPassed": 546,
+    "failures": 0,
+    "skips": 0,
+    "log": "logs/integration-20261021/combined-check-v2.txt",
+    "sha256": "af2fc824854e06105d74f1ce2a1cd52999f08d8f2815fdae53c8865caf1ec73d",
+    "reviewRecoveryFixesVerified": true,
+    "recoveryFocusedPassed": 38,
+    "finalFullRun": "RUNNING"
+  },
+  "evidenceTiers": {
+    "syntheticSourceAndLoopbackHttp": true,
+    "recordedPreprodFeedingNewIntegration": false,
+    "genuinelyLiveEndToEnd": false,
+    "envioConfiguration": "EXPLICIT_EXPECTED_UPSTREAM_FIXTURE",
+    "envioCurrentRun": {
+      "status": "PASSED",
+      "command": "npm install --ignore-scripts --no-audit --no-fund; npm run codegen; npm run typecheck; npm test",
+      "environment": "isolated WSL copy; Node22.23.2/npm10.9.8",
+      "handlerTestsPassed": 4,
+      "failed": 0,
+      "skipped": 0,
+      "log": "logs/integration-20261021/indexer-verify-wsl-final.txt",
+      "liveIndexerVerified": false
+    }
+  },
+  "remaining": [
+    "User decision on lossless M8 representation and explicit recipient adapter binding",
+    "Finish real finalized-block discovery and historical registry adapters",
+    "Freeze actual M6-to-M8 transport encoding and persist signed envelopes at delivery boundaries",
+    "Wire M8 verifier, execution, Envio and dashboard after architecture decision",
+    "Recorded real Preprod integration replay and appropriately authorized live end-to-end acceptance",
+    "Independent human security/privacy review and protected code-owner approval",
+    "Cleanup only after accepted integration and complete per-branch preservation checks"
+  ],
+  "cleanup": {
+    "branchesDeleted": [],
+    "worktreesRemoved": [],
+    "m9Preserved": true,
+    "lowMemoryExperimentPreserved": true
+  },
+  "m6CiRepair": {
+    "commit": "b3c490595e997c11c68ba04c362f31b7f53041e4",
+    "publishedTo": "https://github.com/mon-PHTPSN/Permio/pull/1",
+    "freshCheckoutTypecheck": true,
+    "freshCheckoutFocusedPassed": 15,
+    "realAssetsDeploymentWiringPassed": 1,
+    "localSyntheticProofProviderHooks": 1,
+    "httpProofRequests": 0,
+    "nativeSubmissions": 0,
+    "temporaryPublicAssetLinksRemoved": true,
+    "generatedBytesRestoredFromExactGitBlobs": true
+  },
+  "review": {
+    "skill": "ce-code-review",
+    "runId": "20261021-permio-integration-review",
+    "status": "complete",
+    "findingsResolved": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "postFixValidation": "complete",
+    "additionalDispatchAllowlistRegression": "passed",
+    "independentHumanReview": "OPEN",
+    "crossModelPass": "not run; in-process adversarial fallback"
+  }
+}

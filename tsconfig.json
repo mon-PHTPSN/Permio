@@ -1,11 +1,19 @@
-/* Based on https://github.com/tsconfig/bases/blob/501da2bcd640cf95c95805783e1012b992338f28/bases/node22.json */
 {
-  "exclude": ["node_modules", "dist", "logs"],
+  "exclude": [
+    "node_modules",
+    "dist",
+    "logs",
+    "packages/execution-indexer"
+  ],
   "compilerOptions": {
-    "lib": ["es2023"],
+    "lib": [
+      "es2023"
+    ],
     "module": "node16",
     "target": "es2022",
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
@@ -13,6 +21,5 @@
     "outDir": "dist",
     "noEmit": true,
     "allowImportingTsExtensions": true
-  },
-  "exclude": ["packages/execution-indexer"]
+  }
 }

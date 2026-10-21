@@ -170,32 +170,55 @@ it('importing the shared runner never starts the CLI and Preprod rejects Local D
   }
   assert.equal(requests, 0);
 });
-it('the shared runner constructs a real current-contract deployment bound to Preprod, stopping before proof, balancing or submission', async () => {
-  const { setNetworkId } = await import('@midnight-ntwrk/midnight-js-network-id');
-  const { runLiveM6Admission } = await import('../run-live-m6-admission.ts');
-  const { parseLiveM6Arguments } = await import('../m6-prover-memory.ts');
-  const { createPreprodAuthorizationProviders } = await import('../../packages/midnight-authorization/src/preprod-runtime.ts');
-  const { PreprodConnectionProfile } = await import('../../packages/midnight-authorization/src/preprod-profile.ts');
-  const { hashProtocolIdentifier } = await import('../../packages/midnight-authorization/src/canonical.ts');
-  const profile = new PreprodConnectionProfile('nightpreprod_synthetic_no_submission');
-  let unprovenTransactions = 0, balance = 0, submit = 0;
-  setNetworkId('preprod');
+it('missing real build assets stop the shared runner before opening providers or submitting', async () => {
+  const root = await mkdtemp(path.join(tmpdir(), 'permio-missing-assets-test-'));
   try {
-    const wallet = { env: profile.environmentForSdk(), getCoinPublicKey: () => '01'.repeat(32),
-      getEncryptionPublicKey: () => '02'.repeat(32), async balanceTx() { balance++; throw Error('must-not-balance'); },
-      async submitTx() { submit++; throw Error('must-not-submit'); } };
-    const providers = { ...createPreprodAuthorizationProviders(wallet as never, profile), proofProvider: {
-      async proveTx(tx: Parameters<import('@midnight-ntwrk/midnight-js-types').ProofProvider['proveTx']>[0]) {
-      const bytes = Buffer.from(tx.serialize());
-      assert(bytes.includes(Buffer.from(hashProtocolIdentifier('network-id', 'preprod').slice(2), 'hex')));
-      assert(!bytes.includes(Buffer.from(hashProtocolIdentifier('network-id', 'undeployed').slice(2), 'hex')));
-      unprovenTransactions++; throw Error('synthetic-stop-before-proving');
-    } } };
-    await assert.rejects(runLiveM6Admission(parseLiveM6Arguments(['--governance-only']), {
-      networkId: 'preprod', deploymentOnly: true, async withProviders(use) { return use(providers); },
-    }), /synthetic-stop-before-proving/);
-    assert.equal(unprovenTransactions, 1); assert.equal(balance, 0); assert.equal(submit, 0);
-  } finally { setNetworkId('undeployed'); }
+    // A child keeps the test-only module substitution isolated from other tests.
+    // The real asset validator reads an empty directory; no fake manifest or key
+    // can make this path pass. The production runner has no bypass control.
+    const program = `
+      import assert from 'node:assert/strict';
+      import { mock } from 'node:test';
+      import { pathToFileURL } from 'node:url';
+      import path from 'node:path';
+      const assetModule = pathToFileURL(path.resolve('packages/midnight-authorization/src/compiled-assets.ts')).href;
+      const { verifyPermioAuthorizationAssets: realVerify } = await import(assetModule);
+      let assetChecks = 0, providerCalls = 0;
+      mock.module(assetModule, { namedExports: {
+        async verifyPermioAuthorizationAssets() { assetChecks++; await realVerify(process.argv[1]); }
+      } });
+      const { runLiveM6Admission } = await import(pathToFileURL(path.resolve('scripts/run-live-m6-admission.ts')).href);
+      const { parseLiveM6Arguments } = await import(pathToFileURL(path.resolve('scripts/m6-prover-memory.ts')).href);
+      await assert.rejects(runLiveM6Admission(parseLiveM6Arguments(['--governance-only']), {
+        networkId: 'preprod', deploymentOnly: true,
+        async withProviders() { providerCalls++; throw Error('provider-must-remain-closed'); }
+      }), error => error.code === 'ENOENT');
+      assert.equal(assetChecks, 1); assert.equal(providerCalls, 0);
+    `;
+    const child = spawnSync(process.execPath, ['--experimental-test-module-mocks', '--input-type=module', '-e', program, root],
+      { encoding: 'utf8', timeout: 60_000 });
+    assert.equal(child.status, 0, child.stderr);
+  } finally { await rm(root, { recursive: true }); }
+});
+it('the generated current-contract constructor preserves the exact Preprod network binding without proving assets', async () => {
+  const { createConstructorContext } = await import('@midnight-ntwrk/midnight-js-protocol/compact-runtime');
+  const { createPermioAuthorizationContract, readPermioAuthorizationLedger, hashProtocolIdentifier,
+    CredentialStatusTree } = await import('@permio/midnight-authorization');
+  const bytes = (value: string) => Uint8Array.from(Buffer.from(value.slice(2), 'hex'));
+  const network = bytes(hashProtocolIdentifier('network-id', 'preprod'));
+  const namespace = bytes(hashProtocolIdentifier('namespace', 'org.example.constructor-test'));
+  // Synthetic constructor bytes only; this check does not claim M4 policy approval.
+  const policy = new Uint8Array(32).fill(3);
+  const initial = createPermioAuthorizationContract().initialState(createConstructorContext(undefined, '00'.repeat(32)),
+    network, namespace, policy, { field: 1n }, 1n, 1n, new CredentialStatusTree().root, 2n, 2n, 2n);
+  const state = readPermioAuthorizationLedger(initial.currentContractState.data);
+  assert.deepEqual(state.targetNetworkHash, network);
+  assert.notDeepEqual(state.targetNetworkHash, bytes(hashProtocolIdentifier('network-id', 'undeployed')));
+  const authority = state.authorityRoots.lookup(namespace);
+  assert.deepEqual(authority.governancePolicyHash, policy);
+  assert.equal(authority.rootSequence, 1n);
+  assert.equal(state.activeTemplates.size(), 0n);
+  assert.equal(state.decisionReceipts.size(), 0n);
 });
 it('invalid Preprod CLI controls fail before SDK, wallet access, network or submission', () => {
   const result = spawnSync(process.execPath, ['scripts/run-live-m6-preprod.ts', '--preprod', '--submit-deployment'],

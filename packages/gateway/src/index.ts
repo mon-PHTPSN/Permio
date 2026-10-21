@@ -3,3 +3,6 @@ export * from "./key-rotation.ts";
 export * from "./model.ts";
 export * from "./outbox-key.ts";
 export * from "./validation.ts";
+export * from "./durable-store.ts";
+export * from "./observer.ts";
+export * from "./transport.ts";

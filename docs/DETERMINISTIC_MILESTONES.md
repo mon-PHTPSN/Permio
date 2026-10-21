@@ -877,14 +877,18 @@ independently verified every M4 Ed25519 reviewer signature.
 
 ## 10 M7 — Gateway and durable receipt transport
 
-Status: `IN_PROGRESS`; live receipt ingestion still depends on M6
+Status: `IN_PROGRESS`; live deployment integration remains open
 
-The M6-independent foundation is implemented in `@permio/gateway`: strict
-public source and opaque receipt-byte validation, exact source allowlisting,
-byte-bound receipt hashing, the versioned domain-separated outbox uniqueness
-key, and deterministic verifier-key epoch overlap and cutoff rules. It does not
-yet claim the finalized-event observer, M6 wire decoder, durable store,
-transport signature, delivery worker, or crash/reorg integration tests.
+`@permio/gateway` now includes a SQLite complete-finalized-block checkpoint and
+outbox, an observer using M6's authoritative receipt decoder through trusted
+injected source interfaces, exact template/module allowlists, key-epoch-aware
+EIP-712 authentication, and local HTTP delivery/restart tests. Expired history
+is recorded as rejected without blocking catch-up; integrity conflicts halt
+processing. Discovery, exact historical-registry adapters, the final payload
+codec and persisted signed-envelope delivery remain integration work. These
+fixture/local checks do not establish live end-to-end acceptance. The M8 field
+compatibility decision is recorded in
+[the integration decision](evidence/integration/receipt-compatibility-decision-20261021.md).
 
 ### Artifacts
 
@@ -2002,12 +2006,14 @@ fixture 绝不能成为收据字段。
 
 ## 10 M7——网关与持久化收据传输
 
-状态：`IN_PROGRESS`；实时收据摄取仍依赖 M6
+状态：`IN_PROGRESS`；真实部署集成仍未完成。
 
-不依赖 M6 的基础能力已在 `@permio/gateway` 中实现：严格验证公开来源与不透明收据字节、精确
-来源 allowlist、与字节绑定的收据哈希、版本化且域分离的 outbox 唯一键，以及确定性的验证者
-密钥 epoch 重叠与截止规则。当前尚不声明已完成最终事件观察器、M6 线格式解码器、持久化存储、
-传输签名、交付 worker，或崩溃／重组集成测试。
+`@permio/gateway` 现包含 SQLite 完整最终确认区块检查点与发件箱、通过可信注入来源接口调用
+M6 权威收据解码器的观察器、精确模板／模块允许列表、遵守密钥 epoch 的 EIP-712 认证，及本地
+HTTP 交付／重启测试。过期历史会记录为拒绝而不阻塞追赶，完整性冲突会停止处理。真实发现、
+精确历史注册状态适配器、最终字节编码及已签名信封的持久化交付仍需集成。夹具／本地检查不代表
+实时端到端验收。M8 字段兼容性待决定事项见
+[集成决策记录](evidence/integration/receipt-compatibility-decision-20261021.md)。
 
 ### 产物
 

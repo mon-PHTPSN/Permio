@@ -8,11 +8,12 @@
   },
   "types": "./src/index.ts",
   "scripts": {
-    "test": "node --test test/gateway.test.ts"
+    "test": "node --test test/*.test.ts"
   },
   "dependencies": {
     "@permio/protocol": "0.1.0",
-    "viem": "2.55.19"
+    "viem": "2.55.19",
+    "@permio/midnight-authorization": "0.1.0"
   },
   "engines": {
     "node": ">=22.13.0"

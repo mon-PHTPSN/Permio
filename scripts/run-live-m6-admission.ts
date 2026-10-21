@@ -346,14 +346,6 @@ export async function runLiveM6Admission(options: ReturnType<typeof parseLiveM6A
     });
     throw new Error("unsupported-historical-memory-workload");
   }
-  await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
-  let mnemonic: string | undefined;
-  if (!preprod) {
-    const accountFilePath = path.resolve(accountFileArgument ?? "../midnight-local-dev/accounts.example.json");
-    const accountFile = JSON.parse(await readFile(accountFilePath, "utf8")) as LocalAccountFile;
-    mnemonic = accountFile.accounts[0]?.mnemonic;
-    assert(mnemonic, "local account file must contain one funded account");
-  }
 
   const resume = preprod?.resumeAfterAdmissionBegin;
   const freshExisting = preprod?.existingFreshDeployment;
@@ -370,6 +362,17 @@ export async function runLiveM6Admission(options: ReturnType<typeof parseLiveM6A
     const { registry: _registry, ...fixture } = m4;
     await preprod.checkpointFixture(fixture);
   }
+  // Persist pure M4 recovery material before requiring local proving assets.
+  // Asset integrity still gates every wallet/provider operation below.
+  await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
+  let mnemonic: string | undefined;
+  if (!preprod) {
+    const accountFilePath = path.resolve(accountFileArgument ?? "../midnight-local-dev/accounts.example.json");
+    const accountFile = JSON.parse(await readFile(accountFilePath, "utf8")) as LocalAccountFile;
+    mnemonic = accountFile.accounts[0]?.mnemonic;
+    assert(mnemonic, "local account file must contain one funded account");
+  }
+
   const governancePolicyHash = hashNamespacePolicy(m4.policy);
   const namespaceHash = hashProtocolIdentifier("namespace", m4.activation.namespace);
   const networkHash = hashProtocolIdentifier("network-id", networkId);
