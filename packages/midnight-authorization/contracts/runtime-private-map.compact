@@ -1,0 +1,175 @@
+// Private, authenticated indexed sorted map. Full 32-byte keys, no truncated
+// key/address collisions. Leaves are appended; key/value lookups and absence
+// use authenticated nodes. The zero-key sentinel is always physical index 0.
+export struct RuntimePrivateMapNode {
+    nodeVersion: Uint<16>;
+    key: Bytes<32>;
+    value: Bytes<32>;
+    nextKey: Bytes<32>;
+    nextIndex: Uint<32>;
+}
+
+export struct RuntimePrivateMapWitness {
+    node: RuntimePrivateMapNode;
+    path: MerkleTreePath<20, Bytes<32>>;
+}
+
+struct RuntimePrivateMapOrder {
+    equal: Boolean;
+    less: Boolean;
+}
+
+pure circuit runtimePrivateMapCompareByte(
+    state: RuntimePrivateMapOrder, left: Uint<8>, right: Uint<8>
+): RuntimePrivateMapOrder {
+    return RuntimePrivateMapOrder{
+        equal: state.equal && left == right,
+        less: state.less || (state.equal && left < right)
+    };
+}
+
+export pure circuit runtimePrivateMapKeyLess(left: Bytes<32>, right: Bytes<32>): Boolean {
+    return fold(runtimePrivateMapCompareByte, RuntimePrivateMapOrder{equal: true, less: false},
+        left as Vector<32, Uint<8>>, right as Vector<32, Uint<8>>).less;
+}
+
+export pure circuit runtimePrivateMapNodeCommitment(node: RuntimePrivateMapNode): Bytes<32> {
+    return persistentHash<RuntimePrivateMapNode>(node);
+}
+
+struct RuntimePrivateMapEmptyState {
+    sentinel: Field;
+    empty: Field;
+}
+
+pure circuit runtimePrivateMapEmptyLevel(
+    state: RuntimePrivateMapEmptyState, ignored: Boolean
+): RuntimePrivateMapEmptyState {
+    return RuntimePrivateMapEmptyState{
+        sentinel: transientHash<Vector<2, Field>>([state.sentinel, state.empty]),
+        empty: transientHash<Vector<2, Field>>([state.empty, state.empty])
+    };
+}
+
+export pure circuit runtimePrivateMapEmptyRoot(): MerkleTreeDigest {
+    const sentinel = runtimeStatusMembershipLeafDigest(
+        runtimePrivateMapNodeCommitment(RuntimePrivateMapNode{
+            nodeVersion: 1, key: default<Bytes<32>>, value: default<Bytes<32>>,
+            nextKey: default<Bytes<32>>, nextIndex: 0
+        }));
+    return MerkleTreeDigest{field: fold(runtimePrivateMapEmptyLevel,
+        RuntimePrivateMapEmptyState{sentinel: sentinel.field,
+            empty: runtimeStatusMembershipLeafDigest(default<Bytes<32>>).field},
+        default<Vector<20, Boolean>>).sentinel};
+}
+
+export pure circuit assertRuntimePrivateMapNode(
+    root: MerkleTreeDigest, count: Uint<32>, opening: RuntimePrivateMapWitness
+): [] {
+    assertRuntimePrivateMapNodeWithCommitment(root, count, opening, runtimePrivateMapNodeCommitment(opening.node));
+}
+
+// Internal hash sharing. The caller computes this commitment from the node;
+// no externally supplied or host-certified digest may stand in for that hash.
+pure circuit assertRuntimePrivateMapNodeWithCommitment(
+    root: MerkleTreeDigest, count: Uint<32>, opening: RuntimePrivateMapWitness, nodeCommitment: Bytes<32>
+): [] {
+    const node = opening.node;
+    const index = runtimeCredentialStatusPathIndex(opening.path);
+    assert(count > 0 && count <= 1048576 && index < count && node.nodeVersion == 1 &&
+        opening.path.leaf == nodeCommitment &&
+        merkleTreePathRoot<20, Bytes<32>>(opening.path) == root,
+        "Private map witness does not match the exact current root and physical index");
+    assert((index == 0 && node.key == default<Bytes<32>> && node.value == default<Bytes<32>>) ||
+        (index > 0 && node.key != default<Bytes<32>> && node.value != default<Bytes<32>>),
+        "Private map sentinel or nonempty node is not canonical");
+    assert((node.nextKey == default<Bytes<32>> && node.nextIndex == 0) ||
+        (node.nextKey != default<Bytes<32>> && node.nextIndex > 0 && node.nextIndex < count &&
+            runtimePrivateMapKeyLess(node.key, node.nextKey)),
+        "Private map successor link is not canonical");
+}
+
+export pure circuit assertRuntimePrivateMapAbsence(
+    root: MerkleTreeDigest, count: Uint<32>, key: Bytes<32>, opening: RuntimePrivateMapWitness
+): [] {
+    assertRuntimePrivateMapAbsenceWithCommitment(root, count, key, opening, runtimePrivateMapNodeCommitment(opening.node));
+}
+
+pure circuit assertRuntimePrivateMapAbsenceWithCommitment(
+    root: MerkleTreeDigest, count: Uint<32>, key: Bytes<32>, opening: RuntimePrivateMapWitness, nodeCommitment: Bytes<32>
+): [] {
+    assertRuntimePrivateMapNodeWithCommitment(root, count, opening, nodeCommitment);
+    assert(key != default<Bytes<32>> && runtimePrivateMapKeyLess(opening.node.key, key) &&
+        (opening.node.nextKey == default<Bytes<32>> || runtimePrivateMapKeyLess(key, opening.node.nextKey)),
+        "Private map key already exists or absence predecessor skips its sorted position");
+}
+
+export pure circuit runtimePrivateMapInsert(
+    root: MerkleTreeDigest, count: Uint<32>, key: Bytes<32>, value: Bytes<32>,
+    predecessor: RuntimePrivateMapWitness, appendPath: MerkleTreePath<20, Bytes<32>>
+): MerkleTreeDigest {
+    assertRuntimePrivateMapAbsence(root, count, key, predecessor);
+    assert(count < 1048576 && value != default<Bytes<32>>,
+        "Private map append exceeds capacity or has an empty value");
+    const previous = predecessor.node;
+    const linked = RuntimePrivateMapNode{
+        nodeVersion: 1, key: previous.key, value: previous.value, nextKey: key, nextIndex: count
+    };
+    const intermediate = merkleTreePathRoot<20, Bytes<32>>(MerkleTreePath<20, Bytes<32>>{
+        leaf: runtimePrivateMapNodeCommitment(linked), path: predecessor.path.path
+    });
+    assert(runtimeCredentialStatusPathIndex(appendPath) == count &&
+        appendPath.leaf == default<Bytes<32>> &&
+        merkleTreePathRoot<20, Bytes<32>>(appendPath) == intermediate,
+        "Private map append must open its exact next empty index after predecessor update");
+    return merkleTreePathRoot<20, Bytes<32>>(MerkleTreePath<20, Bytes<32>>{
+        leaf: runtimePrivateMapNodeCommitment(RuntimePrivateMapNode{
+            nodeVersion: 1, key: key, value: value, nextKey: previous.nextKey, nextIndex: previous.nextIndex
+        }), path: appendPath.path
+    });
+}
+
+export pure circuit runtimePrivateMapReplace(
+    root: MerkleTreeDigest, count: Uint<32>, key: Bytes<32>, oldValue: Bytes<32>,
+    nextValue: Bytes<32>, opening: RuntimePrivateMapWitness
+): MerkleTreeDigest {
+    assertRuntimePrivateMapNode(root, count, opening);
+    assert(key != default<Bytes<32>> && opening.node.key == key && opening.node.value == oldValue &&
+        nextValue != default<Bytes<32>>, "Private map replacement substitutes its exact key/value");
+    return merkleTreePathRoot<20, Bytes<32>>(MerkleTreePath<20, Bytes<32>>{
+        leaf: runtimePrivateMapNodeCommitment(RuntimePrivateMapNode{
+            nodeVersion: 1, key: key, value: nextValue,
+            nextKey: opening.node.nextKey, nextIndex: opening.node.nextIndex
+        }), path: opening.path.path
+    });
+}
+
+// Internal ledger optimization ONLY. Callers must first authenticate this node
+// under the current root and prove exact key/value or the sorted absence gap.
+// Never exported as a replacement for the checked public witness predicates.
+pure circuit runtimePrivateMapApplyCheckedMutation(
+    insert: Boolean, count: Uint<32>, key: Bytes<32>, nextValue: Bytes<32>,
+    opening: RuntimePrivateMapWitness, appendPath: MerkleTreePath<20, Bytes<32>>
+): MerkleTreeDigest {
+    assert(nextValue != default<Bytes<32>> && key != default<Bytes<32>>,
+        "Private map mutation must have nonempty exact key/value");
+    const previous = opening.node;
+    const changedNode = RuntimePrivateMapNode{
+        nodeVersion: 1, key: previous.key, value: insert ? previous.value : nextValue,
+        nextKey: insert ? key : previous.nextKey, nextIndex: insert ? count : previous.nextIndex
+    };
+    const changedRoot = merkleTreePathRoot<20, Bytes<32>>(MerkleTreePath<20, Bytes<32>>{
+        leaf: runtimePrivateMapNodeCommitment(changedNode), path: opening.path.path
+    });
+    if (insert) {
+        assert(count < 1048576 && runtimeCredentialStatusPathIndex(appendPath) == count &&
+            appendPath.leaf == default<Bytes<32>> && merkleTreePathRoot<20, Bytes<32>>(appendPath) == changedRoot,
+            "Private map append must open its exact next empty index after predecessor update");
+        return merkleTreePathRoot<20, Bytes<32>>(MerkleTreePath<20, Bytes<32>>{
+            leaf: runtimePrivateMapNodeCommitment(RuntimePrivateMapNode{
+                nodeVersion: 1, key: key, value: nextValue, nextKey: previous.nextKey, nextIndex: previous.nextIndex
+            }), path: appendPath.path
+        });
+    }
+    return changedRoot;
+}

@@ -1,0 +1,892 @@
+{
+  "schemaVersion": 3,
+  "milestone": "M6",
+  "observedAtUtc": "2026-10-17T04:12:00.350305+00:00",
+  "status": "APPROVED_25_TRANSACTION_GOVERNANCE_AND_SLOT_STATE_SEQUENCE_CANONICALLY_FINALIZED_FULL_M6_OPEN",
+  "baselineCommit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "uncommittedWorktree": true,
+  "contractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+  "approvedSequenceComplete": true,
+  "actualCumulativeSubmissionAttempts": 25,
+  "independentlyFinalizedSuccessfulTransactions": 25,
+  "newDeployment": false,
+  "automaticSubmissionRetry": false,
+  "authorization": {
+    "originalPlanAnd24ApprovalPreserved": true,
+    "capIsAnAgentApprovalBudgetNotInfrastructureLimit": true,
+    "countingError": "existing previous-assignment verification was omitted from the original 24 count",
+    "human25Approval": {
+      "kind": "m6-continuation-cap-amendment",
+      "recordedAtUtc": "2026-10-17T02:48:51.855121+00:00",
+      "priorApprovedCap": 24,
+      "humanApprovedTotalCap": 25,
+      "approvalAnswer": "Approve a total of 25 / \u6279\u51c6\u603b\u8ba1 25 \u7b14",
+      "existingContractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+      "additionalOperation": "existing previous-assignment verification step during reassignment",
+      "newDeployment": false,
+      "automaticRetry": false,
+      "startingConfirmedCumulativeSubmissions": 10
+    },
+    "correctBreakdown": {
+      "remainingGovernance": 14,
+      "allocation": 1,
+      "accountCredential": 1,
+      "slotTransactions": 9
+    }
+  },
+  "chainReconciliation": {
+    "kind": "m6-continuation-public-reconciliation",
+    "result": "PUBLIC_CHAIN_OBSERVED",
+    "observedAtUtc": "2026-10-17T04:10:15.161Z",
+    "source": "logs/m6-continuation-combined-public-v4.jsonl",
+    "contractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+    "finalizedHead": {
+      "hash": "0x423d0bb4a3c50f7521c30837aeae4d855201f51a19f5f7f51fc968b15b0a0c0e",
+      "height": 3015379
+    },
+    "attemptCount": 25,
+    "indexedTransactions": [
+      {
+        "attempt": 1,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014136,
+          "hash": "e01a3330ad5e1b5396b8dff9d4d636cabe7195bbbb66c5e9f15ceb409c1d2612"
+        },
+        "identifiers": [
+          "00a51fecee454ee944f560d974c592b7d1f842c6d449a7071428669d4c067b8383",
+          "005bb23d5aa94d8703d361955b58c493ec674111ea6e5a3af1d2f09cee3e6cb533"
+        ]
+      },
+      {
+        "attempt": 2,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014158,
+          "hash": "b1840618b17e3ac774687cd07221d0d060f3b2aad84138dbb42c436762a1a962"
+        },
+        "identifiers": [
+          "004b745e16446bdc0b3fcd97867bb71a6ae383e888b2370a77143530288d18fc96",
+          "00f7b6031c92c6ad6777f8e0afae4c47d38f14943c7cbd4e39f5d60c12bc9ed667"
+        ]
+      },
+      {
+        "attempt": 3,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014175,
+          "hash": "70904f1f45deafe721e9d4088304bc77fab767b0dc5d9c6a468ff747f8d051cb"
+        },
+        "identifiers": [
+          "00ceffc5fb8c85dc8d63f4baca7748aba9261a718cf222b10c11977bd4e199c685",
+          "00b48bbeb5cf425c51890c65b41407336435ad14ba7bb97f3d26af0c64a966bfc7"
+        ]
+      },
+      {
+        "attempt": 4,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014192,
+          "hash": "3333f6bf938001e3255a0096344e15bece8eb90b44b70fdd404e076d59fcce21"
+        },
+        "identifiers": [
+          "007a6e097b0e0b37a5ca38a7da94e514a6ecfcb1704334608e19b358f7b8685b38",
+          "00df3b16538b16dc3e36750b9f11952462d8c1a76ee3d7e82cf790918abf2ca784"
+        ]
+      },
+      {
+        "attempt": 5,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014200,
+          "hash": "39d15ccda87b05833a353340f8ba85282a3dd4ade71148db9f223f03cb844711"
+        },
+        "identifiers": [
+          "00ac1b984020fca6e564c2f5af470329d1ce5f8fe95af15e0ef11d3713bc8feb11",
+          "00c38a3f5a6b1cda1acefc0cfff28a4c17f92ce56f01da355d4160691384a85538"
+        ]
+      },
+      {
+        "attempt": 6,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014215,
+          "hash": "70efdd712b7bebc630aff4fe8e97ff10c04b7962d0db4e61511eb4bfb153a83b"
+        },
+        "identifiers": [
+          "00f8d2b144a6b712458a5893db1c45316811930d8d18f1f6ec8061a89afbffbf35",
+          "003f52b5eacde43319a071375eb048e2b679694a4407c50a9265c2c94c11079cd0"
+        ]
+      },
+      {
+        "attempt": 7,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014221,
+          "hash": "850654e19ee2c591b33fb9294b8ccdf60ec0b85e4c07bcc9f98115b1fcc29e59"
+        },
+        "identifiers": [
+          "006a09a6c097facff3f974cead0ba6c11efb13de94e9eee07efb44bdb59154a00b",
+          "00f6e04a939415a528b216eb9d86cbb8bb74f5fba61981264897b956d507c73d06"
+        ]
+      },
+      {
+        "attempt": 8,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014229,
+          "hash": "6627dd80f98bd5b9b6c9656d23a42ad455c4e8c2f5617d8994bd33f0fc1900c0"
+        },
+        "identifiers": [
+          "004c0444092b6a0b93dcb3ffa0eb85cda5621669b83f41156768b990259a7812cf",
+          "00b76b6fd1483981aed31eddf85960402faf686302d4d4c3043d8f90e1fd164927"
+        ]
+      },
+      {
+        "attempt": 9,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014242,
+          "hash": "93f83a4ee0a2f2e71a4f0334ef105300068d89226eb21e447203e4f92b139d6f"
+        },
+        "identifiers": [
+          "00fef5c6c014d51758e7de73ceb3b8184bb987a4a824b564bec492484a984e22bd",
+          "005bd440bdf2872ee5194f07bf0e571f5d7965e38b80ea8d0ec5c9756e84c8c693"
+        ]
+      },
+      {
+        "attempt": 10,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014279,
+          "hash": "dbc749be077de4efad6a4bb58fb301f6a29b71f1b977a2c85a64fd385add1c5a"
+        },
+        "identifiers": [
+          "00fdff950a6da8594592dd2bdba85130b6260c53fb6d88070e5cec3fac41978702",
+          "00335773a4ee5d8d4989eb102621c00cc253b23d4b87d8674ad193a9be0dec5234"
+        ]
+      },
+      {
+        "attempt": 11,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014704,
+          "hash": "cac14a043b7e938d2634fff47a382fa964e833f3be8d0b59cf6ad9cd21b0176e"
+        },
+        "identifiers": [
+          "00b47ba641fe060a8c56209e59739460817e21769521f3ffc53200b3ff419cac01",
+          "0063016401938e3817066281a334ef15b08e897c14afdfa8ff2ca0764ed7829211"
+        ]
+      },
+      {
+        "attempt": 12,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014901,
+          "hash": "132249b6776eccbd06aba7cf677cafa79b8a0135c8a4ecec6e900e980292e866"
+        },
+        "identifiers": [
+          "0028f726ad0b1202920287314fca751c444261e173386afbfb77f60445481c1ed1",
+          "000dc6259613bc03cda24d24d60166963b881db5dec84d0aba9e868d460d4cd003"
+        ]
+      },
+      {
+        "attempt": 13,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3014959,
+          "hash": "03a839f0192646cff8f5931a38fb0be50ce19e0eec844124d9443d92bab5b480"
+        },
+        "identifiers": [
+          "00f4005730b5d8987c9e4e6e448b34a700e0189c53b066f6936ba02de2684d0eda",
+          "00bfe3262d8534ed760483e0939c6e0634e2b7ccc1b51266bbc8abb725b8d8735f"
+        ]
+      },
+      {
+        "attempt": 14,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015016,
+          "hash": "71e4defdbea16ac2c368381376bd63886206ae335c96a3d1528ec97f36a4e085"
+        },
+        "identifiers": [
+          "0039683e5150762ba3c908e0f0fd5b3e08b2cb69623a8f89d450c218054056f432",
+          "00f4616d223bd08186c8d2aaa98a7a42a8242b199df6dbaa32c8de1c981b791dda"
+        ]
+      },
+      {
+        "attempt": 15,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015074,
+          "hash": "ac5f02adb9dca2b9d29414515b43f4008d949f76591eb9ff53308cf44d9b4559"
+        },
+        "identifiers": [
+          "004bc4c990b95d1b7071aecf8b3052c7a1e5bcfbf7f7da7c09915164941b49a8f0",
+          "003f25591855619ea26d09947e388e8f3b064fa59b3cc62e99af8a757190cdb252"
+        ]
+      },
+      {
+        "attempt": 16,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015131,
+          "hash": "5fd6c9e1ce5c5d412355576651fbc95a9b95714558fffe4fd706c7bee6712f95"
+        },
+        "identifiers": [
+          "006edf966e796864825fbb8de1d36eb5b550ad740024f0cfca60df07d4b07a1654",
+          "000cdf08b1afd6590b61b5a5ef6831d7e1ace57364ea862f29416612219563e0ed"
+        ]
+      },
+      {
+        "attempt": 17,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015188,
+          "hash": "4bc2144332027cfef94908e59012cbdf243c57aff6b85791f8074383135b690b"
+        },
+        "identifiers": [
+          "004d2e720285df70e82415fcca94bc5c2f3cee74596c30ae3400f5f09c59aa2d5c",
+          "00963123018b42242ab832a9769328c0bd1b31f32e0f056d9a8e15ea4e8968d6b1"
+        ]
+      },
+      {
+        "attempt": 18,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015246,
+          "hash": "413b968da04308a82556f2697c77a5b30eefa104d48de78ed1077b673e580600"
+        },
+        "identifiers": [
+          "009ba2246d1b8d2b9642c889174bfd5b01d7e716c81c24b6f32780e6a03ce1d264",
+          "00b2431c17cd190ea500cecb0b920e434c492f7397e9bab4e3dc551b0ba4702821"
+        ]
+      },
+      {
+        "attempt": 19,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015303,
+          "hash": "83363f9f7eae3b0581846f483f3c9f085ebe2383039a0c770e719254acc6706a"
+        },
+        "identifiers": [
+          "00507cdd2faea0bcd79adc24d892ffaf28f17de501c39f85dd0afa61263769048e",
+          "001779d07b93a2c36c4b49b1c15084bf130436ee1651cf1cc129c69566514a9bea"
+        ]
+      },
+      {
+        "attempt": 20,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015314,
+          "hash": "4f0439d5eb64ad5716c76c1bce619962d89971161d9afa0aa185d70f3351a1bf"
+        },
+        "identifiers": [
+          "00594bba1d9464dd4f209bd4d9b9b9c19b1b63e4e0af74848b2e29c37e318ac88d",
+          "001b5891f3e22a33779740a6d66e4ef587c4e97fc6652a1a6938301f90be07ac47"
+        ]
+      },
+      {
+        "attempt": 21,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015323,
+          "hash": "29fffbcdfbbdd80ac05b20820e0f58d6f823c29a35fdf779bde1702a1c433307"
+        },
+        "identifiers": [
+          "009bb15aac9d929561f8a1a1e191a40f5233d619a2ff67870d05fa1b403797b11e",
+          "009caaf291f0574bfe9ab0e5208f4d2c217b672fde30483f5aa089f98db7234dd0"
+        ]
+      },
+      {
+        "attempt": 22,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015337,
+          "hash": "69acff1f81089a016a08bedf18837eea3af9434758004f766480ffbe262b3c15"
+        },
+        "identifiers": [
+          "00e8d9129dc821f578fada6b62eee741830b73d0368ef21d76b13c4e6cbeb3c7ea",
+          "002f9cf13574e69c5f8edfcbe1b88aba53573b1ccb39933b25174b60917b4eb1e4"
+        ]
+      },
+      {
+        "attempt": 23,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015352,
+          "hash": "83ea6a20be890ff28a54a98f6967f3ac13a02fdcf04e58e5e9d80a205298c827"
+        },
+        "identifiers": [
+          "00c53fa76807552b4be21505c3558d25268fb6da6215054679b92ce9d422ce7483",
+          "00a87e76ba5cd9bf8200e31b8746ee21544084bd1eef20a51daf308f792585b125"
+        ]
+      },
+      {
+        "attempt": 24,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015360,
+          "hash": "2ef3c0c6b475b4c34715dda8de618bda071b02e1662aa97d391dfb18d7e06ae0"
+        },
+        "identifiers": [
+          "00cd9040bc200072fc76e1f2bc8eaf7b655266d465cb8de800098d16bbb9855d25",
+          "00b45f1d996681681dad03bb1cace5798ad4c4c428c08842705c129ab060b288bb"
+        ]
+      },
+      {
+        "attempt": 25,
+        "status": "SUCCESS",
+        "block": {
+          "height": 3015367,
+          "hash": "4ebc6fc586270c634002f7dd11f9096961c5830f509c28d9fc2c8d4f28735bfc"
+        },
+        "identifiers": [
+          "00db3ae854876dc8ab964cce4b29c8d4b1256d9cc5e6d756050e1af0f0095e7159",
+          "00f3e2419992457ed67885898268bf3e0f844de1e5b48acf1c0b50ff2b9f537a6a"
+        ]
+      }
+    ],
+    "unresolvedAttempts": [],
+    "latestContractAction": {
+      "block": {
+        "hash": "4ebc6fc586270c634002f7dd11f9096961c5830f509c28d9fc2c8d4f28735bfc",
+        "height": 3015367
+      },
+      "identifiers": [
+        "00db3ae854876dc8ab964cce4b29c8d4b1256d9cc5e6d756050e1af0f0095e7159",
+        "00f3e2419992457ed67885898268bf3e0f844de1e5b48acf1c0b50ff2b9f537a6a"
+      ]
+    },
+    "publicState": {
+      "moduleLifecycleStatus": 6,
+      "moduleReviewCount": 2,
+      "moduleRegistrySequence": 8,
+      "authorityRootVersion": 2,
+      "authorityRootSequence": 2,
+      "credentialStatusRootSequence": 1,
+      "templateRegistryEntries": 1,
+      "currentlyActiveTemplates": 0,
+      "templates": [
+        {
+          "lifecycleStatus": 3,
+          "activationSequence": 1,
+          "activatedAt": 1790000005,
+          "retiredAt": 1792209966,
+          "revokedAt": 1792210015
+        }
+      ],
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 3,
+      "instances": [
+        {
+          "instanceCommitment": "6126759339592064003518703e5f633dba8f8aaf4bb3a7809354f971d388f047",
+          "allocationCommitment": "e00100fa0b4a3aa7ce77a493afe065953e466052095945bec2826b497ed75dcd",
+          "currentStateCommitment": "b2c035c86aa1e0f613ce20b90dc29c2082224533a66ce587fcee0020043da5a7",
+          "transitionSequence": 5,
+          "lifecycleStatus": 1
+        }
+      ],
+      "usedAllocationRequestNullifiers": 1,
+      "usedInstanceIdentityNullifiers": 1,
+      "usedRuntimeSlotCommandNonces": 4,
+      "activationSessions": 0,
+      "capabilitySessions": 0,
+      "slotSessions": 0
+    },
+    "walletInitialized": false,
+    "transactionSubmittedByReader": false,
+    "ordinaryActionAcceptance": false,
+    "milestoneComplete": false
+  },
+  "originalFailuresPreserved": {
+    "warmProverSwapGuard": {
+      "kind": "m6-preprod-continuation-controlled-v1",
+      "controllerRevision": 12,
+      "workerRevision": 5,
+      "authorizedContinuationWithActualSubmission": true,
+      "startedAtUtc": "2026-10-17T02:00:09.627094+00:00",
+      "passed": false,
+      "ordinaryActionAcceptance": false,
+      "milestoneComplete": false,
+      "productionReady": false,
+      "image": "midnightntwrk/proof-server@sha256:0f4ab0716985eaebbe55a970348f52ff05ffd8a96631ed7232bd0c4ba02c115c",
+      "proverMemoryHighBytes": 10737418240,
+      "proverMemoryMaxBytes": 12348030976,
+      "proverSwapMaxBytes": 8589934592,
+      "clientMemoryMaxBytes": 2684354560,
+      "clientSwapMaxBytes": 0,
+      "proofJobTimeoutSeconds": 600,
+      "wholeClientTimeoutSeconds": 5400,
+      "memoryProfile": "same historical Singapore capacity profile; not a 5 GiB product acceptance claim",
+      "humanApprovedMaximumSubmissions": 24,
+      "exactContractSubmissionGuard": true,
+      "automaticSubmissionRetry": false,
+      "rawSdkOrProverLogsExported": false,
+      "preparationPassed": true,
+      "publicParameterFilesVerified": 18,
+      "imageDigestVerified": true,
+      "existingSwapBytes": 8589934592,
+      "noRunningContainersOrProverListener": true,
+      "walletInitializedAtPreparation": false,
+      "allSourceAndAssetHashesVerified": true,
+      "realAssetManifestVerified": true,
+      "allElevenReproducedPairsMatchOriginalManifest": true,
+      "keygenCleanupRecoveredAndOriginalFailurePreserved": true,
+      "actualLoopbackPublicationAndNatNetworkVerified": true,
+      "loopbackHealthAndNonloopbackDenialVerified": true,
+      "provisioning": {
+        "testInputsProvisioned": true,
+        "ownerOnlyPermissionsVerified": true,
+        "intermediaryReceivedCiphertextOnly": true,
+        "transportKeyAndRemoteCiphertextRemoved": true,
+        "secretValuesLogged": false
+      },
+      "failureType": "AssertionError",
+      "detailsWithheld": true,
+      "clientStopped": true,
+      "publicTraceSecretAndFixtureScanPassed": true,
+      "temporaryTestCredentialsRemoved": true,
+      "privateSyntheticFixtureFilesRetainedForContinuingM6Recovery": 7,
+      "ownerOnlyProofMaterialRetainedForActiveContinuationInvestigation": 70,
+      "ownedProverStopped": true,
+      "proverOomKilled": false,
+      "temporarySwapDisabled": true,
+      "originalSwappinessRestored": true,
+      "completedAtUtc": "2026-10-17T02:21:01.223407+00:00",
+      "submissionOutcomeReconciliationRequired": true,
+      "publicBundleSha256": "a2e195a40786eb2d81be18fce025ded0b7b7ab9e978d73f0a175a2a2d70f98a5"
+    },
+    "clientOom": {
+      "kind": "m6-slot-recovery-controlled-v1",
+      "controllerRevision": 1,
+      "workerRevision": 1,
+      "authorizedContinuationWithActualSubmission": true,
+      "startedAtUtc": "2026-10-17T02:57:27.182066+00:00",
+      "passed": false,
+      "ordinaryActionAcceptance": false,
+      "milestoneComplete": false,
+      "productionReady": false,
+      "image": "midnightntwrk/proof-server@sha256:0f4ab0716985eaebbe55a970348f52ff05ffd8a96631ed7232bd0c4ba02c115c",
+      "proverMemoryHighBytes": 10737418240,
+      "proverMemoryMaxBytes": 12348030976,
+      "proverSwapMaxBytes": 8589934592,
+      "clientMemoryMaxBytes": 2684354560,
+      "clientSwapMaxBytes": 0,
+      "proofJobTimeoutSeconds": 600,
+      "wholeClientTimeoutSeconds": 5400,
+      "memoryProfile": "same historical Singapore capacity profile; not a 5 GiB product acceptance claim",
+      "humanApprovedCumulativeMaximumSubmissions": 25,
+      "startingConfirmedCumulativeSubmissions": 10,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 2,
+      "singleConcurrentProofJob": true,
+      "exactContractSubmissionGuard": true,
+      "automaticSubmissionRetry": false,
+      "rawSdkOrProverLogsExported": false,
+      "preparationPassed": true,
+      "publicParameterFilesVerified": 18,
+      "imageDigestVerified": true,
+      "existingSwapBytes": 8589934592,
+      "noRunningContainersOrProverListener": true,
+      "walletInitializedAtPreparation": false,
+      "allSourceAndAssetHashesVerified": true,
+      "realAssetManifestVerified": true,
+      "allElevenReproducedPairsMatchOriginalManifest": true,
+      "keygenCleanupRecoveredAndOriginalFailurePreserved": true,
+      "actualLoopbackPublicationAndNatNetworkVerified": true,
+      "loopbackHealthAndNonloopbackDenialVerified": true,
+      "provisioning": {
+        "testInputsProvisioned": true,
+        "retainedOnlyForContinuingAuthorizedRecovery": true
+      },
+      "client": {
+        "LoadState": "loaded",
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainStatus": "15",
+        "MemoryPeak": "2684354560",
+        "MemorySwapPeak": "0"
+      },
+      "failureType": "FileNotFoundError",
+      "detailsWithheld": true,
+      "clientStopped": true,
+      "publicTraceSecretAndFixtureScanPassed": true,
+      "temporaryTestCredentialsRemoved": true,
+      "privateSyntheticFixtureFilesRetainedForContinuingM6Recovery": 8,
+      "ownerOnlyProofMaterialRetainedForActiveContinuationInvestigation": 7,
+      "ownedProverStopped": true,
+      "proverOomKilled": false,
+      "temporarySwapDisabled": true,
+      "originalSwappinessRestored": true,
+      "ownedIdleProverResets": 1,
+      "completedAtUtc": "2026-10-17T03:01:40.717105+00:00",
+      "submissionOutcomeReconciliationRequired": true,
+      "publicBundleSha256": "c2a50c624e5d4b06bd8df4fac7539c40eebc4dd0b1238d096d51fb5405983323"
+    },
+    "originalFailedRunnerOutcomeNotReplaced": true,
+    "missingOutcomeFilesNotFabricated": true
+  },
+  "successfulIsolation": {
+    "isolatedDiagnosticPassed": true,
+    "submittedByDiagnostic": false,
+    "originalProofStartedAtUtc": "2026-10-17T02:33:18.230Z",
+    "originalProofCompletedAtUtc": "2026-10-17T02:42:19.308Z",
+    "elapsedSeconds": 541.078,
+    "publicStateUnchanged": true,
+    "bytesRetainedPrivatelyOnly": true,
+    "nativeDustFeeProofNotYetGeneratedByDiagnostic": true
+  },
+  "recovery": {
+    "capturedUnboundApplicationProofBalancedAndSubmittedOnceAsAttempt11": true,
+    "attempt11IndependentlyReconciledBeforeRecoveryV2": true,
+    "acceptedBeginNotResubmitted": true,
+    "finalRunController": {
+      "kind": "m6-slot-recovery-controlled-v1",
+      "controllerRevision": 2,
+      "workerRevision": 2,
+      "authorizedContinuationWithActualSubmission": true,
+      "startedAtUtc": "2026-10-17T03:10:52.649395+00:00",
+      "passed": true,
+      "ordinaryActionAcceptance": false,
+      "milestoneComplete": false,
+      "productionReady": false,
+      "image": "midnightntwrk/proof-server@sha256:0f4ab0716985eaebbe55a970348f52ff05ffd8a96631ed7232bd0c4ba02c115c",
+      "proverMemoryHighBytes": 10200547328,
+      "proverMemoryMaxBytes": 11274289152,
+      "proverSwapMaxBytes": 8589934592,
+      "clientMemoryMaxBytes": 3758096384,
+      "clientSwapMaxBytes": 0,
+      "proofJobTimeoutSeconds": 600,
+      "wholeClientTimeoutSeconds": 5400,
+      "memoryProfile": "same historical Singapore capacity profile; not a 5 GiB product acceptance claim",
+      "humanApprovedCumulativeMaximumSubmissions": 25,
+      "startingConfirmedCumulativeSubmissions": 11,
+      "clientAndProverCombinedHardRamBytes": 15032385536,
+      "memoryRedistributedAfterVerifiedClientOom": true,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 2,
+      "singleConcurrentProofJob": true,
+      "exactContractSubmissionGuard": true,
+      "automaticSubmissionRetry": false,
+      "rawSdkOrProverLogsExported": false,
+      "preparationPassed": true,
+      "publicParameterFilesVerified": 18,
+      "imageDigestVerified": true,
+      "existingSwapBytes": 8589934592,
+      "noRunningContainersOrProverListener": true,
+      "walletInitializedAtPreparation": false,
+      "allSourceAndAssetHashesVerified": true,
+      "realAssetManifestVerified": true,
+      "allElevenReproducedPairsMatchOriginalManifest": true,
+      "keygenCleanupRecoveredAndOriginalFailurePreserved": true,
+      "actualLoopbackPublicationAndNatNetworkVerified": true,
+      "loopbackHealthAndNonloopbackDenialVerified": true,
+      "provisioning": {
+        "testInputsProvisioned": true,
+        "retainedOnlyForContinuingAuthorizedRecovery": true
+      },
+      "client": {
+        "LoadState": "loaded",
+        "ActiveState": "active",
+        "SubState": "exited",
+        "MainPID": "0",
+        "Result": "success",
+        "ExecMainStatus": "0",
+        "MemoryPeak": "2880946176",
+        "MemorySwapPeak": "0"
+      },
+      "walletInitializationAttempted": true,
+      "workerPassed": true,
+      "clientStopped": true,
+      "publicTraceSecretAndFixtureScanPassed": true,
+      "temporaryTestCredentialsRemoved": true,
+      "privateSyntheticFixtureFilesRetainedForContinuingM6Recovery": 12,
+      "ownerOnlyProofMaterialRetainedForActiveContinuationInvestigation": 98,
+      "ownedProverStopped": true,
+      "proverOomKilled": false,
+      "temporarySwapDisabled": true,
+      "originalSwappinessRestored": true,
+      "ownedIdleProverResets": 14,
+      "completedAtUtc": "2026-10-17T04:07:40.816956+00:00",
+      "submissionOutcomeReconciliationRequired": false,
+      "publicBundleSha256": "6493effe5c0d61292b465b3a100bbb33985aa80b49370ed9bc70ff951364bc97"
+    },
+    "sameCombinedHardRamGiB": 14,
+    "clientHardRamGiB": 3.5,
+    "proverHardRamGiB": 10.5,
+    "sharedSwapGiB": 8,
+    "proverCpuCores": 2,
+    "initialSoftHighGiB": 9.5,
+    "effectiveSoftHighGiBOnAdjustedOwnedContainers": 10.5,
+    "softAdjustmentsRecorded": 12,
+    "protocolSignatureAncestryChecksAndDependencyVersionsUnchanged": true
+  },
+  "testing": {
+    "signedM4FixtureFocusedTestsPassed": 3,
+    "recoveryValueFocusedTestsPassed": 3,
+    "historicalRootTestsPassed": 359,
+    "fullRootSuiteRerunThisContinuation": false,
+    "recoveryV2PreflightUsesAnOwnedIntentionalProofBoundaryInterception": true,
+    "preflightContractProofFailedEventIsNotARealProofServerFailure": true
+  },
+  "error170": {
+    "observedInThese25Submissions": false,
+    "originalRejectedBytesUnavailable": true,
+    "originalRootCauseStillUnproven": true,
+    "waitingNotEstablishedAsFix": true
+  },
+  "publicJournalByteIntegrity": {
+    "kind": "m6-public-journal-newline-integrity-note",
+    "observedAtUtc": "2026-10-17T04:11:22.417570+00:00",
+    "initialFinishHashGateRejectedBeforeLifecycleWrite": true,
+    "cause": "local json serialization translated LF to Windows CRLF; JSON contents identical",
+    "crlfPairs": 123,
+    "localSerializedViewPreserved": true,
+    "byteExactRemoteCopyDownloadedAndVerified": true,
+    "remoteCopySha256": "847e927e4e503a6d6b2afbbf1d78d2845928a36cf3e20889b62955f25fb2fd87",
+    "canonicalReconciliationInputsSemanticallyUnchanged": true,
+    "noTransactionOrCloudMutationDuringFailedHashGate": true
+  },
+  "cleanup": {
+    "kind": "m6-continuation-final-remote-audit-v3",
+    "observedAtUtc": "2026-10-17T04:10:36.139440+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "allTwentyFiveOutcomesIndependentlyReconciledBeforeNativeCleanup": true,
+    "ownedJobsStopped": true,
+    "ownedServiceStates": {
+      "permio-m6-continuation-controller-v2.service": {
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "exit-code"
+      },
+      "permio-m6-continuation-client-v2.service": {
+        "SubState": "dead",
+        "MainPID": "0",
+        "Result": "success"
+      },
+      "permio-m6-slot-isolation-controller-v1.service": {
+        "SubState": "dead",
+        "MainPID": "0",
+        "Result": "success"
+      },
+      "permio-m6-slot-isolation-client-v1.service": {
+        "SubState": "dead",
+        "MainPID": "0",
+        "Result": "success"
+      },
+      "permio-m6-slot-recovery-controller-v1.service": {
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "exit-code"
+      },
+      "permio-m6-slot-recovery-client-v1.service": {
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill"
+      },
+      "permio-m6-slot-recovery-controller-v2.service": {
+        "SubState": "dead",
+        "MainPID": "0",
+        "Result": "success"
+      },
+      "permio-m6-slot-recovery-client-v2.service": {
+        "SubState": "dead",
+        "MainPID": "0",
+        "Result": "success"
+      }
+    },
+    "noRunningContainers": true,
+    "noProverListener": true,
+    "swapDisabled": true,
+    "swappinessRestored": true,
+    "temporaryWalletApiCredentialsAbsent": true,
+    "nativeCaptureFilesRemovedThisFinalRun": 98,
+    "idleResetFilesRemoved": 28,
+    "deliberatelyRetainedCurrentSyntheticRecoveryFiles": 12,
+    "retentionPurpose": "Continuing M6 private-state recovery; no wallet/API credential or native DUST proof input retained",
+    "otherTaskActivityRecordsPreserved": true,
+    "privateMaterialExported": false,
+    "publicBundleSha256": "6493effe5c0d61292b465b3a100bbb33985aa80b49370ed9bc70ff951364bc97",
+    "controllerCloseoutSha256": "11331ce4bd5d7459d2bf06ae768cdd7e8f1ba2d45cefc5b49aa23d17b3b9a209",
+    "publicJournalSha256": "847e927e4e503a6d6b2afbbf1d78d2845928a36cf3e20889b62955f25fb2fd87",
+    "softAdjustmentSha256": "350e1aa9b41be2224059ef57bca14e49b49c8ccb544244a1f52178b45d195bc1",
+    "softAdjustments": 12,
+    "combinedHardRamGiB": 14,
+    "sharedSwapGiB": 8,
+    "instanceAndDisksPreserved": true,
+    "milestoneComplete": false
+  },
+  "serverLifecycleCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T04:11:56.817746+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-01f7874bc8ed4920b8fa",
+      "contentSha256": "708c7600201b5d020d953d1a65849287afff644075efe5e3793edfc7c996542c",
+      "deadlineUtc": "2026-10-17T06:11:46+00:00",
+      "deadlineShanghai": "2026-10-17T14:11:46+08:00",
+      "lastRenewedAtUtc": "2026-10-17T04:11:54.554253+00:00",
+      "nextRefreshDueUtc": "2026-10-17T04:41:54.554264+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-31e07e9763874909acaa": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "applicationSourcesChangedByThisContinuation": false,
+  "currentSourceSha256": {
+    "scripts/run-live-m6-admission.ts": "32c9958a6180907b702ffb548ab326d9591fecc4ab324b2c7c7b5d0fea0631a6",
+    "scripts/m6-slot-state-workflow.ts": "1b567557e2540e6e07c2d9febe8bd46f8d2cfbb6edd1cd22bca7c191a3931d39",
+    "packages/midnight-authorization/src/preprod-checkpoint.ts": "c1b12f01a2cbc89a8074117e980744a2e3f3df371432a9a0720005c8dd1c373b",
+    "packages/midnight-authorization/test/preprod-checkpoint.test.ts": "3c9ca001a10c41c02007b520179f98f2540ec6bd038964b9a9b700384bdff15d"
+  },
+  "acceptanceLimits": {
+    "syntheticGovernanceNotHumanSecurityReview": true,
+    "ordinaryActionAcceptance": false,
+    "commonDecisionReceiptAcceptance": false,
+    "fullPrivacyAndRestartAcceptance": false,
+    "fiveGiBProductResourceTargetQualified": false,
+    "milestoneComplete": false,
+    "productionReady": false
+  },
+  "artifactSha256": {
+    "logs/m6-continuation-approved-cap-25-v1.json": "a67a0a4f2ce59b55ff0f3a9bfdc8eac8c46f1461ec566b1c7df0e1867053d171",
+    "logs/m6-continuation-approved-transaction-plan-v1.json": "aacccecc6f8acc531d27114daf006b08943d3fe9de2e697a756a10f2fb9c812c",
+    "logs/m6-continuation-combined-public-v3.jsonl": "7c9a52619e2b8343c96af79686c17bc5de4369d5c4be0ef4e3ddd78582035bd8",
+    "logs/m6-continuation-combined-public-v4.jsonl": "dc751693c58c7664d58c15389c045f4761c2eb5d14cf60ed99bbde7d3641730b",
+    "logs/m6-continuation-controller-closeout-v2.json": "6311f977b59188de441d06ebb8c1da60f5360bc3d5b0e60272ddb239f4ccf6de",
+    "logs/m6-continuation-controller-v2.py": "7d7baea80376923549f9a6de12c998d01020f110843e4e3f9092d9f98f49d550",
+    "logs/m6-continuation-count-correction-v1.json": "383741c66af75d74b7167cd8f37815241176af67a4385189ccc89eeed6cf2d1f",
+    "logs/m6-continuation-decrypt-v1.mjs": "6fa83ebb7766c993fbba1c1938304269911525083ec1c124adcc5181a7834d78",
+    "logs/m6-continuation-driver-v1.ts": "a89e1a7d714ec77ead9efbe1c8bf3e51657a7c21e30ab75ad64eb3002ffa15a4",
+    "logs/m6-continuation-dust-observation-v1.mjs": "5852c5b7a97c192089e092ffd1e316a27f401c8e8f1a782c3129ac840ec4cafe",
+    "logs/m6-continuation-final-cloud-lifecycle-v3.json": "8f5ad283a18a983cb13825e376e5e143c78fda54764d9397bb0efdd1fd0f19b4",
+    "logs/m6-continuation-final-remote-audit-v3.json": "584792dd206b878b432c0b8694d18d2003f3bae96cd00c1a9874e8c7e23627d3",
+    "logs/m6-continuation-fixture-regression-v1.mjs": "2c6bc1ae20cc546718f010b2a8bdec827d6f53e9437a014393037e157199e2eb",
+    "logs/m6-continuation-fixture-v1.mjs": "f4218c1ecb3a9957a2ac0751c1ea8a02d53e9b950b9d5c7226ad04dbb8a1132e",
+    "logs/m6-continuation-integrity-audit-v1.mjs": "fc806a7f5c2d32bf2c4de9a54bcea77eb8d9f492b474b11f2dd8072d6dcfa27d",
+    "logs/m6-continuation-integrity-audit-v3.mjs": "b92266be6b95c95249274a8730401eec963bfa87abe1de9cef5a3f50e8d9dc36",
+    "logs/m6-continuation-interim-public-v2.jsonl": "ff4d8a2e65f1ed1dd87a4409fc4a7a1bed51bf7fe8baf6529f8dcb855eaae177",
+    "logs/m6-continuation-journal-newline-integrity-v3.json": "ba639d1a3c89a9052939f3ca6e68623d93cf6abbc275e9d818790706c648e9ab",
+    "logs/m6-continuation-preparation-v1.json": "90c1229a0c4ff9d83eac5a1d2a009af4c3c672989c5d787d41ea8f7762fffc09",
+    "logs/m6-continuation-prepare-ops-v1.py": "d62c2ad0cdfd7f59065008f60d8816c2ac5b48b0f39fdaf99955dbb2d0ef9ece",
+    "logs/m6-continuation-prepare-v1.py": "54ee724ff6cb2a7dea8d21f1ca6221c446f2823b793cf33e6c6b2bd3136c5dee",
+    "logs/m6-continuation-private-capture-cleanup-v1.json": "3808d063408d3639220124df111bc079cee99fb8d0a28a5c22f284b9c33b2c46",
+    "logs/m6-continuation-proposed-transaction-plan-v1.json": "2e0b257292c51ae085c5a9fda88cff071db93c0ba19b908358e24bd4703bad01",
+    "logs/m6-continuation-public-evidence-v2.tar.gz": "a2e195a40786eb2d81be18fce025ded0b7b7ab9e978d73f0a175a2a2d70f98a5",
+    "logs/m6-continuation-public-reader-failure-1792206232621.json": "09cb95794a4936bb4bd2995ac05469a3f6dc284be208b5401ebab74370606527",
+    "logs/m6-continuation-public-reconcile-v1.mjs": "5bb53b0199a55b92ef74d3f8403931e67bb7acec80a11294bae187730256064e",
+    "logs/m6-continuation-public-reconciliation-1792202879774.json": "773322562748501ad29d7de50ce4a9a71e448711b20bad621da5d5e26cd01e2a",
+    "logs/m6-continuation-public-reconciliation-1792203876937.json": "ac64e464baaebbd50d26db3dc484850231ff98d89d54ca68926d9d59a69abc6e",
+    "logs/m6-continuation-public-reconciliation-1792206274276.json": "401cad5bacb976181b3017d22e408d21faf2540b4d3c487c9b114fd7bcdffe08",
+    "logs/m6-continuation-public-reconciliation-1792210215178.json": "1d79ad521de1d98167cbcd877f8c3cad07e014ff17ee96ff5c1af62ab686b6d3",
+    "logs/m6-continuation-start-approved-v2.py": "20e16ec5e09eb2745ff4110f8136003f3fde38bbc6b2988f3f8552c99d84d9ac",
+    "logs/m6-continuation-test-fixture-v1.ts": "8b24e7d4f1acbdf616a4351654183686d6f5920dea7497276f846b2024663a9d",
+    "logs/m6-continuation-v2-public/logs/m6-170-exact-candidate-submit-outcome-v1.json": "8b5dbdb51500db14ac1d2bd392709d3999619b31c55f6ca8bef2153c26638524",
+    "logs/m6-continuation-v2-public/logs/m6-170-state-diagnostic-controller-report-v2.json": "3213268385d066f8332aa37e0567ff355993c2560c2f600085ed0686d1589453",
+    "logs/m6-continuation-v2-public/logs/m6-170-state-diagnostic-outcome-v2.json": "69a4d63304a49ea10a65625711190dfda301d2bb1b8e580351d6f58e6ec3bdb4",
+    "logs/m6-continuation-v2-public/logs/m6-170-state-diagnostic-resource-samples-v2.jsonl": "787aa25d9f2ff523a8ed99a66b7b5d01f1c07b2e1df1034576e5aae7b9754241",
+    "logs/m6-continuation-v2-public/logs/m6-170-state-diagnostic-worker-public-v2.jsonl": "ade9b908d8ae459f95700ec2bc2af05b897af4f179570aa3eda68b1eff3dc7e0",
+    "logs/m6-continuation-v2-public/logs/m6-continuation-controller-report-v2.json": "76e618fa33ea18e5698e8ea0a010bd73e5ad01cc0e34474f3b25a05da5a2f7ce",
+    "logs/m6-continuation-v2-public/logs/m6-continuation-resource-samples-v2.jsonl": "90ade37d650f7d845f97b7cc01472ac54a5d1cb1d4fcc6c99ece6be3d52e4405",
+    "logs/m6-continuation-v2-public/logs/m6-continuation-worker-public-v2.jsonl": "bc2d3135d83dbfe17a4d458bd58ca9b28a1f0fb674e0f6e422dc454a4a22cf76",
+    "logs/m6-continuation-v2-public/logs/m6-exact-key-reproduction-report.json": "2d4a2a8085ca9d71b08e533da0fda61681699af8e775a706714d535eb6471c83",
+    "logs/m6-continuation-v2-public/logs/m6-keygen-cleanup-recovery-report.json": "2139894bf82961e59aab466d4bf6f2d8ac5be74ac1786d1643e5035ed5181a1b",
+    "logs/m6-continuation-v2-public/logs/m6-keygen-original-cleanup-report.json": "5299fb2e67dc7853ac02df2e37be5afb20e9fab765ed16a1ebcb2b7796f2ff18",
+    "logs/m6-continuation-v2-public/logs/m6-live-2026-10-17T00-05-01.694Z.jsonl": "4d6ca84de81abebaa84a29584b866a9e6875d4f99dd773b005158370ca377e6a",
+    "logs/m6-continuation-v2-public/logs/m6-live-2026-10-17T02-00-17.265Z.jsonl": "ce28cfc7c14822a6d5174fb5d251c00fc0cc51ac58706359d3f309a1c3cca563",
+    "logs/m6-continuation-v2-public/logs/m6-review-diagnostic-controller-report-v1.json": "9b64936077c692a6e519c350eba1fce979cea06cfb5eb2a11490fab31653c253",
+    "logs/m6-continuation-v2-public/logs/m6-review-diagnostic-outcome-v1.json": "2ec11fc017a71105e5f491cddea2fa5887244faa783bfbfc31fd42670d71f6cb",
+    "logs/m6-continuation-v2-public/logs/m6-review-diagnostic-resource-samples-v1.jsonl": "de2491bb0615a3e372bd8d8e30e60d5320b5c17eb6ce88204040c825ccda6704",
+    "logs/m6-continuation-v2-public/logs/m6-review-diagnostic-worker-public-v1.jsonl": "b6aba412d1b08b8b28b44fdd25edf1c7d862caa88113b2d506ed765b627cf9a9",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-controller-preflight-v6-report.json": "c2f280c5a704953aa7d98ca42d9e3ca92cb7b8c2fdddf854f41939404549e1b2",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-controller-report.json": "4af84b3f063d67dfb839799e5a745fbde1917f1a89dea0280e505402063e6f8a",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-dependency-download-readiness.json": "9fb30183f07aa0cf53abbc2d35a70d4c512a80430209ddbe253541be653809bb",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-ecs-v3-outcome.json": "a0fe49c3dae097c669dce7ba176ee4cd065ba99b07cbb3c7e47fbaed1337a9ec",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-resource-samples.jsonl": "3ec176b5bbc396584a0448ba83669a30872d9a623cb518610a094fc3bb78d0a2",
+    "logs/m6-continuation-v2-public/logs/m6-runtime-worker-public.jsonl": "865068b2d8072f0d5733510f71c44016a7b27bcbc7c968874f53c049d9879a0f",
+    "logs/m6-continuation-worker-public-v2.jsonl": "bc2d3135d83dbfe17a4d458bd58ca9b28a1f0fb674e0f6e422dc454a4a22cf76",
+    "logs/m6-continuation-worker-v2.mjs": "b3364c5fdb510d3e9395db8a84c404c92703f85609c2f8f78b119086d38d65c6",
+    "logs/m6-slot-isolation-controller-closeout-v1.json": "25f873bd662a76cca28ee85a12945673551a48710a28f6b34a54f6b72ed052ab",
+    "logs/m6-slot-isolation-controller-v1.py": "2c6e2e90f534390452623319b19c6eb532314231c14896e525344190664efabd",
+    "logs/m6-slot-isolation-decrypt-v1.mjs": "fbf5dc84979563f4eb3192c4c334fd2f35122336e2d8b1c2f211fa66237d80f9",
+    "logs/m6-slot-isolation-public-evidence-v1.tar.gz": "a8e40c0bd94218f6a51de02e558201ec73e7eb987a3977cb80b1aac4b412d469",
+    "logs/m6-slot-isolation-resource-pressure-v1.json": "9fa4e750fd406ac18f15d13e4eacbd3e1690159fa29ca03f5e23843bc3e21e23",
+    "logs/m6-slot-isolation-start-v1.py": "46aea04a6d1498aef18bc462a5c59f3a72c98c3ba506727471f1bc727f2932b4",
+    "logs/m6-slot-isolation-v1-public/logs/m6-slot-isolation-controller-report-v1.json": "80b2a2b5c78416ab10b0a69406d1633223007b6354b7e42b50f9dca7758791c1",
+    "logs/m6-slot-isolation-v1-public/logs/m6-slot-isolation-outcome-v1.json": "752b680f784fa828a2bf6313a7bf81a8e28655bddaad59f0b38f721625bf4937",
+    "logs/m6-slot-isolation-v1-public/logs/m6-slot-isolation-resource-samples-v1.jsonl": "a43439aea39a41999bc9337e30c1a48f2bab62e639cab4ab8dd687e3625fcaf1",
+    "logs/m6-slot-isolation-v1-public/logs/m6-slot-isolation-worker-public-v1.jsonl": "9d73f0b74082bdac1f4ae8b928b2bc1919c67c011f41e267b6c6c8252f45a6d1",
+    "logs/m6-slot-isolation-worker-v1.mjs": "fe912b7692e4be0699d6be09d8d78585b85103860b6950ede1fda5f541abfd5c",
+    "logs/m6-slot-recovery-controller-closeout-v1.json": "5353a564543c32d8f4d266fe677482086c9253e5723f933c8d760b800376e2fc",
+    "logs/m6-slot-recovery-controller-closeout-v2.json": "11331ce4bd5d7459d2bf06ae768cdd7e8f1ba2d45cefc5b49aa23d17b3b9a209",
+    "logs/m6-slot-recovery-controller-v1.py": "776cbf0c4e19b4404d65e3da39714d98ace10ee68859a247e51fcffe633bf170",
+    "logs/m6-slot-recovery-controller-v2.py": "be9e78d71bd7047ec3fd25cf310e0d88b415ff400c7e1787fe3a1adcc86a1a28",
+    "logs/m6-slot-recovery-decrypt-v1.mjs": "64e026d157e5af5b04af2772ccbd95f8e25a2ddc974fb6786e52f0b461bbcc5c",
+    "logs/m6-slot-recovery-decrypt-v2.mjs": "7085455e0e3d72566e77378d05ae7406666711abb57d5691ea294ecd89daaca3",
+    "logs/m6-slot-recovery-driver-v1.ts": "ecd57c6f82c3bf289bdce8ec6cf728d2f3a78e90902ad3e257c0a8487ae76e86",
+    "logs/m6-slot-recovery-driver-v2.ts": "3e6a2dd45577183a635bf26edba52e41edc88dedd582bd2cbe9d4b23e1ae64aa",
+    "logs/m6-slot-recovery-memory-profile-v3.json": "7c5b2c3b88b8a66b2ff3a31e826d656af7df116eb8d8b2934d9cb54b75e97642",
+    "logs/m6-slot-recovery-native-cleanup-v1.json": "5c00d181516c11d70c13357318ae43754ba47fc2e3a69403434e8016011b01a3",
+    "logs/m6-slot-recovery-preparation-v1.json": "5f03101d3273175d627d62e41491373576e664e95cb09356c0c22f098574f549",
+    "logs/m6-slot-recovery-public-evidence-v1.tar.gz": "c2a50c624e5d4b06bd8df4fac7539c40eebc4dd0b1238d096d51fb5405983323",
+    "logs/m6-slot-recovery-public-evidence-v2.tar.gz": "6493effe5c0d61292b465b3a100bbb33985aa80b49370ed9bc70ff951364bc97",
+    "logs/m6-slot-recovery-public-submission-journal-remote-v2.json": "847e927e4e503a6d6b2afbbf1d78d2845928a36cf3e20889b62955f25fb2fd87",
+    "logs/m6-slot-recovery-public-submission-journal-v2.json": "6915290f6a8097ac36c1c8659c115b1c44f747c5f03cdf869e6bc60f8ed74761",
+    "logs/m6-slot-recovery-soft-reclaim-adjustments-v2.jsonl": "350e1aa9b41be2224059ef57bca14e49b49c8ccb544244a1f52178b45d195bc1",
+    "logs/m6-slot-recovery-v1-public/logs/m6-recovered-live-2026-10-17T02-55-40.722Z.jsonl": "50a586a684f0b2b1e43f945da906954d290828a3e34f749ad80c420cf6328553",
+    "logs/m6-slot-recovery-v1-public/logs/m6-recovered-live-2026-10-17T02-57-31.362Z.jsonl": "e2454e98f8900bc055e62903b959f32a2d0558bd231e498ec43e2081f8b2960a",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-controller-report-v1.json": "f43becb53badc9ec1411c28ee32cf31560002ba4aebe82a36aa041dae3b8e978",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-preflight-outcome-v1.json": "d38df5b8dd0bd42cc7f5fe2db276fc30678b5f99e1a39629140fb9951884ed1f",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-preflight-public-v1.jsonl": "691154c58496d9789ab9523918d66712ed51aa18dd49875dadf159bb17ac793d",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-resets-v1.jsonl": "999c325659e2e7eb6eb69c419d44763b5d67ee269b557e4ed0a1212474f4f397",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-resource-samples-v1.jsonl": "c80bad2f0ade2446a45363922ab36f909acdb9110b44ee404039535e6b094e06",
+    "logs/m6-slot-recovery-v1-public/logs/m6-slot-recovery-worker-public-v1.jsonl": "b97d58c9b0df66b6d60ce03cd032fde8e14f125adbe769273cd9c25bb93f06ea",
+    "logs/m6-slot-recovery-v2-public/logs/m6-recovered-live-2026-10-17T02-55-40.722Z.jsonl": "50a586a684f0b2b1e43f945da906954d290828a3e34f749ad80c420cf6328553",
+    "logs/m6-slot-recovery-v2-public/logs/m6-recovered-live-2026-10-17T02-57-31.362Z.jsonl": "e2454e98f8900bc055e62903b959f32a2d0558bd231e498ec43e2081f8b2960a",
+    "logs/m6-slot-recovery-v2-public/logs/m6-recovered-live-2026-10-17T03-09-23.731Z.jsonl": "ad592720ccd3a645b2d9ba94fe83de50a658be9fcb50276a7ce6e25a6d245352",
+    "logs/m6-slot-recovery-v2-public/logs/m6-recovered-live-2026-10-17T03-10-56.909Z.jsonl": "2adea1ee517cf23c235c42431e43136b83b9f58691281aa530339ad0c1c13d3d",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-controller-report-v1.json": "861599647962982973cf81a1eb23b891cd3a87c440a18ce04240a8b490e097d5",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-outcome-v2.json": "d94f44cd127cc4ea5f7198bca5a1a6302bb4ef32fdfea61c3e0b6705105c4d08",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-preflight-outcome-v1.json": "d38df5b8dd0bd42cc7f5fe2db276fc30678b5f99e1a39629140fb9951884ed1f",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-preflight-outcome-v2.json": "f7d129c0d8476582fdb0a47dbd7d7640be4040f8afa9abac9dc6788092ffaa40",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-preflight-public-v1.jsonl": "691154c58496d9789ab9523918d66712ed51aa18dd49875dadf159bb17ac793d",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-preflight-public-v2.jsonl": "c2f498d6f49dd583fbe8d7baff9061b237214998f56a66d88d3cdab5b5ffa609",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-resets-v1.jsonl": "999c325659e2e7eb6eb69c419d44763b5d67ee269b557e4ed0a1212474f4f397",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-resets-v2.jsonl": "93c80312a0f41d69c5b8b5f95e08f5b5182a9eaa9d9bef6d3acb9a121c036fbc",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-resource-samples-v1.jsonl": "c80bad2f0ade2446a45363922ab36f909acdb9110b44ee404039535e6b094e06",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-resource-samples-v2.jsonl": "7d63d9e7f7057d5eb4e00b6d97722d8c92cd6868896cae30d79c54cfb425423f",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-worker-public-v1.jsonl": "b97d58c9b0df66b6d60ce03cd032fde8e14f125adbe769273cd9c25bb93f06ea",
+    "logs/m6-slot-recovery-v2-public/logs/m6-slot-recovery-worker-public-v2.jsonl": "75ce37bfc34cc97f8413acdd4728f4e3696fb5297075a3f2721e0685370c95d3",
+    "logs/m6-slot-recovery-values-regression-v1.mjs": "47d301d0ebfa1562fdfe727506febddecff43a5398dc06278239e7ad8a9b7fc5",
+    "logs/m6-slot-recovery-values-v1.mjs": "c72d07a0c3eccc38ea1842596abfef0ad8fdcc3a06833f8dc28b2fab522d6fbf",
+    "logs/m6-slot-recovery-values-v2.mjs": "ae9cae6434a6c97928c1cbd4243e27eae19b7861c83a9a238bda45640280f168",
+    "logs/m6-slot-recovery-worker-public-v1.jsonl": "b97d58c9b0df66b6d60ce03cd032fde8e14f125adbe769273cd9c25bb93f06ea",
+    "logs/m6-slot-recovery-worker-public-v2.jsonl": "75ce37bfc34cc97f8413acdd4728f4e3696fb5297075a3f2721e0685370c95d3",
+    "logs/m6-slot-recovery-worker-v1.mjs": "dff3fa2c3a2a0d2b311118c63043c0ebc6e047f3fb4c30d0bf3764950f88ab57",
+    "logs/m6-slot-recovery-worker-v2.mjs": "90e1fb9f9492338b347e8c4823127a6609e8e793967d1570b5fcc4ae31137d29",
+    "logs/m6-slot-recovery-workflow-v1.ts": "3c9593e8c64ded4eb8f34c7a3ef6dfb4306cbfc72da9d6e6911610a80145308b",
+    "logs/m6-slot-recovery-workflow-v2.ts": "0a2f5386bf0461804272666044055ec634f9207d171d20e404c1c7460311f7f2"
+  }
+}

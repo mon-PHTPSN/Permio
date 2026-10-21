@@ -53,7 +53,7 @@ transition, M6 verifies and atomically replaces the current state commitment
 and sequence; M8 or the target application separately owns downstream execution
 success or failure. The approved boundary is recorded in the
 [`M6 architecture decision`](docs/evidence/M6/architecture-decision.md); the
-concrete pre-implementation investigation is recorded in the
+concrete implementation and live-chain record is maintained in the
 [`M6 development log`](docs/evidence/M6/development-log.md).
 
 M4 continues to verify Ed25519 reviewer attestations, unique eligible
@@ -63,7 +63,16 @@ governance/activation authority signs an exact, replay-protected activation
 envelope with the allowlisted `midnight-jubjub-schnorr-v1` admission profile.
 The M6 registry circuit verifies that authority and admits only the envelope's
 exact namespace, template ID, semantic version, content hash, M4 activation
-record hash, and approval-evidence commitment.
+record hash, approval-evidence commitment, ordered binding root and count,
+proof-module-registry sequence, target deployment, deadline, and nonce.
+
+Variable-length action bindings use a staged protocol rather than a fixed M2
+action limit. `beginM4Activation` opens but does not activate a signed session;
+each `stageM4ActivationBinding` call validates one whole action binding at its
+canonical index; `finalizeM4Activation` creates the active record only after
+all indexes are complete. Expired or stale sessions are removed automatically
+when begin, stage, or finalize touches them; cleanup cannot rewrite an active
+record or consumed nonce and requires no maintenance authority.
 
 ## Current scope
 
@@ -76,14 +85,35 @@ The implemented off-chain packages form a concrete dependency chain:
 - `@permio/scenario-governance` separates five authorities and governs exact
   template versions and hashes; and
 - `@permio/context-accounts` consumes an active allocation, attenuates
-  capabilities, issues fresh scoped sessions, and authorizes signed actions.
+  capabilities, issues fresh scoped sessions, and authorizes signed actions;
+  and
+- `@permio/midnight-authorization` implements the compiled and Local
+  Dev-verified staged M4 admission, proof-module governance, authority-root
+  rotation, prospective module/template termination, M5-to-M6 runtime
+  credentials, and credential-status transition slices.
 
-M6 has a separate `admit-m4-activation-v1` registry circuit plus the initial
-runtime modules `delegated-capability-action-v1` and
-`private-state-transition-v1`. Runtime modules emit a common minimal
-`DecisionReceipt`. The M7 gateway is a finalized-source observer and byte-exact
-transport signer; it does not re-evaluate private policy or reinterpret
-module-specific output.
+The approved entry-point consolidation reduced the ledger-8 single-contract
+build from twelve to nine transaction circuits. It now deploys on the unchanged
+Local Dev stack and has completed live credential-status activation,
+unauthorized-revocation rejection, authorized revocation, governance,
+admission, replay, indexed-state, and reconnect checks. M6 remains incomplete:
+M5 supports capability delegation through depth 16, while the current M6
+terminal credential carries only its immediate parent commitment. The runtime
+proof design must establish current active status for every ancestor without
+silently imposing a lower depth or ignoring prospective ancestor revocation.
+The two runtime families, state/nullifier ordering, common `DecisionReceipt`,
+and privacy scan therefore remain outstanding. The M7 gateway remains a later
+finalized-source observer and byte-exact transport signer; it does not
+re-evaluate private policy or reinterpret module-specific output.
+
+The approved attempt to preserve all 16 M5 delegation levels with one fixed
+private ancestry witness reached a pinned-toolchain feasibility failure during
+proving-key generation. Compact accepted the combined ten-circuit source, but
+the key generator stopped progressing with empty probe keys. The temporary
+probe was removed and the live-accepted nine-circuit baseline was recompiled
+successfully. M6 remains at an architecture decision boundary rather than
+silently weakening ancestor revocation or delegation depth; exact timings and
+the runtime checks not yet added are recorded in the M6 development log.
 
 For M6 development, the sibling `../information-flow` checkout is a reference
 for Midnight integration mechanics only: Compact compilation, managed
@@ -228,24 +258,40 @@ root；实例分配、capability、session 和 action intent 保持为私有签�
 选择 `latest`。不支持的证明语义会停止激活，并进入独立审核的协议升级流程。对于声明的状态
 转换，M6 验证并原子替换当前状态 commitment 与序号；M8 或目标应用另行负责下游执行成功或失败。
 获批准边界记录在[`M6 架构决策`](docs/evidence/M6/architecture-decision.md)中。
-具体的实现前调查记录在[`M6 开发日志`](docs/evidence/M6/development-log.md)中。
+具体实现与真实链记录持续维护在[`M6 开发日志`](docs/evidence/M6/development-log.md)中。
 
 M4 继续验证 Ed25519 审核者证明、合格审核者唯一性、阈值、拒绝状态和职责分离。M6 v1 不在
 Midnight 上重复这些检查。命名空间范围内的 M4 治理／激活权限改为使用 allowlist 中的
 `midnight-jubjub-schnorr-v1` 准入 profile，对精确且防重放的激活封装签名。M6 注册电路验证该
-权限，并且只登记封装中的精确 namespace、template ID、语义版本、内容哈希、M4 激活记录哈希
-和审批证据 commitment。
+权限，并且只登记封装中的精确 namespace、template ID、语义版本、内容哈希、M4 激活记录哈希、
+审批证据 commitment、有序 binding root 与数量、证明模块注册表序号、目标部署、截止时间和 nonce。
+
+可变长度 action binding 使用分阶段协议，而不是给 M2 添加固定 action 上限。
+`beginM4Activation` 打开但不激活一个已签名 session；每次
+`stageM4ActivationBinding` 调用在规范索引上验证一个完整 action binding；只有全部索引完成后，
+`finalizeM4Activation` 才创建 active record。过期或失效 session 会在 begin、stage 或 finalize
+访问时自动清理；清理不能改写 active record 或已使用 nonce，也不需要维护权限。
 
 当前链下包形成明确的依赖链：`@permio/scenario-domain` 验证并哈希应用无关的情境模板；
 `@permio/scenario-generator` 生成确定性的合成实例，并扫描公开产物中的私有值泄漏；
 `@permio/scenario-governance` 分离五类权限，并治理精确的模板版本与哈希；
 `@permio/context-accounts` 消费已激活的分配，收窄能力范围，签发新鲜的有限会话，并授权
-签名操作。
+签名操作；`@permio/midnight-authorization` 实现了已经编译并在 Local Dev 验证的分阶段 M4
+激活准入、证明模块治理、权限根轮换、前瞻性模块／模板终止、M5 到 M6 运行时凭证以及
+credential-status 转换切片。
 
-M6 使用独立的 `admit-m4-activation-v1` 注册电路，以及首批运行时模块
-`delegated-capability-action-v1` 和 `private-state-transition-v1`。运行时模块统一输出最小
-`DecisionReceipt`。M7 网关只观察已最终确认来源并对逐字节不变的传输封装签名；它不会重新
-评估私有策略，也不会解释模块特定输出。
+获批准的入口合并把 ledger-8 单合约从 12 个交易电路减少到 9 个。它现在能在未修改的 Local Dev
+环境中部署，并已完成 credential-status 激活、未授权撤销拒绝、授权撤销、治理、准入、重放拒绝、
+索引状态和重连检查。M6 仍未完成：M5 支持最多 16 层 capability 委托，而当前 M6 末端凭证只携带
+直接父级 commitment。运行时证明必须在不静默降低深度、也不忽略祖先前瞻性撤销的前提下，证明
+每个祖先在当前状态根下仍为 active。两个运行时族、state/nullifier 排序、公共 `DecisionReceipt`
+和隐私扫描仍未完成。M7 网关仍是后续里程碑：只观察已最终确认来源并对逐字节不变的传输封装签名；
+它不会重新评估私有策略，也不会解释模块特定输出。
+
+已批准的完整 16 层 M5 委托方案尝试使用一个定长私有祖先 witness，但在证明密钥生成阶段遇到
+固定工具链的可行性失败。Compact 接受了合并后的 10 电路源码，但密钥生成器停止推进，探针密钥
+仍为空。临时探针已移除，并已成功重新编译经过真实链验证的 9 电路基线。M6 因此停留在架构决策
+边界，而没有静默弱化祖先撤销或委托深度；精确耗时和尚未加入的运行时检查记录在 M6 开发日志中。
 
 M6 开发可以把相邻的 `../information-flow` checkout 用作 Midnight 集成机制的参考，包括
 Compact 编译、托管生成产物、可恢复钱包同步、部署／重连、proof server 使用和只包含公开数据

@@ -1,0 +1,834 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "scope": "Exact M2 runtime-policy configuration opening and initial-state allocation binding",
+  "status": "partial-slice-verified-M6-incomplete",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "branch": "feat/m6-m8-midnight-delivery",
+  "baseCommit": "b8710a43c7b324e348d19176f0a2659421866b5c",
+  "contractProfile": "permio-authorization-v5",
+  "architecture": {
+    "singleContract": true,
+    "transactionCircuitCount": 10,
+    "newAuthority": false,
+    "newAuthorityRoot": false,
+    "templateJsonParsedInsideCompact": false,
+    "namespaceActivatorAttestsProjectionCorrespondence": true,
+    "m4Ed25519ReviewsVerifiedOnChain": false,
+    "allocationGrantsActionAuthority": false,
+    "publicInstanceRecordChanged": false
+  },
+  "stack": {
+    "network": "Midnight Local Dev / undeployed",
+    "node": "1.0.0",
+    "indexer": "4.3.3",
+    "proofServer": "8.1.0-weak-cache",
+    "compactCompiler": "0.31.1",
+    "compactRuntime": "0.16.0",
+    "ledger": "8.0.2",
+    "midnightJs": "4.1.1",
+    "nodeImage": "sha256:ede01da35e982b6a4b85461ad8492ae2753ef14246fba33c8039b782aa8e39fb",
+    "indexerImage": "sha256:03afd079b00bcd229df29a24771439c5e7695c339cd89216d0763ce40731cc4b",
+    "proofServerImage": "sha256:82f867abc556806f3742fb165b9cba8c898045a71e99bba8a8b33b37237bb1c9",
+    "proverCpuQuota": 4,
+    "containerRamCapBytes": 0,
+    "wslMemoryKiB": 8019584,
+    "wslSwapKiB": 2097152,
+    "resourcePolicyChanged": false,
+    "nativeNode": "24.13.1",
+    "nativeNpm": "11.8.0"
+  },
+  "checks": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "total": 180,
+    "diagnostics": 16,
+    "protocol": 6,
+    "scenarioDomain": 15,
+    "scenarioGenerator": 14,
+    "scenarioGovernance": 16,
+    "contextAccounts": 13,
+    "midnightAuthorization": 94,
+    "hardhat": 6,
+    "failures": 0,
+    "skipped": 0,
+    "docsCheck": true,
+    "typecheck": true,
+    "solidityBuild": true
+  },
+  "implementationProblems": [
+    {
+      "problem": "Array.map supplies three arguments; generated pure circuit requires exactly one",
+      "resolution": "Use an explicit one-argument closure"
+    },
+    {
+      "problem": "Activation and runtime action hashes use different existing domains",
+      "resolution": "Bind both hashes derived from the same M2 action ID; preserve both protocol domains"
+    },
+    {
+      "problem": "Buffer/Uint8Array prototype mismatch in equality assertion",
+      "resolution": "Normalize test comparison without changing bytes"
+    },
+    {
+      "problem": "M2 rejects an action with no declared transition",
+      "resolution": "Test an explicit same-state row; absence in another state stays a denial"
+    },
+    {
+      "problem": "Sandbox WSL E_ACCESSDENIED and Hardhat HHE22",
+      "resolution": "Approved host execution succeeded; no install, dependency edit or quota claim"
+    }
+  ],
+  "sourceSha256": {
+    "packages/midnight-authorization/contracts/permio-authorization.compact": "dc76f290ac56bc8c982ff296588b483e5806a5383946c32f841ea2adcd0d7840",
+    "packages/midnight-authorization/contracts/runtime-instance-allocation.compact": "91387cdbb0bc6760dfc3bd65e0e817e9797739766789a0fbf32ce6e0e23e38f4",
+    "packages/midnight-authorization/contracts/runtime-template-policy.compact": "16323caa6352f430a7c6897ec7e73cf7f1d541368886030d04f8a0ffaa5b02f2",
+    "packages/midnight-authorization/contracts/runtime-active-ancestry.compact": "dba264fefe50af2998e2edf54b56e3d90c01d3627ab6e0c8f1b1dc7f38fd81c5",
+    "packages/midnight-authorization/contracts/runtime-action-authorization.compact": "d70591d4eca86330f51a36d64bf94763b869f7a19ec4049aa057c13310f175e7",
+    "packages/midnight-authorization/contracts/runtime-status-multiproof.compact": "58ff7cdee24973a29c5ce5b600a095a8313054f2647a0e2ca7429b8444141e2e",
+    "packages/midnight-authorization/src/template-policy.ts": "6cfe631ecbfdaa8d6f9f37779a0bd37871e204c768d71ebb32e946f9298f4dad",
+    "packages/midnight-authorization/src/instance-allocation.ts": "e7c940f914f1322ca87b7188d565afe8d48a99f94095a9290b656a30ee9dd6fd",
+    "packages/midnight-authorization/src/midnight-contract.ts": "5193a84a49ea5b44750830617a6478e88b3601420ef02f4ca2d6ec67b873b69e",
+    "packages/midnight-authorization/src/runtime-credentials.ts": "f30ff239f242bb594bef84a61d7e808ff8cd62599f502990b8fc8567933c5713",
+    "packages/midnight-authorization/src/credential-status.ts": "8cfac8288602b205b3c8c012d283b5c2a41d768552870f6fffe777f7737f9fff",
+    "packages/midnight-authorization/test/template-policy.test.ts": "48692ed7effdc79d46e92b11aa6cf400408511d75ecd6c29a9de0746e92c3fd8",
+    "packages/midnight-authorization/test/admission-envelope.test.ts": "55aedbb32da9e52983e400b805758ef13847cefb561325c07019da2f26bbb9bb",
+    "scripts/run-live-m6-admission.ts": "b45f6d9e300d182fabb8abca9cc628ef5c7c6d860031a7be78afda5192e74951",
+    "scripts/m6-bound-credential-workflow.ts": "03eefdbc897160d89cffbb2704264e331c0dc93fca9e1007ed7d857dce1d5823",
+    "scripts/compile-compact-sequential.mjs": "4d0548c653f9a25bfd12efad60f48905a0d770c2021c57f72fedd69be3367fdf"
+  },
+  "manifest": {
+    "manifestVersion": 1,
+    "compilerVersion": "0.31.1",
+    "runtimeVersion": "0.16.0",
+    "contractSha256": "40164c335cde816fa461725c00a472f78fed95c1ad8916734b30460c1e4d914c",
+    "compilerInfoSha256": "d2b1e2116785af3ec18317e71d2fd927a4ed545406d5bb31e6432ce7e9b0158b",
+    "generatedAtUtc": "2026-10-14T00:25:58.418Z",
+    "mode": "real-sequential-keys",
+    "circuits": [
+      {
+        "name": "updateRuntimeCredentialStatus",
+        "programSha256": "c389839fcc362f20f1ff2cc3fb65792551b72e5fcf9db94b4c451df6ab7cc5b3",
+        "proverSha256": "73efa9ccd5c6eaabbbb7cbbffaab10e6e0fd5c88bfacc3275615186cd0d41619",
+        "verifierSha256": "31de7a55d55cfebec79231caf2171303721aba86ca1f3e97e10668cc3f9c7e3a",
+        "proverBytes": 169790769,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "allocateRuntimeInstance",
+        "programSha256": "c827334721e2b4bfc4aa4d3778d98dac175754de365650b057370bdb129c94b9",
+        "proverSha256": "21f162cba4267993ee26a2f65978043f80f502cbfd7d2e513ae7815c99e33987",
+        "verifierSha256": "59bdf0fd5db3d095ec0be4e4ce6535318a8e1620dcf50529bf5d9b78594ae65c",
+        "proverBytes": 42745178,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "beginM4Activation",
+        "programSha256": "897c04b0db979ad551dbb3c9c3359885f1b3d37586a1d178843c5510c61ac4d4",
+        "proverSha256": "44a3c84bd07e8d7fc689af4bc2b39a90d37ea2f3b272ef62bbdad7657c26cf27",
+        "verifierSha256": "f33bfb3be2d7c98827ac1ba80409e52304800550714b71810f0f216822108f38",
+        "proverBytes": 21585759,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "finalizeM4Activation",
+        "programSha256": "31604dee9f104522af1145f683efa9098cc97bba4fe1c006984a9fb4206d3e5f",
+        "proverSha256": "df62ded20501a1d7f11f02d2b8b512fc60f8438d282d9a871fe70f946866d4c2",
+        "verifierSha256": "b51965cb1747091b90627de959bf8aa4f53c1179360cd0056ad9d641f9282a35",
+        "proverBytes": 21586639,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "governProofModule",
+        "programSha256": "7865e632b419ccca10f87994f48c37e2c8f8600b02d4eb4dc4ebb0155a8811dd",
+        "proverSha256": "ea784e27d5e0fc81b8317a16b6b5bad73956843298be2abcbff847d7279bd0ce",
+        "verifierSha256": "6d1870c0d8a70cbf921c8885aa30d32e482485eadbb2951b9e46079b377e5093",
+        "proverBytes": 84985554,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "proposeProofModule",
+        "programSha256": "332eef7032eb93a1b67845264d38c0282c8adc0d6625f53facd0dfddc57a7d32",
+        "proverSha256": "293244b47dae80902ec53fa54cc880f4ebc96e66da6286d2a0103d33f1268d01",
+        "verifierSha256": "00be2148b35332803559155c019964939a880057713cfac3bbd1e39cea0c947e",
+        "proverBytes": 9955233,
+        "verifierBytes": 2119
+      },
+      {
+        "name": "reviewProofModule",
+        "programSha256": "c5aefc7c13bf14ed846fdbf161eb9f047adfff258feed5fc239c14521a194902",
+        "proverSha256": "941f4c73809fe82f8df45b9d000b6ed742a6af290a8dd409e0e0daea9b5ee89b",
+        "verifierSha256": "016afae6eb3e6f2e4243109ba18171ff3b59cdbd7dd0365fbf6c36fe67ec9941",
+        "proverBytes": 21581168,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "stageM4ActivationBinding",
+        "programSha256": "52d3737b2d853eefc716ef908529cb8dc854cb645b1dea5028be56d84494d25d",
+        "proverSha256": "ab21200e82005b4d1d5053e2bd46a4a0deb10ce848d046aa6d4a14723d2687b9",
+        "verifierSha256": "f466e8172cd84b134b102afdfe9ddb5365e4e3a19ec186336727fcbafff26573",
+        "proverBytes": 9970594,
+        "verifierBytes": 2119
+      },
+      {
+        "name": "submitAuthorityRootApproval",
+        "programSha256": "01d8d64d9f1160df3a223ab2f7cfe547419ffd8df0938850446ba5d2777bf0e8",
+        "proverSha256": "3f1e782bdc9902bf96ad67c9236dcc5ac69ccb1e9f6cceb0efff00bcd0d0fbb2",
+        "verifierSha256": "b1f6a7a5000c0f27ef3cdf7b9a50ef04443a77f38a5434d65fe755e1801b6bba",
+        "proverBytes": 42715983,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "terminateTemplate",
+        "programSha256": "684c4079e8578e2e47f54aa91273e74057a1d082587632c36d882563b5767bca",
+        "proverSha256": "e6fdde98d9b62da2494e3c079be07caeb27446470682b121e23b72790d30b6e1",
+        "verifierSha256": "9c2b4d095949a813517b07a0b6490e64d202398f10418d3703aa17063f4dee45",
+        "proverBytes": 21647453,
+        "verifierBytes": 2311
+      }
+    ]
+  },
+  "build": {
+    "directory": "logs/m6-key-retry-2026-10-14T00-08-39.681Z",
+    "start": {
+      "timestamp": "2026-10-14T00:08:39.692Z",
+      "event": "started",
+      "elapsedSeconds": 0,
+      "buildPid": 8049,
+      "bootId": "7d0cea0a-27f7-45d7-bb19-1511cde29e10",
+      "logDirectory": "logs/m6-key-retry-2026-10-14T00-08-39.681Z",
+      "memoryUnit": "KiB",
+      "baselineKernelOomRecords": 0
+    },
+    "finish": {
+      "timestamp": "2026-10-14T00:25:58.509Z",
+      "event": "finished",
+      "elapsedSeconds": 965,
+      "code": 0,
+      "signal": null,
+      "spawnFailed": false,
+      "observedProcessPeaks": [
+        {
+          "pid": 8049,
+          "name": "node",
+          "maxSampledRssKiB": 86344,
+          "maxObservedHwmKiB": 86344,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8066,
+          "name": "zkir",
+          "maxSampledRssKiB": 5097256,
+          "maxObservedHwmKiB": 5097256,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8127,
+          "name": "zkir",
+          "maxSampledRssKiB": 1280512,
+          "maxObservedHwmKiB": 1280512,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8149,
+          "name": "zkir",
+          "maxSampledRssKiB": 610808,
+          "maxObservedHwmKiB": 644192,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8164,
+          "name": "zkir",
+          "maxSampledRssKiB": 610788,
+          "maxObservedHwmKiB": 644068,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8578,
+          "name": "zkir",
+          "maxSampledRssKiB": 2511096,
+          "maxObservedHwmKiB": 2552252,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8885,
+          "name": "zkir",
+          "maxSampledRssKiB": 285044,
+          "maxObservedHwmKiB": 299164,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8899,
+          "name": "zkir",
+          "maxSampledRssKiB": 402496,
+          "maxObservedHwmKiB": 402496,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8975,
+          "name": "zkir",
+          "maxSampledRssKiB": 285036,
+          "maxObservedHwmKiB": 299016,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 8989,
+          "name": "zkir",
+          "maxSampledRssKiB": 1213068,
+          "maxObservedHwmKiB": 1280208,
+          "maxSampledSwapKiB": 0
+        },
+        {
+          "pid": 9218,
+          "name": "zkir",
+          "maxSampledRssKiB": 610952,
+          "maxObservedHwmKiB": 644220,
+          "maxSampledSwapKiB": 0
+        }
+      ],
+      "newKernelOomRecords": [],
+      "exactPeakGuaranteed": false,
+      "userProofLatencyMeasured": false
+    },
+    "utcSpanSeconds": 1038.817,
+    "clockCaveat": "UTC span and monitor monotonic elapsed differ; neither is isolated proof latency.",
+    "allocationCircuit": {
+      "k": 17,
+      "rows": 97862,
+      "previousK": 16,
+      "previousRows": 52704
+    },
+    "credentialDispatcher": {
+      "k": 19,
+      "rows": 418338,
+      "exactProgramAndKeysUnchanged": true
+    }
+  },
+  "programComparisonWithV4": [
+    {
+      "name": "updateRuntimeCredentialStatus",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "allocateRuntimeInstance",
+      "exactProgramAndKeysUnchanged": false
+    },
+    {
+      "name": "beginM4Activation",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "finalizeM4Activation",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "governProofModule",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "proposeProofModule",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "reviewProofModule",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "stageM4ActivationBinding",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "submitAuthorityRootApproval",
+      "exactProgramAndKeysUnchanged": true
+    },
+    {
+      "name": "terminateTemplate",
+      "exactProgramAndKeysUnchanged": true
+    }
+  ],
+  "incompleteGates": [
+    "Actor-slot identity and full fresh-key enforcement",
+    "Capability duration/depth policy enforcement and selected record/claim evidence semantics",
+    "Current exact active module, configuration schema and implementation checks in actual action entry points",
+    "Both ledger-bound ordinary runtime action families",
+    "Atomic action state transitions and scoped nullifiers",
+    "Common finalized DecisionReceipt",
+    "Negative node transactions, concurrency and replay acceptance",
+    "Ordinary-action restart, wallet recovery and full artifact/inference privacy",
+    "Ordinary-action proof latency, memory and production-capacity measurements"
+  ],
+  "integrationCaveats": [
+    "Fresh profile-v5 deployment required; never send v5 SDK calls to a v4 address",
+    "Policy projection corresponds to exact M2 JSON under the existing activator trust boundary, not an independent Compact JSON proof",
+    "The public proof/deadline privacy limitations in earlier credential evidence remain unchanged",
+    "Typed fields reserved for later action enforcement are committed, not yet all enforced by a runtime entry point",
+    "Live test modules and thresholds are disposable admission fixtures, not approved production runtime modules",
+    "V4 full credential trace is retained as historical evidence; this v5 run is allocation/governance only",
+    "Generated-circuit or SDK preflight negatives are not rejected node transactions",
+    "No dependency or lockfile change needed; shared milestone Markdown/generated HTML/ignored AGENTS left untouched",
+    "No commit or push performed",
+    "Configured index targets sibling information-flow; it was not used or updated as a Permio index",
+    "The earlier k20 shared-branch membership diagnostic remains unproved/deployed; this allocation proof does not close the ordinary-action proof gate."
+  ],
+  "supersededBuild": {
+    "directory": "logs/m6-key-retry-2026-10-14T00-03-48.741Z",
+    "startedAt": "2026-10-14T00:03:48.806Z",
+    "finishedAt": "2026-10-14T00:08:18.692Z",
+    "exitCode": 1,
+    "intentionallyTerminated": true,
+    "compilerPid": 6928,
+    "verifiedParentPid": 6907,
+    "signal": "SIGTERM",
+    "newKernelOomRecords": 0,
+    "reason": "Superseded by explicit dual-domain action hash layout",
+    "logsRetained": true
+  },
+  "live": {
+    "command": ".\\scripts\\run-live-m6-awake.ps1 -LiveArguments @('--allocation-only','--profile-memory')",
+    "exitCode": 0,
+    "fullSpecifiedHarnessPassed": true,
+    "verificationScope": "allocation-and-governance-not-action-acceptance",
+    "log": "logs/m6-live-2026-10-14T00-26-56.233Z.jsonl",
+    "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+    "capturedStartAt": "2026-10-14T00:26:57.761Z",
+    "capturedFinishAt": "2026-10-14T00:44:16.251Z",
+    "capturedSpanSeconds": 1038.49,
+    "deploymentAccepted": true,
+    "finalizedTransactionCount": 17,
+    "nodeNegativeTransactionsSubmitted": false,
+    "preflightNegatives": [
+      "wrong-signature",
+      "altered-state-commitment",
+      "stale-root",
+      "altered-template-hash",
+      "altered-policy-configuration",
+      "wrong-initial-state",
+      "correctly-signed-arbitrary-initial-state",
+      "replay"
+    ],
+    "allocationTransaction": {
+      "timestamp": "2026-10-14T00:37:38.546Z",
+      "event": "private-instance-allocation-accepted",
+      "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+      "transactionId": "009b6d3a73dd4bf607102d4f11d30be4acf14f366c9088703843f97e152c73f584",
+      "instanceCommitment": "6dd7b1388f7ad281261da8d9fa4cb762a81169811da9c58f2689d720c114abcf",
+      "allocationCommitment": "8c723583ef12770a1f0aaa4c664ccb51beb43f6962f91a29a6040071db87db03",
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "preflightNegativeChecks": [
+        "wrong-signature",
+        "altered-state-commitment",
+        "stale-root",
+        "altered-template-hash",
+        "altered-policy-configuration",
+        "wrong-initial-state",
+        "correctly-signed-arbitrary-initial-state",
+        "replay"
+      ],
+      "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transactions",
+      "credentialDispatcherConsumesAllocation": true,
+      "ordinaryActionAcceptance": false
+    },
+    "activationEventToAllocationVerifiedMs": 49008,
+    "allocationIntervalIncludes": "SDK preparation, preflight negatives, proof generation, submission and indexing; not isolated proof latency",
+    "ordinaryActionAcceptance": false,
+    "productionModuleApprovalClaimed": false,
+    "events": [
+      {
+        "timestamp": "2026-10-14T00:27:02.576Z",
+        "event": "local-stack-ready",
+        "networkId": "undeployed",
+        "node": "midnight-node:1.0.0",
+        "indexer": "indexer-standalone:4.3.3",
+        "proofServer": "proof-server:8.1.0",
+        "compiler": "0.31.1",
+        "verificationScope": "allocation-and-governance-not-action-acceptance"
+      },
+      {
+        "timestamp": "2026-10-14T00:27:27.131Z",
+        "event": "contract-deployed",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:27:57.257Z",
+        "event": "test-module-proposed",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00eb8c57c26685e4ff788009b23e960b262ed3df6f4165e75cc81891c97ceb3909",
+        "grantsTrust": false
+      },
+      {
+        "timestamp": "2026-10-14T00:28:33.130Z",
+        "event": "test-module-review-recorded",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "0013a778111b71a51cd2e051c78bb1a70aa034c20cb518a1cc0bdc4b448b688a45",
+        "reviewCount": 1
+      },
+      {
+        "timestamp": "2026-10-14T00:29:09.070Z",
+        "event": "test-module-review-recorded",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "0064fc1c5287622eb5d4d2a077843af1737ff2f3ecbf110915320b9078dd3ba23a",
+        "reviewCount": 2
+      },
+      {
+        "timestamp": "2026-10-14T00:30:49.718Z",
+        "event": "test-module-approval-recorded",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "008565ad4372c00fba59590819df14fe9a59926323b7d974fe9c240771dcd0c9ed",
+        "approvalCount": 1,
+        "syntheticLocalFixture": true
+      },
+      {
+        "timestamp": "2026-10-14T00:30:50.262Z",
+        "event": "module-activation-before-approval-threshold-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:30:50.360Z",
+        "event": "duplicate-module-approval-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:32:21.774Z",
+        "event": "test-module-approved",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00b35d8661dd4da4cc506fa0ebf6533b3a9375864f82dcc2db8de1366ae3ad5d22",
+        "approvalCount": 2,
+        "syntheticLocalFixture": true
+      },
+      {
+        "timestamp": "2026-10-14T00:33:51.185Z",
+        "event": "test-module-activated",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "002b2502ea618ec2a8f84ef6b4bdfcedbd0e6c3d93a9e9304ea71e6c95979a76af",
+        "syntheticLocalFixture": true
+      },
+      {
+        "timestamp": "2026-10-14T00:34:34.251Z",
+        "event": "expiring-staging-opened",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00a16a0db76b5b8eeab31c5e78e6d2c7a2de908bdc5b1fe11715df1f6745afe7ab",
+        "expiresAt": 1791938121
+      },
+      {
+        "timestamp": "2026-10-14T00:35:56.408Z",
+        "event": "activation-staging-opened",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00703abbdbe318a58153974fd7345563b34563c08a68c215764b1f5033b25fe720",
+        "bindingCount": 1,
+        "stagingExpiresAt": 1791941723,
+        "expiredPriorSessionCleaned": true
+      },
+      {
+        "timestamp": "2026-10-14T00:36:19.344Z",
+        "event": "activation-binding-staged",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00449c3f17e775e685604aa354bbc6fdbe02a6244446a359fa939e66e8f1f7f7b8",
+        "actionIndex": 0
+      },
+      {
+        "timestamp": "2026-10-14T00:36:49.538Z",
+        "event": "activation-admitted",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00a559b4b61d17fda58667d75d651f010af8911f5aea06c3a560127430617fb0e9",
+        "templateContentHash": "0x3584a7a10bc4321b5b4c69c52eea30298ebd964e56ac2be2f51535d613385207",
+        "envelopeHash": "0xbb9f11e4530b583d20b356843b97575c28e995f0191bc635b93ad2737f6fdaa4",
+        "authorityRootVersion": 1,
+        "authorityRootSequence": 1
+      },
+      {
+        "timestamp": "2026-10-14T00:36:49.636Z",
+        "event": "replay-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transaction"
+      },
+      {
+        "timestamp": "2026-10-14T00:37:38.546Z",
+        "event": "private-instance-allocation-accepted",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "009b6d3a73dd4bf607102d4f11d30be4acf14f366c9088703843f97e152c73f584",
+        "instanceCommitment": "6dd7b1388f7ad281261da8d9fa4cb762a81169811da9c58f2689d720c114abcf",
+        "allocationCommitment": "8c723583ef12770a1f0aaa4c664ccb51beb43f6962f91a29a6040071db87db03",
+        "transitionSequence": 0,
+        "allocatedInstances": 1,
+        "preflightNegativeChecks": [
+          "wrong-signature",
+          "altered-state-commitment",
+          "stale-root",
+          "altered-template-hash",
+          "altered-policy-configuration",
+          "wrong-initial-state",
+          "correctly-signed-arbitrary-initial-state",
+          "replay"
+        ],
+        "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transactions",
+        "credentialDispatcherConsumesAllocation": true,
+        "ordinaryActionAcceptance": false
+      },
+      {
+        "timestamp": "2026-10-14T00:37:38.546Z",
+        "event": "template-policy-initial-state-binding-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "policyVersion": 1,
+        "initialStateOpeningVerified": true,
+        "exactActivationConfigurationVerified": true,
+        "privatePolicyPublished": false,
+        "ordinaryActionAcceptance": false
+      },
+      {
+        "timestamp": "2026-10-14T00:37:38.595Z",
+        "event": "indexed-state-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "activeTemplateCount": 1,
+        "usedAdmissionNonceCount": 1,
+        "activationSequence": 1,
+        "activationSessionCount": 0,
+        "reservedAdmissionNonceCount": 0,
+        "proofModuleCount": 1,
+        "proofModuleRegistrySequence": 6
+      },
+      {
+        "timestamp": "2026-10-14T00:37:39.906Z",
+        "event": "allocation-reconnect-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "allocatedInstances": 1,
+        "transitionSequence": 0
+      },
+      {
+        "timestamp": "2026-10-14T00:37:39.913Z",
+        "event": "reconnect-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "credentialStatusRootSequence": 0,
+        "activeTemplateCount": 1,
+        "activationSequence": 1
+      },
+      {
+        "timestamp": "2026-10-14T00:37:39.976Z",
+        "event": "authority-root-privilege-collapse-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:38:31.723Z",
+        "event": "authority-root-approval-recorded",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "00fc5d8ea96a96777ee9c72f390446efce644c02f48f95ff86aa143f8955e89183",
+        "approvalCount": 1,
+        "rootChanged": false
+      },
+      {
+        "timestamp": "2026-10-14T00:38:31.776Z",
+        "event": "duplicate-authority-root-approval-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:39:22.031Z",
+        "event": "authority-root-rotated",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "006ca80db3e419e9d5c493968a59cf57cbe5bbe2d37f3771e381234866d21d2b4d",
+        "approvalCount": 2,
+        "rootVersion": 2,
+        "rootSequence": 2
+      },
+      {
+        "timestamp": "2026-10-14T00:39:22.097Z",
+        "event": "module-deprecation-privilege-collapse-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:40:51.343Z",
+        "event": "test-module-deprecated",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "009cb64e651ed0dfaef03e695e15e537d999caa4fc8341fed211eee776294a204e",
+        "prospective": true
+      },
+      {
+        "timestamp": "2026-10-14T00:40:51.430Z",
+        "event": "module-revocation-privilege-collapse-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:42:56.740Z",
+        "event": "test-module-revoked",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "0081e91591b15d9d9e7dd63b229440502edc26389d9660e14d606343a77f8f52c8",
+        "prospective": true
+      },
+      {
+        "timestamp": "2026-10-14T00:42:56.937Z",
+        "event": "template-retirement-privilege-collapse-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:43:32.752Z",
+        "event": "template-retired",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "003b9c8fcf749aaa9ebefca3f94d19db4f2c67f3e442ed1e7f48d2c02048f71b81",
+        "lifecycleStatus": 2,
+        "prospective": true
+      },
+      {
+        "timestamp": "2026-10-14T00:43:32.897Z",
+        "event": "retired-template-allocation-preflight-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transaction"
+      },
+      {
+        "timestamp": "2026-10-14T00:43:32.959Z",
+        "event": "template-revocation-privilege-collapse-rejected",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9"
+      },
+      {
+        "timestamp": "2026-10-14T00:44:15.794Z",
+        "event": "template-revoked",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "transactionId": "0016032fb772e50799194fd4147113bb16e1f353fa0253cbf028f510273504f7aa",
+        "lifecycleStatus": 3,
+        "prospective": true
+      },
+      {
+        "timestamp": "2026-10-14T00:44:15.899Z",
+        "event": "allocation-history-and-log-privacy-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "allocatedInstances": 1,
+        "capturedLogSentinelsChecked": 13,
+        "revokedTemplatePreflightRejected": true,
+        "ordinaryActionAcceptance": false
+      },
+      {
+        "timestamp": "2026-10-14T00:44:15.911Z",
+        "event": "final-governance-state-verified",
+        "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+        "verificationScope": "allocation-and-governance-not-action-acceptance",
+        "proofModuleLifecycleStatus": 6,
+        "proofModuleRegistrySequence": 8,
+        "templateLifecycleStatus": 3,
+        "templateActivationSequence": 1,
+        "templateLifecycleSequence": 3,
+        "usedTemplateLifecycleCommandNonceCount": 2,
+        "authorityRootVersion": 2,
+        "authorityRootSequence": 2,
+        "authorityRootApprovalCount": 2,
+        "historicalActiveTemplateCount": 1,
+        "credentialStatusRootSequence": 0,
+        "remainingCredentialStagingSessions": 0
+      }
+    ],
+    "memory": {
+      "maxRssKiB": 4074788,
+      "maxSwapKiB": 35228,
+      "maxSimultaneousRssPlusSwapKiB": 4092240,
+      "baselineHwmKiB": 7211336,
+      "finalHwmKiB": 7211336,
+      "oomDelta": 0,
+      "oomKillDelta": 0,
+      "sampleCount": 210,
+      "sampleErrors": 0,
+      "samplingComplete": true,
+      "unit": "KiB",
+      "allocationOnlyPeakIsolated": false,
+      "exactPeakGuaranteed": false,
+      "coldStartBenchmark": false,
+      "strict6GiBProfile": false,
+      "caveat": "Service HWM predates this run; RSS samples cover all governance and allocation operations, not an isolated allocation or ordinary action."
+    },
+    "capturedLogPrivateSentinelsChecked": 13,
+    "temporarySleepPreventionReleased": true
+  },
+  "publicStateVerification": {
+    "earlyCommand": "npm run verify:m6:public-state -- logs/m6-live-2026-10-14T00-26-56.233Z.jsonl",
+    "beforeLifecycle": {
+      "event": "independent-public-state-read",
+      "timestamp": "2026-10-14T00:38:35.466Z",
+      "finalAssertions": false,
+      "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+      "walletOrPrivateWitnessUsed": false,
+      "instanceCommitment": "6dd7b1388f7ad281261da8d9fa4cb762a81169811da9c58f2689d720c114abcf",
+      "allocationCommitment": "8c723583ef12770a1f0aaa4c664ccb51beb43f6962f91a29a6040071db87db03",
+      "currentStateCommitment": "dae1fe2bc76540cbd74a18d1a2649d9f387691be1455f4eb6b5f14e0cd4f806e",
+      "publicInstanceFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1,
+      "instanceLifecycleStatus": 1,
+      "credentialStatusRootSequence": 0,
+      "usedCredentialStatusCommandNonces": 0,
+      "remainingCredentialStagingSessions": 0,
+      "authorityRootVersion": 1,
+      "authorityRootSequence": 1,
+      "templateLifecycleStatus": 1,
+      "moduleLifecycleStatus": 4,
+      "moduleRegistrySequence": 6,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 1
+    },
+    "finalSupplementalCommand": "$m6PublicRead = @'\nimport assert from 'node:assert/strict';\nimport {verifyPublicState} from './scripts/verify-live-m6-public-state.ts';\nconst state=await verifyPublicState(['logs/m6-live-2026-10-14T00-26-56.233Z.jsonl']);\nconst expected={allocatedInstances:1,transitionSequence:0,allocationRequestNullifiers:1,instanceIdentityNullifiers:1,instanceLifecycleStatus:1,credentialStatusRootSequence:0,usedCredentialStatusCommandNonces:0,remainingCredentialStagingSessions:0,authorityRootVersion:2,authorityRootSequence:2,templateLifecycleStatus:3,moduleLifecycleStatus:6,moduleRegistrySequence:8,templateActivationSequence:1,templateLifecycleSequence:3};\nfor(const [field,value] of Object.entries(expected))assert.equal(state[field],value,field);\nassert.equal(state.instanceCommitment,'6dd7b1388f7ad281261da8d9fa4cb762a81169811da9c58f2689d720c114abcf');\nassert.equal(state.allocationCommitment,'8c723583ef12770a1f0aaa4c664ccb51beb43f6962f91a29a6040071db87db03');\nassert.equal(state.currentStateCommitment,'dae1fe2bc76540cbd74a18d1a2649d9f387691be1455f4eb6b5f14e0cd4f806e');\nconsole.log(JSON.stringify({...state,allocationOnlyFinalAssertions:true}));\n'@; node --input-type=module -e $m6PublicRead",
+    "afterLifecycle": {
+      "event": "independent-public-state-read",
+      "timestamp": "2026-10-14T00:45:41.707Z",
+      "finalAssertions": false,
+      "contractAddress": "00045470cb55c0850cc1d5413983614f34a0b43c621fe99c35b9ce7253ba3da9",
+      "walletOrPrivateWitnessUsed": false,
+      "instanceCommitment": "6dd7b1388f7ad281261da8d9fa4cb762a81169811da9c58f2689d720c114abcf",
+      "allocationCommitment": "8c723583ef12770a1f0aaa4c664ccb51beb43f6962f91a29a6040071db87db03",
+      "currentStateCommitment": "dae1fe2bc76540cbd74a18d1a2649d9f387691be1455f4eb6b5f14e0cd4f806e",
+      "publicInstanceFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1,
+      "instanceLifecycleStatus": 1,
+      "credentialStatusRootSequence": 0,
+      "usedCredentialStatusCommandNonces": 0,
+      "remainingCredentialStagingSessions": 0,
+      "authorityRootVersion": 2,
+      "authorityRootSequence": 2,
+      "templateLifecycleStatus": 3,
+      "moduleLifecycleStatus": 6,
+      "moduleRegistrySequence": 8,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 3,
+      "allocationOnlyFinalAssertions": true
+    },
+    "allocationHistoryUnchanged": true,
+    "readerFinalModeCaveat": "The generic --final mode expects the credential fixture. This allocation-only run used a wallet-free supplemental command with explicit final assertions.",
+    "nodeOrIndexerRestartPerformedThisContinuation": false,
+    "finalSessionCounts": {
+      "event": "independent-public-session-count-read",
+      "timestamp": "2026-10-14T00:51:05.571Z",
+      "walletOrPrivateWitnessUsed": false,
+      "activationSessions": 0,
+      "reservedAdmissionNonces": 0,
+      "usedAdmissionNonces": 1,
+      "credentialStagingSessions": 0
+    }
+  },
+  "integrity": {
+    "sourceFingerprintsMatch": true,
+    "sourceFingerprintCount": 16,
+    "allTenProgramKeyPairsMatch": true,
+    "forbiddenPrivateMarkersFound": false,
+    "fullPrivacyAcceptanceClaimed": false
+  },
+  "privacy": {
+    "capturedLogSentinelsPassed": true,
+    "forbiddenMarkersAbsent": true,
+    "publicInstanceFields": [
+      "allocationCommitment",
+      "currentStateCommitment",
+      "lifecycleStatus",
+      "transitionSequence"
+    ],
+    "fullArtifactOrInferencePrivacyAccepted": false
+  }
+}

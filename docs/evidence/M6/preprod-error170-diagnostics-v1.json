@@ -1,0 +1,226 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "observedAtUtc": "2026-10-17T01:23:26.630632+00:00",
+  "status": "ONE_REGENERATED_REVIEW_FINALIZED_170_NOT_REPRODUCED_ORIGINAL_CAUSE_UNRESOLVED_M6_OPEN",
+  "baselineCommit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "uncommittedWorktree": true,
+  "contractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+  "originalRejection": {
+    "rpcCode": 1010,
+    "customCode": 170,
+    "meaning": "InvalidDustSpendProof",
+    "rejectedBytesNotRetained": true,
+    "exactOriginalRootCauseProven": false
+  },
+  "officialSdkIntegrity": {
+    "packages": [
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-dust-wallet",
+        "version": "4.2.0",
+        "filesCompared": 37
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-facade",
+        "version": "4.1.0",
+        "filesCompared": 5
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-indexer-client",
+        "version": "1.2.3",
+        "filesCompared": 77
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-shielded",
+        "version": "3.0.2",
+        "filesCompared": 31
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-unshielded-wallet",
+        "version": "3.1.0",
+        "filesCompared": 37
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-prover-client",
+        "version": "1.2.3",
+        "filesCompared": 13
+      },
+      {
+        "package": "@midnight-ntwrk/wallet-sdk-abstractions",
+        "version": "2.1.0",
+        "filesCompared": 23
+      },
+      {
+        "package": "@midnight-ntwrk/ledger-v8",
+        "version": "8.1.0",
+        "filesCompared": 31
+      },
+      {
+        "package": "@midnight-ntwrk/testkit-js",
+        "version": "4.1.1",
+        "filesCompared": 45
+      }
+    ],
+    "lockfileSriChecked": true,
+    "localAndServerInstalledFilesMatch": true,
+    "filesComparedEach": 299,
+    "dependenciesModified": false
+  },
+  "nonSubmittingDiagnostic": {
+    "passed": true,
+    "balancesObserved": 1,
+    "nativeDustProofsObserved": 1,
+    "candidatePrivatelyCapturedBeforeSubmission": true,
+    "actualSubmissionCalls": 0,
+    "originalSdkArgumentsPreserved": true,
+    "treeSyncTimeUtc": "2026-10-17T01:06:06.000Z",
+    "proofCreationTimeUtc": "2026-10-17T01:06:18.000Z",
+    "creationTimeMinusTreeSyncSeconds": 12,
+    "strictSyncAtBalance": true,
+    "dustParametersMatchCreationBlock": true,
+    "commitmentRootFingerprint": "0c140dd570d67b595872e9ee09a99c85a7cef297cd67b1d309dea0a957c60681",
+    "generationRootFingerprint": "959b02b985f955c84947aca3bbd0e6b868cf3661ef06b3cf62ac9b4a54937a65",
+    "bothRootsMatchCanonicalCreationAndSyncBlocks": true,
+    "observedTreeTimeMismatch": false,
+    "notRetrospectiveEvidenceForOriginalRejectedCandidate": true
+  },
+  "readOnlyValidationInterface": {
+    "baselineUnsignedRemarkAlsoTraps": true,
+    "rpcCode": 4003,
+    "notUsableAsCandidateValidityTest": true
+  },
+  "controlledSubmission": {
+    "candidateSha256": "d2611823f362b309a22fd14bf62e6d22d742ac52cfde4373de009a4ea9479735",
+    "transactionIds": [
+      "00ce80c15a5f15dc28a3c9eb3d3304661179515812ade691c00c552fa5741ef1cb",
+      "00c602263a18f640015ccd1a0f791f46c4c35ea0146c7f95400c6d776383dce90b"
+    ],
+    "exactBytesUnchanged": true,
+    "submissionCalls": 1,
+    "automaticRetry": false,
+    "noReprovingOrWalletRestorationForSubmission": true,
+    "sdkFinalizedReturn": true,
+    "submissionStartedAtUtc": "2026-10-17T01:17:51.873Z",
+    "sdkOutcomeRecordedAtUtc": "2026-10-17T01:18:09.582Z",
+    "dustGracePeriodSeconds": 10800,
+    "independentlyCanonicalFinalized": true,
+    "block": {
+      "height": 3013673,
+      "hash": "745b3600ce9207cbef64140b9dee000f2cca2ae38c003037d6f577615bbc496e"
+    },
+    "publicState": {
+      "moduleLifecycleStatus": 1,
+      "moduleReviewCount": 1,
+      "moduleRegistrySequence": 2,
+      "activeTemplates": 0,
+      "runtimeInstances": 0
+    },
+    "delayIsNotProvenFix": true,
+    "generalPinnedStackIncompatibilitySupported": false
+  },
+  "limits": {
+    "originalCauseUnresolved": true,
+    "error170UniversallyFixed": false,
+    "onlyOneRegeneratedReviewSubmitted": true,
+    "fullM6Acceptance": false,
+    "ordinaryReceiptPrivacyRestartAndDownstreamGatesRemainOpen": true,
+    "noArchitectureOrDependencyChangeJustifiedByThisRun": true
+  },
+  "sourceVerification": {
+    "applicationSourceUnchangedInThisInvestigation": true,
+    "currentSourceSha256": {
+      "scripts/run-live-m6-admission.ts": "32c9958a6180907b702ffb548ab326d9591fecc4ab324b2c7c7b5d0fea0631a6",
+      "scripts/m6-slot-state-workflow.ts": "1b567557e2540e6e07c2d9febe8bd46f8d2cfbb6edd1cd22bca7c191a3931d39",
+      "packages/midnight-authorization/src/preprod-checkpoint.ts": "c1b12f01a2cbc89a8074117e980744a2e3f3df371432a9a0720005c8dd1c373b",
+      "packages/midnight-authorization/test/preprod-checkpoint.test.ts": "3c9ca001a10c41c02007b520179f98f2540ec6bd038964b9a9b700384bdff15d"
+    },
+    "existingRootRegressionTests": 359,
+    "rootSuiteRerunInThisDiagnosticTask": false,
+    "priorPassingLog": "logs/m6-runtime-balance-readiness-root-check-20261017.txt"
+  },
+  "privacyAndCloseout": {
+    "kind": "m6-error170-private-diagnostic-closeout",
+    "result": "PASS",
+    "removedPrivateProofOrAttemptFiles": 7,
+    "privateApiTransportDirectoryRemoved": true,
+    "temporaryCredentialsAbsent": true,
+    "onlyRootOnlySyntheticFixtureRetained": true,
+    "ownedServiceStates": {
+      "permio-m6-error170-submit-v1.service": "inactive",
+      "permio-m6-error170-controller-v2.service": "inactive",
+      "permio-m6-error170-client-v2.service": "inactive"
+    },
+    "ownedProverAbsent": true,
+    "proofPort6300NoListener": true,
+    "swapDisabled": true,
+    "swappiness": 0,
+    "publicNetworkCapabilityAndOtherOwnersPreserved": true,
+    "privateProofBytesNotExported": true
+  },
+  "finalEcsState": {
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "observedStatus": "Running",
+    "stopExecutionId": "exec-e066a079e10b4ea0a769",
+    "stopStatus": "Waiting",
+    "deadlineAsiaShanghai": "2026-10-17T11:21:39+08:00",
+    "mode": "StopCharging",
+    "forceStop": false,
+    "oldTimerCancellationVerified": true,
+    "automaticDeletionDeadlineEmpty": true,
+    "allOwnersFinishedAtReadback": true,
+    "instanceAndDisksPreserved": true,
+    "renewalsCeasedUntilNewAuthorizedEcsWork": true,
+    "ramGrantsChanged": false
+  },
+  "nextDiagnosticIf170Recurs": "Use a fresh run namespace to retain the exact rejected candidate, creation time, roots and native DUST proof/binding privately. Independently reconcile before any retry. The completed single-submit script is intentionally not reusable for another submission.",
+  "artifactSha256": {
+    "logs/m6-170-cloud-boundary-20261017.json": "dfd1eeffb210b5ecd183d6d7e7f2159c236802cd2860ecdf965fee3c520ed0c3",
+    "logs/m6-170-controller-closeout-v2.json": "2e8fd9d5f392efe94e7c282cb3535538a46f66166d55183883cbfb750eed71b0",
+    "logs/m6-170-diagnostic-harness-notes-v1.json": "8344591d7ddefc944de37021c3a3a7d469f01220e83b39719b02f3f401f70969",
+    "logs/m6-170-exact-candidate-submit-outcome-v1.json": "8b5dbdb51500db14ac1d2bd392709d3999619b31c55f6ca8bef2153c26638524",
+    "logs/m6-170-final-ecs-lifecycle-v1.json": "63b5dc349ce638b0f12e1ad674fc46017745172d0bb43d773a5e4b97263e83ea",
+    "logs/m6-170-integrity-audit-v1.mjs": "e6cfa1b9b300a2982c919c6a1cbe59196aca634009533dce4ec864d73859e358",
+    "logs/m6-170-observation-v2.mjs": "61bf3fa12bb0d22fe8f8cae4d914919768d72d3ab2d05d441ea43e3f1e8a8f34",
+    "logs/m6-170-official-npm-byte-integrity-v1.json": "048f9b5f8b069d57d2f2a3f44b1c3d585fdc1a6eb0cbc7e664732af88de88fe2",
+    "logs/m6-170-private-closeout-v1.json": "705de1ed1a13fccb17ac50b23709d0a5b66c753f11967df0867043bc91c07158",
+    "logs/m6-170-public-collection-manifest-v1.json": "8ad1a0ffa194df86975008546e31ca41ecccb5dd331666f3fc9422eb1671708f",
+    "logs/m6-170-public-root-reconciliation-1792199320937.json": "941b75adfce651a901185e3c41e9d047465b5aca0dd692646d06186a066101b7",
+    "logs/m6-170-public-root-reconciliation-v1.mjs": "18fb1691cf26109ca663a23495668aef659d2b5e0daf3e6267354bc79bdf24ac",
+    "logs/m6-170-public-root-shape-failure-1792199073390.json": "0b8462dcb0edd752d3765c474aea45052b302f0e5747631e540bae6ac4d972a9",
+    "logs/m6-170-public-root-shape-failure-1792199101160.json": "3dfb18caa7ed3867eb2f99d512a30df76fc18272012f6164caa7bcda578aa46b",
+    "logs/m6-170-public-root-shape-failure-1792199131411.json": "cccc7bcebdb4b737a6efab8996b036fd57e19b8fe674df39289fbe8341c4e8e8",
+    "logs/m6-170-public-root-shape-failure-1792199156070.json": "3f5b4809e83556506abcb620f3c30e23c556336154551357430a8c9d3a548477",
+    "logs/m6-170-public-root-shape-v1.json": "8608fde932365a968852cd325addb4cd98394c947aff815c3c022a58f19c72b6",
+    "logs/m6-170-public-root-shape-v1.mjs": "7d62f7e08144ea105892e244c112ba13bf86c064bb14bd57c8d9d5dc9eeab87f",
+    "logs/m6-170-server-sdk-byte-integrity-v1.json": "45308caa8ac321c30c932d4e42eda2de4d65a8d1ca070fa16801041b06688ab9",
+    "logs/m6-170-single-candidate-reconcile-v1.mjs": "b33c9bc1649a3196cea095601dcaee7c0e745069bc8a5df882b7f53014a51706",
+    "logs/m6-170-single-candidate-reconciliation-1792199951543.json": "ad3cfc74a4498a865f63d38feebef26def0473025c5035a1cfc851d4a6acb019",
+    "logs/m6-170-state-diagnostic-outcome-v2.json": "69a4d63304a49ea10a65625711190dfda301d2bb1b8e580351d6f58e6ec3bdb4",
+    "logs/m6-170-state-diagnostic-public-evidence-v2.tar.gz": "cdd6ee1368ef811699d33a9a76d85132a2e095d24b19799dde7087b47f816d81",
+    "logs/m6-170-state-diagnostic-public-v2/m6-170-state-diagnostic-controller-report-v2.json": "3213268385d066f8332aa37e0567ff355993c2560c2f600085ed0686d1589453",
+    "logs/m6-170-state-diagnostic-public-v2/m6-170-state-diagnostic-outcome-v2.json": "69a4d63304a49ea10a65625711190dfda301d2bb1b8e580351d6f58e6ec3bdb4",
+    "logs/m6-170-state-diagnostic-public-v2/m6-170-state-diagnostic-resource-samples-v2.jsonl": "787aa25d9f2ff523a8ed99a66b7b5d01f1c07b2e1df1034576e5aae7b9754241",
+    "logs/m6-170-state-diagnostic-public-v2/m6-170-state-diagnostic-worker-public-v2.jsonl": "ade9b908d8ae459f95700ec2bc2af05b897af4f179570aa3eda68b1eff3dc7e0",
+    "logs/m6-170-state-diagnostic-public-v2/m6-exact-key-reproduction-report.json": "2d4a2a8085ca9d71b08e533da0fda61681699af8e775a706714d535eb6471c83",
+    "logs/m6-170-state-diagnostic-public-v2/m6-keygen-cleanup-recovery-report.json": "2139894bf82961e59aab466d4bf6f2d8ac5be74ac1786d1643e5035ed5181a1b",
+    "logs/m6-170-state-diagnostic-public-v2/m6-keygen-original-cleanup-report.json": "5299fb2e67dc7853ac02df2e37be5afb20e9fab765ed16a1ebcb2b7796f2ff18",
+    "logs/m6-170-state-diagnostic-public-v2/m6-live-2026-10-17T00-05-01.694Z.jsonl": "4d6ca84de81abebaa84a29584b866a9e6875d4f99dd773b005158370ca377e6a",
+    "logs/m6-170-state-diagnostic-public-v2/m6-review-diagnostic-controller-report-v1.json": "9b64936077c692a6e519c350eba1fce979cea06cfb5eb2a11490fab31653c253",
+    "logs/m6-170-state-diagnostic-public-v2/m6-review-diagnostic-outcome-v1.json": "2ec11fc017a71105e5f491cddea2fa5887244faa783bfbfc31fd42670d71f6cb",
+    "logs/m6-170-state-diagnostic-public-v2/m6-review-diagnostic-resource-samples-v1.jsonl": "de2491bb0615a3e372bd8d8e30e60d5320b5c17eb6ce88204040c825ccda6704",
+    "logs/m6-170-state-diagnostic-public-v2/m6-review-diagnostic-worker-public-v1.jsonl": "b6aba412d1b08b8b28b44fdd25edf1c7d862caa88113b2d506ed765b627cf9a9",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-controller-preflight-v6-report.json": "c2f280c5a704953aa7d98ca42d9e3ca92cb7b8c2fdddf854f41939404549e1b2",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-controller-report.json": "4af84b3f063d67dfb839799e5a745fbde1917f1a89dea0280e505402063e6f8a",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-dependency-download-readiness.json": "9fb30183f07aa0cf53abbc2d35a70d4c512a80430209ddbe253541be653809bb",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-ecs-v3-outcome.json": "a0fe49c3dae097c669dce7ba176ee4cd065ba99b07cbb3c7e47fbaed1337a9ec",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-resource-samples.jsonl": "3ec176b5bbc396584a0448ba83669a30872d9a623cb518610a094fc3bb78d0a2",
+    "logs/m6-170-state-diagnostic-public-v2/m6-runtime-worker-public.jsonl": "865068b2d8072f0d5733510f71c44016a7b27bcbc7c968874f53c049d9879a0f",
+    "logs/m6-170-state-diagnostic-worker-v2.mjs": "1d4375f696ec9618fbb40340be156f87aab2ccfd21518e0ad9bd808807f0dc0a",
+    "logs/m6-170-state-interface-probe-1792198686910.json": "dcabf7287ccaa29ca393d6a0a2072964699d3c88971e451058377bd27727b134",
+    "logs/m6-170-state-interface-probe-v1.mjs": "04288d0a84bf9e0c315d73846f26496fea623055a51610c75cf77b64bcea5d69",
+    "logs/m6-170-submit-candidate-v1.mjs": "29f2eaa7fe97381307c9d5db4983dc64131a350ef971e5a2d3e3bb623a97dcd9",
+    "logs/m6-error170-controller-v2.py": "cb4646e40eb84e36418fc629f4c95a646454ce9f28e306207ce6296b4ddc3b8e"
+  }
+}

@@ -1,0 +1,55 @@
+--- a/proof-server/src/endpoints.rs
++++ b/proof-server/src/endpoints.rs
+@@ -259,7 +259,13 @@
+         Option<Fr>,
+     ) = tagged_deserialize(&request[..]).map_err(ErrorBadRequest)?;
+ 
+-    let data_resolver = data.clone();
++    // The deserializer owns these values; the HTTP receive buffer is no longer needed.
++    drop(request);
++    // This endpoint proves one preimage. The pinned ProofPreimage::prove path
++    // resolves its provided key exactly once; retain only a small IR copy for
++    // version dispatch, and transfer the large key buffers to that lookup.
++    let provided_ir = data.as_ref().map(|pkm| pkm.ir_source.clone());
++    let data_resolver = std::sync::Mutex::new(data);
+     let (_id, updates) = pool
+         .submit_and_subscribe(move || {
+             let rt = tokio::runtime::Builder::new_current_thread()
+@@ -278,7 +284,11 @@
+                         .expect("data provider initialization failed"),
+                     ),
+                     Box::new(move |_: KeyLocation| {
+-                        Box::pin(std::future::ready(Ok(data_resolver.clone())))
++                        let material = data_resolver
++                            .lock()
++                            .expect("provided proving-key slot is not poisoned")
++                            .take();
++                        Box::pin(std::future::ready(Ok(material)))
+                     }),
+                 );
+                 let proof = match ppi {
+@@ -288,8 +298,8 @@
+                             inner.binding_input = binding_input;
+                             ppi = Arc::new(inner);
+                         }
+-                        let proving_data = match data {
+-                            Some(pkm) => pkm,
++                        let ir_source = match provided_ir {
++                            Some(ir) => ir,
+                             None => resolver
+                                 .resolve_key(ppi.key_location.clone())
+                                 .await
+@@ -299,10 +309,11 @@
+                                         "couldn't find key {}",
+                                         ppi.key_location.0
+                                     ))
+-                                })?,
++                                })?
++                                .ir_source,
+                         };
+ 
+-                        let proof = versioned_ir::prove(ppi, &proving_data.ir_source, &resolver)
++                        let proof = versioned_ir::prove(ppi, &ir_source, &resolver)
+                             .await
+                             .map_err(WorkError::BadInput)?
+                             .0;

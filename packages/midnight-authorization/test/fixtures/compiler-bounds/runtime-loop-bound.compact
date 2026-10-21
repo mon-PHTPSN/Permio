@@ -1,0 +1,12 @@
+pragma language_version >= 0.23;
+
+// Intentionally invalid diagnostic fixture. It is NOT an M6 contract.
+// Checks whether pinned Compact accepts a runtime-sized ancestry loop.
+import CompactStandardLibrary;
+
+export pure circuit runtimeSizedAncestry(count: Uint<32>): Uint<32> {
+    for (const index of 0..count) {
+        assert(index < count, "diagnostic loop index");
+    }
+    return count;
+}

@@ -1,0 +1,310 @@
+{
+  "evidenceVersion": 1,
+  "milestone": "M6",
+  "status": "partial-allocation-slice",
+  "recordedDate": "2026-10-14",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "committed": false,
+  "pushed": false,
+  "previousEvidence": "docs/evidence/M6/clean-restart-verification.json",
+  "continuedBy": "docs/evidence/M6/issuer-binding-verification.json",
+  "architecture": {
+    "singleContract": true,
+    "contractProfile": "permio-authorization-v3",
+    "transactionCircuitCount": 10,
+    "newEntryPoint": "allocateRuntimeInstance",
+    "newAuthorityRoot": false,
+    "compilerUpgrade": false,
+    "ledgerUpgrade": false,
+    "memoryOrOomPolicyChanged": false,
+    "m4Allocation": "unsigned typed M4 authorization record, committed by an exact namespace-allocator-signed M6 assertion",
+    "m5InstanceBinding": "original M5 creation snapshot hash, not a later state snapshot"
+  },
+  "stack": {
+    "network": "Midnight Local Dev / undeployed",
+    "node": "1.0.0 / localhost:9944",
+    "indexer": "4.3.3 / localhost:8088/api/v4/graphql",
+    "proofServer": "8.1.0-weak-cache / localhost:6300",
+    "proofServerImage": "sha256:82f867abc556806f3742fb165b9cba8c898045a71e99bba8a8b33b37237bb1c9",
+    "compiler": "0.31.1",
+    "compactRuntime": "0.16.0",
+    "ledgerProfile": "ledger-8.0.2",
+    "wslNode": "22.23.2",
+    "nativeNode": "24.13.1"
+  },
+  "realKeyBuild": {
+    "command": "wsl.exe -d Ubuntu-24.04 -- bash -lic 'cd <M6-M8-worktree> && node scripts/run-compact-key-retry.mjs'",
+    "exitCode": 0,
+    "keyPairs": 10,
+    "startedAtUtc": "2026-10-13T19:18:25.985Z",
+    "finishedAtUtc": "2026-10-13T19:30:43.232Z",
+    "monitorElapsedSeconds": 690,
+    "utcTimestampSpanSeconds": 737.247,
+    "clockCaveat": "Monitor monotonic elapsed and UTC event span differ; neither is relabeled as user proof latency.",
+    "bootId": "7d0cea0a-27f7-45d7-bb19-1511cde29e10",
+    "observedCompilerMaxHwmKiB": 5097408,
+    "sampledCompilerSwapKiB": 0,
+    "newKernelOomRecords": 0,
+    "exactPeakGuaranteed": false,
+    "rawPublicLogs": "logs/m6-key-retry-2026-10-13T19-18-25.962Z/",
+    "allocationCircuit": {
+      "k": 16,
+      "rows": 52704,
+      "observedHwmKiB": 644276
+    },
+    "credentialDispatcher": {
+      "k": 19,
+      "rows": 484064,
+      "sourceLogicUnchanged": true,
+      "programAndKeyHashesChangedFromV2": true,
+      "programSha256": "27f5d3e13db7a9f0719e2c62d6641f22bc454af7071367c6a29395331f89d108",
+      "proverSha256": "ca5c60aeb7e8ecd678f8e333d1d9bcf873dea0b5e558417da527c601ba2b2cd3",
+      "verifierSha256": "a7916e0d353374000755a8d05568f7d902da1d410ab72b10b43514622882a620",
+      "proverBytes": 169881421,
+      "verifierBytes": 2311
+    },
+    "buildManifestSha256": "323d998f091e13999228223580ad66e98c41bdb1c6ea450a53da0aed24aac6d2",
+    "generatedContractSha256": "4d5fb87136c97647e551470f8998ea71c09fcfc3898c8a2cd11394cd6539c041",
+    "compilerInfoSha256": "f7fae01e8ff86c50bee6b4055fc7d3d870fdfad11a493c97fa18100365f51de3",
+    "allocationProgramSha256": "0ed22ebe9d679ebde45f50b298e7a8617f8c64d0432495a667d58e16daf8a3ad",
+    "allocationProverSha256": "ba1131c3c63a52c0b86e219f4bcebfd2e5e27d28b58dab76bc6f478c0f8ab921",
+    "allocationVerifierSha256": "eacfbb503fecd0335c8cdd00169aedf090ea7d53dea56e5f04088514351d4c05",
+    "allocationProverBytes": 21616084,
+    "allocationVerifierBytes": 2311
+  },
+  "localChecks": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "packageCases": 140,
+    "midnightCases": 76,
+    "newAllocationCases": 9,
+    "diagnosticCases": 14,
+    "hardhatCases": 6,
+    "totalCases": 160,
+    "failures": 0,
+    "skipped": 0,
+    "documentationFreshness": true,
+    "typecheck": true,
+    "solidityCompilation": true,
+    "diffWhitespace": true,
+    "rerunAfterValidForbiddenRoleSignatures": true
+  },
+  "live": {
+    "command": "npm run test:live:m6:allocation",
+    "status": "passed",
+    "verified": true,
+    "contractAddress": "a40543792f814abc6bd4caf131f0c36d94c8f69ecbcb8b3353f8bd432ebbe919",
+    "deployedAtUtc": "2026-10-13T19:31:31.122Z",
+    "tenCircuitDeploymentAcceptedByUnmodifiedNode": true,
+    "assetGuardPassedBeforeWalletStartup": true,
+    "rawPublicLog": "logs/m6-live-2026-10-13T19-31-09.319Z.jsonl",
+    "allocationTransaction": {
+      "timestamp": "2026-10-13T19:40:08.777Z",
+      "transactionId": "003e87041e8be68003babf9c1421f83815b49e05a785328e750a0329adfd2abd2c",
+      "instanceCommitment": "3c01dc26bcb0c056a9497d8e3ebc0fbd08c9f9a0f5e59d42cfcc7fe90620a983",
+      "allocationCommitment": "d754aa1a6685a8bbfca794084c576c1f2137f02437c08a2b1840cdff86ddd845",
+      "transitionSequence": 0,
+      "indexedCommitmentsMatched": true,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1
+    },
+    "allocationReconnectVerifiedAtUtc": "2026-10-13T19:40:09.823Z",
+    "activationEventToAllocationEventSeconds": 30.039,
+    "stackReadyToAllocationEventSeconds": 535.817,
+    "timingCaveat": "One allocation interval includes SDK preparation, preflight checks, proving, submission and indexed reads. Full setup includes shared module/template governance and an intentional expiration wait. Neither is isolated proof latency, ordinary-action latency or production capacity.",
+    "negativeBoundary": "SDK/generated-Compact preflight rejection is not a node-rejected proof transaction",
+    "exitCode": 0,
+    "completedAtUtc": "2026-10-13T19:46:02.492Z",
+    "acceptedTransactionCount": 17,
+    "acceptedTransactions": [
+      {
+        "timestamp": "2026-10-13T19:31:56.773Z",
+        "event": "test-module-proposed",
+        "transactionId": "00567ea23395153c47b8752d7489ca6b37141fdb20f83d0eda64a8f08f321251a6"
+      },
+      {
+        "timestamp": "2026-10-13T19:32:26.739Z",
+        "event": "test-module-review-recorded",
+        "transactionId": "000cf81fdfe80884216a0e42ca285cf97446291a4b71e9311a32a7620e148adcac"
+      },
+      {
+        "timestamp": "2026-10-13T19:32:56.689Z",
+        "event": "test-module-review-recorded",
+        "transactionId": "0090b9f6acfb8ef78c3cc2d9bb7bdf79328ef2d69f467937e3a70b87a13609ad27"
+      },
+      {
+        "timestamp": "2026-10-13T19:34:09.370Z",
+        "event": "test-module-approval-recorded",
+        "transactionId": "009026c561fe2799096ab439b29535bed43cc304a30f1f84b98d94f32075ca52dd"
+      },
+      {
+        "timestamp": "2026-10-13T19:35:26.416Z",
+        "event": "test-module-approved",
+        "transactionId": "009e502f91c1a41dbd831077706a0e30d8a6b1301a8905763a43ea064b12571490"
+      },
+      {
+        "timestamp": "2026-10-13T19:36:39.123Z",
+        "event": "test-module-activated",
+        "transactionId": "001ee11725d1e4b4ffed215945208b8c1bb0ac03972b974a98192959729393fcc3"
+      },
+      {
+        "timestamp": "2026-10-13T19:37:14.736Z",
+        "event": "expiring-staging-opened",
+        "transactionId": "002f41a23dd859e7d8c73c7df756fcccce937071deae31dcbf4b3fd57d60481c39"
+      },
+      {
+        "timestamp": "2026-10-13T19:38:44.630Z",
+        "event": "activation-staging-opened",
+        "transactionId": "002848f58bd7180049ebe1c7b7e1682f2d739e95dbb92337391b4188cc1fab94cb"
+      },
+      {
+        "timestamp": "2026-10-13T19:39:08.784Z",
+        "event": "activation-binding-staged",
+        "transactionId": "002ae26ebe3bc48dc5efb057aef9373a781600045df2c2763c4e61e1a14723fca4"
+      },
+      {
+        "timestamp": "2026-10-13T19:39:38.738Z",
+        "event": "activation-admitted",
+        "transactionId": "00b8d7f99009849899056e7daa7754d7369cd75d48eec305b490944c11901d1ace"
+      },
+      {
+        "timestamp": "2026-10-13T19:40:08.777Z",
+        "event": "private-instance-allocation-accepted",
+        "transactionId": "003e87041e8be68003babf9c1421f83815b49e05a785328e750a0329adfd2abd2c"
+      },
+      {
+        "timestamp": "2026-10-13T19:40:57.154Z",
+        "event": "authority-root-approval-recorded",
+        "transactionId": "000859a5b2ffb389da8986af6af542ee70ca1802ce76cbd12d23d5f7c85155e997"
+      },
+      {
+        "timestamp": "2026-10-13T19:41:37.025Z",
+        "event": "authority-root-rotated",
+        "transactionId": "009da5aa748accf1cc30b4cded322de47a60ffdc1cd1489768f7efddcbdc5628f3"
+      },
+      {
+        "timestamp": "2026-10-13T19:43:02.793Z",
+        "event": "test-module-deprecated",
+        "transactionId": "00e89f5e56760bd94a786c8f8a066aa672d24ec5df4c09244d484ebc9ff8b0cf95"
+      },
+      {
+        "timestamp": "2026-10-13T19:44:55.320Z",
+        "event": "test-module-revoked",
+        "transactionId": "00c2e7d9b35cdd6214c8be435d43476f72bd2b6dbb04aa025a007aa7524fcc7608"
+      },
+      {
+        "timestamp": "2026-10-13T19:45:32.416Z",
+        "event": "template-retired",
+        "transactionId": "00fcc5956fe5b2ea6536235d20ec9d594a11f3c5936f5ca195b6b6617816b9cc36"
+      },
+      {
+        "timestamp": "2026-10-13T19:46:02.378Z",
+        "event": "template-revoked",
+        "transactionId": "0082fef4688c3aaef288d5c77b2973e9daf4b3adce5fcef909b8d837abb928b2c0"
+      }
+    ],
+    "deploymentIsAdditionalToTransactionCount": true,
+    "finalState": {
+      "proofModuleLifecycleStatus": 6,
+      "proofModuleRegistrySequence": 8,
+      "templateLifecycleStatus": 3,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 3,
+      "usedTemplateLifecycleCommandNonceCount": 2,
+      "authorityRootVersion": 2,
+      "authorityRootSequence": 2,
+      "authorityRootApprovalCount": 2,
+      "historicalActiveTemplateCount": 1
+    },
+    "retiredTemplateAllocationPreflightRejected": true,
+    "revokedTemplateAllocationPreflightRejected": true,
+    "existingAllocationHistoryPreserved": true,
+    "capturedLogSentinelsChecked": 5,
+    "capturedLogSentinelsAbsent": true,
+    "independentPublicRead": {
+      "timestamp": "2026-10-13T19:47:24.754Z",
+      "walletUsed": false,
+      "privateWitnessUsed": false,
+      "runtimeInstanceCount": "1",
+      "allocationCommitment": "d754aa1a6685a8bbfca794084c576c1f2137f02437c08a2b1840cdff86ddd845",
+      "currentStateCommitment": "964af4f50c0756cc73d6f51722852af65d3a46ae747c02a73edfd88c5c28c102",
+      "transitionSequence": "0",
+      "instanceLifecycleStatus": "1",
+      "allocationRequestNullifiers": "1",
+      "instanceIdentityNullifiers": "1",
+      "credentialStatusRootSequence": "0",
+      "authorityRootVersion": "2",
+      "authorityRootSequence": "2",
+      "templateLifecycleStatus": "3",
+      "moduleLifecycleStatus": "6",
+      "allocationRecordFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "serviceLifetimeResourceCounters": {
+        "VmHWM": 7211336,
+        "VmRSS": 484816,
+        "RssAnon": 476116,
+        "RssFile": 8700,
+        "VmData": 622552,
+        "VmSwap": 3156,
+        "Threads": 14,
+        "memory.current": 520486912,
+        "memory.peak": 7436992512,
+        "memory.swap.current": 4055040,
+        "cgroup.anon": 491847680,
+        "cgroup.file": 25174016,
+        "cgroup.oom": 0,
+        "cgroup.oom_kill": 0
+      },
+      "resourceCaveat": "Service-lifetime high-water counters include the preceding v2 credential run, not isolated allocation peak or minimum hardware"
+    }
+  },
+  "privacyAndTrustBoundaries": {
+    "publicInstanceRecordFields": [
+      "allocationCommitment",
+      "currentStateCommitment",
+      "transitionSequence",
+      "lifecycleStatus"
+    ],
+    "publicMapKey": "instanceCommitment",
+    "otherObservableData": [
+      "namespace/template lookup",
+      "creation time",
+      "allocation transaction deadline",
+      "stable scoped replay nullifiers"
+    ],
+    "privateAllocationData": [
+      "issuer tree root/count and issuer identities",
+      "M4 authorization contents",
+      "instance expiry",
+      "state opening",
+      "allocation and state nonces"
+    ],
+    "issuerPredicateRequires": [
+      "exact allocated issuer membership",
+      "current namespace capability-issuer membership",
+      "namespace/policy and time bounds"
+    ],
+    "issuerPredicateWiredIntoCredentialDispatcher": false,
+    "initialStateCorrespondenceCheckedBySdk": true,
+    "initialStatePolicyIndependentlyProvedFromM2Json": false,
+    "identifierCaveat": "Stable replay nullifiers do not prevent dictionary guesses of low-entropy IDs; live fixtures use fresh random private instance/request IDs.",
+    "ordinaryActionProofLatencyMeasured": false,
+    "receiptProduced": false,
+    "deployedV2VerifierUpgraded": false
+  },
+  "remainingRequiredGates": [
+    "Bind credential issuance and ordinary actions to the immutable allocation and exact eligible instance issuers.",
+    "Complete template policy/configuration and initial-state proof binding, runtime identity and fresh-key checks.",
+    "Implement the two ledger-bound runtime action families and exact active module/configuration bindings.",
+    "Implement atomic state transitions, action nullifiers and the common finalized DecisionReceipt source.",
+    "Run required negative node transactions, contention/replay, post-deployment restart and full privacy acceptance.",
+    "Re-run the complete credential/session chain workflow on the final matching deployment; the earlier 21-transaction credential trace is v2 evidence, not v3 acceptance.",
+    "Measure actual ordinary-action proof latency and resource use; do not substitute setup/key-generation timings."
+  ]
+}

@@ -10,20 +10,38 @@
   "scripts": {
     "docs:build": "node scripts/build-docs.mjs",
     "docs:check": "node scripts/build-docs.mjs --check",
-    "compile": "hardhat build",
+    "compile:solidity": "hardhat build",
+    "compile:compact": "node scripts/compile-compact-sequential.mjs",
+    "compile:compact:bounded": "node scripts/run-m6-bounded-key-build.mjs",
+    "compile": "npm run compile:solidity",
     "typecheck": "tsc --noEmit",
     "test:protocol": "npm test --workspace @permio/protocol",
     "test:scenario-domain": "npm test --workspace @permio/scenario-domain",
     "test:scenario-generator": "npm test --workspace @permio/scenario-generator",
     "test:scenario-governance": "npm test --workspace @permio/scenario-governance",
     "test:context-accounts": "npm test --workspace @permio/context-accounts",
+    "test:midnight-authorization": "npm test --workspace @permio/midnight-authorization",
+    "test:diagnostics": "node --test scripts/test/*.test.ts",
+    "test:live:m6": "node scripts/run-live-m6-admission.ts",
+    "test:live:m6:preprod": "node scripts/run-live-m6-preprod.ts",
+    "test:live:m6:status": "node scripts/run-live-m6-status.ts",
+    "test:live:m6:session": "node scripts/run-live-m6-session.ts",
+    "test:live:m6:allocation": "node scripts/run-live-m6-admission.ts --allocation-only",
+    "test:live:m6:credential-binding": "node scripts/run-live-m6-admission.ts --credential-binding",
+    "verify:m6:public-state": "node scripts/verify-live-m6-public-state.ts",
+    "verify:m6:node-replay": "node scripts/verify-live-m6-node-replay.ts",
+    "verify:m6:local-recovery": "node scripts/verify-live-m6-local-recovery.ts",
+    "check:m6:preprod-transports": "node scripts/check-m6-preprod-transports.ts",
+    "inspect:m6:preprod-checkpoint": "node scripts/inspect-m6-preprod-checkpoint.ts",
+    "benchmark:m6:user": "node scripts/run-m6-ordinary-user-benchmark.ts",
     "test:contracts": "hardhat test nodejs",
-    "test": "npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:contracts",
+    "test": "npm run test:diagnostics && npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:midnight-authorization && npm run test:contracts",
     "check": "npm run docs:check && npm run typecheck && npm run compile && npm test",
     "node": "hardhat node",
     "deploy:local": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts",
     "deploy:testnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadTestnet",
-    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet"
+    "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet",
+    "test:m6:real-assets": "node --test scripts/acceptance/*.test.ts"
   },
   "engines": {
     "node": ">=22.13.0"
@@ -32,13 +50,32 @@
     "@nomicfoundation/hardhat-ignition": "^3.1.8",
     "@nomicfoundation/hardhat-toolbox-viem": "^5.0.7",
     "@types/node": "^22.20.1",
+    "@types/ws": "8.18.1",
     "hardhat": "^3.14.0",
     "marked": "^16.4.2",
     "typescript": "~7.0.2",
     "viem": "^2.55.19"
   },
   "dependencies": {
+    "@midnight-ntwrk/compact-runtime": "0.16.0",
+    "@midnight-ntwrk/midnight-js-contracts": "4.1.1",
+    "@midnight-ntwrk/midnight-js-http-client-proof-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-indexer-public-data-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-level-private-state-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-network-id": "4.1.1",
+    "@midnight-ntwrk/midnight-js-node-zk-config-provider": "4.1.1",
+    "@midnight-ntwrk/midnight-js-protocol": "4.1.1",
+    "@midnight-ntwrk/midnight-js-types": "4.1.1",
+    "@midnight-ntwrk/testkit-js": "4.1.1",
+    "@midnight-ntwrk/wallet-sdk": "1.2.0",
     "@openzeppelin/contracts": "^5.4.0",
-    "dotenv": "^17.4.2"
+    "dotenv": "^17.4.2",
+    "pino": "10.3.1",
+    "rxjs": "7.8.2",
+    "ws": "8.21.3"
+  },
+  "overrides": {
+    "@midnight-ntwrk/onchain-runtime-v3": "3.0.0",
+    "@midnight-ntwrk/wallet-sdk": "1.2.0"
   }
 }

@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "status": "PARTIAL_M6_CHECKPOINT_NOT_MILESTONE_ACCEPTANCE",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "baseCommit": "07df341ffabc65aa5e23302fddc644498017b018",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "authorization": "User requested local commits of all current M6/M7 work, retaining the already separate M5 patch, then creating an experiment worktree without starting it.",
+  "M5Patch": { "commit": "07df341ffabc65aa5e23302fddc644498017b018", "unchanged": true, "notAmendedOrDuplicated": true },
+  "M7Checkpoint": { "branch": "feat/m7-preparation", "commit": "bc2b93001cdb3bf90bfe0515848a44ce7da28509", "integratedIntoThisBranch": false },
+  "included": [
+    "Current v7 Compact source and compiler-generated public bindings/inventory, exact template policy, allocation and credential-binding predicates.",
+    "Private map and staged template-governed participant-slot state with narrow authority separation.",
+    "SDK/witness adapters, negative tests, live diagnostic fixtures and public readers.",
+    "Existing reproducible key/prover diagnostics, opt-in cache patch recipe, guarded real-key evidence and delivery feasibility assessment.",
+    "Detailed development/architecture history and partial live acceptance evidence, including actual failed/stopped attempts."
+  ],
+  "checks": {
+    "latestCompleteRootCheck": { "command": "npm run check", "passed": 255, "failed": 0, "skipped": 0, "evidence": "docs/evidence/M6/slot-key-resource-attempt-verification.json" },
+    "freshPrecommitChecks": [ "npm run docs:check", "npm run typecheck", "git diff --check", "scope/private-file checks" ],
+    "noSourceOrTestChangeSinceLatestCompleteCheck": true,
+    "freshRealKeyRunDuringCheckpoint": false,
+    "fullMatchingKeyInventoryReady": false
+  },
+  "remaining": [
+    "Complete matching real proving keys and fresh v7 slot-node acceptance.",
+    "Long occupied-slot chain/ancestor-revocation node checks and complete privacy review.",
+    "Ordinary actions, exact modules/evidence/schema, atomic state/nullifiers and common receipts.",
+    "Cross-credential/action watermark and complete wallet/private-state/restart/production acceptance.",
+    "Separate review/integration of M7, M8 and M9; no competing M6 receipt fixture may bypass these gates."
+  ],
+  "requestedPreparationOnly": {
+    "branch": "experiment/m6-low-memory-keygen",
+    "directory": "Permio-m6-low-memory-experiment",
+    "baseline": "The clean committed M6 checkpoint on feat/m6-m8-midnight-delivery, not a dirty checkout or main.",
+    "startExperimentAuthorized": false,
+    "noNewMemoryProfileCode": true,
+    "noSwapWslDockerOrSystemdConfigurationChange": true,
+    "noDependencyInstallOrKeyGeneration": true,
+    "noWalletKeysLogsOrNodeModulesCopied": true
+  },
+  "preserved": {
+    "M5M5P1": true,
+    "M6SharedMilestoneMarkdownAndGeneratedHtmlUnchanged": true,
+    "M6LockfileAndDependenciesUnchanged": true,
+    "ignoredPrivateAgentInstructionsExcluded": true,
+    "keysZkirLogsAndDependenciesExcluded": true,
+    "noMergeOrRebase": true,
+    "noPush": true
+  }
+}

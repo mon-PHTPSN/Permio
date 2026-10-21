@@ -1,0 +1,1494 @@
+{
+  "evidenceVersion": 1,
+  "milestone": "M6",
+  "status": "partial-slice-verified-M6-incomplete",
+  "recordedDate": "2026-10-14",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "committed": false,
+  "pushed": false,
+  "previousEvidence": "docs/evidence/M6/allocation-verification.json",
+  "architecture": {
+    "singleContract": true,
+    "contractProfile": "permio-authorization-v4",
+    "transactionCircuitCount": 10,
+    "newTransactionEntryPoint": false,
+    "newAuthorityRoot": false,
+    "newAdministrator": false,
+    "compilerOrLedgerUpgrade": false,
+    "memoryOrOomPolicyChanged": false
+  },
+  "versions": {
+    "accountCredentialAndLeaf": 1,
+    "capabilityCredentialAndLeaf": 3,
+    "sessionCredentialAndLeaf": 2,
+    "credentialStatusCommand": 3,
+    "attenuationCertificate": 2,
+    "allocation": 1,
+    "productionMigrationImplemented": false
+  },
+  "implemented": [
+    "Exact immutable allocation commitment, template and instance required for credential changes",
+    "Issuance bound to active instance creation and expiry plus bounded proof submission window",
+    "Namespace account/root issuance requires both allocated issuer membership and current namespace authority membership",
+    "Root capability binds its original exact namespace authority leaf; another allocated issuer cannot revoke it",
+    "Delegated capability ancestry inherits the original root issuer commitment",
+    "Physical status path positions bound to signed indices for mutation, active account and parent memberships",
+    "Expired staging cleanup remains permissionless and cannot activate credentials",
+    "Revocation may clean up after instance expiry but still needs the exact currently eligible authority"
+  ],
+  "stack": {
+    "network": "Midnight Local Dev / undeployed",
+    "node": "1.0.0 / localhost:9944",
+    "indexer": "4.3.3 / localhost:8088/api/v4/graphql",
+    "proofServer": "8.1.0-weak-cache / localhost:6300",
+    "proofServerImage": "sha256:82f867abc556806f3742fb165b9cba8c898045a71e99bba8a8b33b37237bb1c9",
+    "compiler": "0.31.1",
+    "compactRuntime": "0.16.0",
+    "ledgerProfile": "ledger-8.0.2",
+    "wslNode": "22.23.2",
+    "nativeNode": "24.13.1"
+  },
+  "realKeyBuild": {
+    "command": "wsl.exe -d Ubuntu-24.04 -- bash -lic 'cd <M6-M8-worktree> && node scripts/run-compact-key-retry.mjs'",
+    "exitCode": 0,
+    "keyPairs": 10,
+    "startedAtUtc": "2026-10-13T20:48:39.679Z",
+    "finishedAtUtc": "2026-10-13T21:02:19.940Z",
+    "monitorElapsedSeconds": 765.2,
+    "utcTimestampSpanSeconds": 820.261,
+    "clockCaveat": "Monitor elapsed and UTC timestamp span differ; not a user proof-time measurement.",
+    "bootId": "7d0cea0a-27f7-45d7-bb19-1511cde29e10",
+    "observedCompilerMaxHwmKiB": 5097252,
+    "sampledCompilerSwapKiB": 0,
+    "newKernelOomRecords": 0,
+    "dispatcher": {
+      "k": 19,
+      "rows": 418338
+    },
+    "allocation": {
+      "k": 16,
+      "rows": 52704
+    },
+    "rawPublicLogs": "logs/m6-key-retry-2026-10-13T20-48-39.667Z/",
+    "contractSha256": "41756988e7349637e1fd286d50e274efc37fb4bc10a326d9f3e7e4417481fb7e",
+    "compilerInfoSha256": "598df906bf903f69111adebbad325a760f4d732a2e2f871a29211427edd7f344",
+    "circuits": [
+      {
+        "name": "updateRuntimeCredentialStatus",
+        "programSha256": "c389839fcc362f20f1ff2cc3fb65792551b72e5fcf9db94b4c451df6ab7cc5b3",
+        "proverSha256": "73efa9ccd5c6eaabbbb7cbbffaab10e6e0fd5c88bfacc3275615186cd0d41619",
+        "verifierSha256": "31de7a55d55cfebec79231caf2171303721aba86ca1f3e97e10668cc3f9c7e3a",
+        "proverBytes": 169790769,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "allocateRuntimeInstance",
+        "programSha256": "0ed22ebe9d679ebde45f50b298e7a8617f8c64d0432495a667d58e16daf8a3ad",
+        "proverSha256": "ba1131c3c63a52c0b86e219f4bcebfd2e5e27d28b58dab76bc6f478c0f8ab921",
+        "verifierSha256": "eacfbb503fecd0335c8cdd00169aedf090ea7d53dea56e5f04088514351d4c05",
+        "proverBytes": 21616084,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "beginM4Activation",
+        "programSha256": "897c04b0db979ad551dbb3c9c3359885f1b3d37586a1d178843c5510c61ac4d4",
+        "proverSha256": "44a3c84bd07e8d7fc689af4bc2b39a90d37ea2f3b272ef62bbdad7657c26cf27",
+        "verifierSha256": "f33bfb3be2d7c98827ac1ba80409e52304800550714b71810f0f216822108f38",
+        "proverBytes": 21585759,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "finalizeM4Activation",
+        "programSha256": "31604dee9f104522af1145f683efa9098cc97bba4fe1c006984a9fb4206d3e5f",
+        "proverSha256": "df62ded20501a1d7f11f02d2b8b512fc60f8438d282d9a871fe70f946866d4c2",
+        "verifierSha256": "b51965cb1747091b90627de959bf8aa4f53c1179360cd0056ad9d641f9282a35",
+        "proverBytes": 21586639,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "governProofModule",
+        "programSha256": "7865e632b419ccca10f87994f48c37e2c8f8600b02d4eb4dc4ebb0155a8811dd",
+        "proverSha256": "ea784e27d5e0fc81b8317a16b6b5bad73956843298be2abcbff847d7279bd0ce",
+        "verifierSha256": "6d1870c0d8a70cbf921c8885aa30d32e482485eadbb2951b9e46079b377e5093",
+        "proverBytes": 84985554,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "proposeProofModule",
+        "programSha256": "332eef7032eb93a1b67845264d38c0282c8adc0d6625f53facd0dfddc57a7d32",
+        "proverSha256": "293244b47dae80902ec53fa54cc880f4ebc96e66da6286d2a0103d33f1268d01",
+        "verifierSha256": "00be2148b35332803559155c019964939a880057713cfac3bbd1e39cea0c947e",
+        "proverBytes": 9955233,
+        "verifierBytes": 2119
+      },
+      {
+        "name": "reviewProofModule",
+        "programSha256": "c5aefc7c13bf14ed846fdbf161eb9f047adfff258feed5fc239c14521a194902",
+        "proverSha256": "941f4c73809fe82f8df45b9d000b6ed742a6af290a8dd409e0e0daea9b5ee89b",
+        "verifierSha256": "016afae6eb3e6f2e4243109ba18171ff3b59cdbd7dd0365fbf6c36fe67ec9941",
+        "proverBytes": 21581168,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "stageM4ActivationBinding",
+        "programSha256": "52d3737b2d853eefc716ef908529cb8dc854cb645b1dea5028be56d84494d25d",
+        "proverSha256": "ab21200e82005b4d1d5053e2bd46a4a0deb10ce848d046aa6d4a14723d2687b9",
+        "verifierSha256": "f466e8172cd84b134b102afdfe9ddb5365e4e3a19ec186336727fcbafff26573",
+        "proverBytes": 9970594,
+        "verifierBytes": 2119
+      },
+      {
+        "name": "submitAuthorityRootApproval",
+        "programSha256": "01d8d64d9f1160df3a223ab2f7cfe547419ffd8df0938850446ba5d2777bf0e8",
+        "proverSha256": "3f1e782bdc9902bf96ad67c9236dcc5ac69ccb1e9f6cceb0efff00bcd0d0fbb2",
+        "verifierSha256": "b1f6a7a5000c0f27ef3cdf7b9a50ef04443a77f38a5434d65fe755e1801b6bba",
+        "proverBytes": 42715983,
+        "verifierBytes": 2311
+      },
+      {
+        "name": "terminateTemplate",
+        "programSha256": "684c4079e8578e2e47f54aa91273e74057a1d082587632c36d882563b5767bca",
+        "proverSha256": "e6fdde98d9b62da2494e3c079be07caeb27446470682b121e23b72790d30b6e1",
+        "verifierSha256": "9c2b4d095949a813517b07a0b6490e64d202398f10418d3703aa17063f4dee45",
+        "proverBytes": 21647453,
+        "verifierBytes": 2311
+      }
+    ]
+  },
+  "optimization": {
+    "initialRows": 733347,
+    "initialK": 20,
+    "initialBuildDisposition": "intentionally SIGTERM-stopped after verifying exact compiler PID and parent, before high-memory key phase; not an OOM",
+    "sharedComputationRows": 418047,
+    "sharedComputationK": 19,
+    "finalRows": 418338,
+    "scope": "share repeated account/parent hashes, certification inputs and command signature checks; retain authority/signature/policy predicates",
+    "sourceParseFailure": "Intermediate let syntax rejected by pinned compiler; replaced with explicit 20-bit position expression."
+  },
+  "localChecks": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "tests": 170,
+    "midnightTests": 84,
+    "hardhatTests": 6,
+    "failed": 0,
+    "skipped": 0,
+    "diagnosticsTests": 16,
+    "subsequentAdditionalIssuerAncestryVectors": {
+      "command": "node --test --test-name-pattern='rejects omitted and substituted' packages/midnight-authorization/test/active-ancestry.test.ts",
+      "tests": 1,
+      "passed": 1
+    },
+    "typecheckAfterLiveRunnerChanges": 0,
+    "initialRun": {
+      "tests": 84,
+      "passed": 83,
+      "failed": 1,
+      "cause": "Expected-error regex mismatch only; contract correctly rejected overlong instance lifetime; corrected and full suite passed."
+    },
+    "latestFullCheckIncludesPublicReader": true,
+    "latestFullCheckRanAfterAll21CredentialTransactions": true
+  },
+  "live": {
+    "command": "npm run test:live:m6 -- --credential-binding --profile-memory",
+    "wrapper": "scripts/run-live-m6-awake.ps1 (test-scoped automatic-sleep prevention; no power-plan change)",
+    "rawPublicLog": "logs/m6-live-2026-10-13T22-18-40.605Z.jsonl",
+    "scope": "actual M4 allocation/M5 registration/root/session APIs and real Compact issuance/certification/revocation; not ordinary-action acceptance",
+    "negativeBoundary": "generated Compact SDK preflight, not node-rejected negative transactions",
+    "configuredM2MaximumDurationSeconds": 14400,
+    "configuredInstanceLifetimeSeconds": 7200,
+    "short900SecondProfileDemonstrated": false,
+    "afterSevenRootStagesIndependentRead": {
+      "event": "independent-public-state-read",
+      "timestamp": "2026-10-13T21:39:43.516Z",
+      "finalAssertions": false,
+      "contractAddress": "1be3fd72e94da575bbb6e1c564432dfcc6786d3aed09cf6f80f6146bc7a2bfc0",
+      "walletOrPrivateWitnessUsed": false,
+      "instanceCommitment": "01e31e27b47c63a3d80431a6369a5ed212b14fe1f3953f482480bc623175af91",
+      "allocationCommitment": "c0df776dfddc00d5c241ac20182dc8dad978e478d6bd5283f7dfac7b24ea7ecf",
+      "currentStateCommitment": "47acc18d148fa60f509a2cbdb4c5063f500e81aeaa2abaef2a95ec9d9d7194be",
+      "publicInstanceFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1,
+      "instanceLifecycleStatus": 1,
+      "credentialStatusRootSequence": 1,
+      "usedCredentialStatusCommandNonces": 1,
+      "remainingCredentialStagingSessions": 1,
+      "authorityRootVersion": 1,
+      "authorityRootSequence": 1,
+      "templateLifecycleStatus": 1,
+      "moduleLifecycleStatus": 4,
+      "moduleRegistrySequence": 6,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 1
+    },
+    "prematureFinalPublicCheck": {
+      "command": "npm run verify:m6:public-state -- logs/m6-live-2026-10-13T21-03-09.941Z.jsonl --final",
+      "exitCode": 1,
+      "expectedExitCode": 1,
+      "acceptedCredentialTransactionsAtCheck": 11,
+      "readOnly": true,
+      "nodeNegativeTransaction": false
+    },
+    "containerMetadataBeforeRestart": [
+      {
+        "name": "midnight-node",
+        "id": "a5084fe34865320f661ac86d7321b1dc335d4942e0f868336e7e3c2377b0ce58",
+        "image": "midnightntwrk/midnight-node:1.0.0",
+        "imageId": "sha256:ede01da35e982b6a4b85461ad8492ae2753ef14246fba33c8039b782aa8e39fb",
+        "startedAtUtc": "2026-10-13T17:21:59.902244819Z",
+        "restartCount": 0,
+        "oomKilled": false,
+        "cpuQuotaCpus": 0,
+        "containerMemoryLimitBytes": 0,
+        "health": "healthy"
+      },
+      {
+        "name": "midnight-indexer",
+        "id": "93ddef13c72c71de3246dcd927e5be0a3d0b6ee40d97cbd8449823927f0b0f9c",
+        "image": "midnightntwrk/indexer-standalone:4.3.3",
+        "imageId": "sha256:03afd079b00bcd229df29a24771439c5e7695c339cd89216d0763ce40731cc4b",
+        "startedAtUtc": "2026-10-13T17:22:00.191194299Z",
+        "restartCount": 0,
+        "oomKilled": false,
+        "cpuQuotaCpus": 0,
+        "containerMemoryLimitBytes": 0,
+        "health": "healthy"
+      },
+      {
+        "name": "permio-m6-proof-server",
+        "id": "4944294d8d7c98f12d2e0d805192197ba9e069e190d3ad8fe4364ba48d2ccbec",
+        "image": "permio/proof-server:8.1.0-weak-cache",
+        "imageId": "sha256:82f867abc556806f3742fb165b9cba8c898045a71e99bba8a8b33b37237bb1c9",
+        "startedAtUtc": "2026-10-13T17:22:00.473680613Z",
+        "restartCount": 0,
+        "oomKilled": false,
+        "cpuQuotaCpus": 4,
+        "containerMemoryLimitBytes": 0,
+        "health": "healthy"
+      }
+    ],
+    "resourceConfiguration": {
+      "cpuModelReportedByWsl": "11th Gen Intel(R) Core(TM) i5-11300H @ 3.10GHz",
+      "wslOnlineCpus": 8,
+      "proverCpuQuota": 4,
+      "sharedWslMemTotalKiB": 8019584,
+      "sharedWslSwapTotalKiB": 2097152,
+      "proverContainerMemoryLimitBytes": 0,
+      "concurrentProofJobs": 1,
+      "interpretation": "Observed shared local setup, not minimum hardware, isolated CPU benchmark, dedicated cores or production sizing.",
+      "nativeCimMetadataUnavailable": true
+    },
+    "afterSevenSessionStagesIndependentRead": {
+      "event": "independent-public-state-read",
+      "timestamp": "2026-10-13T22:04:39.895Z",
+      "finalAssertions": false,
+      "contractAddress": "1be3fd72e94da575bbb6e1c564432dfcc6786d3aed09cf6f80f6146bc7a2bfc0",
+      "walletOrPrivateWitnessUsed": false,
+      "instanceCommitment": "01e31e27b47c63a3d80431a6369a5ed212b14fe1f3953f482480bc623175af91",
+      "allocationCommitment": "c0df776dfddc00d5c241ac20182dc8dad978e478d6bd5283f7dfac7b24ea7ecf",
+      "currentStateCommitment": "47acc18d148fa60f509a2cbdb4c5063f500e81aeaa2abaef2a95ec9d9d7194be",
+      "publicInstanceFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1,
+      "instanceLifecycleStatus": 1,
+      "credentialStatusRootSequence": 2,
+      "usedCredentialStatusCommandNonces": 2,
+      "remainingCredentialStagingSessions": 1,
+      "authorityRootVersion": 1,
+      "authorityRootSequence": 1,
+      "templateLifecycleStatus": 1,
+      "moduleLifecycleStatus": 4,
+      "moduleRegistrySequence": 6,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 1
+    },
+    "initialAttempt": {
+      "rawPublicLog": "logs/m6-live-2026-10-13T21-03-09.941Z.jsonl",
+      "exitCode": 1,
+      "credentialTransactionsAccepted": 21,
+      "credentialStatusRootSequence": 5,
+      "coreCredentialRegressionPassed": true,
+      "failedAfterCredentialWorkflow": true,
+      "failure": "Harness checked activation replay after its one-hour envelope expired; expiry guard precedes consumed-nonce guard, so expected nonce-error assertion failed.",
+      "diagnosis": "Verified current guard order, timestamp span, and deterministic generated-circuit expiry reproduction; raw arbitrary exception withheld.",
+      "fix": "Move nonce replay directly after template activation; preserve strict expected nonce error. Refresh prospective M4/M5 allocation fixture before lifecycle negatives.",
+      "contractOrKeysChanged": false,
+      "metrics": {
+        "log": "logs/m6-live-2026-10-13T21-03-09.941Z.jsonl",
+        "logSha256": "3fdf29fb3f9bbc53f4e51e34522ad0dba23a85ddd2e61e017b15d8c66b67171f",
+        "firstEvent": {
+          "timestamp": "2026-10-13T21:03:11.544Z",
+          "event": "prover-memory-sample",
+          "phase": "initial",
+          "counters": {
+            "VmHWM": 7211336,
+            "VmRSS": 484760,
+            "RssAnon": 476112,
+            "RssFile": 8648,
+            "VmData": 622552,
+            "VmSwap": 3160,
+            "Threads": 14,
+            "memory.current": 517840896,
+            "memory.peak": 7436992512,
+            "memory.swap.current": 4059136,
+            "cgroup.anon": 491847680,
+            "cgroup.file": 21704704,
+            "cgroup.oom": 0,
+            "cgroup.oom_kill": 0
+          },
+          "processCountersUnit": "KiB except Threads",
+          "cgroupCountersUnit": "bytes except oom counts"
+        },
+        "lastEvent": {
+          "timestamp": "2026-10-13T22:12:51.790Z",
+          "event": "failed",
+          "category": "unclassified-private-error",
+          "milestoneComplete": false,
+          "detailsWithheldToProtectPrivateWitness": true
+        },
+        "deployment": {
+          "timestamp": "2026-10-13T21:03:38.226Z",
+          "event": "contract-deployed",
+          "contractAddress": "1be3fd72e94da575bbb6e1c564432dfcc6786d3aed09cf6f80f6146bc7a2bfc0"
+        },
+        "acceptedNonDeploymentTransactions": 32,
+        "credentialAccepted": 21,
+        "transactionRequestTimingsMs": {
+          "count": 21,
+          "min": 155538,
+          "p50": 168820,
+          "p95": 185806,
+          "max": 195355,
+          "sum": 3604441,
+          "isolatedProofLatencyMeasured": false
+        },
+        "phases": [
+          {
+            "phase": "account-issuance",
+            "accepted": 1,
+            "firstRequestAtUtc": "2026-10-13T21:12:34.738Z",
+            "lastAcceptedAtUtc": "2026-10-13T21:15:38.577Z",
+            "utcSpanSeconds": 183.839
+          },
+          {
+            "phase": "root-capability-certification",
+            "accepted": 9,
+            "firstRequestAtUtc": "2026-10-13T21:15:38.867Z",
+            "lastAcceptedAtUtc": "2026-10-13T21:41:31.381Z",
+            "utcSpanSeconds": 1552.514
+          },
+          {
+            "phase": "session-certification",
+            "accepted": 9,
+            "firstRequestAtUtc": "2026-10-13T21:41:32.042Z",
+            "lastAcceptedAtUtc": "2026-10-13T22:07:15.505Z",
+            "utcSpanSeconds": 1543.463
+          },
+          {
+            "phase": "session-revocation",
+            "accepted": 1,
+            "firstRequestAtUtc": "2026-10-13T22:07:15.712Z",
+            "lastAcceptedAtUtc": "2026-10-13T22:10:01.541Z",
+            "utcSpanSeconds": 165.829
+          },
+          {
+            "phase": "root-capability-original-issuer-revocation",
+            "accepted": 1,
+            "firstRequestAtUtc": "2026-10-13T22:10:02.021Z",
+            "lastAcceptedAtUtc": "2026-10-13T22:12:50.709Z",
+            "utcSpanSeconds": 168.688
+          }
+        ],
+        "memory": {
+          "sampleCount": 832,
+          "initial": {
+            "timestamp": "2026-10-13T21:03:11.544Z",
+            "event": "prover-memory-sample",
+            "phase": "initial",
+            "counters": {
+              "VmHWM": 7211336,
+              "VmRSS": 484760,
+              "RssAnon": 476112,
+              "RssFile": 8648,
+              "VmData": 622552,
+              "VmSwap": 3160,
+              "Threads": 14,
+              "memory.current": 517840896,
+              "memory.peak": 7436992512,
+              "memory.swap.current": 4059136,
+              "cgroup.anon": 491847680,
+              "cgroup.file": 21704704,
+              "cgroup.oom": 0,
+              "cgroup.oom_kill": 0
+            },
+            "processCountersUnit": "KiB except Threads",
+            "cgroupCountersUnit": "bytes except oom counts"
+          },
+          "final": {
+            "timestamp": "2026-10-13T22:12:51.787Z",
+            "event": "prover-memory-sample",
+            "phase": "final",
+            "counters": {
+              "VmHWM": 7211336,
+              "VmRSS": 336332,
+              "RssAnon": 328320,
+              "RssFile": 8012,
+              "VmData": 624788,
+              "VmSwap": 220344,
+              "Threads": 14,
+              "memory.current": 372482048,
+              "memory.peak": 7436992512,
+              "memory.swap.current": 226086912,
+              "cgroup.anon": 340848640,
+              "cgroup.file": 24641536,
+              "cgroup.oom": 0,
+              "cgroup.oom_kill": 0
+            },
+            "processCountersUnit": "KiB except Threads",
+            "cgroupCountersUnit": "bytes except oom counts"
+          },
+          "maxSampledRssKiB": 6965400,
+          "maxSampledCgroupCurrentBytes": 7178477568,
+          "maxSampledVmSwapKiB": 1306512,
+          "maxSampledCgroupSwapBytes": 1337872384,
+          "oomDelta": 0,
+          "oomKillDelta": 0,
+          "exactPeakGuaranteed": false,
+          "serviceLifetimeHwmAttributedToRun": false,
+          "maxSampledRssPlusSwapKiB": 7963976,
+          "at": "2026-10-13T22:06:43.212Z",
+          "coincidentRssKiB": 6759304,
+          "coincidentSwapKiB": 1204672
+        },
+        "sampler": {
+          "timestamp": "2026-10-13T22:12:51.788Z",
+          "event": "prover-memory-sampling-finished",
+          "sampleCount": 832,
+          "errorCount": 0,
+          "complete": true
+        },
+        "transactions": [
+          {
+            "event": "test-module-proposed",
+            "timestamp": "2026-10-13T21:04:00.989Z",
+            "transactionId": "008caf53f2ad85b1645cd960d842a911cd4853962be7e5cf0ead278b8151eeef56"
+          },
+          {
+            "event": "test-module-review-recorded",
+            "timestamp": "2026-10-13T21:04:33.870Z",
+            "transactionId": "00f9c67a62941c4131a544c6f4dd3e756bc6d2d810c43c02b1a1eca95dda6e02a9"
+          },
+          {
+            "event": "test-module-review-recorded",
+            "timestamp": "2026-10-13T21:05:08.120Z",
+            "transactionId": "0013f0581feae0fc7482fbacc35affd0cb56d00c73e20429944d6b2c3a9a651b8d"
+          },
+          {
+            "event": "test-module-approval-recorded",
+            "timestamp": "2026-10-13T21:06:19.640Z",
+            "transactionId": "00a65e6c74ab1cd006a0976197f6ab6f39463aed28877b768396454b29dbe70d11"
+          },
+          {
+            "event": "test-module-approved",
+            "timestamp": "2026-10-13T21:07:39.605Z",
+            "transactionId": "00462a8c88f2b7ff381fd16d5a8f219b78507e510dfb5bd0980d71823328688845"
+          },
+          {
+            "event": "test-module-activated",
+            "timestamp": "2026-10-13T21:08:55.270Z",
+            "transactionId": "00e6fcaaa14390759ee14d0f36a6795b70490fc60eba096e7a62f884b5a0a34443"
+          },
+          {
+            "event": "expiring-staging-opened",
+            "timestamp": "2026-10-13T21:09:25.263Z",
+            "transactionId": "00b798432232ab60e94b69db3a598afc33a3ef1b7de7093d2bbb893123943f7ead"
+          },
+          {
+            "event": "activation-staging-opened",
+            "timestamp": "2026-10-13T21:11:01.021Z",
+            "transactionId": "0048a238e7ec6b884a9d073fb0032cb3068884a7b72f054d9d3f1333149f5ce48e"
+          },
+          {
+            "event": "activation-binding-staged",
+            "timestamp": "2026-10-13T21:11:26.757Z",
+            "transactionId": "0005aeee489327b13a35d4c5789c530406ec43e31a349e14cc6f0716cf257f92d9"
+          },
+          {
+            "event": "activation-admitted",
+            "timestamp": "2026-10-13T21:11:56.841Z",
+            "transactionId": "00703082a4469691507c96d8aed74de1ce80c93a8941cefb0cf715f4622ddad9d0"
+          },
+          {
+            "event": "private-instance-allocation-accepted",
+            "timestamp": "2026-10-13T21:12:34.106Z",
+            "transactionId": "00d259cb5ca4704e8ea9f423af770a2a369111cc63c72d5007f892cd2e62890ef1"
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:15:38.577Z",
+            "transactionId": "007046590453903f0242e510aad3ec890f36730ab106a4a34a31bf234dcb691b07",
+            "phase": "account-issuance",
+            "operation": 1,
+            "requestToAcceptanceMs": 183838
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:18:44.672Z",
+            "transactionId": "003917a98a146d6a04c6f6a352c4ac8ee999ea806e9344ee48a0540e79e821a005",
+            "phase": "root-capability-certification",
+            "operation": 2,
+            "requestToAcceptanceMs": 185806
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:21:50.528Z",
+            "transactionId": "0023b3270715e53ea1532ebefed19767907de91f5c1c22eda6d8a9c8c340a9810e",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 185390
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:24:50.760Z",
+            "transactionId": "00a17852d7faac6ca633961b66a8c088f39c8fda23edd69f3d80bc4409e0d495c7",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 179651
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:27:26.870Z",
+            "transactionId": "007adb7ec316b59e147521d1c2ffc8b09ba5bb53e1076b7ee49a2b2602b785805c",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 155538
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:30:19.797Z",
+            "transactionId": "00db19d49174935d579c318fc20689da251e7f683912a47b67099fc66aac2e0edb",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 172113
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:33:01.370Z",
+            "transactionId": "00d80a53f56f498b1e27289221d03bf1de234df06a89b0e0190a631b0e6fcb410f",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 160893
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:35:51.056Z",
+            "transactionId": "0043b45465a361ed6236c48decf4b91a102b6e464a5673d7288874f6339466df12",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 168820
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:38:45.561Z",
+            "transactionId": "002fc1754cea6c6245f2528bf398d5ce0bb5ecd0fbdfe793364f577ba4688ff31e",
+            "phase": "root-capability-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 173668
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:41:31.381Z",
+            "transactionId": "0058d876b5157b9086a7ef3e8709ab2cd39cc78a57ef2c78e58fc5d17191847c63",
+            "phase": "root-capability-certification",
+            "operation": 4,
+            "requestToAcceptanceMs": 165772
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:44:13.088Z",
+            "transactionId": "00f1dadd10071c29a7090d858600c1a6fc3c864177a73c0a5b71bb8e19df81b45d",
+            "phase": "session-certification",
+            "operation": 2,
+            "requestToAcceptanceMs": 161047
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:46:54.902Z",
+            "transactionId": "00157bf57d4b3ad90da8fb3e88386980f55e0bd40809de82ff6911711d8bef851c",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 161014
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:49:33.628Z",
+            "transactionId": "00422d53d33f2987ee9e909d766b3684df49caabb930ae2d83939326420255f84e",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 158078
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:52:15.364Z",
+            "transactionId": "00df55e71433138e57077159a3eaed84a5cddabda0b5110c8bf10ce98cac0e29ef",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 161170
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:55:31.418Z",
+            "transactionId": "003158c3f9c3b007b31730571bc1f2cee711cffbc51eb76fd469612c29fc071f56",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 195355
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T21:58:33.186Z",
+            "transactionId": "002c0ac42cf84a3c1aac52316b3bdc2d5a3116a260bdac1c00a3031f3f14790a99",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 180943
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T22:01:26.260Z",
+            "transactionId": "00890c020ea060e37c18bfed0710a6b98d78cc0a3564f85f3df5d870ff8dcf25c6",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 172437
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T22:04:13.604Z",
+            "transactionId": "00a7bb65743ffbd6d1a7e204a0ef272a137b0e77f6c17ff69cf73580ed38c738bc",
+            "phase": "session-certification",
+            "operation": 3,
+            "requestToAcceptanceMs": 166523
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T22:07:15.505Z",
+            "transactionId": "00ff90da3b5d861ed349a602455789344a268ec3e30d12d976ade7e49a20823b03",
+            "phase": "session-certification",
+            "operation": 4,
+            "requestToAcceptanceMs": 181867
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T22:10:01.541Z",
+            "transactionId": "0039740f4c38ea4d56b05249cf7a8ed13c1ad2ce7e9d67db7b0f6721bdfeea1b2d",
+            "phase": "session-revocation",
+            "operation": 1,
+            "requestToAcceptanceMs": 165830
+          },
+          {
+            "event": "bound-credential-transaction-accepted",
+            "timestamp": "2026-10-13T22:12:50.709Z",
+            "transactionId": "005d5cce3388829add75dd24443aea9d88a4fe5d1ff07d729e1a7a6b36b1008dbe",
+            "phase": "root-capability-original-issuer-revocation",
+            "operation": 1,
+            "requestToAcceptanceMs": 168688
+          }
+        ],
+        "credentialVerification": {
+          "timestamp": "2026-10-13T22:12:51.014Z",
+          "event": "allocated-credential-and-session-regression-verified",
+          "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+          "acceptedTransactions": 21,
+          "credentialStatusRootSequence": 5,
+          "capabilityVersion": 3,
+          "sessionVersion": 2,
+          "actualM4M5ApisUsed": true,
+          "allocationAndIssuerEnforced": true,
+          "ordinaryActionAcceptance": false
+        },
+        "preflightRejections": [
+          {
+            "timestamp": "2026-10-13T21:06:20.003Z",
+            "event": "module-activation-before-approval-threshold-rejected",
+            "contractAddress": "1be3fd72e94da575bbb6e1c564432dfcc6786d3aed09cf6f80f6146bc7a2bfc0"
+          },
+          {
+            "timestamp": "2026-10-13T21:06:20.101Z",
+            "event": "duplicate-module-approval-rejected",
+            "contractAddress": "1be3fd72e94da575bbb6e1c564432dfcc6786d3aed09cf6f80f6146bc7a2bfc0"
+          },
+          {
+            "timestamp": "2026-10-13T21:12:34.713Z",
+            "event": "eligible-but-unallocated-issuer-preflight-rejected",
+            "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+            "nodeRejectedTransaction": false
+          },
+          {
+            "timestamp": "2026-10-13T22:10:02.002Z",
+            "event": "allocated-but-nonoriginal-issuer-revocation-preflight-rejected",
+            "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+            "nodeRejectedTransaction": false
+          }
+        ]
+      }
+    },
+    "rerun": {
+      "rawPublicLog": "logs/m6-live-2026-10-13T22-18-40.605Z.jsonl",
+      "status": "passed",
+      "contractAndKeysUnchanged": true,
+      "requiredBecause": "Full harness must pass beyond the earlier expired-replay assertion; the initial 21 accepted credential transactions are preserved as historical evidence.",
+      "earlyReplayAndAllocation": [
+        {
+          "timestamp": "2026-10-13T22:27:39.311Z",
+          "event": "replay-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+          "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transaction"
+        },
+        {
+          "timestamp": "2026-10-13T22:28:13.668Z",
+          "event": "private-instance-allocation-accepted",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+          "transactionId": "0019a8173dada86cf89a7730e9bb0de90bc2a996c2c4bae5bd13ed0c351c253a8b",
+          "instanceCommitment": "73d5c990a6bce4270103f9377bdd6a480b4a77e6648c49b825077be675d26a11",
+          "allocationCommitment": "6429aa0a3eadc1842ec2570c1674ccd7a4803c8d53cfbe16640fe00aa9fedb43",
+          "transitionSequence": 0,
+          "allocatedInstances": 1,
+          "preflightNegativeChecks": [
+            "wrong-signature",
+            "altered-state-commitment",
+            "stale-root",
+            "altered-template-hash",
+            "replay"
+          ],
+          "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transactions",
+          "credentialDispatcherConsumesAllocation": true,
+          "ordinaryActionAcceptance": false
+        }
+      ],
+      "exitCode": 0,
+      "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+      "acceptedNonDeploymentTransactions": 38,
+      "credentialTransactions": 21,
+      "startedAtUtc": "2026-10-13T22:18:42.020Z",
+      "finishedAtUtc": "2026-10-13T23:39:07.289Z"
+    },
+    "finalIndependentReadBeforeRestart": {
+      "event": "independent-public-state-read",
+      "timestamp": "2026-10-13T23:40:10.728Z",
+      "finalAssertions": true,
+      "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+      "walletOrPrivateWitnessUsed": false,
+      "instanceCommitment": "73d5c990a6bce4270103f9377bdd6a480b4a77e6648c49b825077be675d26a11",
+      "allocationCommitment": "6429aa0a3eadc1842ec2570c1674ccd7a4803c8d53cfbe16640fe00aa9fedb43",
+      "currentStateCommitment": "e9b67a0721041d24254a7f40ffd69320c6b884e51479689a03cf5bcf5ec24623",
+      "publicInstanceFields": [
+        "allocationCommitment",
+        "currentStateCommitment",
+        "lifecycleStatus",
+        "transitionSequence"
+      ],
+      "transitionSequence": 0,
+      "allocatedInstances": 1,
+      "allocationRequestNullifiers": 1,
+      "instanceIdentityNullifiers": 1,
+      "instanceLifecycleStatus": 1,
+      "credentialStatusRootSequence": 5,
+      "usedCredentialStatusCommandNonces": 5,
+      "remainingCredentialStagingSessions": 0,
+      "authorityRootVersion": 2,
+      "authorityRootSequence": 2,
+      "templateLifecycleStatus": 3,
+      "moduleLifecycleStatus": 6,
+      "moduleRegistrySequence": 8,
+      "templateActivationSequence": 1,
+      "templateLifecycleSequence": 3
+    },
+    "exitCode": 0,
+    "restartVerification": {
+      "commands": [
+        "docker restart --time 20 midnight-node",
+        "docker restart --timeout 20 midnight-indexer",
+        "npm run verify:m6:public-state -- logs/m6-live-2026-10-13T22-18-40.605Z.jsonl --final"
+      ],
+      "scope": "same containers and images restarted without recreation/reset; public state persistence only, not ordinary-action restart acceptance",
+      "beforeHeader": {
+        "sampledAtUtc": "2026-10-13T23:40:52.0766121Z",
+        "blockNumberHex": "0x976e",
+        "stateRoot": "0x9b5a312b8a9e3a62a66f933f0044e26c802d8c55102d677b23f19800ac0ab051"
+      },
+      "afterHeader": {
+        "sampledAtUtc": "2026-10-13T23:44:35.8930782Z",
+        "blockNumberHex": "0x9793",
+        "stateRoot": "0x0d36b4b41586aeadad0f189f387e44b21c53fd7826356eaafe94fa8dbfc93798"
+      },
+      "nodeHeightDidNotRegress": true,
+      "finalPublicStateUnchanged": true,
+      "independentReadAfterRestart": {
+        "event": "independent-public-state-read",
+        "timestamp": "2026-10-13T23:44:37.042Z",
+        "finalAssertions": true,
+        "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+        "walletOrPrivateWitnessUsed": false,
+        "instanceCommitment": "73d5c990a6bce4270103f9377bdd6a480b4a77e6648c49b825077be675d26a11",
+        "allocationCommitment": "6429aa0a3eadc1842ec2570c1674ccd7a4803c8d53cfbe16640fe00aa9fedb43",
+        "currentStateCommitment": "e9b67a0721041d24254a7f40ffd69320c6b884e51479689a03cf5bcf5ec24623",
+        "publicInstanceFields": [
+          "allocationCommitment",
+          "currentStateCommitment",
+          "lifecycleStatus",
+          "transitionSequence"
+        ],
+        "transitionSequence": 0,
+        "allocatedInstances": 1,
+        "allocationRequestNullifiers": 1,
+        "instanceIdentityNullifiers": 1,
+        "instanceLifecycleStatus": 1,
+        "credentialStatusRootSequence": 5,
+        "usedCredentialStatusCommandNonces": 5,
+        "remainingCredentialStagingSessions": 0,
+        "authorityRootVersion": 2,
+        "authorityRootSequence": 2,
+        "templateLifecycleStatus": 3,
+        "moduleLifecycleStatus": 6,
+        "moduleRegistrySequence": 8,
+        "templateActivationSequence": 1,
+        "templateLifecycleSequence": 3
+      },
+      "containersAfterRestart": [
+        {
+          "name": "midnight-node",
+          "id": "a5084fe34865320f661ac86d7321b1dc335d4942e0f868336e7e3c2377b0ce58",
+          "image": "midnightntwrk/midnight-node:1.0.0",
+          "imageId": "sha256:ede01da35e982b6a4b85461ad8492ae2753ef14246fba33c8039b782aa8e39fb",
+          "startedAtUtc": "2026-10-13T23:41:00.809173046Z",
+          "restartCount": 0,
+          "oomKilled": false,
+          "cpuQuotaCpus": 0,
+          "containerMemoryLimitBytes": 0,
+          "health": "healthy"
+        },
+        {
+          "name": "midnight-indexer",
+          "id": "93ddef13c72c71de3246dcd927e5be0a3d0b6ee40d97cbd8449823927f0b0f9c",
+          "image": "midnightntwrk/indexer-standalone:4.3.3",
+          "imageId": "sha256:03afd079b00bcd229df29a24771439c5e7695c339cd89216d0763ce40731cc4b",
+          "startedAtUtc": "2026-10-13T23:43:39.817210894Z",
+          "restartCount": 0,
+          "oomKilled": false,
+          "cpuQuotaCpus": 0,
+          "containerMemoryLimitBytes": 0,
+          "health": "healthy"
+        },
+        {
+          "name": "permio-m6-proof-server",
+          "id": "4944294d8d7c98f12d2e0d805192197ba9e069e190d3ad8fe4364ba48d2ccbec",
+          "image": "permio/proof-server:8.1.0-weak-cache",
+          "imageId": "sha256:82f867abc556806f3742fb165b9cba8c898045a71e99bba8a8b33b37237bb1c9",
+          "startedAtUtc": "2026-10-13T17:22:00.473680613Z",
+          "restartCount": 0,
+          "oomKilled": false,
+          "cpuQuotaCpus": 4,
+          "containerMemoryLimitBytes": 0,
+          "health": "healthy"
+        }
+      ],
+      "proofServerRestarted": false,
+      "unrelatedContainersRestarted": false
+    },
+    "metrics": {
+      "log": "logs/m6-live-2026-10-13T22-18-40.605Z.jsonl",
+      "logSha256": "ff78a1680b59fd4161d6afcedda3586ca138d095e5c58b7f3ce65d4a57ec85a7",
+      "firstEvent": {
+        "timestamp": "2026-10-13T22:18:42.020Z",
+        "event": "prover-memory-sample",
+        "phase": "initial",
+        "counters": {
+          "VmHWM": 7211336,
+          "VmRSS": 336348,
+          "RssAnon": 328336,
+          "RssFile": 8012,
+          "VmData": 624788,
+          "VmSwap": 220328,
+          "Threads": 14,
+          "memory.current": 373039104,
+          "memory.peak": 7436992512,
+          "memory.swap.current": 226086912,
+          "cgroup.anon": 340529152,
+          "cgroup.file": 24641536,
+          "cgroup.oom": 0,
+          "cgroup.oom_kill": 0
+        },
+        "processCountersUnit": "KiB except Threads",
+        "cgroupCountersUnit": "bytes except oom counts"
+      },
+      "lastEvent": {
+        "timestamp": "2026-10-13T23:39:07.289Z",
+        "event": "prover-memory-sampling-finished",
+        "sampleCount": 961,
+        "errorCount": 0,
+        "complete": true
+      },
+      "deployment": {
+        "timestamp": "2026-10-13T22:19:08.325Z",
+        "event": "contract-deployed",
+        "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+      },
+      "acceptedNonDeploymentTransactions": 38,
+      "credentialAccepted": 21,
+      "transactionRequestTimingsMs": {
+        "count": 21,
+        "min": 157214,
+        "p50": 180310,
+        "p95": 216015,
+        "max": 220931,
+        "sum": 3865703,
+        "isolatedProofLatencyMeasured": false
+      },
+      "phases": [
+        {
+          "phase": "account-issuance",
+          "accepted": 1,
+          "firstRequestAtUtc": "2026-10-13T22:28:14.156Z",
+          "lastAcceptedAtUtc": "2026-10-13T22:31:14.467Z",
+          "utcSpanSeconds": 180.311
+        },
+        {
+          "phase": "root-capability-certification",
+          "accepted": 9,
+          "firstRequestAtUtc": "2026-10-13T22:31:14.756Z",
+          "lastAcceptedAtUtc": "2026-10-13T22:59:32.083Z",
+          "utcSpanSeconds": 1697.327
+        },
+        {
+          "phase": "session-certification",
+          "accepted": 9,
+          "firstRequestAtUtc": "2026-10-13T22:59:32.854Z",
+          "lastAcceptedAtUtc": "2026-10-13T23:27:31.795Z",
+          "utcSpanSeconds": 1678.941
+        },
+        {
+          "phase": "session-revocation",
+          "accepted": 1,
+          "firstRequestAtUtc": "2026-10-13T23:27:32.046Z",
+          "lastAcceptedAtUtc": "2026-10-13T23:30:09.260Z",
+          "utcSpanSeconds": 157.214
+        },
+        {
+          "phase": "root-capability-original-issuer-revocation",
+          "accepted": 1,
+          "firstRequestAtUtc": "2026-10-13T23:30:09.836Z",
+          "lastAcceptedAtUtc": "2026-10-13T23:32:49.759Z",
+          "utcSpanSeconds": 159.923
+        }
+      ],
+      "memory": {
+        "sampleCount": 961,
+        "initial": {
+          "timestamp": "2026-10-13T22:18:42.020Z",
+          "event": "prover-memory-sample",
+          "phase": "initial",
+          "counters": {
+            "VmHWM": 7211336,
+            "VmRSS": 336348,
+            "RssAnon": 328336,
+            "RssFile": 8012,
+            "VmData": 624788,
+            "VmSwap": 220328,
+            "Threads": 14,
+            "memory.current": 373039104,
+            "memory.peak": 7436992512,
+            "memory.swap.current": 226086912,
+            "cgroup.anon": 340529152,
+            "cgroup.file": 24641536,
+            "cgroup.oom": 0,
+            "cgroup.oom_kill": 0
+          },
+          "processCountersUnit": "KiB except Threads",
+          "cgroupCountersUnit": "bytes except oom counts"
+        },
+        "final": {
+          "timestamp": "2026-10-13T23:39:07.288Z",
+          "event": "prover-memory-sample",
+          "phase": "final",
+          "counters": {
+            "VmHWM": 7211336,
+            "VmRSS": 552472,
+            "RssAnon": 543888,
+            "RssFile": 8584,
+            "VmData": 624788,
+            "VmSwap": 35228,
+            "Threads": 14,
+            "memory.current": 596725760,
+            "memory.peak": 7436992512,
+            "memory.swap.current": 37380096,
+            "cgroup.anon": 561246208,
+            "cgroup.file": 26456064,
+            "cgroup.oom": 0,
+            "cgroup.oom_kill": 0
+          },
+          "processCountersUnit": "KiB except Threads",
+          "cgroupCountersUnit": "bytes except oom counts"
+        },
+        "maxSampledRssKiB": 6968572,
+        "maxSampledCgroupCurrentBytes": 7163396096,
+        "maxSampledVmSwapKiB": 1346616,
+        "maxSampledRssPlusSwapKiB": 7993176,
+        "maxSampledCgroupSwapBytes": 1379164160,
+        "oomDelta": 0,
+        "oomKillDelta": 0,
+        "exactPeakGuaranteed": false,
+        "serviceLifetimeHwmAttributedToRun": false
+      },
+      "sampler": {
+        "timestamp": "2026-10-13T23:39:07.289Z",
+        "event": "prover-memory-sampling-finished",
+        "sampleCount": 961,
+        "errorCount": 0,
+        "complete": true
+      },
+      "transactions": [
+        {
+          "event": "test-module-proposed",
+          "timestamp": "2026-10-13T22:19:36.886Z",
+          "transactionId": "0018f847d840b114df9badee109cc850ba56d45bbcc9eb45319590dd5345c6326b"
+        },
+        {
+          "event": "test-module-review-recorded",
+          "timestamp": "2026-10-13T22:20:09.826Z",
+          "transactionId": "00fab1430e7368179efaf19161dd95e4f49269ad4dcc06c18ab13356e9beeb9e0e"
+        },
+        {
+          "event": "test-module-review-recorded",
+          "timestamp": "2026-10-13T22:20:44.182Z",
+          "transactionId": "00b531ef9b65e8319cf826068cac715dfaec2c5ef24d4cd2eede4aa740dafdc7c0"
+        },
+        {
+          "event": "test-module-approval-recorded",
+          "timestamp": "2026-10-13T22:22:03.053Z",
+          "transactionId": "0056b8373fae5a42133c1a99698faf8474b2d7451b7c8d5bb9cae134530fcd32b5"
+        },
+        {
+          "event": "test-module-approved",
+          "timestamp": "2026-10-13T22:23:21.649Z",
+          "transactionId": "00386c3421205cc6c1257712c24177399a9b56b85247840b272ed41b1e0488c135"
+        },
+        {
+          "event": "test-module-activated",
+          "timestamp": "2026-10-13T22:24:37.649Z",
+          "transactionId": "00a484f5ec643f3a1fc7d4a5078603ac410ae536d37994932ceab7c3189040ef6a"
+        },
+        {
+          "event": "expiring-staging-opened",
+          "timestamp": "2026-10-13T22:25:07.679Z",
+          "transactionId": "001ee63574b671283e1a3dedd9b60789512fc0dba24cd8a69ea7ad7536a16340be"
+        },
+        {
+          "event": "activation-staging-opened",
+          "timestamp": "2026-10-13T22:26:43.545Z",
+          "transactionId": "0080d3566a16770a24c875f476019d84ca4d4657648efeab12eed67a3c948b35dc"
+        },
+        {
+          "event": "activation-binding-staged",
+          "timestamp": "2026-10-13T22:27:07.800Z",
+          "transactionId": "00cb72e990f9604cfd715c8d3f58e5ef1f07fd9f045a40876cd06148281da2fb04"
+        },
+        {
+          "event": "activation-admitted",
+          "timestamp": "2026-10-13T22:27:39.254Z",
+          "transactionId": "002c874b7e8ff04e8fe065bff852586a7d60ed949a1587da4176937c8695ccea22"
+        },
+        {
+          "event": "private-instance-allocation-accepted",
+          "timestamp": "2026-10-13T22:28:13.668Z",
+          "transactionId": "0019a8173dada86cf89a7730e9bb0de90bc2a996c2c4bae5bd13ed0c351c253a8b"
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:31:14.467Z",
+          "transactionId": "00ea216b6d389fa482244639e57adc3c6ef62c6608bd8fb5572e1baa83075f5a0b",
+          "phase": "account-issuance",
+          "operation": 1,
+          "requestToAcceptanceMs": 180310
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:34:33.874Z",
+          "transactionId": "00bafbc3a7604bdf6a4809517215431bee0d6e4777a56c6a1e9aee1c0bc4234d6a",
+          "phase": "root-capability-certification",
+          "operation": 2,
+          "requestToAcceptanceMs": 199119
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:37:15.809Z",
+          "transactionId": "00786ced29bfb92f7271ccb9aa77710d32e9fc60b08d001de5ec2a9f039c1f936a",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 161246
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:39:57.686Z",
+          "transactionId": "009504f7ec8da2374f0e0ee33652e9c67e6bcfd6d3a154f09fd56c75613deecbc2",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 161249
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:42:43.811Z",
+          "transactionId": "002789eee319b6bf39f8da721fef9916d902f944eef946c9165e05368a96f4823b",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 165420
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:45:56.203Z",
+          "transactionId": "0098dacc2f5cb6df0cc42b505c6ced245e6f4a001b909705c0acead79114e4f053",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 191641
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:49:32.822Z",
+          "transactionId": "009edb81519c9c6affe2c3bc02301301328f4faaa70b545c7c501744686a54bb6d",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 216015
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:53:01.999Z",
+          "transactionId": "00a1f9f7c8460c3492abbc363fe82ba7989a14e512b489048e9b6a845e1bf886ec",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 208413
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:56:09.722Z",
+          "transactionId": "005139068e8da341c8e7284182e5bdfa24f80cf9d7e05ab92305388d4626e0072c",
+          "phase": "root-capability-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 187039
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T22:59:32.083Z",
+          "transactionId": "00a42ddb43118e1814bf726cef870965771af24e111f6bb65a303c4154a21e043d",
+          "phase": "root-capability-certification",
+          "operation": 4,
+          "requestToAcceptanceMs": 202321
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:03:03.061Z",
+          "transactionId": "007b708abb5559d8660c7542b202beb8e0a01ca158eab4d510629257b838bb7423",
+          "phase": "session-certification",
+          "operation": 2,
+          "requestToAcceptanceMs": 210207
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:06:44.632Z",
+          "transactionId": "000d60b6efb8a301d8d54c3c2542d28900df6b799201ee220030e4f001305630e6",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 220931
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:09:51.039Z",
+          "transactionId": "0029c7de66013335614ae63e014d0f9eaee980a44ebb78fd1f390c9ecf5dd0bac6",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 186059
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:13:03.317Z",
+          "transactionId": "009db9f326b0ee569b2afa20dbf2840be133e7fba0168c1a11d63eaffce71aaa22",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 191847
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:16:00.951Z",
+          "transactionId": "0035dbcc7783d691979bdc55302104200699372bf31523f71374dd9b979f39af3a",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 177207
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:18:55.801Z",
+          "transactionId": "00d5fe6c58101ef48cba8eea1fe032b631f35de930998492c08d6172f18e0abcb8",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 174462
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:21:52.032Z",
+          "transactionId": "00b54c42135c3b0d3c781e86ad41343bc5c93867f8dbde0e4d2224270f6c5fa5c5",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 175823
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:24:43.953Z",
+          "transactionId": "0067a87c5a81fffc636c301e1fbc165ad0f5ebb997dab44731c53f7734e2847ac9",
+          "phase": "session-certification",
+          "operation": 3,
+          "requestToAcceptanceMs": 171460
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:27:31.795Z",
+          "transactionId": "008526e6e99844abcf9e9b140f85826e2906574847571aa4dd5d70f550a2a8c828",
+          "phase": "session-certification",
+          "operation": 4,
+          "requestToAcceptanceMs": 167797
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:30:09.260Z",
+          "transactionId": "00704fdb325eeb1fe7b3f03865cd5b71576abac0a0c94c51bda1c30cad1a995e04",
+          "phase": "session-revocation",
+          "operation": 1,
+          "requestToAcceptanceMs": 157214
+        },
+        {
+          "event": "bound-credential-transaction-accepted",
+          "timestamp": "2026-10-13T23:32:49.759Z",
+          "transactionId": "00b01a40647a2417c820a04cd3d5d7d32197ae320cd11db75485a1949aef1189ef",
+          "phase": "root-capability-original-issuer-revocation",
+          "operation": 1,
+          "requestToAcceptanceMs": 159923
+        },
+        {
+          "event": "authority-root-approval-recorded",
+          "timestamp": "2026-10-13T23:33:39.803Z",
+          "transactionId": "003442b634748fe91d6b985605c2c93624b104dd467dbddeada8f8c8231a436eb0"
+        },
+        {
+          "event": "authority-root-rotated",
+          "timestamp": "2026-10-13T23:34:25.626Z",
+          "transactionId": "00e6d3481189ddae10c39c5d582df6e758dbbf97851cda17c1eda530969acb213f"
+        },
+        {
+          "event": "test-module-deprecated",
+          "timestamp": "2026-10-13T23:36:45.046Z",
+          "transactionId": "00955205ebb2ee9b4792749c19d405a06d120a5450dd11e8b6a94c65d25454ffb8"
+        },
+        {
+          "event": "test-module-revoked",
+          "timestamp": "2026-10-13T23:38:03.743Z",
+          "transactionId": "0083ec42af9c4ec3ff5b00cb942286affe9d4d264c4313aadaac3ccf24ae231288"
+        },
+        {
+          "event": "template-retired",
+          "timestamp": "2026-10-13T23:38:38.176Z",
+          "transactionId": "00b2afa034bd50c58234f009cb5e19c248c8df72d77c9584f4042248c45fcf85c1"
+        },
+        {
+          "event": "template-revoked",
+          "timestamp": "2026-10-13T23:39:06.879Z",
+          "transactionId": "00c73321d6a38ba53f25dd9232003ecd04dba473698c1ddad8ce7b1bff1580a211"
+        }
+      ],
+      "credentialVerification": {
+        "timestamp": "2026-10-13T23:32:50.063Z",
+        "event": "allocated-credential-and-session-regression-verified",
+        "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+        "acceptedTransactions": 21,
+        "credentialStatusRootSequence": 5,
+        "capabilityVersion": 3,
+        "sessionVersion": 2,
+        "actualM4M5ApisUsed": true,
+        "allocationAndIssuerEnforced": true,
+        "ordinaryActionAcceptance": false
+      },
+      "finalGovernanceVerification": {
+        "timestamp": "2026-10-13T23:39:06.971Z",
+        "event": "final-governance-state-verified",
+        "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+        "verificationScope": "allocation-and-credential-binding-not-action-acceptance",
+        "proofModuleLifecycleStatus": 6,
+        "proofModuleRegistrySequence": 8,
+        "templateLifecycleStatus": 3,
+        "templateActivationSequence": 1,
+        "templateLifecycleSequence": 3,
+        "usedTemplateLifecycleCommandNonceCount": 2,
+        "authorityRootVersion": 2,
+        "authorityRootSequence": 2,
+        "authorityRootApprovalCount": 2,
+        "historicalActiveTemplateCount": 1,
+        "credentialStatusRootSequence": 5,
+        "remainingCredentialStagingSessions": 0
+      },
+      "allocation": {
+        "timestamp": "2026-10-13T22:28:13.668Z",
+        "event": "private-instance-allocation-accepted",
+        "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+        "transactionId": "0019a8173dada86cf89a7730e9bb0de90bc2a996c2c4bae5bd13ed0c351c253a8b",
+        "instanceCommitment": "73d5c990a6bce4270103f9377bdd6a480b4a77e6648c49b825077be675d26a11",
+        "allocationCommitment": "6429aa0a3eadc1842ec2570c1674ccd7a4803c8d53cfbe16640fe00aa9fedb43",
+        "transitionSequence": 0,
+        "allocatedInstances": 1,
+        "preflightNegativeChecks": [
+          "wrong-signature",
+          "altered-state-commitment",
+          "stale-root",
+          "altered-template-hash",
+          "replay"
+        ],
+        "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transactions",
+        "credentialDispatcherConsumesAllocation": true,
+        "ordinaryActionAcceptance": false
+      },
+      "logPrivacy": {
+        "timestamp": "2026-10-13T23:39:06.962Z",
+        "event": "allocation-history-and-log-privacy-verified",
+        "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+        "allocatedInstances": 1,
+        "capturedLogSentinelsChecked": 17,
+        "revokedTemplatePreflightRejected": true,
+        "ordinaryActionAcceptance": false
+      },
+      "preflightRejections": [
+        {
+          "timestamp": "2026-10-13T22:22:03.454Z",
+          "event": "module-activation-before-approval-threshold-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T22:22:03.514Z",
+          "event": "duplicate-module-approval-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T22:27:39.311Z",
+          "event": "replay-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+          "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transaction"
+        },
+        {
+          "timestamp": "2026-10-13T22:28:14.145Z",
+          "event": "eligible-but-unallocated-issuer-preflight-rejected",
+          "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+          "nodeRejectedTransaction": false
+        },
+        {
+          "timestamp": "2026-10-13T23:30:09.809Z",
+          "event": "allocated-but-nonoriginal-issuer-revocation-preflight-rejected",
+          "scope": "allocated-credential-and-session-regression-not-action-acceptance",
+          "nodeRejectedTransaction": false
+        },
+        {
+          "timestamp": "2026-10-13T23:32:51.671Z",
+          "event": "authority-root-privilege-collapse-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T23:33:39.857Z",
+          "event": "duplicate-authority-root-approval-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T23:34:25.702Z",
+          "event": "module-deprecation-privilege-collapse-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T23:36:45.143Z",
+          "event": "module-revocation-privilege-collapse-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T23:38:03.833Z",
+          "event": "template-retirement-privilege-collapse-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        },
+        {
+          "timestamp": "2026-10-13T23:38:38.253Z",
+          "event": "retired-template-allocation-preflight-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450",
+          "negativeCheckBoundary": "generated-Compact-preflight-not-node-rejected-transaction"
+        },
+        {
+          "timestamp": "2026-10-13T23:38:38.292Z",
+          "event": "template-revocation-privilege-collapse-rejected",
+          "contractAddress": "0e9960a11727dad379710a7d9b7f7105d6f044f6c2b881db42665a91fa8b2450"
+        }
+      ]
+    },
+    "credentialRegressionPassed": true,
+    "fullSpecifiedHarnessPassed": true,
+    "nodeNegativeTransactionsSubmitted": false,
+    "finalIntegrityCheck": {
+      "realCompiledAssetsStillMatch": true,
+      "sourceFingerprintsStillMatch": true,
+      "forbiddenKeyOrWitnessMarkersInPublicLog": false,
+      "fullPrivacyAcceptanceClaimed": false
+    }
+  },
+  "incompleteGates": [
+    "Final M2 policy/configuration and initial-state proof binding",
+    "Full identity/fresh-key enforcement",
+    "Active exact proof-module configuration in ledger-bound action entry points",
+    "Both ordinary runtime action families",
+    "Atomic action state transitions and scoped nullifiers",
+    "Common finalized DecisionReceipt",
+    "Negative node transactions and concurrency/replay acceptance",
+    "Ordinary-action post-deployment restart and full artifact privacy acceptance (public allocation/credential/governance persistence passed separately)",
+    "Ordinary-action proof latency, memory and production-capacity measurements"
+  ],
+  "integrationCaveats": [
+    "Fresh disposable profile-v4 deployment required; v2/v3 addresses and keys are not compatible",
+    "Capability/leaf-v3 changes exact credential hashes and private ancestry fixtures; account-v1/session-v2 stay unchanged",
+    "Historical allocation v3 and session v2 evidence is preserved, not relabeled as v4 verification",
+    "Credential milestone events are not common DecisionReceipts and must not be consumed by M7/M8/M9 as final runtime receipts",
+    "Long-lived serial setup regression is not evidence that a 900-second grant or ordinary C-end action is usable",
+    "No dependency/lockfile change needed: only scripts/source/tests/documentation changed in this continuation",
+    "Configured codebase-index targets sibling information-flow and was not used or updated as a Permio index",
+    "Live fixture chooses the public proof deadline as private instance expiry minus one second; expiry hiding is not demonstrated. Independent shorter deadline selection is required when that inference is unacceptable.",
+    "The full corrected live harness passed after preserving an earlier harness-expiry assertion failure; the contract/verifier/keys were unchanged across attempts."
+  ],
+  "sourceSha256": {
+    "packages/midnight-authorization/contracts/permio-authorization.compact": "540194dca07fe60424fae8301d98eb2736a7120940c0a4a2070458082d3e5931",
+    "packages/midnight-authorization/contracts/runtime-instance-allocation.compact": "919575e3e044ee27b734ccca8daef234a258f7fcc8b2968a322badede8e5f4a8",
+    "packages/midnight-authorization/contracts/runtime-active-ancestry.compact": "dba264fefe50af2998e2edf54b56e3d90c01d3627ab6e0c8f1b1dc7f38fd81c5",
+    "packages/midnight-authorization/contracts/runtime-action-authorization.compact": "d70591d4eca86330f51a36d64bf94763b869f7a19ec4049aa057c13310f175e7",
+    "packages/midnight-authorization/contracts/runtime-status-multiproof.compact": "58ff7cdee24973a29c5ce5b600a095a8313054f2647a0e2ca7429b8444141e2e",
+    "packages/midnight-authorization/src/runtime-credentials.ts": "f30ff239f242bb594bef84a61d7e808ff8cd62599f502990b8fc8567933c5713",
+    "packages/midnight-authorization/src/credential-status.ts": "8cfac8288602b205b3c8c012d283b5c2a41d768552870f6fffe777f7737f9fff",
+    "packages/midnight-authorization/src/instance-allocation.ts": "e7c940f914f1322ca87b7188d565afe8d48a99f94095a9290b656a30ee9dd6fd",
+    "packages/midnight-authorization/src/midnight-contract.ts": "fa14d1862498b535aaff82f300ef86a67f427e1710df5ad247dfd3b38a2cf9cd",
+    "scripts/run-live-m6-admission.ts": "e6eaf943e3cb1db35112cfc41fbf2f60c43c84fcf666ad41f09d04cc34af22b9",
+    "scripts/m6-bound-credential-workflow.ts": "03eefdbc897160d89cffbb2704264e331c0dc93fca9e1007ed7d857dce1d5823",
+    "scripts/verify-live-m6-public-state.ts": "d63bc09ea31d60695c961e7b1b2d2a9da69665131383398346cdb8a783dff130",
+    "scripts/compile-compact-sequential.mjs": "4d0548c653f9a25bfd12efad60f48905a0d770c2021c57f72fedd69be3367fdf",
+    "scripts/run-live-m6-session.ts": "54385b4a7bef78c83dd91d781ad79e1b95aa7ff22b6e2deadac6cb4bc7e144c8"
+  },
+  "scope": "Allocation-bound issuer/account/capability/session certification and revocation; not ordinary-action acceptance"
+}

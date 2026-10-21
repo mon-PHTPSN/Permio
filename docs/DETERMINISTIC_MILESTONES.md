@@ -632,11 +632,20 @@ stores a global role as the source of runtime permission.
 
 ## 9 M6 — Generic Midnight authorization boundary
 
-Status: `NOT_STARTED`; depends on M2 through M5<br>
-Target network for milestone acceptance: the pinned Midnight Local Dev stack<br>
+Status: `IN_PROGRESS`; depends on M2 through M5<br>
+Primary deployment and end-to-end acceptance network: Midnight Preprod; targeted infrastructure-failure verification: pinned Midnight Local Dev<br>
 Completion requires real Compact compilation, deployment, proof generation,
 transaction submission, indexed-state reads, and reconnect verification.
 Approved architecture: `docs/evidence/M6/architecture-decision.md`
+Current Preprod first-flow evidence: `docs/evidence/M6/ordinary-first-flow-preprod-v1.md`;
+this partial flow does not close the complete M6 acceptance gate.
+Owned Local Dev node/indexer interruption and cold reconnect passed on the
+historical v8 deployment: `docs/evidence/M6/local-infrastructure-recovery-v1.md`.
+The final authorized Preprod sequence, public evidence and local field matrix
+are verified with explicit evidence tiers in
+`docs/evidence/M6/acceptance-reconciliation-20261021-v1.md`.
+Independent human security/privacy review remains OPEN; M6 is not complete.
+Current acceptance record: `docs/evidence/M6/acceptance.json`.
 
 ### Result required in plain language
 
@@ -695,8 +704,9 @@ sequence atomically. Monad execution remains a later and separate result.
   evidence;
 - public instance and state commitments, transition sequences, scoped
   nullifiers, and a common `DecisionReceipt` envelope;
-- deploy, reconnect, state-query, and live-transaction scripts using the local
-  node, indexer, proof server, and funded disposable local accounts; and
+- deploy, reconnect, state-query, and live-transaction scripts using explicitly
+  selected Preprod node/indexer endpoints, a caller-controlled proof server,
+  and funded test accounts, plus isolated Local Dev infrastructure-failure tests; and
 - `docs/evidence/M6/acceptance.json` plus a development log recording exact
   implementation decisions, contract/compiler versions, commands, transaction
   references, state observations, failures, and recovery steps.
@@ -722,10 +732,17 @@ checkpoints avoids repeating full-history synchronization.
 
 The pinned `../midnight-local-dev` checkout supplies the ledger-8 proof server
 at `http://127.0.0.1:6300` (`proof-server:8.1.0`), node at port 9944, and
-indexer at port 8088. Local Dev is the mandatory M6 acceptance target. Reusing
-the synchronized Preprod accounts is an opt-in secondary smoke test and does
-not replace the required local deployment, proof, transaction, indexed-state,
-restart, and reconnect evidence.
+indexer at port 8088. Preprod is the primary M6 deployment and end-to-end
+acceptance network. The synchronized Preprod accounts may be used through the
+explicit adapter; restore the matching network/account/provider checkpoints
+and verify catch-up instead of deliberately restarting historical synchronization.
+Local Dev remains required for controlled node/indexer interruption and recovery,
+fresh-state reproducibility, and infrastructure fault injection. A complete
+expensive proof suite is not duplicated on both networks without a named test
+requirement. Local Dev results remain labeled Local Dev and do not establish
+Preprod deployment or compatibility. Record actual network versions and verify
+the exact compiler/runtime/SDK/prover combination before live submission;
+documentation or endpoint changes alone are not compatibility evidence.
 
 ### Exact state representation
 
@@ -834,13 +851,17 @@ generator seeds, and generated private fixtures never become receipt fields.
    consuming a second logical transition.
 8. A reused scoped nullifier fails across retries and reconnects.
 9. A non-transitioning action leaves state commitment and sequence unchanged.
-10. The live local-node test deploys the contract, submits successful and
+10. The live Preprod test deploys the contract, submits successful and
     negative proof transactions, reads indexed state, reconnects to the
     deployment, and confirms the same state after reconnect.
 11. The public-artifact scanner finds no generated private value in captured
     chain, indexer, receipt, log, or HTML evidence.
 12. No template or runtime caller can replace an authority or credential-status
     root without satisfying the exact root-transition authorization.
+13. Targeted Local Dev tests interrupt and recover the owned node/indexer and
+    confirm persisted contract state and application reconnect behavior. These
+    tests do not claim control over shared Preprod infrastructure or replace
+    Preprod authorization, conflict, replay, nullifier, receipt, or privacy checks.
 
 ### Exit gate
 
@@ -848,7 +869,7 @@ M6 is incomplete if any required live test is skipped, if Compact code branches
 on generated participant names or one template family's literal values, if a
 template can introduce executable proof logic, if a stale/revoked credential
 can authorize, if conflicting transitions can both succeed, or if the evidence
-record omits the exact local stack, compiler, contract, command, and observed
+record omits the exact network/provider or local fault-test stack, compiler, contract, command, and observed
 transaction/state results.
 
 M6 is also incomplete if documentation or evidence claims that Midnight v1
@@ -1687,10 +1708,17 @@ M5 是内存中的链下组件，不持久化状态、不认证网络调用方�
 
 ## 9 M6——通用 Midnight 授权边界
 
-状态：`NOT_STARTED`；依赖 M2 至 M5<br>
-Milestone 验收目标网络：固定版本的 Midnight Local Dev stack<br>
+状态：`IN_PROGRESS`；依赖 M2 至 M5<br>
+主要部署与端到端验收网络：Midnight Preprod；定向基础设施故障验证：固定版本 Midnight Local Dev<br>
 完成必须包括真实 Compact 编译、部署、证明生成、交易提交、索引状态读取和重新连接验证。
 已批准架构：`docs/evidence/M6/architecture-decision.md`
+当前Preprod首条流程证据：`docs/evidence/M6/ordinary-first-flow-preprod-v1.md`；
+这条局部流程不等于完整M6验收通过。
+历史 v8 部署上的自有 Local Dev 节点／索引器中断及冷启动重连已通过，证据见
+`docs/evidence/M6/local-infrastructure-recovery-v1.md`。
+最终授权的Preprod序列、公开证据及本地字段矩阵已通过核验，证据级别明确标注于
+`docs/evidence/M6/acceptance-reconciliation-20261021-v1.md`。
+独立人工安全／隐私审查仍未完成，因此M6尚未完成；当前记录见`docs/evidence/M6/acceptance.json`。
 
 ### 通俗结果要求
 
@@ -1730,8 +1758,8 @@ Midnight 密钥，也不声称在链上重新执行 M4 阈值。
 - M4 激活记录适配器，以及用于 M4 分配证据与 M5 capability、session、`ActionIntent` 和选定
   记录证据的私有适配器；
 - 公开实例／状态 commitment、转换序号、限定范围 nullifier 和通用 `DecisionReceipt` 封装；
-- 使用本地节点、indexer、proof server 和已充值一次性本地账户的部署、重连、状态查询和真实
-  交易脚本；以及
+- 使用显式选择的Preprod节点／indexer、调用方控制的证明器和已充值测试账户的部署、重连、
+  状态查询与真实交易脚本，以及隔离的Local Dev基础设施故障测试；以及
 - `docs/evidence/M6/acceptance.json` 和开发日志，记录精确实现决策、合约／编译器版本、命令、
   交易引用、状态观察、失败和恢复步骤。
 
@@ -1750,8 +1778,12 @@ Workspace 已保留 `information-flow` fixture Alice、Bob、Clara 三个完成�
 
 固定版本的 `../midnight-local-dev` checkout 提供 ledger 8 proof server
 `http://127.0.0.1:6300`（`proof-server:8.1.0`）、9944 端口节点和 8088 端口 indexer。Local Dev
-是 M6 强制验收目标。复用已同步 Preprod 账户只属于显式选择的补充 smoke test，不能替代所需的
-本地部署、证明、交易、索引状态、重启和重连证据。
+用于可控故障测试；Preprod是M6主要部署与端到端验收网络。已同步Preprod账户通过显式适配器
+使用，恢复匹配网络／账户／服务商的检查点并验证增量同步，不故意重跑完整历史同步。
+Local Dev仍必须验证可控节点／indexer中断恢复、新状态可复现性及基础设施故障注入。
+无明确测试要求，不在两种网络重复完整昂贵证明套件。Local Dev结果须标注网络，不能证明
+Preprod部署或兼容性。真实提交前记录实测网络版本并验证精确编译器／runtime／SDK／证明器
+组合；仅修改文档或端点不构成兼容证据。
 
 ### 精确状态表示
 
@@ -1833,15 +1865,17 @@ fixture 绝不能成为收据字段。
    失败且不会消费第二次逻辑转换。
 8. 已使用的限定范围 nullifier 在重试和重连后仍失败。
 9. 无状态转换操作保持状态 commitment 和序号不变。
-10. 真实本地节点测试部署合约、提交成功与负向证明交易、读取索引状态、重新连接部署，并确认
+10. 真实Preprod测试部署合约、提交成功与负向证明交易、读取索引状态、重新连接部署，并确认
     重连后状态一致。
 11. 公开产物扫描器在捕获的链、indexer、收据、日志或 HTML 证据中找不到生成私有值。
 12. 模板或运行时调用方都不能在不满足精确 root 转换授权的情况下替换权限或 credential 状态 root。
+13. 定向Local Dev测试中断并恢复自有节点／indexer，核验合约状态持久性及应用重连行为。
+    不声称控制共享Preprod基础设施，不替代Preprod授权、冲突、重放、nullifier、收据或隐私检查。
 
 ### 退出门槛
 
 如果跳过任何必需真实链测试、Compact 代码按生成姓名或某个模板族字面量分支、模板能引入可执行
-证明逻辑、旧或已撤销 credential 仍能授权、冲突转换都能成功，或者证据记录遗漏精确本地 stack、
+证明逻辑、旧或已撤销 credential 仍能授权、冲突转换都能成功，或者证据记录遗漏精确网络／服务商或本地故障测试stack、
 编译器、合约、命令及观察到的交易／状态结果，则 M6 未完成。
 
 如果文档或证据声称 Midnight v1 独立验证了每个 M4 Ed25519 审核者签名，M6 同样未完成。

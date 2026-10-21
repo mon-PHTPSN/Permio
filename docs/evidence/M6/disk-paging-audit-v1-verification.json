@@ -1,0 +1,195 @@
+{
+  "kind": "m6-disk-paging-audit-verification",
+  "version": 1,
+  "result": "PASS",
+  "verifiedAtUtc": "2026-10-17T10:47:49.785418+00:00",
+  "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+  "region": "ap-southeast-1",
+  "userRejected32GiBUpgrade": true,
+  "diskAllocatedSwapOverlookedInEarlierProfiles": true,
+  "existingSwapBytes": 8589934592,
+  "availableDiskBytesAfterProbe": 6206242816,
+  "existingFileAcceptedByKernel": true,
+  "actualPagingProbe": {
+    "actualPagingVerified": true,
+    "swapUsedBytes": 268431360,
+    "allocationBytes": 402653184,
+    "memoryMaxBytes": 268435456,
+    "swapMaxBytes": 536870912
+  },
+  "noNewDiskAllocation": true,
+  "noSourceKeysOrEvidenceDeletedOrOverwritten": true,
+  "noSwapReformatting": true,
+  "normalSyntheticPagingWritesOccurred": true,
+  "originalSwapAndVmStateRestored": true,
+  "productionSourceAndAssetsUnchanged": true,
+  "priorSealedArtifacts": {
+    "preprod-governance-v2-verification.json": {
+      "artifactsVerified": 192,
+      "reportSha256": "0b0295411555a4ac52c767eb53b62935cb98a46b02f6598f6995fb70c8989942"
+    },
+    "preprod-runtime-ecs-v1-verification.json": {
+      "artifactsVerified": 53,
+      "reportSha256": "c7a6ad7d7ff04b34deda2f61a8e49707a5bf0540cff224dcb134ba3e208d5c2c"
+    },
+    "preprod-error170-diagnostics-v1.json": {
+      "artifactsVerified": 46,
+      "reportSha256": "61399a327a1eb7700a37c92fbdee408cc9df276c8b2be908a9876f92a048a973"
+    },
+    "preprod-continuation-v3-verification.json": {
+      "artifactsVerified": 117,
+      "reportSha256": "665c76c47ebf50ac0fa037768da406dfec5f013760e931672a28b60a7b7449b4"
+    },
+    "actionDiagnosticIntegrityAudit": {
+      "artifactsVerified": 231,
+      "reportSha256": "d9c3432172eabfd2903896a0ef9e57e57386f4a60bcfd8b4a686f46ff62666f9"
+    }
+  },
+  "resourceUpgradeOrRamGrantApplied": false,
+  "newDeployment": false,
+  "transactionsSubmitted": 0,
+  "fullActionKeyBuildRerun": false,
+  "ordinaryActionAcceptance": false,
+  "endUserRamOrLatencyQualified": false,
+  "milestoneComplete": false,
+  "retainedHelperFailures": {
+    "initialReadOnlyExtentCountAssumptionFailures": 2,
+    "initialProbeLocalSyntaxFailureBeforeRemoteExecution": 1,
+    "finalMetadataAndProbeResults": "PASS"
+  },
+  "serverLifecycleCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T10:46:49.092344+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-616e89487a144df79054",
+      "content": {
+        "FormatVersion": "OOS-2019-06-01",
+        "Description": "Exact Singapore build instance: rolling two-hour graceful economical stop; no deletion",
+        "RamRole": "OOSServiceRole",
+        "Tasks": [
+          {
+            "Name": "oneTimeTrigger",
+            "Action": "ACS::TimerTrigger",
+            "Properties": {
+              "Type": "at",
+              "Expression": "2026-10-17T12:46:40Z",
+              "TimeZone": "UTC",
+              "EndDate": "2026-10-17T12:51:40Z"
+            }
+          },
+          {
+            "Name": "requirePayAsYouGo",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceChargeType",
+              "DesiredValues": [
+                "PostPaid"
+              ]
+            }
+          },
+          {
+            "Name": "requireVpc",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceNetworkType",
+              "DesiredValues": [
+                "vpc"
+              ]
+            }
+          },
+          {
+            "Name": "gracefulEconomicalStop",
+            "Action": "ACS::ExecuteAPI",
+            "Properties": {
+              "Service": "ECS",
+              "API": "StopInstance",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceId": "i-t4ni11rkjyzgi0vlb68d",
+                "ForceStop": false,
+                "StoppedMode": "StopCharging"
+              }
+            }
+          },
+          {
+            "Name": "waitUntilStopped",
+            "Action": "ACS::WaitFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].Status",
+              "DesiredValues": [
+                "Stopped"
+              ]
+            }
+          },
+          {
+            "Name": "verifyEconomicalMode",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].StoppedMode",
+              "DesiredValues": [
+                "StopCharging"
+              ]
+            }
+          }
+        ]
+      },
+      "contentSha256": "c8b1c98b35016ff52928f93eaf67a24909b7b3cf8c70da2f21acddcf49436f50",
+      "deadlineUtc": "2026-10-17T12:46:40+00:00",
+      "deadlineShanghai": "2026-10-17T20:46:40+08:00",
+      "lastRenewedAtUtc": "2026-10-17T10:46:46.900564+00:00",
+      "nextRefreshDueUtc": "2026-10-17T11:16:46.900567+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-e2edf0d4b8d1469a9b11": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "artifactSha256": {
+    "logs/m6-disk-audit-v1.json": "12b061820de9271935fe4ffad8595c1a0be516f83a12973ec70621a99b79fbfc",
+    "logs/m6-reusable-swap-verification-v1.json": "fdf6bad55b225f5424570a49fdb8ef549a306431b41db3afead232d12692f1f1",
+    "logs/m6-existing-swap-probe-v1.json": "4e90979e68e6f3bcf94ac265386f6e39b3d7a167f776104109d241931f510142",
+    "logs/m6-disk-audit-server-closeout-v1.json": "a997487910e9311505e9566e877f743b455e0c87a77825417b4fa75c8a4b556d",
+    "docs/evidence/M6/disk-paging-audit-v1.md": "638635baa2d4aa871f4c8fc404632b05af9765bfe0e6f1235833f5f6fb2d99b9"
+  }
+}

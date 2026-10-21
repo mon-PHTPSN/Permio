@@ -8,7 +8,7 @@
   },
   "types": "./src/index.ts",
   "scripts": {
-    "test": "node --test test/context-accounts.test.ts"
+    "test": "node --test test/*.test.ts"
   },
   "dependencies": {
     "@permio/scenario-domain": "0.1.0",

@@ -1,0 +1,176 @@
+{
+  "evidenceVersion": 1,
+  "status": "PARTIAL_M6_SLOT_ARCHITECTURE_DECISION_REQUIRED",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "observedDateUtc": "2026-10-14",
+  "head": "07df341ffabc65aa5e23302fddc644498017b018",
+  "baselineLiveEvidence": "docs/evidence/M6/slot-assignment-verification.json",
+  "compilerDiagnostics": {
+    "reportVersion": 1,
+    "kind": "compiler-language-diagnostic-only",
+    "startedAtUtc": "2026-10-14T03:13:58.209Z",
+    "completedAtUtc": "2026-10-14T03:14:01.990Z",
+    "compilerVersion": "0.31.1",
+    "runtimeVersion": "0.16.0",
+    "cases": [
+      {
+        "name": "runtime-vector-bound",
+        "input": "packages/midnight-authorization/test/fixtures/compiler-bounds/runtime-vector-bound.compact",
+        "sourceSha256": "6351a8997c30238b8ecba5f9b7f3d844e6df64b336ccecec8f0a7e5e4eef11e5",
+        "command": [
+          "compact",
+          "compile",
+          "+0.31.1",
+          "--skip-zk",
+          "packages/midnight-authorization/test/fixtures/compiler-bounds/runtime-vector-bound.compact",
+          "logs/m6-slot-bounds-Dj106q/runtime-vector-bound"
+        ],
+        "expectedOutcome": "reject",
+        "observedExitCode": 255,
+        "diagnostic": "Exception: runtime-vector-bound.compact line 8 char 35:\n  invalid context for reference to variable name count",
+        "generatedControl": null
+      },
+      {
+        "name": "runtime-loop-bound",
+        "input": "packages/midnight-authorization/test/fixtures/compiler-bounds/runtime-loop-bound.compact",
+        "sourceSha256": "48b4d1a05c6579d8d1c458780115b1fc8d20146778838145cdb434b2a48d1a73",
+        "command": [
+          "compact",
+          "compile",
+          "+0.31.1",
+          "--skip-zk",
+          "packages/midnight-authorization/test/fixtures/compiler-bounds/runtime-loop-bound.compact",
+          "logs/m6-slot-bounds-Dj106q/runtime-loop-bound"
+        ],
+        "expectedOutcome": "reject",
+        "observedExitCode": 255,
+        "diagnostic": "Exception: runtime-loop-bound.compact line 8 char 28:\n  invalid context for reference to variable name count",
+        "generatedControl": null
+      },
+      {
+        "name": "constant-bound",
+        "input": "packages/midnight-authorization/test/fixtures/compiler-bounds/constant-bound.compact",
+        "sourceSha256": "7deaa88bcd2ed7c774a8b93d582401444be1521a0289074d1f1b118f882a0308",
+        "command": [
+          "compact",
+          "compile",
+          "+0.31.1",
+          "--skip-zk",
+          "packages/midnight-authorization/test/fixtures/compiler-bounds/constant-bound.compact",
+          "logs/m6-slot-bounds-Dj106q/constant-bound"
+        ],
+        "expectedOutcome": "accept",
+        "observedExitCode": 0,
+        "diagnostic": "",
+        "generatedControl": {
+          "compilerVersion": "0.31.1",
+          "runtimeVersion": "0.16.0",
+          "circuit": "constantSizedAncestry",
+          "proofRequired": false
+        }
+      }
+    ],
+    "productionAssetsChanged": false,
+    "generatedKeyPairs": 0,
+    "chainTransactions": 0,
+    "milestoneComplete": false,
+    "inference": "Runtime-sized loops/vectors cannot encode unrestricted slot provenance in a single fixed witness. This is not proof that all M6 architectures are infeasible."
+  },
+  "regression": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "passed": 233,
+    "failed": 0,
+    "skipped": 0,
+    "counts": {
+      "diagnostics": 16,
+      "protocol": 6,
+      "M2": 15,
+      "M3": 14,
+      "M4": 16,
+      "M5": 50,
+      "midnight": 110,
+      "hardhat": 6
+    },
+    "midnightTestDurationMs": 149796.8287,
+    "hardhatReportedDurationMs": 30959,
+    "productionProofLatencyMeasured": false
+  },
+  "slotReproduction": {
+    "testFile": "packages/midnight-authorization/test/slot-assignments.test.ts",
+    "slotSuiteCases": 11,
+    "addedCases": 3,
+    "managerAssignments": 33,
+    "totalAssignments": 34,
+    "capabilityDelegationDepth": 0,
+    "registrationTime": 131,
+    "firstAssignmentTime": 135,
+    "lastAssignmentTime": 168,
+    "evaluationTime": 169,
+    "fullExactChainPreserved": true,
+    "distantAncestorIndex": 1,
+    "distantAncestorAssignmentRevocationInvalidatesDescendants": true,
+    "distantAncestorAccountRevocationInvalidatesDescendants": true,
+    "parentReplacementDoesNotReviveOldDescendants": true
+  },
+  "decision": {
+    "status": "AWAITING_USER_APPROVAL",
+    "record": "docs/evidence/M6/slot-assignment-architecture-boundary.md",
+    "recommended": [
+      "Keep slot state private inside a versioned instance commitment; no separate publicly trusted instance-authority root.",
+      "Bounded staged verification of complete provenance, exact current roots/state, final atomic authorization and expiring cleanup.",
+      "Explicit narrow slot-governance leaf under existing namespace root, mapped to M4 governance principals; no inherited activation/reviewer powers."
+    ],
+    "costs": [
+      "More preparation transactions for long chains.",
+      "Pinned root/state updates, including unrelated namespace account-status changes, can require restart.",
+      "Transaction count/timing can reveal structural metadata; privacy and actual proof costs require testing."
+    ],
+    "notAdopted": [
+      "fixed slot ancestry depth limit",
+      "ancestry truncation",
+      "host isActive trust bridge",
+      "implicit numeric authority mapping",
+      "new universal administrator",
+      "ledger/compiler upgrade",
+      "inter-contract split"
+    ]
+  },
+  "scope": {
+    "newMidnightTransactions": 0,
+    "newProductionKeyPairs": 0,
+    "productionCompactChangedInThisContinuation": false,
+    "productionBindingsChangedInThisContinuation": false,
+    "slotIssuanceImplemented": false,
+    "slotRevocationImplemented": false,
+    "currentRoleChainVerificationImplemented": false,
+    "ordinaryActionEntryPointsImplemented": false,
+    "commonReceiptImplemented": false,
+    "compilerRejectionsAreNodeRejections": false,
+    "priorLiveResultsRelabeled": false,
+    "M5SourceAndAcceptedEvidenceUnchanged": true,
+    "sharedMilestoneMarkdownAndGeneratedHtmlUnchanged": true,
+    "dependencyAndLockfileUnchanged": true,
+    "privateInstructionsUnchanged": true,
+    "committed": false,
+    "pushed": false
+  },
+  "navigation": {
+    "wiki": "Permio wiki lists M1-M5, not dirty M6.",
+    "index": "Configured health root is information-flow, not Permio; not queried for source or updated.",
+    "authoritative": "Exact local Permio worktree sources and tests."
+  },
+  "environmentObservations": [
+    "Initial restricted WSL call: Wsl/E_ACCESSDENIED; scoped approved calls succeeded.",
+    "WSL localhost-proxy warning did not prevent the isolated compiler control.",
+    "Compiler wrapper shell exit 1 vs spawnSync exit 255: repaired diagnostic runner requires nonzero status plus exact language error. Not a chain failure or account quota."
+  ],
+  "officialReference": {
+    "url": "https://docs.midnight.network/compact/reference/compact-reference",
+    "checkedDateUtc": "2026-10-14",
+    "referenceLanguageVersion": "0.27.0",
+    "testedLanguageVersion": "0.23.0",
+    "caveat": "Use actual pinned Compact 0.31.1 diagnostics for version-specific evidence."
+  }
+}

@@ -1,0 +1,349 @@
+{
+  "kind": "m6-existing-16g-public-space-proof-v8",
+  "result": "PASS",
+  "verifiedAtUtc": "2026-10-17T14:41:30.852915+00:00",
+  "realConstraintCheckPassed": true,
+  "realProofGenerated": true,
+  "customBackendBinary": true,
+  "stockUpstreamBinaryResult": false,
+  "proofIndependentlyVerified": false,
+  "ordinaryActionAcceptance": false,
+  "milestoneComplete": false,
+  "endUserResourceQualification": false,
+  "observedMetrics": {
+    "samples": 771,
+    "maximumSimultaneouslySampledApplicationRamBytes": 14601596928,
+    "maximumSimultaneouslySampledApplicationSwapBytes": 16013316096,
+    "maximumProverRamPeakBytes": 14496120832,
+    "maximumProverSwapPeakBytes": 15822667776,
+    "minimumHostAvailableRamKiB": 684496,
+    "minimumHostSwapFreeKiB": 67660,
+    "minimumHostPhysicalFreeDiskBytes": 1582428160,
+    "minimumHostDiskAvailableToUnprivilegedBytes": 290918400,
+    "maximumSampledCompressedZswapBytes": 978406702,
+    "maximumSampledUncompressedZswappedBytes": 1037656064
+  },
+  "elapsedSeconds": 1559.450415813997,
+  "elapsedIncludingSpaceRecoverySeconds": 1687.843961698003,
+  "proverFinalOomKilled": false,
+  "proofReport": {
+    "kind": "isolated-full-depth-action-proof-diagnostic",
+    "mode": "--prove",
+    "inputHashes": {
+      "bindings": "7b5394866b468fb8d96ba4446da4190baf65f99c60a880a370c27dde6948f7d7",
+      "metadata": "a67a83664601967dbdc02817ac9a2f80329294d534da74f4d1edafd22a2997f7",
+      "binary": "8c15b683dfffa4139e8293340a7149c241b9abec67aa68f3693266e829b50ef6"
+    },
+    "clientScriptSha256": "e81efa1e103b216ee0cc9ef705e18f669ef2820584182a15c88328111b3c7748",
+    "bindingsAndMetadataHashesVerified": true,
+    "binaryHashVerified": true,
+    "ancestryDepth": 16,
+    "capabilities": 17,
+    "accounts": 17,
+    "sessions": 1,
+    "selectedStatusLeaves": 35,
+    "syntheticGenesisNotActualIssuance": true,
+    "entireEncodedLedgerStatePreserved": true,
+    "walletLoaded": false,
+    "transactionsSubmitted": 0,
+    "newDeployment": false,
+    "realConstraintCheckPassed": true,
+    "realProofGenerated": true,
+    "proofFormatValidated": true,
+    "proofIndependentlyVerified": false,
+    "proofArtifactPersisted": true,
+    "ordinaryActionAcceptance": false,
+    "endUserResourceQualification": false,
+    "milestoneComplete": false,
+    "privatePreimageOrWitnessPersisted": false,
+    "automaticRetries": 0,
+    "preimagePrepared": true,
+    "preflightNegatives": 2,
+    "preimageBytes": 93783,
+    "constraintCheckMs": 567.3942419999985,
+    "checkedCostEntries": 61,
+    "keyMaterialHashesVerifiedInWorker": true,
+    "temporaryPayloadWorkerTerminatedBeforeHttp": true,
+    "officialLedgerPayloadApiUsed": true,
+    "provingPayloadBytes": 678417548,
+    "proofBytes": 4860,
+    "proofSha256": "98f580ca34e3002ef9a42dfa0edca2e9f0c350e13a2f0d46da4ee9dae8aac483",
+    "elapsedProofMs": 1460817.406585,
+    "processMemoryAtEnd": {
+      "rss": 152158208,
+      "heapTotal": 118472704,
+      "heapUsed": 110542816,
+      "external": 54074876,
+      "arrayBuffers": 2903493
+    },
+    "result": "PASS",
+    "completedAtUtc": "2026-10-17T14:34:30.775Z"
+  },
+  "priorSealedGroups": {
+    "docs/evidence/M6/preprod-governance-v2-verification.json": {
+      "reportSha256": "0b0295411555a4ac52c767eb53b62935cb98a46b02f6598f6995fb70c8989942",
+      "artifactsVerified": 192
+    },
+    "docs/evidence/M6/preprod-runtime-ecs-v1-verification.json": {
+      "reportSha256": "c7a6ad7d7ff04b34deda2f61a8e49707a5bf0540cff224dcb134ba3e208d5c2c",
+      "artifactsVerified": 53
+    },
+    "docs/evidence/M6/preprod-error170-diagnostics-v1.json": {
+      "reportSha256": "61399a327a1eb7700a37c92fbdee408cc9df276c8b2be908a9876f92a048a973",
+      "artifactsVerified": 46
+    },
+    "docs/evidence/M6/preprod-continuation-v3-verification.json": {
+      "reportSha256": "665c76c47ebf50ac0fa037768da406dfec5f013760e931672a28b60a7b7449b4",
+      "artifactsVerified": 117
+    },
+    "logs/m6-action-diagnostic-integrity-audit-v1.json": {
+      "reportSha256": "d9c3432172eabfd2903896a0ef9e57e57386f4a60bcfd8b4a686f46ff62666f9",
+      "artifactsVerified": 231
+    },
+    "docs/evidence/M6/disk-paging-audit-v1-verification.json": {
+      "reportSha256": "581493647492fc5ea89f3541d49b537dec6d70593a6abcc75cf32ade8d92dab8",
+      "artifactsVerified": 5
+    },
+    "docs/evidence/M6/action-existing-swap-v8-verification.json": {
+      "reportSha256": "9346abf03fe1a443f16ce47d090eb08e736be8c0006303e41ef32c491a254ef5",
+      "artifactsVerified": 78
+    },
+    "docs/evidence/M6/action-proof-16g-v4-verification.json": {
+      "reportSha256": "8e452c037afc793460f5ce2edd16bd86402b4e73d2e6af5028f1e31c11cbd642",
+      "artifactsVerified": 20
+    },
+    "docs/evidence/M6/action-proof-disk-v5-verification.json": {
+      "reportSha256": "68dbc32655ac1d0149850b7e735430e913d2c898f1ff6caf9fa553b0efe13941",
+      "artifactsVerified": 26
+    },
+    "docs/evidence/M6/action-proof-memory-v6-verification.json": {
+      "reportSha256": "14f051426f8e32a2da195cf90b492051a53eb62423ac1ff15d9097b6c15e51eb",
+      "artifactsVerified": 34
+    },
+    "docs/evidence/M6/action-proof-patched-v7-verification.json": {
+      "reportSha256": "5c36df0030a8fcf6994a4ed9c56e3db7deeca66b67c7e3c0ac889a34deb1605d",
+      "artifactsVerified": 43
+    }
+  },
+  "productionAndPriorEvidenceUnchanged": true,
+  "resultsDownloadedAndVerified": true,
+  "originalSwapAndPublicFilesRestored": true,
+  "publicArchiveOffloadedToVerifiedLocalProjectBackup": true,
+  "finalCloudCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T14:40:15.285534+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-1d54369bd2c64fc0bf39",
+      "content": {
+        "FormatVersion": "OOS-2019-06-01",
+        "Description": "Exact Singapore build instance: rolling two-hour graceful economical stop; no deletion",
+        "RamRole": "OOSServiceRole",
+        "Tasks": [
+          {
+            "Name": "oneTimeTrigger",
+            "Action": "ACS::TimerTrigger",
+            "Properties": {
+              "Type": "at",
+              "Expression": "2026-10-17T16:40:06Z",
+              "TimeZone": "UTC",
+              "EndDate": "2026-10-17T16:45:06Z"
+            }
+          },
+          {
+            "Name": "requirePayAsYouGo",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceChargeType",
+              "DesiredValues": [
+                "PostPaid"
+              ]
+            }
+          },
+          {
+            "Name": "requireVpc",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceNetworkType",
+              "DesiredValues": [
+                "vpc"
+              ]
+            }
+          },
+          {
+            "Name": "gracefulEconomicalStop",
+            "Action": "ACS::ExecuteAPI",
+            "Properties": {
+              "Service": "ECS",
+              "API": "StopInstance",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceId": "i-t4ni11rkjyzgi0vlb68d",
+                "ForceStop": false,
+                "StoppedMode": "StopCharging"
+              }
+            }
+          },
+          {
+            "Name": "waitUntilStopped",
+            "Action": "ACS::WaitFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].Status",
+              "DesiredValues": [
+                "Stopped"
+              ]
+            }
+          },
+          {
+            "Name": "verifyEconomicalMode",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].StoppedMode",
+              "DesiredValues": [
+                "StopCharging"
+              ]
+            }
+          }
+        ]
+      },
+      "contentSha256": "84adc7b9bf3c678ae8ffb3ec70b3e30b002b56eaeaa5ba3c938c8ca5328eeb05",
+      "deadlineUtc": "2026-10-17T16:40:06+00:00",
+      "deadlineShanghai": "2026-10-18T00:40:06+08:00",
+      "lastRenewedAtUtc": "2026-10-17T14:40:12.911872+00:00",
+      "nextRefreshDueUtc": "2026-10-17T15:10:12.911877+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-39a1169eec1f4b48bcc5": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "boundedLiveZswapTrialOriginalSettingsRestored": true,
+  "zswapTrial": {
+    "kind": "owned-m6-v8-live-zswap-cache-trial",
+    "startedAtUtc": "2026-10-17T14:31:08.552050+00:00",
+    "originalConfiguration": {
+      "enabled": "N",
+      "max_pool_percent": "20",
+      "compressor": "lzo",
+      "shrinker_enabled": "Y",
+      "accept_threshold_percent": "90"
+    },
+    "maximumSeconds": 600,
+    "poolPercentDuringTrial": 6,
+    "proverContainerId": "d2c1f672a98bb92cd902044d10d5974d7bdc46b2f69e5922605af8c27594be22",
+    "proverPid": 53384,
+    "proofRestarted": false,
+    "swapCapacityChanged": false,
+    "originalConfigurationRestored": true,
+    "poolWriteAttempted": true,
+    "enableWriteAttempted": true,
+    "enabledVerifiedAtUtc": "2026-10-17T14:31:08.553212+00:00",
+    "configurationDuringTrial": {
+      "enabled": "Y",
+      "max_pool_percent": "6",
+      "compressor": "lzo",
+      "shrinker_enabled": "Y",
+      "accept_threshold_percent": "90"
+    },
+    "endReason": "owned-proof-ended",
+    "endedAtUtc": "2026-10-17T14:34:40.851633+00:00",
+    "restorationObservedAtUtc": "2026-10-17T14:34:41.245781+00:00",
+    "configurationAfterRestore": {
+      "enabled": "N",
+      "max_pool_percent": "20",
+      "compressor": "lzo",
+      "shrinker_enabled": "Y",
+      "accept_threshold_percent": "90"
+    },
+    "configurationConflicts": []
+  },
+  "artifactSha256": {
+    "docs/evidence/M6/action-proof-space-v8.md": "43f216d8ed8e010f2a91503d8d2073c14ecadabd31e341694ab8d87bcad2e149",
+    "scripts/cloud-m6-action-proof-space.py": "3ca0018a7cfc20ff01cbf8bda33f05a5ebced93a91c2857c27a76a548d3098f8",
+    "scripts/cloud-m6-public-space-recovery.py": "e445d006f5c41bc4f5c7c42539251b42c8434b1caff4643a903da8ea45d4b8b5",
+    "logs/m6-proof-space-public-recovery-v8/public-cache.tar.gz": "eb4d36b4cae19965afbd872495129e9c6c2b15f4b0d36dd476c04629e3cea352",
+    "logs/m6-action-proof-ecs-v8/controller.log": "590a287da023bd99213da35a7d7e596a0ebc2ff498c91aad7a57588f1b5d67be",
+    "logs/m6-action-proof-ecs-v8/controller.py": "3ca0018a7cfc20ff01cbf8bda33f05a5ebced93a91c2857c27a76a548d3098f8",
+    "logs/m6-action-proof-ecs-v8/download-verification.json": "730a3553b42e753bd395e9cb21f0716fc71b1c167fa0fd0240a35a0a5eab9fb7",
+    "logs/m6-action-proof-ecs-v8/public-proof-results-v8.tar.gz": "7a70112afc9db0d4954b7caa6e471dd9ed3d01178ee383c40a3a390a647670ca",
+    "logs/m6-action-proof-ecs-v8/space-recovery-journal.json": "d33821f1881cffdbd5776be08196028b7987334fc52426a2fabf679d544e0410",
+    "logs/m6-action-proof-ecs-v8/space-recovery-outcome.json": "4ed69f46b83d6dc7c8772a645e79f6da03ac658976b069d06eb731bba11cbe25",
+    "logs/m6-action-proof-ecs-v8/space-recovery-plan.json": "21aa66853029ab30104f04bae8fd53b70712bf48f80049c358bd9c0946591bca",
+    "logs/m6-action-proof-ecs-v8/space-recovery.py": "e445d006f5c41bc4f5c7c42539251b42c8434b1caff4643a903da8ea45d4b8b5",
+    "logs/m6-action-proof-ecs-v8/zswap-samples.jsonl": "b8392891c63d7723505b8287e238125e214cf7b7025868bd3c6c7ab6cce1c6de",
+    "logs/m6-action-proof-ecs-v8/zswap-session.json": "34650adaf615dcc540c1635a290844f1b0e208ae4b74fc5bdb5addd3a8286171",
+    "logs/m6-action-proof-ecs-v8/zswap-session.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "logs/m6-action-proof-ecs-v8/zswap-session.py": "d58f40cc25071208521bef4be4e5b3b3cea1648146c8695c1907fe042329ecec",
+    "logs/m6-action-proof-ecs-v8/backend/private-transfer-verification.json": "cba54a7f5d47f966faf00225ded850a0cbe82b26df789145b115ee965fed0989",
+    "logs/m6-action-proof-ecs-v8/backend/runtime-preflight.json": "9a026a801f7c9a3031013fcd38c058d0b800d881c7025f7b191bdfe4dc2d5885",
+    "logs/m6-action-proof-ecs-v8/client/public-source-manifest.json": "5f41f09a653e64f1eabfd8b9736b2b53038b483b954f0c163c112c065076474c",
+    "logs/m6-action-proof-ecs-v8/output/client.log": "ece597eb112a62315c957820d1841e6118b1ad13b1e38625ecfe8445c0e02550",
+    "logs/m6-action-proof-ecs-v8/output/final-environment.json": "15777222768412c240f455366d11852fbbaa32b005367ee6fa748a98888c2171",
+    "logs/m6-action-proof-ecs-v8/output/host-checkpoint.json": "a44ff123a102a9b608b030c81f9bac76ea02f904d2bf5579f4bf37b3dbc9ad96",
+    "logs/m6-action-proof-ecs-v8/output/report.json": "3c53a3c674516b7177805c43d0e6b09e90a7807a567e1e3cb7426a5c7b3abc90",
+    "logs/m6-action-proof-ecs-v8/output/resources.jsonl": "db9438e0a23d9b7cebaac8672beeb1f1cfe418967b16512befe33d6ed687ea91",
+    "logs/m6-action-proof-ecs-v8/client/scripts/m6-action-proof-http-memory.mjs": "41008ec4b09d807751341760b784d24cc4ac3641a0769a4bba6ec575de034cd3",
+    "logs/m6-action-proof-ecs-v8/client/scripts/m6-action-proof-http-memory.test.mjs": "219c2941763725ad0184a7cabcfc8e0523f17fc406f56dd703b388bd61982cec",
+    "logs/m6-action-proof-ecs-v8/client/scripts/m6-action-proof-http.mjs": "c94590644e6abff24247c70f10bd2f32b08c9441a4be18919d0671171d227d42",
+    "logs/m6-action-proof-ecs-v8/client/scripts/m6-action-proof-http.test.mjs": "0b7a2c85605319ad22c81cae2c8034e764278eaff1e68f2a7759af9de1e05942",
+    "logs/m6-action-proof-ecs-v8/client/scripts/m6-action-proof-payload-worker.mjs": "b8f71698c85840e2a99f0563badb40b58b3d25a1b692657b22a942996b203707",
+    "logs/m6-action-proof-ecs-v8/client/scripts/run-m6-action-boundary-proof-memory.mjs": "e81efa1e103b216ee0cc9ef705e18f669ef2820584182a15c88328111b3c7748",
+    "logs/m6-action-proof-ecs-v8/client/scripts/run-m6-action-boundary-proof.mjs": "5172d5e7ac02bb5a044be2e4ca422406da02f34617892b250bb40763d83afed6",
+    "logs/m6-action-proof-ecs-v8/client/logs/m6-action-boundary-xFPDIN/isolated-action-proof-1792247670775.json": "5ae840d6839016416a4d029adba282650756ddcc024d11c3f71dab61c49a0780",
+    "logs/m6-action-proof-ecs-v8/client/logs/m6-action-boundary-xFPDIN/isolated-action-proof.bin": "98f580ca34e3002ef9a42dfa0edca2e9f0c350e13a2f0d46da4ee9dae8aac483",
+    "logs/m6-action-proof-space-v8-plan.json": "aa7203ff3d27112c0d7270d95663efbdeec14c1d9ade881f086eaae3b4c8b269",
+    "logs/m6-action-proof-space-v8-recovery-plan.json": "21aa66853029ab30104f04bae8fd53b70712bf48f80049c358bd9c0946591bca",
+    "logs/m6-action-proof-space-v8-launch.json": "b9e164b207bddc90727d1c7b62905b09d7f3f137f35764609fd408f299008a2d",
+    "logs/m6-action-proof-space-v8-cloud-closeout.json": "ca00e6d7f244ddad4d2807b432b01bc2b3942227cb8a65c01efa38e7a0bfecb1",
+    "logs/m6-post-v7-disk-inspection.json": "cd88c8f3df8c4ead2c8fe92be63dfb1877d52231515692e0c2d7b247a32cb9cc",
+    "logs/m6-proof-public-space-recovery-plan.json": "c9a156c482782b3d818d0b4b9a53eba3523cd5d7aac530bf0aa87e249df48157",
+    "logs/m6-action-proof-16g-live-monitor-v8.jsonl": "f9f1cfe7a8401db94b44089344fed75f854db7e53be47a19ea03bd5fc17fd1b9",
+    "logs/m6-existing-block-layout-v8.json": "37ed9ef6a3eb711ef452a662a7a863e273ac0d2388172d352c48b5fbaf42dfae",
+    "logs/m6-allocated-disk-layout-cli-v8.json": "349c17cd0817b19fa46089c3df4dd368087082df812d406b51f264dc3483cc4e",
+    "scripts/cloud-m6-zswap-session.py": "d58f40cc25071208521bef4be4e5b3b3cea1648146c8695c1907fe042329ecec",
+    "logs/m6-v8-zswap-trial-launch.json": "4c0f230660545efa86b08fcf5a9f60911925a4238290be53e849bbe947532515",
+    "logs/m6-proof-paging-io-v8.json": "cd31c48adb1d044f252f8c731a0075af641e881417fc555fd35b187783492296",
+    "logs/m6-v8-zswap-stop-outcome-inspection.json": "9f821f828066c08640af2860a12f710b0ce4e3784463f0170d7a599d6e14c610",
+    "logs/m6-proof-local-artifact-verification-v8.json": "62676a68d90ba7b2a44817b19a6fe3f8397cf38656741e43fcffc807bd5039df"
+  }
+}

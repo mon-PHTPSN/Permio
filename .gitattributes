@@ -1,0 +1,8 @@
+# Preserve the recorded patch checksum on Windows and Linux checkouts.
+scripts/proof-server-memory/cache.patch text eol=lf whitespace=-blank-at-eol
+scripts/proof-server-memory/Dockerfile text eol=lf
+
+# Generated Compact bytes are bound to the real proving-build manifest.
+packages/midnight-authorization/contracts/managed/**/contract/*.js text eol=lf
+packages/midnight-authorization/contracts/managed/**/contract/*.ts text eol=lf
+packages/midnight-authorization/contracts/managed/**/compiler/*.json text eol=lf

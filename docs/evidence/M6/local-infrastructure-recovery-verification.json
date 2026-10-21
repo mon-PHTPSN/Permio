@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 1,
+  "event": "m6-local-node-indexer-recovery-verified",
+  "timestamp": "2026-10-19T00:42:38.115Z",
+  "passed": true,
+  "network": "undeployed-local-dev",
+  "checkoutRevision": "902561ddc27a4b096f19835ab1528f38ace515f1",
+  "contractTag": "permio-authorization-v8",
+  "scope": "owned infrastructure persistence and cold application reconnect; historical v8 contract, not Preprod v10 action acceptance",
+  "compiler": "0.31.1",
+  "ledgerLibrary": "8.1.0",
+  "midnightJs": "4.1.1",
+  "baselineContainers": {
+    "midnight-node": {
+      "id": "a5084fe34865320f661ac86d7321b1dc335d4942e0f868336e7e3c2377b0ce58",
+      "image": "midnightntwrk/midnight-node:1.0.0",
+      "imageId": "sha256:ede01da35e982b6a4b85461ad8492ae2753ef14246fba33c8039b782aa8e39fb",
+      "status": "running",
+      "health": "healthy",
+      "bindings": {
+        "9944/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "9944"
+          }
+        ]
+      },
+      "mounts": []
+    },
+    "midnight-indexer": {
+      "id": "93ddef13c72c71de3246dcd927e5be0a3d0b6ee40d97cbd8449823927f0b0f9c",
+      "image": "midnightntwrk/indexer-standalone:4.3.3",
+      "imageId": "sha256:03afd079b00bcd229df29a24771439c5e7695c339cd89216d0763ce40731cc4b",
+      "status": "running",
+      "health": "healthy",
+      "bindings": {
+        "8088/tcp": [
+          {
+            "HostIp": "127.0.0.1",
+            "HostPort": "8088"
+          }
+        ]
+      },
+      "mounts": []
+    }
+  },
+  "before": {
+    "contractAddress": "a77a72ffb3c45362d24107885ca530ff26e76040d0545eba32f6776375457ffb",
+    "transactionId": "0083c67f08a4b1780c17d63529f0af71ffd683d33eedb299492190d624b779b7c0",
+    "contractStateSha256": "c9132885d8c1a542a7224259270cce03ad16ad4b8945855ba8535fe2c0cf431e",
+    "publicTransactionSha256": "3217f6a2146fe8335b01ca8241c1173f9beaceae334b169e0c954a44c30d60b4",
+    "finalizedHeight": 73062
+  },
+  "observations": [
+    {
+      "target": "midnight-indexer",
+      "snapshot": {
+        "contractAddress": "a77a72ffb3c45362d24107885ca530ff26e76040d0545eba32f6776375457ffb",
+        "transactionId": "0083c67f08a4b1780c17d63529f0af71ffd683d33eedb299492190d624b779b7c0",
+        "contractStateSha256": "c9132885d8c1a542a7224259270cce03ad16ad4b8945855ba8535fe2c0cf431e",
+        "publicTransactionSha256": "3217f6a2146fe8335b01ca8241c1173f9beaceae334b169e0c954a44c30d60b4",
+        "finalizedHeight": 73063
+      }
+    },
+    {
+      "target": "midnight-node",
+      "snapshot": {
+        "contractAddress": "a77a72ffb3c45362d24107885ca530ff26e76040d0545eba32f6776375457ffb",
+        "transactionId": "0083c67f08a4b1780c17d63529f0af71ffd683d33eedb299492190d624b779b7c0",
+        "contractStateSha256": "c9132885d8c1a542a7224259270cce03ad16ad4b8945855ba8535fe2c0cf431e",
+        "publicTransactionSha256": "3217f6a2146fe8335b01ca8241c1173f9beaceae334b169e0c954a44c30d60b4",
+        "finalizedHeight": 73065
+      }
+    }
+  ],
+  "servicesRecreated": false,
+  "newTransactions": 0,
+  "proofsCreated": 0,
+  "walletInitialized": false,
+  "unrelatedContainersChanged": false,
+  "ecsUsed": false,
+  "fullM6Acceptance": false,
+  "command": "node scripts/verify-live-m6-local-recovery.ts --interrupt-owned-local-stack logs/m6-live-2026-10-14T19-07-19.986Z.jsonl",
+  "rawPublicReport": "logs/m6-local-recovery-2026-10-19T00-41-55.367Z.json",
+  "rawPublicReportSha256": "2ee20d71d32309c272792727b22436444791b60406aadddcad04a7c2be9afa69",
+  "sourceCommit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "uncommittedImplementation": true,
+  "firstPreflightFailure": "Historical Compose label differed from actual image identity; stopped before mutation",
+  "readOnlyBaselineFailure": "Windows Node abrupt process.exit assertion; normal SDK teardown passed",
+  "currentRunnerSources": {
+    "scripts/m6-local-recovery.ts": "78846115ebfc49d20c39a6656d660be1419093cd80d043333a0818fcd79d10fe",
+    "scripts/verify-live-m6-local-recovery.ts": "167de47891c362675d91c90eaaa1576375e00712316cac9a759864fa0cc274ed",
+    "scripts/test/m6-local-recovery.test.ts": "887da4a2d3d33df54b5c7b82cc724445d3de302d9a6dda655fab9f045729dca9"
+  },
+  "independentPostDrillState": {
+    "nodeContainerId": "a5084fe34865320f661ac86d7321b1dc335d4942e0f868336e7e3c2377b0ce58",
+    "indexerContainerId": "93ddef13c72c71de3246dcd927e5be0a3d0b6ee40d97cbd8449823927f0b0f9c",
+    "bothRunningAndHealthy": true,
+    "unrelatedPreviouslyRunningContainersStillRunning": true
+  },
+  "stopVerificationScope": "Docker normal stop request with 30-second grace, exited container and unavailable endpoint verified; no retained per-exit signal trace",
+  "validation": {
+    "status": "PASSED",
+    "command": "npm run check",
+    "environment": "Native Windows Node 24.13.1 / npm 11.8.0, normal filesystem access",
+    "completedAtUtc": "2026-10-19T00:53:52.572653+00:00",
+    "docsCheck": "passed",
+    "typecheck": "passed",
+    "solidityBuild": "passed-no-contract-changes",
+    "nodeTestPassCounts": [
+      96,
+      6,
+      15,
+      14,
+      16,
+      50,
+      199
+    ],
+    "hardhatPassed": 6,
+    "totalPassed": 402,
+    "failed": 0,
+    "skipped": 0,
+    "log": "logs/m6-local-recovery-root-check-normal-access-20261019.txt",
+    "logSha256": "fb5da28dc4000525b47e8c698af1ee4a246a088b8125a94df76003cf09a636e6",
+    "restrictedAccessFirstAttempt": "Hardhat HHE22; same command passes with normal path resolution; no dependency/code workaround",
+    "realCompactKeysRebuiltByThisCheck": false,
+    "newLivePreprodTransactions": 0
+  }
+}

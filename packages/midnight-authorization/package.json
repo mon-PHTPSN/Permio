@@ -1,0 +1,23 @@
+{
+  "name": "@permio/midnight-authorization",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "types": "./src/index.ts",
+  "scripts": {
+    "test": "node --test test/*.test.ts"
+  },
+  "dependencies": {
+    "@permio/context-accounts": "0.1.0",
+    "@permio/protocol": "0.1.0",
+    "@permio/scenario-domain": "0.1.0",
+    "@permio/scenario-governance": "0.1.0",
+    "@midnight-ntwrk/midnight-js-protocol": "4.1.1"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

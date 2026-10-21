@@ -1,0 +1,148 @@
+// Action-time checks for issuance-certified version-3 capability ancestry. No historical
+// issuer signature or subset staging is trusted merely because it is supplied:
+// each exact capability must have its active status leaf in the current root.
+export struct RuntimeActiveAncestry {
+    witnessVersion: Uint<16>;
+    capabilityCount: Uint<8>;
+    capabilities: Vector<17, RuntimeCapabilityCredential>;
+    accounts: Vector<17, RuntimeAccountCredential>;
+    session: RuntimeSessionCredential;
+    statusProof: RuntimeStatusMultiproof;
+}
+
+struct RuntimeStatusLeafMatch {
+    expected: RuntimeStatusMembership;
+    leafCount: Uint<8>;
+    offset: Uint<8>;
+    found: Boolean;
+}
+
+pure circuit runtimeStatusMatchLeaf(
+    state: RuntimeStatusLeafMatch,
+    membership: RuntimeStatusMembership
+): RuntimeStatusLeafMatch {
+    return RuntimeStatusLeafMatch{
+        expected: state.expected, leafCount: state.leafCount,
+        offset: (state.offset + 1) as Uint<8>,
+        found: state.found || (state.offset < state.leafCount && membership == state.expected)
+    };
+}
+
+pure circuit assertRuntimeActiveStatus(
+    proof: RuntimeStatusMultiproof,
+    leaf: RuntimeCredentialStatusLeaf
+): [] {
+    assert(leaf.statusIndex < 1048576, "Runtime status index exceeds the depth-20 tree");
+    const result = fold(runtimeStatusMatchLeaf, RuntimeStatusLeafMatch{
+        expected: RuntimeStatusMembership{
+            statusIndex: leaf.statusIndex as Uint<20>,
+            leaf: runtimeCredentialStatusLeafCommitment(leaf)
+        },
+        leafCount: proof.leafCount, offset: 0, found: false
+    }, proof.leaves);
+    assert(result.found, "Required exact active credential is absent from current status proof");
+}
+
+export pure circuit assertRuntimeActiveAncestry(
+    ancestry: RuntimeActiveAncestry,
+    expectedRoot: MerkleTreeDigest,
+    expectedSequence: Uint<64>,
+    now: Uint<64>
+): [] {
+    assert(ancestry.witnessVersion == 1, "Unsupported active ancestry witness version");
+    assert(
+        ancestry.capabilityCount > 0 && ancestry.capabilityCount <= 17,
+        "Runtime ancestry requires the complete root-to-terminal chain at depth at most 16"
+    );
+    const session = ancestry.session;
+    assert(
+        session.credentialVersion == 2 && session.issuedAt <= now &&
+        session.notBefore <= now && now < session.expiresAt,
+        "Runtime session is unsupported, not yet valid, or expired"
+    );
+    const capabilityCommitments = map(runtimeCapabilityCredentialCommitment, ancestry.capabilities);
+    const accountCommitments = map(runtimeAccountCredentialCommitment, ancestry.accounts);
+    const parentCommitments = [default<Bytes<32>>, ...capabilityCommitments];
+    const issuerCommitments = [default<Bytes<32>>, ...accountCommitments];
+    const parents = [default<RuntimeCapabilityCredential>, ...ancestry.capabilities];
+    for (const i of 0..17) {
+        const capability = ancestry.capabilities[i];
+        const account = ancestry.accounts[i];
+        if (i < ancestry.capabilityCount) {
+            assert(
+                capability.credentialVersion == 3 && account.credentialVersion == 1 &&
+                capability.namespaceIssuerAuthorityCommitment != default<Bytes<32>> &&
+                capability.namespaceIssuerAuthorityCommitment == ancestry.capabilities[0].namespaceIssuerAuthorityCommitment,
+                "Runtime ancestry requires issuance-certified capabilities and supported accounts"
+            );
+            assert(
+                capability.target == session.target && account.target == session.target &&
+                capability.instanceCommitment == session.instanceCommitment &&
+                account.instanceCommitment == session.instanceCommitment &&
+                capability.contextHash == session.contextHash && account.contextHash == session.contextHash,
+                "Runtime ancestry crosses an exact template, instance, or context boundary"
+            );
+            assert(
+                capability.subjectAccountCredentialCommitment == accountCommitments[i],
+                "Runtime capability holder does not match its exact context account"
+            );
+            assert(
+                capability.delegationDepth == i && capability.maxDelegationDepth <= 16 &&
+                capability.delegationDepth <= capability.maxDelegationDepth &&
+                capability.issuedAt <= now && capability.notBefore <= now && now < capability.expiresAt &&
+                account.issuedAt <= now && now < account.validBefore &&
+                account.principalKind >= 1 && account.principalKind <= 4,
+                "Runtime ancestor or account is invalid, expired, or outside the supported depth"
+            );
+            assert(
+                capability.parentCapabilityCredentialCommitment == parentCommitments[i] &&
+                capability.issuerAccountCredentialCommitment == issuerCommitments[i],
+                "Runtime ancestry omits or substitutes a certified root, parent, or issuer"
+            );
+            if (i > 0) {
+                assert(
+                    capability.notBefore >= parents[i].notBefore &&
+                    capability.expiresAt <= parents[i].expiresAt &&
+                    capability.maxDelegationDepth <= parents[i].maxDelegationDepth,
+                    "Runtime child widens its certified parent validity or depth"
+                );
+            }
+            assertRuntimeActiveStatus(ancestry.statusProof, RuntimeCredentialStatusLeaf{
+                leafVersion: 3, namespaceHash: session.target.namespaceHash,
+                credentialKind: 2, credentialCommitment: capabilityCommitments[i],
+                revocationAuthorityAccountCredentialCommitment: capability.issuerAccountCredentialCommitment,
+                statusIndex: capability.statusIndex, status: 1
+            });
+            assertRuntimeActiveStatus(ancestry.statusProof, RuntimeCredentialStatusLeaf{
+                leafVersion: 1, namespaceHash: session.target.namespaceHash,
+                credentialKind: 1, credentialCommitment: accountCommitments[i],
+                revocationAuthorityAccountCredentialCommitment: accountCommitments[i],
+                statusIndex: account.statusIndex, status: 1
+            });
+            if (i + 1 == ancestry.capabilityCount) {
+                assert(
+                    session.subjectAccountCredentialCommitment == accountCommitments[i] &&
+                    session.capabilityCredentialCommitment == capabilityCommitments[i] &&
+                    session.notBefore >= capability.notBefore && session.expiresAt <= capability.expiresAt &&
+                    session.expiresAt <= account.validBefore,
+                    "Runtime session does not match its exact terminal capability and account window"
+                );
+
+            }
+        } else {
+            assert(
+                capability == default<RuntimeCapabilityCredential> && account == default<RuntimeAccountCredential>,
+                "Unused runtime ancestry credentials are not canonical"
+            );
+        }
+    }
+    // The loop proves this exact subject is the terminal account. Check the
+    // same session status once after establishing that terminal relation.
+    assertRuntimeActiveStatus(ancestry.statusProof, RuntimeCredentialStatusLeaf{
+        leafVersion: 2, namespaceHash: session.target.namespaceHash,
+        credentialKind: 3, credentialCommitment: runtimeSessionCredentialCommitment(session),
+        revocationAuthorityAccountCredentialCommitment: session.subjectAccountCredentialCommitment,
+        statusIndex: session.statusIndex, status: 1
+    });
+    assertRuntimeStatusMultiproof(ancestry.statusProof, expectedRoot, expectedSequence);
+}

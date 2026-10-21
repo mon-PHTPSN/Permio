@@ -1,0 +1,293 @@
+// An allocator assertion is not an M4 reviewer signature or an action proof.
+// Only commitments and replay nullifiers are published by this transaction.
+export struct RuntimeInstanceAllocation {
+    allocationVersion: Uint<16>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    instanceIdHash: Bytes<32>;
+    allocationRequestIdHash: Bytes<32>;
+    m4AuthorizationCommitment: Bytes<32>;
+    allocatorAuthorityCommitment: Bytes<32>;
+    capabilityIssuersRoot: MerkleTreeDigest;
+    capabilityIssuerCount: Uint<32>;
+    initialStateCommitment: Bytes<32>;
+    governancePolicyHash: Bytes<32>;
+    authorityRootVersion: Uint<64>;
+    authorityRootSequence: Uint<64>;
+    targetNetworkHash: Bytes<32>;
+    targetContractIdentity: Bytes<32>;
+    authorizedAt: Uint<64>;
+    createdAt: Uint<64>;
+    expiresAt: Uint<64>;
+    allocationValidBefore: Uint<64>;
+    allocationNonce: Bytes<32>;
+}
+
+export struct RuntimeInstanceRecord {
+    allocationCommitment: Bytes<32>;
+    currentStateCommitment: Bytes<32>;
+    transitionSequence: Uint<64>;
+    lifecycleStatus: Uint<8>;
+}
+
+export struct RuntimeCredentialInstanceBinding {
+    allocation: RuntimeInstanceAllocation;
+    issuerPath: MerkleTreePath<20, Bytes<32>>;
+    // A selected public proof window, bounded by private lifetimes; not a grant.
+    validBefore: Uint<64>;
+    state: RuntimeStateOpening;
+    stateSequence: Uint<64>;
+    nextStateNonce: Bytes<32>;
+}
+
+export struct RuntimeStateOpening {
+    stateVersion: Uint<16>;
+    instanceCommitment: Bytes<32>;
+    stateIdHash: Bytes<32>;
+    lastMutationAt: Uint<64>;
+    slotAssignmentsRoot: MerkleTreeDigest;
+    slotAssignmentCount: Uint<32>;
+    slotBindingsRoot: MerkleTreeDigest;
+    slotBindingCount: Uint<32>;
+    nonce: Bytes<32>;
+}
+
+export struct RuntimeAllocationPolicyWitness {
+    policy: RuntimeTemplateActionPolicy;
+    binding: ProofModuleBinding;
+    bindingPath: MerkleTreePath<20, Bytes<32>>;
+    initialState: RuntimeStateOpening;
+}
+
+struct RuntimeAllocationHashInput {
+    domain: Bytes<32>;
+    allocation: RuntimeInstanceAllocation;
+}
+
+struct RuntimeAllocationReplayInput {
+    domain: Bytes<32>;
+    network: Bytes<32>;
+    deployment: Bytes<32>;
+    namespace: Bytes<32>;
+    identifier: Bytes<32>;
+}
+
+export pure circuit runtimeInstanceAllocationCommitment(
+    allocation: RuntimeInstanceAllocation
+): Bytes<32> {
+    return persistentHash<RuntimeAllocationHashInput>(RuntimeAllocationHashInput{
+        domain: pad(32, "permio:instance-allocation:v1"), allocation: allocation
+    });
+}
+
+pure circuit runtimeInstanceAllocationMessage(
+    allocation: RuntimeInstanceAllocation
+): Vector<1, Field> {
+    return [transientHash<RuntimeAllocationHashInput>(RuntimeAllocationHashInput{
+        domain: pad(32, "permio:instance-allocation:v1"), allocation: allocation
+    })];
+}
+
+export pure circuit runtimeInstanceAllocationSignatureChallenge(
+    announcement: JubjubPoint,
+    publicKey: JubjubPoint,
+    allocation: RuntimeInstanceAllocation
+): Field {
+    return Schnorr_schnorrChallenge(
+        jubjubPointX(announcement), jubjubPointY(announcement),
+        jubjubPointX(publicKey), jubjubPointY(publicKey),
+        runtimeInstanceAllocationMessage(allocation)
+    );
+}
+
+export pure circuit runtimeAllocationRequestNullifier(
+    allocation: RuntimeInstanceAllocation
+): Bytes<32> {
+    return persistentHash<RuntimeAllocationReplayInput>(RuntimeAllocationReplayInput{
+        domain: pad(32, "permio:allocation-request:v1"),
+        network: allocation.targetNetworkHash, deployment: allocation.targetContractIdentity,
+        namespace: allocation.target.namespaceHash, identifier: allocation.allocationRequestIdHash
+    });
+}
+
+export pure circuit runtimeInstanceIdentityNullifier(
+    allocation: RuntimeInstanceAllocation
+): Bytes<32> {
+    return persistentHash<RuntimeAllocationReplayInput>(RuntimeAllocationReplayInput{
+        domain: pad(32, "permio:instance-identity:v1"),
+        network: allocation.targetNetworkHash, deployment: allocation.targetContractIdentity,
+        namespace: allocation.target.namespaceHash, identifier: allocation.instanceIdHash
+    });
+}
+
+export pure circuit runtimeStateCommitment(opening: RuntimeStateOpening): Bytes<32> {
+    return persistentHash<RuntimeStateOpening>(opening);
+}
+
+// Credential mutations change ordering, not the template state or slot maps.
+export pure circuit runtimeCredentialNextState(
+    state: RuntimeStateOpening, effectiveAt: Uint<64>, nextNonce: Bytes<32>
+): RuntimeStateOpening {
+    return RuntimeStateOpening{
+        stateVersion: state.stateVersion, instanceCommitment: state.instanceCommitment,
+        stateIdHash: state.stateIdHash, lastMutationAt: effectiveAt,
+        slotAssignmentsRoot: state.slotAssignmentsRoot, slotAssignmentCount: state.slotAssignmentCount,
+        slotBindingsRoot: state.slotBindingsRoot, slotBindingCount: state.slotBindingCount,
+        nonce: nextNonce
+    };
+}
+
+// Prepared predicate, not yet a ledger-bound credential or action entry point.
+// Both membership checks are mandatory: namespace eligibility alone is insufficient.
+export pure circuit assertRuntimeInstanceIssuerMembership(
+    allocation: RuntimeInstanceAllocation,
+    issuer: GovernanceActivatorLeaf,
+    instanceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    currentAuthorityRoot: AuthorityRootRecord,
+    namespaceIssuerPath: MerkleTreePath<20, Bytes<32>>
+): [] {
+    assert(
+        allocation.allocationVersion == 1 && allocation.capabilityIssuerCount > 0 &&
+        issuer.leafVersion == 1 && issuer.authorityKind == 6 &&
+        issuer.namespaceHash == allocation.target.namespaceHash &&
+        issuer.governancePolicyHash == currentAuthorityRoot.governancePolicyHash,
+        "Instance issuer is outside the exact namespace capability-issuer scope"
+    );
+    const commitment = governanceActivatorLeafCommitment(issuer);
+    assert(
+        instanceIssuerPath.leaf == commitment &&
+        merkleTreePathRoot<20, Bytes<32>>(instanceIssuerPath) == allocation.capabilityIssuersRoot,
+        "Namespace issuer is not explicitly authorized by this instance"
+    );
+    assert(
+        namespaceIssuerPath.leaf == commitment &&
+        merkleTreePathRoot<20, Bytes<32>>(namespaceIssuerPath) == currentAuthorityRoot.root,
+        "Instance issuer is not eligible under the current namespace authority root"
+    );
+}
+
+export pure circuit assertRuntimeInstanceIssuer(
+    allocation: RuntimeInstanceAllocation,
+    issuer: GovernanceActivatorLeaf,
+    instanceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    currentAuthorityRoot: AuthorityRootRecord,
+    namespaceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    effectiveAt: Uint<64>
+): [] {
+    assertRuntimeInstanceIssuerMembership(allocation, issuer, instanceIssuerPath,
+        currentAuthorityRoot, namespaceIssuerPath);
+    assert(
+        effectiveAt >= allocation.createdAt && effectiveAt < allocation.expiresAt &&
+        effectiveAt >= issuer.validAfter && effectiveAt < issuer.validBefore,
+        "Instance or capability issuer is outside its validity window"
+    );
+}
+
+export ledger runtimeInstances: Map<Bytes<32>, RuntimeInstanceRecord>;
+export ledger usedAllocationRequestNullifiers: Set<Bytes<32>>;
+export ledger usedInstanceIdentityNullifiers: Set<Bytes<32>>;
+
+export circuit allocateRuntimeInstance(
+    allocation: RuntimeInstanceAllocation,
+    signature: Schnorr_SchnorrSignature,
+    allocator: GovernanceActivatorLeaf,
+    allocatorPath: MerkleTreePath<20, Bytes<32>>,
+    policyWitness: RuntimeAllocationPolicyWitness
+): Bytes<32> {
+    assert(allocation.allocationVersion == 1, "Unsupported instance allocation version");
+    assert(
+        allocation.targetNetworkHash == targetNetworkHash,
+        "Instance allocation targets another network or deployment"
+    );
+    assert(allocation.targetContractIdentity == kernel.self().bytes,
+        "Instance allocation targets another network or deployment");
+    assert(
+        authorityRoots.member(disclose(allocation.target.namespaceHash)),
+        "Instance allocation namespace authority root does not exist"
+    );
+    const authority = authorityRoots.lookup(disclose(allocation.target.namespaceHash));
+    assert(
+        allocation.governancePolicyHash == authority.governancePolicyHash &&
+        allocation.authorityRootVersion == authority.rootVersion &&
+        allocation.authorityRootSequence == authority.rootSequence,
+        "Instance allocation authority root is stale or mismatched"
+    );
+    const templateKey = persistentHash<TemplateRegistryTarget>(allocation.target);
+    assert(activeTemplates.member(disclose(templateKey)), "Exact allocation template is not registered");
+    const template = activeTemplates.lookup(disclose(templateKey));
+    assert(template.lifecycleStatus == 1, "New allocation requires an active exact template");
+    assert(
+        allocator.leafVersion == 1 && allocator.authorityKind == 4 &&
+        allocator.namespaceHash == allocation.target.namespaceHash &&
+        allocator.governancePolicyHash == authority.governancePolicyHash &&
+        governanceActivatorLeafCommitment(allocator) == allocation.allocatorAuthorityCommitment,
+        "Instance allocation requires the exact namespace allocator authority"
+    );
+    assert(
+        allocatorPath.leaf == allocation.allocatorAuthorityCommitment &&
+        merkleTreePathRoot<20, Bytes<32>>(allocatorPath) == authority.root,
+        "Allocator is not eligible under the current namespace authority root"
+    );
+    assert(
+        allocation.authorizedAt >= template.activatedAt &&
+        allocation.createdAt >= allocation.authorizedAt &&
+        allocation.createdAt >= allocator.validAfter &&
+        allocation.allocationValidBefore > allocation.createdAt &&
+        allocation.allocationValidBefore <= allocator.validBefore &&
+        allocation.allocationValidBefore <= allocation.expiresAt,
+        "Instance allocation lifetime or submission window is invalid"
+    );
+    assert(
+        blockTimeGte(disclose(allocation.createdAt)),
+        "Instance allocation is not yet effective or its submission window expired"
+    );
+    assert(
+        blockTimeLt(disclose(allocation.allocationValidBefore)),
+        "Instance allocation is not yet effective or its submission window expired"
+    );
+    assert(
+        allocation.instanceCommitment != default<Bytes<32>> &&
+        allocation.instanceIdHash != default<Bytes<32>> &&
+        allocation.allocationRequestIdHash != default<Bytes<32>> &&
+        allocation.m4AuthorizationCommitment != default<Bytes<32>> &&
+        allocation.initialStateCommitment != default<Bytes<32>> &&
+        allocation.allocationNonce != default<Bytes<32>> &&
+        allocation.capabilityIssuerCount > 0 && allocation.capabilityIssuerCount <= 1048576,
+        "Instance allocation requires nonempty exact private bindings"
+    );
+    Schnorr_schnorrVerify<1>(runtimeInstanceAllocationMessage(allocation), signature, allocator.publicKey);
+    const requestNullifier = runtimeAllocationRequestNullifier(allocation);
+    const instanceNullifier = runtimeInstanceIdentityNullifier(allocation);
+    assert(
+        !usedAllocationRequestNullifiers.member(disclose(requestNullifier)),
+        "M4 allocation request was already consumed"
+    );
+    assert(
+        !usedInstanceIdentityNullifiers.member(disclose(instanceNullifier)) &&
+        !runtimeInstances.member(disclose(allocation.instanceCommitment)),
+        "Instance identity was already allocated"
+    );
+    assertRuntimeTemplatePolicyBinding(allocation.target, policyWitness.policy,
+        policyWitness.binding, policyWitness.bindingPath, template.proofModuleBindingRoot,
+        template.proofModuleBindingCount);
+    assert(policyWitness.binding.actionIndex == 0 &&
+        policyWitness.initialState.stateVersion == 2 &&
+        policyWitness.initialState.instanceCommitment == allocation.instanceCommitment &&
+        policyWitness.initialState.stateIdHash == policyWitness.policy.initialStateIdHash &&
+        policyWitness.initialState.lastMutationAt == allocation.createdAt &&
+        policyWitness.initialState.nonce != default<Bytes<32>> &&
+        policyWitness.initialState.slotAssignmentCount == 1 &&
+        policyWitness.initialState.slotBindingCount == 1 &&
+        policyWitness.initialState.slotAssignmentsRoot == runtimePrivateMapEmptyRoot() &&
+        policyWitness.initialState.slotBindingsRoot == runtimePrivateMapEmptyRoot() &&
+        runtimeStateCommitment(policyWitness.initialState) == allocation.initialStateCommitment,
+        "Allocation initial state is not the activated template's exact initial state");
+    const commitment = runtimeInstanceAllocationCommitment(allocation);
+    runtimeInstances.insert(disclose(allocation.instanceCommitment), disclose(RuntimeInstanceRecord{
+        allocationCommitment: commitment, currentStateCommitment: allocation.initialStateCommitment,
+        transitionSequence: 0, lifecycleStatus: 1
+    }));
+    usedAllocationRequestNullifiers.insert(disclose(requestNullifier));
+    usedInstanceIdentityNullifiers.insert(disclose(instanceNullifier));
+    return disclose(commitment);
+}

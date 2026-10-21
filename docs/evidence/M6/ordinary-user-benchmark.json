@@ -1,0 +1,190 @@
+{
+  "evidenceVersion": 1,
+  "benchmark": "ordinary-user-support-request-v1",
+  "recordedAt": "2026-10-13T14:02:08.503Z",
+  "scope": "off-chain M5 authorization and M6 scope-witness preparation only",
+  "offchainChecksPassed": true,
+  "milestoneComplete": false,
+  "productionReady": false,
+  "environment": {
+    "node": "v24.13.1",
+    "platform": "win32",
+    "architecture": "x64",
+    "executionContext": "Codex Windows filesystem sandbox; not a target-device benchmark"
+  },
+  "iterationsPerCase": 20,
+  "cases": [
+    {
+      "mode": "customer-session",
+      "delegationDepth": 0,
+      "firstActionAfterModuleImportMs": 221.952,
+      "timings": {
+        "fixtureSetupMs": {
+          "samples": 20,
+          "p50Ms": 265.026,
+          "p95Ms": 400.793,
+          "maxMs": 404.158
+        },
+        "intentSigningMs": {
+          "samples": 20,
+          "p50Ms": 0.254,
+          "p95Ms": 0.525,
+          "maxMs": 0.568
+        },
+        "scopeWitnessPreparationMs": {
+          "samples": 20,
+          "p50Ms": 270.964,
+          "p95Ms": 322.12,
+          "maxMs": 395.124
+        },
+        "m5AuthorizationMs": {
+          "samples": 20,
+          "p50Ms": 0.478,
+          "p95Ms": 0.803,
+          "maxMs": 0.946
+        },
+        "totalClientActionMs": {
+          "samples": 20,
+          "p50Ms": 272.001,
+          "p95Ms": 323.315,
+          "maxMs": 395.993
+        }
+      }
+    },
+    {
+      "mode": "delegated-session",
+      "delegationDepth": 1,
+      "firstActionAfterModuleImportMs": 204.871,
+      "timings": {
+        "fixtureSetupMs": {
+          "samples": 20,
+          "p50Ms": 195.015,
+          "p95Ms": 238.879,
+          "maxMs": 243.4
+        },
+        "intentSigningMs": {
+          "samples": 20,
+          "p50Ms": 0.193,
+          "p95Ms": 0.258,
+          "maxMs": 0.388
+        },
+        "scopeWitnessPreparationMs": {
+          "samples": 20,
+          "p50Ms": 193.515,
+          "p95Ms": 217.383,
+          "maxMs": 231.782
+        },
+        "m5AuthorizationMs": {
+          "samples": 20,
+          "p50Ms": 0.382,
+          "p95Ms": 0.506,
+          "maxMs": 0.527
+        },
+        "totalClientActionMs": {
+          "samples": 20,
+          "p50Ms": 194.089,
+          "p95Ms": 218.273,
+          "maxMs": 232.301
+        }
+      }
+    }
+  ],
+  "negativeCases": [
+    {
+      "case": "altered-template-hash",
+      "reason": "TEMPLATE_MISMATCH"
+    },
+    {
+      "case": "wrong-context",
+      "reason": "CONTEXT_MISMATCH"
+    },
+    {
+      "case": "wrong-recipient",
+      "reason": "RECIPIENT_DENIED"
+    },
+    {
+      "case": "wrong-purpose",
+      "reason": "PURPOSE_DENIED"
+    },
+    {
+      "case": "out-of-session-resource",
+      "reason": "RESOURCE_DENIED"
+    },
+    {
+      "case": "wrong-signature",
+      "reason": "INVALID_SIGNATURE"
+    },
+    {
+      "case": "expired-session",
+      "reason": "EXPIRED"
+    },
+    {
+      "case": "revoked-session",
+      "reason": "SESSION_REVOKED"
+    },
+    {
+      "case": "revoked-account",
+      "reason": "ACCOUNT_REVOKED"
+    },
+    {
+      "case": "revoked-parent",
+      "reason": "GRANT_REVOKED"
+    }
+  ],
+  "replayChecksPassed": 42,
+  "chain": {
+    "status": "not-implemented",
+    "transactionsSubmitted": 0,
+    "proofGenerationMs": null,
+    "submissionMs": null,
+    "indexedConfirmationMs": null,
+    "proverPeakMemoryBytes": null,
+    "receipt": null,
+    "blockedBy": [
+      "action-time current-root ancestry verification",
+      "ordinary-user authorization circuits",
+      "atomic state/nullifier update and common receipt"
+    ]
+  },
+  "clientProcess": {
+    "maxRssKiB": 122560,
+    "includesModuleLoadingAndFixtureSetup": true
+  },
+  "qualifications": [
+    "Synthetic support scenario, not an M9 pack or evidence-truth proof.",
+    "Setup includes off-chain M4 reviews/activation and M5 account/grant/session creation; it is not chain provisioning time.",
+    "Seven scope membership paths are prepared and checked with generated Compact pure functions; this is not a ZK proof.",
+    "Serial samples at delegation depth zero and one, not browser, mobile, concurrency, network, or depth-sixteen acceptance.",
+    "First-action measurement excludes Node startup and module loading; percentiles are descriptive, not a production SLA.",
+    "The in-memory M5 decision is not a Midnight DecisionReceipt and is never submitted to a gateway."
+  ],
+  "milestone": "M6",
+  "command": "node scripts/run-m6-ordinary-user-benchmark.ts --iterations 20",
+  "exitCode": 0,
+  "contractImplementationChanged": false,
+  "versions": {
+    "compactCompiler": "0.31.1",
+    "compactRuntime": "0.16.0",
+    "midnightJs": "4.1.1"
+  },
+  "compactSourceSha256": "c073e130a3e23e1e758117e31ee5e3fb859099e4bee0b590b9babdbcdae4ebce",
+  "repositoryVerification": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "packageTestsPassed": 93,
+    "diagnosticTestsPassed": 12,
+    "hardhatTestsPassed": 6,
+    "typecheck": "passed",
+    "solidityBuild": "passed",
+    "documentationFreshness": "passed",
+    "initialSandboxAttempt": "Hardhat HHE22; identical full command passed outside sandbox",
+    "compactSourceAndCredentialProverHashesUnchanged": true,
+    "newMidnightTransactionsSubmitted": 0
+  },
+  "requiredChainGuard": {
+    "command": "node scripts/run-m6-ordinary-user-benchmark.ts --require-chain",
+    "expectedExitCode": 2,
+    "observedExitCode": 2,
+    "checkedBy": "scripts/test/m6-ordinary-user-workload.test.ts"
+  }
+}

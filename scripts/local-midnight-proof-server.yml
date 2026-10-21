@@ -1,0 +1,21 @@
+services:
+  proof-server:
+    image: midnightntwrk/proof-server:8.1.0
+    container_name: permio-m6-proof-server
+    command: ['midnight-proof-server']
+    cpus: 4.0
+    ports:
+      - '127.0.0.1:6300:6300'
+    environment:
+      MIDNIGHT_PROOF_SERVER_NUM_WORKERS: '1'
+      MIDNIGHT_PROOF_SERVER_JOB_CAPACITY: '1'
+      RAYON_NUM_THREADS: '4'
+      RUST_BACKTRACE: '0'
+    volumes:
+      - '../logs/m6-proof-server-public-cache:/.cache/midnight'
+    healthcheck:
+      test: ['CMD-SHELL', 'echo > /dev/tcp/127.0.0.1/6300']
+      interval: 10s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
