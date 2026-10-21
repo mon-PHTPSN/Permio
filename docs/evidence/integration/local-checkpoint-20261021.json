@@ -20,19 +20,20 @@
       14,
       16,
       51,
-      207,
-      27,
+      209,
+      32,
       38
     ],
     "hardhatPass": 30,
-    "totalPassed": 546,
+    "totalPassed": 553,
     "failures": 0,
     "skips": 0,
-    "log": "logs/integration-20261021/combined-check-v2.txt",
-    "sha256": "af2fc824854e06105d74f1ce2a1cd52999f08d8f2815fdae53c8865caf1ec73d",
+    "log": "logs/integration-20261021/combined-check-stable.txt",
+    "sha256": "024fb7526a5688deb189c61c57c9e6cfc3d6e7987cf270c77ebb84aa091a1603",
     "reviewRecoveryFixesVerified": true,
     "recoveryFocusedPassed": 38,
-    "finalFullRun": "RUNNING"
+    "finalFullRun": "PASSED",
+    "implementationTree": "75043bc08faed336bb6b9a68446f3490a42af50c"
   },
   "evidenceTiers": {
     "syntheticSourceAndLoopbackHttp": true,
@@ -75,7 +76,17 @@
     "httpProofRequests": 0,
     "nativeSubmissions": 0,
     "temporaryPublicAssetLinksRemoved": true,
-    "generatedBytesRestoredFromExactGitBlobs": true
+    "generatedBytesRestoredFromExactGitBlobs": true,
+    "githubCi": [
+      {
+        "conclusion": "SUCCESS",
+        "runId": "39590478421"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "runId": "39590485663"
+      }
+    ]
   },
   "review": {
     "skill": "ce-code-review",
