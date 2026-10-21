@@ -1,0 +1,15 @@
+{
+  "name": "@permio/execution-dashboard",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Context-first Permio frontend demo with local accounts and separate Envio history",
+  "scripts": {
+    "start": "node src/server.ts",
+    "test": "node --test test/*.test.ts",
+    "typecheck": "tsc --noEmit -p tsconfig.json"
+  },
+  "engines": {
+    "node": ">=22.13.0"
+  }
+}

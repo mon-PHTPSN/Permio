@@ -1,0 +1,113 @@
+type ReceiptProjection {
+  id: ID!
+  registry: String!
+  receiptVersion: Bytes!
+  recipient: String!
+  actionSchemaId: Bytes! @index
+  purposeHash: Bytes! @index
+  validAfter: BigInt!
+  validBefore: BigInt!
+  scopedNullifier: Bytes!
+  outputCommitment: Bytes!
+  gatewayKeyId: Bytes! @index
+  gatewaySigner: String!
+  gatewaySignedAt: BigInt
+  registeredAt: BigInt!
+  registeredBlock: BigInt!
+  registeredTransaction: String!
+  sourceNetwork: Bytes
+  sourceContract: Bytes
+  sourceTransaction: Bytes
+  sourceLedgerSequence: BigInt
+  namespaceHash: Bytes
+  templateIdHash: Bytes
+  templateVersion: Bytes
+  templateContentHash: Bytes
+  proofModuleId: Bytes
+  proofModuleVersion: Bytes
+  proofModuleImplementationHash: Bytes
+  instanceCommitment: Bytes
+  previousStateCommitment: Bytes
+  nextStateCommitment: Bytes
+  transitionSequence: BigInt
+  contextHash: Bytes
+  revoked: Boolean!
+  revokedBy: String
+  consumed: Boolean!
+  executionId: String
+}
+
+type ExecutionProjection {
+  id: ID!
+  registry: String!
+  receiptId: String! @index
+  adapter: String! @index
+  actionSchemaId: Bytes! @index
+  relayer: String!
+  recipient: String!
+  success: Boolean! @index
+  resultCommitment: Bytes!
+  errorHash: Bytes!
+  executedAt: BigInt!
+  blockNumber: BigInt!
+  transactionHash: String!
+}
+
+type Adapter {
+  id: ID!
+  registry: String!
+  adapterKey: Bytes!
+  receiptVersion: Bytes! @index
+  actionSchemaId: Bytes! @index
+  address: String!
+  enabled: Boolean! @index
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}
+
+type GatewayKeyEpoch {
+  id: ID!
+  registry: String!
+  gatewayKeyId: Bytes!
+  signer: String! @index
+  validAfter: BigInt!
+  validBefore: BigInt!
+  disabled: Boolean! @index
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}
+
+type ReceiptVerifier {
+  id: ID!
+  registry: String!
+  receiptVersion: Bytes!
+  verifier: String!
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}
+
+type SourceAuthorization {
+  id: ID!
+  registry: String!
+  sourceKey: Bytes!
+  sourceNetwork: Bytes!
+  sourceContract: Bytes!
+  authorized: Boolean! @index
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}
+
+type TimeBucketAggregate {
+  id: ID!
+  registry: String!
+  bucketKind: String!
+  bucketStart: BigInt! @index
+  actionSchemaId: Bytes! @index
+  receiptsRegistered: BigInt!
+  executionAttempts: BigInt!
+  executionSuccesses: BigInt!
+  executionFailures: BigInt!
+  receiptsRevoked: BigInt!
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}

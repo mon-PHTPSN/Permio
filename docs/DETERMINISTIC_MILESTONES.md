@@ -952,9 +952,15 @@ source event is final or signable.
 
 ## 11 M8 — Execution registry and adapters
 
-Status: `PARTIAL_BASELINE`; the existing recipient-bound registry and six
-Hardhat deployment tests are implemented, but the M6 common receipt and M7
-durable-source rules are not yet enforced.
+Status: `IN_PROGRESS_UPSTREAM_BLOCKED`; the generalized registry, adapter
+boundary, expected-upstream receipt fixture, twenty-four Hardhat tests, and
+public-only HyperIndex projection with in-memory handler tests are implemented.
+The local fixture HyperIndex has also passed GraphQL, backfill, restart, and
+pre-finality reorg rollback drills. A fixture-only browser consumer now renders
+the receipt/execution history, aggregates, block lag, and explicit unavailable
+state without changing authorization. The authoritative M6 receipt codec, M7
+durable transport, required non-fixture deployments, and M11 GraphQL consumer
+remain required.
 
 ### Result required in plain language
 
@@ -1184,7 +1190,12 @@ custody.
 
 ## 14 M11 — Scenario-library product workflow
 
-Status: `NOT_STARTED`; depends on M4, M5, and M9
+Status: `IN_PROGRESS_DEPENDENCY_BLOCKED`; depends on M4, M5, and M9.
+Local product preparation includes persistent local-account login (explicitly
+approved for this demo on 2026-10-14), account-isolated workspaces, blueprint
+creation, signed M4 review/activation, and M5 instance allocation. This is not
+Dynamic sandbox acceptance, M6 runtime authorization, or M11 completion; all
+required integrations and acceptance criteria below remain unchanged.
 
 ### Artifacts
 
@@ -2040,8 +2051,12 @@ fixture 绝不能成为收据字段。
 
 ## 11 M8——执行注册表与适配器
 
-状态：`PARTIAL_BASELINE`；现有接收方绑定注册表与六个 Hardhat 部署测试已经实现，但尚未强制
-执行 M6 通用收据和 M7 持久化来源规则。
+状态：`IN_PROGRESS_UPSTREAM_BLOCKED`；泛化注册表、adapter 边界、预期上游收据 fixture、
+二十四个 Hardhat 测试，以及只含公开数据并带内存 handler 测试的 HyperIndex 投影已经实现。
+本地 fixture HyperIndex 也已通过 GraphQL、backfill、重启及最终确认前重组回滚演练。
+一个仅限 fixture 的浏览器消费者现已展示收据／执行历史、聚合、区块延迟和明确的不可用状态，且不会
+改变授权。权威 M6 收据 codec、M7 持久化传输、所需的非 fixture 部署及 M11 GraphQL 消费者仍是
+必需项。
 
 ### 通俗结果要求
 
@@ -2176,7 +2191,10 @@ Mera adapter 明确用于非账户工作：它重建 passkey PRF 密钥材料，
 
 ## 14 M11——情境库产品工作流
 
-状态：`NOT_STARTED`；依赖 M4、M5 和 M9
+状态：`IN_PROGRESS_DEPENDENCY_BLOCKED`；依赖 M4、M5 和 M9。
+本地产品准备已包含用户于 2026-10-14 明确批准的持久化本地账户登录、账户隔离工作区、blueprint
+创建、M4 签名审核／激活，以及 M5 实例分配。这不属于 Dynamic sandbox 验收、M6 运行时授权或
+M11 完成；以下集成要求与验收标准保持不变。
 
 产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Dynamic SDK
 身份验证与 session 生命周期集成、记录精确 wallet key／connector 版本和受支持网络的 1AM

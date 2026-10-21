@@ -2,11 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-<<<<<<< HEAD
-  Source SHA-256: 5ca08afafec27d4cc8c981913087dc49bde4956bcb47dcace49a9d9d4a1e3f06
-=======
-  Source SHA-256: 78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea
->>>>>>> feat/m7-preparation
+  Source SHA-256: 7edc2bfbf74bfc1409a1a7e8c33eb583ff853deb17f1e2a19ab2bf4655ad6c84
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -14,11 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-<<<<<<< HEAD
-  <meta name="source-sha256" content="5ca08afafec27d4cc8c981913087dc49bde4956bcb47dcace49a9d9d4a1e3f06">
-=======
-  <meta name="source-sha256" content="78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea">
->>>>>>> feat/m7-preparation
+  <meta name="source-sha256" content="7edc2bfbf74bfc1409a1a7e8c33eb583ff853deb17f1e2a19ab2bf4655ad6c84">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -1113,9 +1105,15 @@ source event is final or signable.</p>
 <section aria-labelledby="11-m8-execution-registry-and-adapters">
 <h2 id="11-m8-execution-registry-and-adapters">11 M8 — Execution registry and adapters</h2>
 
-<p>Status: <code>PARTIAL_BASELINE</code>; the existing recipient-bound registry and six
-Hardhat deployment tests are implemented, but the M6 common receipt and M7
-durable-source rules are not yet enforced.</p>
+<p>Status: <code>IN_PROGRESS_UPSTREAM_BLOCKED</code>; the generalized registry, adapter
+boundary, expected-upstream receipt fixture, twenty-four Hardhat tests, and
+public-only HyperIndex projection with in-memory handler tests are implemented.
+The local fixture HyperIndex has also passed GraphQL, backfill, restart, and
+pre-finality reorg rollback drills. A fixture-only browser consumer now renders
+the receipt/execution history, aggregates, block lag, and explicit unavailable
+state without changing authorization. The authoritative M6 receipt codec, M7
+durable transport, required non-fixture deployments, and M11 GraphQL consumer
+remain required.</p>
 <h3 id="result-required-in-plain-language-2">Result required in plain language</h3>
 
 <p>M8 turns the existing Solidity registry into a consumer of the exact common
@@ -1344,7 +1342,12 @@ custody.</p>
 <section aria-labelledby="14-m11-scenario-library-product-workflow">
 <h2 id="14-m11-scenario-library-product-workflow">14 M11 — Scenario-library product workflow</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on M4, M5, and M9</p>
+<p>Status: <code>IN_PROGRESS_DEPENDENCY_BLOCKED</code>; depends on M4, M5, and M9.
+Local product preparation includes persistent local-account login (explicitly
+approved for this demo on 2026-10-14), account-isolated workspaces, blueprint
+creation, signed M4 review/activation, and M5 instance allocation. This is not
+Dynamic sandbox acceptance, M6 runtime authorization, or M11 completion; all
+required integrations and acceptance criteria below remain unchanged.</p>
 <h3 id="artifacts-10">Artifacts</h3>
 
 <ul>
@@ -1542,11 +1545,7 @@ hide an environmental failure.</p>
         </article>
         <footer>
           Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-<<<<<<< HEAD
-          Source SHA-256: <code>5ca08afafec27d4cc8c981913087dc49bde4956bcb47dcace49a9d9d4a1e3f06</code>.
-=======
-          Source SHA-256: <code>78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea</code>.
->>>>>>> feat/m7-preparation
+          Source SHA-256: <code>7edc2bfbf74bfc1409a1a7e8c33eb583ff853deb17f1e2a19ab2bf4655ad6c84</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
@@ -2153,8 +2152,12 @@ fixture 绝不能成为收据字段。</p>
 <section aria-labelledby="zh-11-m8-执行注册表与适配器">
 <h2 id="zh-11-m8-执行注册表与适配器">11 M8——执行注册表与适配器</h2>
 
-<p>状态：<code>PARTIAL_BASELINE</code>；现有接收方绑定注册表与六个 Hardhat 部署测试已经实现，但尚未强制
-执行 M6 通用收据和 M7 持久化来源规则。</p>
+<p>状态：<code>IN_PROGRESS_UPSTREAM_BLOCKED</code>；泛化注册表、adapter 边界、预期上游收据 fixture、
+二十四个 Hardhat 测试，以及只含公开数据并带内存 handler 测试的 HyperIndex 投影已经实现。
+本地 fixture HyperIndex 也已通过 GraphQL、backfill、重启及最终确认前重组回滚演练。
+一个仅限 fixture 的浏览器消费者现已展示收据／执行历史、聚合、区块延迟和明确的不可用状态，且不会
+改变授权。权威 M6 收据 codec、M7 持久化传输、所需的非 fixture 部署及 M11 GraphQL 消费者仍是
+必需项。</p>
 <h3 id="zh-通俗结果要求-2">通俗结果要求</h3>
 
 <p>M8 把现有 Solidity 注册表扩展为 M7 传输的精确通用收据消费者。注册表不判断私有证据是否充分；
@@ -2270,7 +2273,10 @@ commitment、期限和 nullifier。M6 发出桥接收据，但永远不接收密
 <section aria-labelledby="zh-14-m11-情境库产品工作流">
 <h2 id="zh-14-m11-情境库产品工作流">14 M11——情境库产品工作流</h2>
 
-<p>状态：<code>NOT_STARTED</code>；依赖 M4、M5 和 M9</p>
+<p>状态：<code>IN_PROGRESS_DEPENDENCY_BLOCKED</code>；依赖 M4、M5 和 M9。
+本地产品准备已包含用户于 2026-10-14 明确批准的持久化本地账户登录、账户隔离工作区、blueprint
+创建、M4 签名审核／激活，以及 M5 实例分配。这不属于 Dynamic sandbox 验收、M6 运行时授权或
+M11 完成；以下集成要求与验收标准保持不变。</p>
 <p>产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Dynamic SDK
 身份验证与 session 生命周期集成、记录精确 wallet key／connector 版本和受支持网络的 1AM
 Midnight 钱包连接、独立 Monad EVM 钱包绑定、Agent 会话撤销，以及由生成情境包创建的多账户
@@ -2373,11 +2379,7 @@ npm run compile
         </article>
         <footer>
           由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
-<<<<<<< HEAD
-          源文件 SHA-256：<code>5ca08afafec27d4cc8c981913087dc49bde4956bcb47dcace49a9d9d4a1e3f06</code>。
-=======
-          源文件 SHA-256：<code>78df11125f5658e878891a0754d345e3a401c8af43730377eb8c8e9699010dea</code>。
->>>>>>> feat/m7-preparation
+          源文件 SHA-256：<code>7edc2bfbf74bfc1409a1a7e8c33eb583ff853deb17f1e2a19ab2bf4655ad6c84</code>。
         </footer>
       </div>
     </main>

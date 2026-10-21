@@ -154,6 +154,38 @@ The registry verifies the signature, rejects a reused scoped entitlement, and
 supports revocation. It does not receive a person's address, order ID,
 credential ID, holder secret, or private source record.
 
+M8 preparation also includes a generalized `ExecutionRegistry`, version-bound
+receipt-verifier and execution-adapter interfaces, separated governance roles,
+one-time execution, failure isolation, and a public-only Envio HyperIndex read
+model. Its `ExpectedM6M7ReceiptVerifier` is a local-chain fixture, not the
+authoritative M6 receipt codec or M7 transport. M8 remains incomplete until
+those upstream contracts are integrated and the required HyperIndex deployment
+drives a real GraphQL product view. The local fixture indexer has passed
+GraphQL, restart, backfill, and pre-finality reorg rollback drills.
+The fixture-backed Activity and Reports pages consume that GraphQL endpoint,
+retain the Information Flow frontend's list/detail behavior, and
+show searchable receipt history, execution outcomes, hourly totals, and update
+status. Service errors offer a retry without cached or fabricated rows. This
+does not replace the required M11 consumer or reviewed deployment evidence.
+
+The local product now also supports persistent ordinary-account registration,
+login/logout, account-isolated workflows, signed M4 review and activation,
+M5 instance allocation, and private shared workspaces. The user approved local
+accounts for this demo; Dynamic and real M6/M7 action integration remain pending.
+The default frontend now centers Contexts, Permissions, Disclosures and
+Verification. With the user's explicit frontend-first approval, these journeys
+use an isolated, account-scoped browser demo client with purchase/support and
+clinical/research examples. This simulation is not M5/M6 authorization: consent
+may be recorded, but proof and delivery remain pending. A separate HTTP adapter
+is prepared for later integration; no receipt or Envio result is fabricated.
+The supplied Permio identity board informs its horizontal navigation,
+blue/violet/coral palette and restrained interaction motion. Local demo
+passwords may be four characters; the persistent Windows launcher is
+`scripts/local-app.ps1`.
+Envio activity is filtered to trusted account-bound receipt IDs rather than
+showing global fixture records to every account. See
+`packages/execution-dashboard/README.md` for operation and remaining boundaries.
+
 EIP-712 is Ethereum's structured-data signing standard. A scoped nullifier is a
 one-use marker that prevents replay within a defined context without becoming a
 global user identifier.
@@ -187,9 +219,19 @@ npm install
 npm run check
 ```
 
+The complete check compiles Solidity before TypeScript checking: Hardhat
+generates contract ABI types under ignored `artifacts/`. On a clean checkout,
+run `npm run compile` before invoking `npm run typecheck` separately.
+
 Local compilation and tests do not require a private key.
 
 ## Deployment
+
+For the hosted application demo on branch `feat/m8-execution-registry`, use
+the root `render.yaml` and follow the [Render deployment guide](docs/evidence/M8/render-deployment.md).
+It configures HTTPS cookies, a health endpoint, and a persistent SQLite disk on
+a paid single-instance service. This prepares application hosting only; M6/M7
+integration and the M8 acceptance gate remain incomplete.
 
 Prefer Hardhat's encrypted keystore:
 
@@ -205,6 +247,11 @@ commit `.env`, a private key, a seed phrase, or production user data.
 The deployment module initially authorizes the deployer as both owner and
 verifier. Rotate the verifier with `setVerifier` before using a separate gateway
 key, and transfer ownership before any production deployment.
+
+The M8 local deployment module instead assigns its six initial powers to six
+different local accounts. Production deployment must replace those defaults
+with reviewed keys or governance contracts. It deliberately does not deploy or
+configure the expected-upstream fixture verifier.
 
 ## Trust boundary
 
@@ -227,6 +274,18 @@ identifier.
 | `npm run check` | Run all local verification. |
 | `npm run node` | Start a local Hardhat JSON-RPC node. |
 | `npm run deploy:local` | Deploy to Hardhat's simulated network. |
+| `npm run deploy:m8:local` | Deploy the generalized M8 registry locally with six separated authorities. |
+| `npm run deploy:m8:fixture:local` | Deploy the local-only M8 fixture registry, verifier, adapter, and separated configuration roles to a running localhost node. |
+| `npm run seed:m8:fixture:local` | Submit and execute one signed expected-upstream fixture receipt on localhost. |
+| `npm run indexer:codegen` | Generate exact Envio types in WSL 2. |
+| `npm run indexer:typecheck` | Type-check the public-only Envio handlers and tests. |
+| `npm run indexer:test` | Run Envio's in-memory handler tests in WSL 2. |
+| `npm run indexer:verify` | Regenerate, type-check, and test the Envio project in WSL 2. |
+| `npm run indexer:dev` | Start the Docker-backed local Envio indexer and GraphQL service in WSL 2. |
+| `npm run indexer:backfill` | Reset and backfill the local Envio read model; never use against production without a recovery plan. |
+| `npm run dashboard:start` | Start the account-based local application at `http://127.0.0.1:4178`. |
+| `npm run dashboard:typecheck` | Type-check the dashboard server and consumer tests. |
+| `npm run dashboard:test` | Verify live, stale, unavailable, privacy-boundary, and view-model behavior. |
 | `npm run deploy:testnet` | Deploy to Monad Testnet. |
 | `npm run deploy:mainnet` | Deploy to Monad Mainnet. |
 
@@ -321,6 +380,25 @@ M6 的强制验收网络，复用 Preprod 账户只属于显式选择的补充 s
 空值标识、一个接收方和用途，以及签发与过期时间。注册表验证签名、拒绝重复使用限定范围
 的权益，并支持撤销。它不会接收个人地址、订单 ID、凭证 ID、持有人秘密或私有源记录。
 
+M8 准备工作还包括泛化 `ExecutionRegistry`、绑定版本的收据验证器和执行 adapter 接口、分离的治理
+权限、一次性执行、失败隔离，以及只含公开数据的 Envio HyperIndex 读取模型。
+`ExpectedM6M7ReceiptVerifier` 只是本地链 fixture，不是权威 M6 收据 codec 或 M7 传输。
+在接入这些上游契约，并让所需 HyperIndex 部署驱动真实 GraphQL 产品视图之前，M8 仍未完成。
+本地 fixture 索引器已通过 GraphQL、重启、backfill 及最终确认前重组回滚演练。
+由 fixture 提供数据的 Activity 和 Reports 页面消费该 GraphQL endpoint，复用 Information Flow 的
+列表／详情行为，提供可搜索收据历史、执行结果、小时统计及更新状态。服务异常时支持重试，并且不会
+显示缓存或虚构行。它不能替代所需的
+M11 消费者或经过审核的部署证据。
+
+本地产品现已支持普通账户持久化注册、登录／退出、账户隔离的工作流、M4 签名审核与激活、M5
+实例分配和私有共享工作区。用户已批准本次演示采用本地账户；Dynamic 及真实 M6/M7 动作集成仍待
+完成。Envio 活动按可信绑定到当前账户的公开收据 ID 筛选，不再给每个账户展示全局 fixture 记录。
+用户明确批准前端先行后，默认界面改为情境、权限、披露与验证，使用按账户隔离的浏览器演示客户端，
+提供购买／客服与临床／研究示例。这不是 M5/M6 授权：只记录同意，证明及交付仍待处理；另预留
+HTTP 集成适配器，不伪造收据或 Envio 结果。视觉依据用户提供的 Logo 设计板，使用顶部导航、
+蓝紫珊瑚色及克制交互动效。本地演示允许四位密码，Windows 后台启动脚本为 `scripts/local-app.ps1`。
+运行方式与边界见 `packages/execution-dashboard/README.md`。
+
 EIP-712 是以太坊的结构化数据签名标准。限定范围的空值标识是在指定上下文中阻止重放的
 一次性标记，但它不会成为全局用户标识。
 
@@ -335,6 +413,9 @@ Monad 测试网链 ID 为 10143，主网链 ID 为 143。第一版 Permio 演示
 复制 `.env.example` 为 `.env`，但绝不能提交 `.env`、私钥、助记词或生产用户数据。
 部署模块最初把部署者同时设为所有者和验证者；使用独立网关密钥之前，应通过
 `setVerifier` 更换验证者，任何生产部署前也应转移所有权。
+
+M8 本地部署模块会把六项初始权限分配给六个不同的本地账户。生产部署必须用经过审核的密钥或治理
+合约替换这些默认值。该模块不会部署或配置预期上游 fixture 验证器。
 
 当前合约信任预先配置的验证者密钥。它验证签名是否精确绑定接收方、用途、模式、承诺和
 有效期；目前不会在 Monad 上直接验证 Midnight 共识或 Midnight 零知识证明。普通用户

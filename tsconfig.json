@@ -13,5 +13,6 @@
     "outDir": "dist",
     "noEmit": true,
     "allowImportingTsExtensions": true
-  }
+  },
+  "exclude": ["packages/execution-indexer"]
 }

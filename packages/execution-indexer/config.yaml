@@ -1,0 +1,46 @@
+# yaml-language-server: $schema=../../node_modules/envio/evm.schema.json
+# EXPECTED_UPSTREAM_CONTRACT_FIXTURE_NOT_ACCEPTANCE_EVIDENCE
+# The deterministic local fixture module deploys this registry first on a
+# fresh Hardhat chain. It remains fixture-only and is not acceptance evidence
+# for an upstream M6/M7 integration or a production M8 deployment.
+name: permio-execution-registry
+description: Public-only M8 receipt and execution projections
+ecosystem: evm
+schema: ./schema.graphql
+handlers: ./src/handlers
+disable_default_cross_chain: true
+rollback_on_reorg: true
+save_full_history: true
+raw_events: false
+address_format: lowercase
+bytes_type: hex
+
+contracts:
+  - name: ExecutionRegistry
+    events:
+      - event: "ReceiptVerifierConfigured(bytes32 indexed receiptVersion, address indexed verifier)"
+      - event: "SourceAuthorizationChanged(bytes32 indexed sourceKey, bytes32 indexed sourceNetwork, bytes32 indexed sourceContract, bool authorized)"
+      - event: "GatewayKeyEpochRegistered(bytes32 indexed gatewayKeyId, address indexed signer, uint64 validAfter, uint64 validBefore)"
+      - event: "GatewayKeyEpochDisabled(bytes32 indexed gatewayKeyId, address indexed signer)"
+      - event: "AdapterRegistered(bytes32 indexed adapterKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, address adapter)"
+      - event: "AdapterDisabled(bytes32 indexed adapterKey, bytes32 indexed receiptVersion, bytes32 indexed actionSchemaId, address adapter)"
+      - event: "ReceiptRegistered(bytes32 indexed receiptId, bytes32 indexed receiptVersion, address indexed recipient, bytes32 actionSchemaId, bytes32 purposeHash, uint64 validAfter, uint64 validBefore, bytes32 scopedNullifier, bytes32 outputCommitment, bytes32 gatewayKeyId, address gatewaySigner, uint64 registeredAt)"
+        field_selection:
+          transaction_fields:
+            - hash
+      - event: "ReceiptSourceBound(bytes32 indexed receiptId, bytes32 sourceNetwork, bytes32 sourceContract, bytes32 sourceTransaction, uint64 sourceLedgerSequence, uint64 gatewaySignedAt)"
+      - event: "ReceiptImplementationBound(bytes32 indexed receiptId, bytes32 namespaceHash, bytes32 templateIdHash, bytes32 templateVersion, bytes32 templateContentHash, bytes32 proofModuleId, bytes32 proofModuleVersion, bytes32 proofModuleImplementationHash)"
+      - event: "ReceiptStateBound(bytes32 indexed receiptId, bytes32 instanceCommitment, bytes32 previousStateCommitment, bytes32 nextStateCommitment, uint64 transitionSequence, bytes32 contextHash)"
+      - event: "ReceiptRevoked(bytes32 indexed receiptId, address indexed revokedBy)"
+      - event: "ExecutionRecorded(bytes32 indexed executionId, bytes32 indexed receiptId, address indexed adapter, bytes32 actionSchemaId, address relayer, address recipient, bool success, bytes32 resultCommitment, bytes32 errorHash, uint64 executedAt)"
+        field_selection:
+          transaction_fields:
+            - hash
+
+chains:
+  - id: 31337
+    start_block: 0
+    rpc: http://127.0.0.1:8545
+    contracts:
+      - name: ExecutionRegistry
+        address: "0x5fbdb2315678afecb367f032d93f642f64180aa3"
