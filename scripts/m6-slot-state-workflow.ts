@@ -3,10 +3,12 @@ import { createHash, generateKeyPairSync, randomBytes } from "node:crypto";
 import type { SlotBoundContextAccountSystem, ScenarioInstance, ParticipantSlotAssignment } from "@permio/context-accounts";
 import type { ScenarioTemplate } from "@permio/scenario-domain";
 import { encodeCanonical } from "@permio/protocol";
+import { classifyLiveM6Failure } from "./m6-live-failure.ts";
 import {
   RuntimePrivateMap, CredentialStatusTree, createRuntimeAccountCredential,
   hashM5ParticipantSlotAssignment,
   createRuntimeCapabilityCredential, createRuntimeCredentialStatusCommand, createRuntimeCredentialInstanceBinding,
+  advanceRuntimeCredentialInstanceBinding,
   createEmptyRuntimeScopeProgress, createEmptyRuntimeSessionCredential, createRuntimeTemplateActionPolicy,
   governanceActivatorPublicKey, signRuntimeCredentialStatusCommand, signRuntimeCapabilityCredential,
   signRuntimeSlotCommand, permioAuthorizationPureCircuits as pure, readPermioAuthorizationLedger as ledger,
@@ -28,6 +30,8 @@ export async function runSlotStateWorkflow(input: {
   contract: ConnectedPermioAuthorizationContract; providers: PermioAuthorizationProviders;
   address: string; governancePolicyHash: Hex32;
   binding: import("@permio/midnight-authorization").RuntimeAllocationPolicyWitness;
+  beforeSlots?: () => Promise<void>;
+  checkpoint?(stage: 'slot-account-prepared' | 'slot-command-prepared', value: unknown): Promise<void>;
   emit(event: string, fields: Readonly<Record<string, unknown>>): void;
 }) {
   const { system, instance, allocation, contract } = input;
@@ -56,20 +60,25 @@ export async function runSlotStateWorkflow(input: {
     subjectAccountCredential: account, statusIndex: 8n,
     namespaceIssuer: { principalId: grant.issuerRef, authority: input.issuer } });
   const status = new CredentialStatusTree();
-  const cmd = createRuntimeCredentialStatusCommand({ namespace: instance.namespace, governancePolicyHash: input.governancePolicyHash,
+  const credentialBinding = createRuntimeCredentialInstanceBinding(allocation, input.issuers, input.issuer, instance.expiresAt - 1,
+    { opening: input.stateOpening, sequence: 0n });
+  const privateStateNonces = [credentialBinding.state.nonce, credentialBinding.nextStateNonce];
+  const cmd = createRuntimeCredentialStatusCommand({ instanceBinding: credentialBinding, namespace: instance.namespace, governancePolicyHash: input.governancePolicyHash,
     authorityRootVersion: Number(allocation.authorityRootVersion), authorityRootSequence: Number(allocation.authorityRootSequence),
     credentialStatusRootSequence: 0n, kind: "account", credentialCommitment: accountHash,
     subjectAccountCredentialCommitment: accountHash, revocationAuthorityAccountCredentialCommitment: accountHash,
     statusIndex: account.statusIndex, expectedStatus: "empty", nextStatus: "active", effectiveAt: source.registeredAt,
     commandNonce: `0x${randomBytes(32).toString("hex")}` });
   emit("slot-account-issuance-started", { ordinaryActionAcceptance: false });
-  const accountTx = await contract.callTx.updateRuntimeCredentialStatus(1n, cmd,
+  const accountArguments = [1n, cmd,
     signRuntimeCredentialStatusCommand(cmd, input.issuerSecret), input.issuer,
     input.authority.pathFor(pure.governanceActivatorLeafCommitment(input.issuer)), account,
     status.pathFor(7n), status.pathFor(7n), cap.credential, signRuntimeCapabilityCredential(cap.credential, input.issuerSecret),
     cap.credential, status.pathFor(8n), createEmptyRuntimeScopeProgress(),
     { elementVersion: 1n, dimension: 1n, valueHash: zero() }, status.pathFor(7n), status.pathFor(7n),
-    createEmptyRuntimeSessionCredential(), createRuntimeCredentialInstanceBinding(allocation, input.issuers, input.issuer, instance.expiresAt - 1));
+    createEmptyRuntimeSessionCredential(), credentialBinding] as const;
+  await input.checkpoint?.('slot-account-prepared', { source, grant, accountArguments });
+  const accountTx = await contract.callTx.updateRuntimeCredentialStatus(...accountArguments);
   status.issue({ namespace: instance.namespace, kind: "account", credentialCommitment: accountHash,
     revocationAuthorityAccountCredentialCommitment: accountHash, statusIndex: 7n });
   emit("slot-account-issued", { transactionId: accountTx.public.txId, credentialStatusRootSequence: 1 });
@@ -77,7 +86,8 @@ export async function runSlotStateWorkflow(input: {
   const assignments = new RuntimePrivateMap(), bindings = new RuntimePrivateMap();
   const records = new Map<string, RuntimeSlotRecord>(), sources: ParticipantSlotAssignment[] = [];
   const projection = createRuntimeTemplateActionPolicy(input.template, action.id);
-  let state = structuredClone(input.stateOpening), accepted = 0, sequence = 0n;
+  const afterIssuance = advanceRuntimeCredentialInstanceBinding(credentialBinding, cmd);
+  let state = afterIssuance.state, accepted = 0, sequence = afterIssuance.stateSequence;
   const hex = (value: Uint8Array) => Buffer.from(value).toString("hex");
   async function verifyState() {
     const indexed = await input.providers.publicDataProvider.queryContractState(input.address); assert(indexed);
@@ -88,6 +98,11 @@ export async function runSlotStateWorkflow(input: {
     const accountStatus = view.credentialStatusRoots.lookup(allocation.target.namespaceHash);
     assert.deepEqual(accountStatus.root, status.root); assert.equal(accountStatus.rootSequence, 1n);
     return view;
+  }
+  if (input.beforeSlots) {
+    await verifyState();
+    await input.beforeSlots();
+    await verifyState();
   }
   async function manage(kind: 1n | 2n, slot: string, governor: boolean, sourceRecord?: ParticipantSlotAssignment) {
     const effectiveAt = now(), authority = governor ? input.slotGovernor : input.allocator;
@@ -122,6 +137,7 @@ export async function runSlotStateWorkflow(input: {
     const bp = kind === 1n && !exists ? bindings.planInsert(bindingKey, assignmentIdHash) : undefined;
     const previousOpening = previous ? assignments.witnessFor(previous.assignment.assignmentIdHash) : assignmentOpening;
     const nextNonce = randomBytes(32);
+    privateStateNonces.push(nextNonce);
     let progress = pure.runtimeSlotInitialProgress(command, kind === 1n && previous ? previous.assignment.assignmentIdHash : zero(),
       kind === 1n && previous ? previous.assignment.subjectAccountCredentialCommitment : zero());
     const unusedStep: RuntimeSlotAncestryStep = { record, opening: assignmentOpening, account,
@@ -129,10 +145,18 @@ export async function runSlotStateWorkflow(input: {
     const policyOpening = { policy: projection.policy, binding: input.binding.binding, bindingPath: input.binding.bindingPath,
       rule: slotRule.rule, rulePath: slotRule.path };
     async function call(operation: bigint, step = unusedStep, alteredCommand = command, signer = governor ? input.slotGovernorSecret : input.allocatorSecret) {
-      return contract.callTx.manageRuntimeParticipantSlots(operation, alteredCommand, signRuntimeSlotCommand(alteredCommand, signer), allocation,
+      const circuitArguments = [operation, alteredCommand, signRuntimeSlotCommand(alteredCommand, signer), allocation,
         state, nextNonce, policyOpening, authority, input.authority.pathFor(pure.governanceActivatorLeafCommitment(authority)),
         account, status.pathFor(7n), account, status.pathFor(7n), progress, step, targetRecord,
-        assignmentOpening, ap?.appendPath ?? assignmentOpening.path, bindingOpening, bp?.appendPath ?? bindingOpening.path, previousOpening);
+        assignmentOpening, ap?.appendPath ?? assignmentOpening.path, bindingOpening, bp?.appendPath ?? bindingOpening.path, previousOpening] as const;
+      await input.checkpoint?.('slot-command-prepared', { recordSource, source, sources, records: [...records], circuitArguments,
+        submissionOrAcceptanceAsserted: false });
+      try { return await contract.callTx.manageRuntimeParticipantSlots(...circuitArguments); }
+      catch (error: unknown) {
+        emit("slot-call-rejected", { operation: Number(operation), category: classifyLiveM6Failure(error),
+          diagnosticOnly: true, detailsWithheldToProtectPrivateWitness: true });
+        throw error;
+      }
     }
     if (accepted === 0) {
       await assert.rejects(call(1n, unusedStep, command, input.activatorSecret), /Invalid governance activation signature/u);
@@ -165,7 +189,8 @@ export async function runSlotStateWorkflow(input: {
       lastMutationAt: command.effectiveAt,
       slotBindingsRoot: bindings.root, slotBindingCount: bindings.count, nonce: nextNonce };
     const checked = await verifyState();
-    assert.equal(checked.runtimeSlotSessions.size(), 0n); assert.equal(checked.usedRuntimeSlotCommandNonces.size(), sequence);
+    assert.equal(checked.runtimeSlotSessions.size(), 0n);
+    assert.equal(checked.usedRuntimeSlotCommandNonces.size(), sequence - afterIssuance.stateSequence);
     emit("slot-management-finalized", { transactionId: finalized.public.txId, kind: Number(kind),
       stateCommitment: hex(pure.runtimeStateCommitment(state)), stateSequence: Number(sequence),
       ordinaryActionReceiptEmitted: false });
@@ -178,9 +203,10 @@ export async function runSlotStateWorkflow(input: {
   await manage(1n, action.actorSlotId, false);
   assert.equal(system.isParticipantSlotActive(original.assignmentId, now()), false);
   emit("slot-state-workflow-verified", { credentialTransactions: 1, slotTransactions: accepted, stateSequence: Number(sequence),
-    currentStateCommitment: hex(pure.runtimeStateCommitment(state)), consumedSlotCommandNonces: Number(sequence),
+    currentStateCommitment: hex(pure.runtimeStateCommitment(state)), consumedSlotCommandNonces: Number(sequence - afterIssuance.stateSequence),
     genesisGrantCount: 0, privateMapsPublished: false, occupiedSlotChainOnNodeVerified: false,
     ordinaryActionAcceptance: false, commonReceipt: false, milestoneComplete: false });
   return { privateSentinels: [source.accountId, source.publicKeyPem, grant.grantId, ...sources.map((record) => record.assignmentId),
+    ...privateStateNonces.map(nonce => Buffer.from(nonce).toString("hex")),
     ...sources.map((record) => hex(hashId("slot-assignment-id", record.assignmentId))), hex(state.nonce)] };
 }

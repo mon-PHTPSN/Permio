@@ -7,6 +7,7 @@ import {
   pureCircuits as pure,
   type GovernanceActivatorLeaf, type RuntimeInstanceAllocation, type RuntimeStateOpening,
   type RuntimeCredentialInstanceBinding,
+  type RuntimeCredentialStatusCommand,
 } from "../contracts/managed/permio-authorization/contract/index.js";
 import { buildAuthorityRoot, type AuthorityRootBuild } from "./authority-root.ts";
 import { hashProtocolIdentifier } from "./canonical.ts";
@@ -23,14 +24,41 @@ export interface RuntimeInstanceIssuerBinding {
 export function createRuntimeCredentialInstanceBinding(
   allocation: RuntimeInstanceAllocation, issuers: AuthorityRootBuild,
   issuer: GovernanceActivatorLeaf, validBefore: number,
+  instanceState: { readonly opening: RuntimeStateOpening; readonly sequence: bigint; readonly nextNonce?: Uint8Array },
 ): RuntimeCredentialInstanceBinding {
   time(validBefore);
   if (validBefore === 0) throw new TypeError("credential submission deadline must be positive");
   if (issuers.root.field !== allocation.capabilityIssuersRoot.field) {
     throw new TypeError("credential issuer tree does not match the exact private allocation");
   }
+  if (instanceState.opening.stateVersion !== 2n ||
+      !equal(instanceState.opening.instanceCommitment, allocation.instanceCommitment) ||
+      instanceState.sequence < 0n || instanceState.sequence >= 2n ** 64n - 1n) {
+    throw new TypeError("credential state binding requires the exact v2 instance and an incrementable Uint64 sequence");
+  }
+  const nextStateNonce = requiredBytes(instanceState.nextNonce ?? randomBytes(32), "next credential state nonce");
+  if (equal(nextStateNonce, instanceState.opening.nonce)) throw new TypeError("next credential state nonce must be fresh");
   return { allocation: structuredClone(allocation),
-    issuerPath: issuers.pathFor(pure.governanceActivatorLeafCommitment(issuer)), validBefore: BigInt(validBefore) };
+    issuerPath: issuers.pathFor(pure.governanceActivatorLeafCommitment(issuer)), validBefore: BigInt(validBefore),
+    state: structuredClone(instanceState.opening), stateSequence: instanceState.sequence, nextStateNonce };
+}
+
+/** Call only after accepted finalization; staging and cleanup do not advance state. */
+export function advanceRuntimeCredentialInstanceBinding(
+  binding: RuntimeCredentialInstanceBinding, command: RuntimeCredentialStatusCommand,
+  nextNonce: Uint8Array = randomBytes(32),
+): RuntimeCredentialInstanceBinding {
+  const next = pure.runtimeCredentialNextState(binding.state, command.effectiveAt, binding.nextStateNonce);
+  if (command.commandVersion !== 4n || command.instanceStateSequence !== binding.stateSequence ||
+      !equal(command.allocationCommitment, pure.runtimeInstanceAllocationCommitment(binding.allocation)) ||
+      !equal(command.instanceStateCommitment, pure.runtimeStateCommitment(binding.state)) ||
+      !equal(command.nextInstanceStateCommitment, pure.runtimeStateCommitment(next)) ||
+      command.effectiveAt < binding.state.lastMutationAt || binding.stateSequence >= 2n ** 64n - 1n) {
+    throw new TypeError("accepted credential command does not match its exact private state binding");
+  }
+  const nonce = requiredBytes(nextNonce, "next credential state nonce");
+  if (equal(nonce, next.nonce)) throw new TypeError("next credential state nonce must be fresh");
+  return { ...structuredClone(binding), state: next, stateSequence: binding.stateSequence + 1n, nextStateNonce: nonce };
 }
 
 export interface CreateRuntimeInstanceAllocationInput {

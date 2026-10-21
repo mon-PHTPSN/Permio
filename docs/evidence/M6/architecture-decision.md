@@ -1,16 +1,33 @@
 # M6 Architecture Decision Record
 
 Date approved: 2026-10-11<br>
-Status: partial M6 implementation; v4 allocation/credential/governance regression and public-state persistence passed; v5 authenticated template-policy/initial-state allocation passed a fresh deployment plus 17 finalized transactions. Full runtime actions, receipts and M6 acceptance remain incomplete.<br>
+Status: v10 engineering acceptance evidence reconciled; independent human security/privacy review OPEN; M6 remains IN_PROGRESS.<br>
 Applies to: M6 Midnight authorization, M7 receipt transport, and the M8 receipt consumer boundary
 
 This record captures the decisions approved before M6 implementation. It is
 not final M6 acceptance evidence. Concrete implementation and live-chain
-results are recorded in `development-log.md`; current-root ancestry checks,
-runtime authorization, common receipts, and the complete privacy acceptance
-scan remain incomplete.
+results are recorded in `development-log.md`. Current technical acceptance and
+its exact evidence-tier limits are in `acceptance-reconciliation-20261021-v1.md`;
+independent human security/privacy review remains OPEN. Earlier runtime/resource
+experiments below are historical records and do not override the current evidence.
+
+本记录保留已批准的架构决定，不是M6最终验收。当前技术证据及其级别限制见新的验收核对文档，
+独立人工安全／隐私审查仍未完成。下文早期运行／资源实验属于历史记录，不覆盖最新结果。
 
 ## Decision 1: admit an exact M4 activation through a Midnight envelope
+
+Network acceptance amendment approved 2026-10-15: Preprod is the primary
+deployment/end-to-end target; Local Dev is retained for targeted controlled
+infrastructure-failure and reproducibility checks. See
+`preprod-acceptance-plan-v1.md` for the exact evidence split and compatibility
+findings. This supersedes earlier Local-Dev-exclusive acceptance wording, not
+historical results, contract trust boundaries, or security/privacy requirements.
+Neither network connectivity nor a documentation change establishes M6 completion.
+
+2026-10-15批准的网络验收修订：Preprod为主要部署及端到端目标，Local Dev保留用于
+定向可控基础设施故障及可复现检查。精确证据分工和兼容性发现见上述计划。此修订取代
+此前仅Local Dev验收的规定，不改历史结果、合约信任边界及安全／隐私要求；网络连通
+或文档变更均不代表M6完成。
 
 M4 remains the authority that validates Ed25519 reviewer attestations,
 eligible unique reviewers, namespace thresholds, rejection state, and
@@ -912,3 +929,155 @@ M6 容器，部署／卷／资源不改。实际允许 k20 后在 674.337 秒触
 主动停止，采样 RSS/HWM 5925572 KiB、无密钥；服务健康，后续完整 255 项通过。
 非 OOM／节点拒绝，非用户动作证明成本，完整密钥与新 v7 实链仍待完成。具体另存两份
 恢复／资源 JSON，没有采用哈希、信任、链深度、签名、部署或版本替代，原架构决策边界不变。
+
+### v8 continuation — shared credential/slot mutation ordering
+
+On 2026-10-14 the user directed the low-memory experiment into a separate
+session/project and continued M6 here. The concrete remaining defect was that
+v7 credential mutations did not advance the private instance watermark or pin
+the state used by staged issuance. This continuation applies the existing
+single-instance commitment/sequence architecture, not an alternative:
+credential-status command v4 signs allocation, previous state/sequence and
+circuit-derived next state; accepted issuance/revocation atomically updates
+status, nonce and instance ordering while preserving the state label and maps.
+Staging and expired cleanup grant nothing and do not advance ordering.
+
+Tradeoff: same-instance credential changes invalidate concurrent slot/credential
+certifications. That is intentional stale-state rejection, not a new role or
+global namespace clock. Clients retain exact private openings and restart
+staging rather than rebase a certification. The disposable SDK tag changes to
+v8, but M2/M4/M5/M5-P1, authority kinds, policy/state-opening versions, crypto
+profiles, eleven transaction entries and the slot ZKIR hash remain unchanged.
+Previous deployments are not upgraded or reinterpreted. The separate memory
+experiment remains on the committed v7 baseline; it is not v8 readiness.
+
+Exact schema, new negative vectors, expected live counters and compatibility
+are in [runtime-credential-state-v1.md](runtime-credential-state-v1.md).
+The actual v8 credential-node attempt stops at missing matching build assets
+before wallet initialization. No new deployment, accepted proof or common
+receipt is claimed. Ordinary action watermark/authorization/evidence,
+nullifiers, receipts, complete privacy and restart acceptance remain open.
+
+2026-10-14 用户要求内存实验在独立项目／会话执行，本会话继续 M6。实际缺口为 v7
+凭证变更不推进私有水位，也不固定分阶段签发依赖的状态。本项沿用单实例承诺／序号
+架构，不另选替代：v4 命令签署分配、旧状态／序号及电路计算的下一状态，已接受的
+签发／撤销原子更新凭证根、nonce 和实例排序，保留状态标签及映射；暂存／清理不授权
+或推进序号。代价是同实例变更使并发认证失效，必须保留精确 opening 并重做认证，
+不偷偷 rebase、不新增角色或命名空间全局时钟。一次性 tag 改为 v8，其余 M2/M4/
+M5/M5-P1、权限、策略／opening 版本、密码配置、十一入口及槽位 ZKIR 哈希不变；
+不升级／重解释旧部署，独立实验的已提交 v7 不等于 v8 就绪。新真实链尝试因缺少
+匹配构建资产在钱包前停止，无新部署／已接受证明／通用收据；普通动作、水位、证据、
+nullifier、收据、完整隐私及重启验收仍待完成。
+
+### 2026-10-15 operational follow-up — not an architecture replacement
+
+Exact fingerprint verification now permits reuse of the experiment's unchanged
+slot program/key pair; a bounded serial build completes all eleven current
+v8 pairs. Fresh real Local Dev governance/allocation and an independent final
+public-state read pass. Historical pre-build failures above are preserved,
+not relabeled; they no longer describe the current asset/deployment status.
+
+Runtime paging is measured separately using the same prover image and circuit
+at a second local-only endpoint. The first 5 GiB hard-cap trial stops at the
+shared-machine reserve before slot transactions and cleans its resources;
+the subsequent 3.5 GiB cap is a stricter operational test, not weaker crypto,
+authority, credential ancestry, circuit checks or privacy. No global memory
+setting or existing service is changed. Key-build success does not establish
+customer proof latency. See bounded-key-build-verification.json,
+v8-allocation-verification.json and capped-runtime-proving-v1.md. Ordinary
+action/module/evidence/nullifier/common-receipt and full restart/privacy gates
+remain open; no prescribed architecture decision is silently replaced.
+
+精确指纹允许复用实验中未变化的槽位程序／密钥，受限串行构建已完成当前 v8 十一组；
+新本地链治理／分配及独立最终公开读取通过。上文缺资产失败保留为历史，不再代表当前
+资产／部署状态。运行时换页另以同镜像／同电路在第二本地端口测量；首个 5 GiB 硬
+上限在槽位前触发共享保护并清理，后续 3.5 GiB 是更严格运行配置，不削弱密码、权限、
+完整祖先、电路或隐私，也不改全局内存／原服务。密钥成功不是用户证明耗时；精确结果
+见独立证据。普通动作／模块／证据／nullifier／通用收据及完整重启／隐私仍未完成，
+没有擅自替换规定架构。
+
+### 2026-10-15 operational follow-up — exact binaries and worker count
+
+The SDK requires binary ZKIR in addition to text IR and real keys. The reused
+slot binary was omitted by the integration and is now restored from the
+successful exact-program experiment; all eleven entries are checked by local
+manifest v2 before wallet initialization. This corrects asset delivery, not
+the proof/signature/authority architecture. The original redacted slot error
+is not retrospectively labeled as a captured HTTP response. A corrected
+four-worker run then reaches the independent swap reserve during account
+issuance; no credential/slot mutation is accepted and cleanup succeeds.
+
+The explicit subsequent one-worker profile reduces only CPU quota and Rayon
+workers. It preserves 5 GiB combined client/prover hard RAM, shared 8 GiB host
+swap, two-hour workflow deadline, safety reserves, actual real keys/programs,
+private ancestry, state ordering and acceptance checks. This is an operational
+measurement, not a guarantee of time-for-memory or permission to truncate
+ancestry, outsource private witnesses, add a trusted verifier or upgrade the
+toolchain. Any required architecture alternative still requires user review.
+
+SDK 除文本 IR／真实密钥还需二进制 ZKIR。本次集成遗漏复用槽位 binary，现已从
+成功的同程序实验恢复，钱包前清单 v2 核验全部十一项；这是资产交付修正，不是
+证明／签名／权限架构变更，不把原脱敏槽位异常事后编为已捕获 HTTP 响应。修正后
+四线程测试在账户签发期间触及独立 swap 保护，未接受凭证／槽位变更，清理成功。
+后续显式单线程只减 CPU／Rayon，仍合计 RAM5 GiB、共享 swap8 GiB、全流程两小时，
+保护、真实密钥／程序、完整私有祖先、状态排序及验收不变。只是运行测量，不保证
+时间换内存，不授权缩短祖先、外包 witness、增加受信验证器或升级；架构替代仍须商议。
+
+### 2026-10-15 operational follow-up — stateless prover reset boundary
+
+F5cqeV accepts the account transaction in184.905seconds, but stops the first
+slot-provider stage at the unchanged shared-swap reserve. A numeric sample
+between those calls records2.74GiB prover RAM plus5.06GiB swap retained after
+account acceptance. No conclusion is drawn about live objects versus allocator
+arenas. The optional `--reset-before-slot` diagnostic preserves the caller's
+private state and independently verifies the public state before/after one
+restart of the exact controller-owned idle prover. It accepts no request for
+a different container, endpoint or command, verifies unchanged image/applied
+limits and zero jobs, and preserves the original safety/workflow deadlines.
+This resets a stateless cryptographic backend, not a namespace authority,
+private instance, ledger, transaction, nonce, signature or validity window.
+No proof/transaction retry or greater paging budget is adopted. cBg1CS accepts
+the account and verifies the owned restart, releasing RAM2997391360bytes/
+swap5317849088bytes to RAM13496320bytes/swap0 without changing public state.
+The cold slot still stops113.803seconds into the provider stage at the shared
+swap reserve; independent reads confirm no slot transaction. Retention was
+avoidable overhead, not the sole capacity limit. A16GiB shared-paging test
+(same5GiB physical RAM, prover/client swap ceilings12/4GiB) is explicitly
+requested, not enabled or guaranteed. Neither slot acceptance nor production
+operation follows from the reset. The295-test root regression passes; ordinary-action,
+common-receipt and complete privacy/restart gates remain required.
+
+F5cqeV账户交易184.905秒接受，但首槽位provider阶段仍在原共享swap保护处停止。
+两调用间数值采样证明器接受账户后仍2.74GiB RAM＋5.06GiB swap；不推断活对象或
+allocator区域。可选`--reset-before-slot`诊断保留客户端私有状态，仅重启精确控制器
+自有且闲置的证明器，前后独立核验公开状态。不能请求别的容器／端点／命令，核验同
+镜像／实际限制及零任务，原保护及全流程期限不变。重置的是无状态密码后端，不是
+命名空间权限、私有实例、账本、交易、nonce、签名或有效窗口。不重试证明／交易或
+扩大换页预算。cBg1CS账户接受及自有重启通过，RAM2997391360／swap5317849088bytes
+降至RAM13496320／swap0，公开状态不变；但冷槽位provider阶段113.803秒后仍触
+共享swap保护，独立读取确认无槽位交易。残留是可避免开销，不是唯一容量限制。
+已明确请求总共享swap16GiB、同RAM5GiB、证明器／客户端swap上限12／4GiB的测试，
+未启用也不保证成功，不能据重启宣称槽位验收／生产通过；295项根回归
+通过，普通动作、通用收据及完整隐私／重启仍是必做门槛。
+
+### 2026-10-15 — experiment-profile verification does not change architecture
+
+The user authorizes testing the experiment's actual prover RAM high/max of
+5/6 GiB and one worker, with a separately capped 1 GiB client and unchanged
+shared 8 GiB swap. The combined long-lived hard allowance is 7 GiB, not the
+historical 5 GiB. BmF0kQ records 779 soft-reclaim events, no hard-limit/OOM
+events and accepted allocation, then stops at the shared RAM reserve during
+account proving. It never reaches the slot. This confirms reclamation is active
+but not that a fixed compiler target fits the shared runtime. Any next soft
+budget controller must account for caller/services/reserve within fixed caps;
+none is implemented or accepted here. No trust, private witness location,
+signature, ancestry, state ordering, proof program or prescribed architecture
+is changed. Exact resource evidence is reclaim-runtime-verification.json;
+299 regression tests pass and full M6 acceptance remains incomplete.
+
+用户授权验证实验证明器真实RAM high／max5／6GiB及单线程，客户端另硬1GiB，共享
+总swap仍8GiB，长期合计硬7GiB而非历史5GiB。BmF0kQ记录779次软回收、无硬上限／
+OOM事件、分配接受，但账户证明时触整机RAM保留阈值，从未到槽位。确认回收生效，
+不说明固定编译器目标适合共享运行。后续软预算控制器须在固定上限内核算客户端／
+服务／保留量，此次未实现或验收。不改信任、私有witness位置、签名、祖先、状态排序、
+证明程序或规定架构。精确资源证据见独立JSON，299项回归通过，M6完整验收仍未完成。

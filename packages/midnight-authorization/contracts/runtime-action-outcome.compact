@@ -1,0 +1,139 @@
+// Internal outcome kernel. This file deliberately exports no transaction entry.
+// A caller must first verify current template/module, full credential and slot
+// ancestry, signed action/evidence and deterministic template transition.
+export struct RuntimeDecisionReceiptBody {
+    receiptVersion: Uint<16>;
+    moduleIdentity: ProofModuleIdentity;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    transitioning: Boolean;
+    previousStateCommitment: Bytes<32>;
+    nextStateCommitment: Bytes<32>;
+    transitionSequence: Uint<64>;
+    contextHash: Bytes<32>;
+    actionSchemaId: Bytes<32>;
+    purposeHash: Bytes<32>;
+    recipient: Bytes<32>;
+    validAfter: Uint<64>;
+    validBefore: Uint<64>;
+    scopedNullifier: Bytes<32>;
+    outputCommitment: Bytes<32>;
+    sourceNetwork: Bytes<32>;
+    sourceContract: Bytes<32>;
+}
+
+struct RuntimeActionNullifierInput {
+    domain: Bytes<32>;
+    network: Bytes<32>;
+    deployment: Bytes<32>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    contextHash: Bytes<32>;
+    sessionCommitment: Bytes<32>;
+    nonceHash: Bytes<32>;
+}
+
+export pure circuit runtimeScopedActionNullifier(
+    allocation: RuntimeInstanceAllocation, intent: RuntimeActionIntent
+): Bytes<32> {
+    // Reuse within the same session/context is rejected even if the action,
+    // selected resource, proof deadline or instance state has changed.
+    return persistentHash<RuntimeActionNullifierInput>(RuntimeActionNullifierInput{
+        domain: pad(32, "permio:action-nullifier:v1"),
+        network: allocation.targetNetworkHash, deployment: allocation.targetContractIdentity,
+        target: intent.target, instanceCommitment: intent.instanceCommitment,
+        contextHash: intent.contextHash,
+        sessionCommitment: intent.sessionCredentialCommitment, nonceHash: intent.nonceHash
+    });
+}
+
+export pure circuit runtimeActionNextState(
+    state: RuntimeStateOpening, nextStateIdHash: Bytes<32>,
+    nextNonce: Bytes<32>, effectiveAt: Uint<64>, transitioning: Boolean
+): RuntimeStateOpening {
+    assert(state.stateVersion == 2 && effectiveAt >= state.lastMutationAt,
+        "Action state version is unsupported or its mutation time is backdated");
+    if (!transitioning) {
+        assert(nextStateIdHash == state.stateIdHash && nextNonce == state.nonce,
+            "Non-transitioning action must preserve the entire private state");
+        return state;
+    }
+    assert(nextNonce != default<Bytes<32>> && nextNonce != state.nonce,
+        "Action transition requires a fresh nonzero state nonce");
+    return RuntimeStateOpening{
+        stateVersion: 2, instanceCommitment: state.instanceCommitment,
+        stateIdHash: nextStateIdHash, lastMutationAt: effectiveAt,
+        slotAssignmentsRoot: state.slotAssignmentsRoot, slotAssignmentCount: state.slotAssignmentCount,
+        slotBindingsRoot: state.slotBindingsRoot, slotBindingCount: state.slotBindingCount,
+        nonce: nextNonce
+    };
+}
+
+export pure circuit runtimeDecisionReceiptId(receipt: RuntimeDecisionReceiptBody): Bytes<32> {
+    return persistentHash<RuntimeDecisionReceiptBody>(receipt);
+}
+
+export ledger usedRuntimeActionNullifiers: Set<Bytes<32>>;
+export ledger decisionReceipts: Map<Bytes<32>, RuntimeDecisionReceiptBody>;
+
+// Private circuit: there is no public bypass taking a caller's "authorized"
+// boolean. Authorization entry points must call this only after their checks.
+circuit commitRuntimeActionOutcome(
+    allocation: RuntimeInstanceAllocation, intent: RuntimeActionIntent,
+    state: RuntimeStateOpening, stateSequence: Uint<64>,
+    nextStateIdHash: Bytes<32>, nextNonce: Bytes<32>,
+    effectiveAt: Uint<64>, validBefore: Uint<64>, transitioning: Boolean,
+    moduleIdentity: ProofModuleIdentity, outputCommitment: Bytes<32>
+): Bytes<32> {
+    assert(allocation.allocationVersion == 1 && allocation.target == intent.target &&
+        allocation.instanceCommitment == intent.instanceCommitment &&
+        state.instanceCommitment == intent.instanceCommitment &&
+        intent.intentVersion == 1 && intent.nonceHash != default<Bytes<32>> &&
+        intent.issuedAt <= effectiveAt && effectiveAt >= allocation.createdAt &&
+        validBefore > effectiveAt && validBefore <= allocation.expiresAt &&
+        outputCommitment != default<Bytes<32>>,
+        "Action outcome substitutes its allocation, intent or public validity window");
+    assert(allocation.targetNetworkHash == targetNetworkHash,
+        "Action outcome targets another network");
+    assert(allocation.targetContractIdentity == kernel.self().bytes,
+        "Action outcome targets another deployment");
+    assert(blockTimeGte(disclose(effectiveAt)) && blockTimeLt(disclose(validBefore)),
+        "Action outcome proof window is not current");
+    assert(runtimeInstances.member(disclose(intent.instanceCommitment)),
+        "Action outcome requires an allocated instance");
+    const instance = runtimeInstances.lookup(disclose(intent.instanceCommitment));
+    assert(instance.lifecycleStatus == 1 &&
+        instance.allocationCommitment == runtimeInstanceAllocationCommitment(allocation) &&
+        instance.currentStateCommitment == runtimeStateCommitment(state) &&
+        instance.transitionSequence == stateSequence,
+        "Action outcome is stale against the exact allocated state");
+    const nextState = runtimeActionNextState(state, nextStateIdHash, nextNonce, effectiveAt, transitioning);
+    const nullifier = runtimeScopedActionNullifier(allocation, intent);
+    assert(!usedRuntimeActionNullifiers.member(disclose(nullifier)), "Action nullifier already consumed");
+    if (disclose(transitioning)) {
+        assert(stateSequence < 18446744073709551615,
+            "Action transition sequence cannot overflow Uint64");
+        runtimeInstances.insert(disclose(intent.instanceCommitment), disclose(RuntimeInstanceRecord{
+            allocationCommitment: instance.allocationCommitment,
+            currentStateCommitment: runtimeStateCommitment(nextState),
+            transitionSequence: (stateSequence + 1) as Uint<64>, lifecycleStatus: 1
+        }));
+    }
+    const receipt = RuntimeDecisionReceiptBody{
+        receiptVersion: 1, moduleIdentity: moduleIdentity, target: intent.target,
+        instanceCommitment: intent.instanceCommitment, transitioning: transitioning,
+        previousStateCommitment: transitioning ? instance.currentStateCommitment : default<Bytes<32>>,
+        nextStateCommitment: transitioning ? runtimeStateCommitment(nextState) : default<Bytes<32>>,
+        transitionSequence: transitioning ? (stateSequence + 1) as Uint<64> : 0,
+        contextHash: intent.contextHash, actionSchemaId: intent.actionIdHash,
+        purposeHash: intent.purposeHash, recipient: intent.recipientHash,
+        validAfter: effectiveAt, validBefore: validBefore, scopedNullifier: nullifier,
+        outputCommitment: outputCommitment, sourceNetwork: targetNetworkHash,
+        sourceContract: allocation.targetContractIdentity
+    };
+    const receiptId = runtimeDecisionReceiptId(receipt);
+    assert(!decisionReceipts.member(disclose(receiptId)), "Decision receipt already exists");
+    usedRuntimeActionNullifiers.insert(disclose(nullifier));
+    decisionReceipts.insert(disclose(receiptId), disclose(receipt));
+    return disclose(receiptId);
+}

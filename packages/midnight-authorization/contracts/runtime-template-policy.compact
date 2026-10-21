@@ -24,6 +24,10 @@ export struct RuntimeTemplateActionPolicy {
     revocable: Boolean;
     inputRecordTypesHash: Bytes<32>;
     outputClaimTypesHash: Bytes<32>;
+    inputRecordTypesRoot: MerkleTreeDigest;
+    inputRecordTypeCount: Uint<32>;
+    outputClaimTypesRoot: MerkleTreeDigest;
+    outputClaimTypeCount: Uint<32>;
     executionAdapterHash: Bytes<32>;
     transitionRoot: MerkleTreeDigest;
     transitionCount: Uint<32>;
@@ -60,7 +64,7 @@ export pure circuit assertRuntimeParticipantSlotRule(
     contextHash: Bytes<32>,
     slotIdHash: Bytes<32>
 ): [] {
-    assert(policy.policyVersion == 2 && policy.slotAssignmentRuleCount > 0 &&
+    assert(policy.policyVersion == 3 && policy.slotAssignmentRuleCount > 0 &&
         policy.slotAssignmentRuleCount <= 1048576 && rule.ruleVersion == 1 &&
         rule.contextHash == contextHash && rule.slotIdHash == slotIdHash &&
         rule.authorityKind >= 1 && rule.authorityKind <= 3,
@@ -90,7 +94,7 @@ export pure circuit runtimeTemplateActionPolicyCommitment(
     policy: RuntimeTemplateActionPolicy
 ): Bytes<32> {
     return persistentHash<RuntimeTemplatePolicyHashInput>(RuntimeTemplatePolicyHashInput{
-        domain: pad(32, "permio:runtime-policy:v2"), policy: policy
+        domain: pad(32, "permio:runtime-policy:v3"), policy: policy
     });
 }
 
@@ -108,7 +112,7 @@ export pure circuit assertRuntimeTemplatePolicyBinding(
     bindingRoot: MerkleTreeDigest,
     bindingCount: Uint<32>
 ): [] {
-    assert(policy.policyVersion == 2 && policy.target == target &&
+    assert(policy.policyVersion == 3 && policy.target == target &&
         binding.bindingVersion == 1 && policy.actionIndex == binding.actionIndex &&
         binding.actionIndex < bindingCount && policy.bindingActionIdHash == binding.actionIdHash &&
         policy.proofProfileIdHash == binding.proofProfileIdHash &&
@@ -128,7 +132,7 @@ export pure circuit assertRuntimeTemplateActionIntent(
     policy: RuntimeTemplateActionPolicy,
     intent: RuntimeActionIntent
 ): [] {
-    assert(policy.policyVersion == 2 && policy.target == intent.target &&
+    assert(policy.policyVersion == 3 && policy.target == intent.target &&
         policy.actionIdHash == intent.actionIdHash && policy.contextHash == intent.contextHash &&
         policy.resourceSelectorHash == intent.resourceSelectorHash &&
         policy.purposeHash == intent.purposeHash && policy.recipientKindHash == intent.recipientKindHash &&
@@ -143,9 +147,10 @@ export pure circuit assertRuntimeTemplateTransition(
     fromStateIdHash: Bytes<32>,
     toStateIdHash: Bytes<32>
 ): [] {
-    assert(policy.policyVersion == 2 && policy.transitionCount > 0 &&
+    assert(policy.policyVersion == 3 && policy.transitionCount > 0 && policy.transitionCount <= 1048576 &&
         transition.transitionVersion == 1 && transition.actionIdHash == policy.actionIdHash &&
         transition.fromStateIdHash == fromStateIdHash && transition.toStateIdHash == toStateIdHash &&
+        runtimeCredentialStatusPathIndex(path) < policy.transitionCount &&
         path.leaf == runtimeTemplateTransitionCommitment(transition) &&
         merkleTreePathRoot<20, Bytes<32>>(path) == policy.transitionRoot,
         "State pair is not an exact template-declared transition");

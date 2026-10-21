@@ -1,0 +1,246 @@
+{
+  "kind": "m6-existing-16g-host-request-memory-v6-verification",
+  "result": "PASS",
+  "verifiedAtUtc": "2026-10-17T14:41:22.020371+00:00",
+  "realConstraintCheckPassed": true,
+  "realProofGenerated": false,
+  "proofIndependentlyVerified": false,
+  "ordinaryActionAcceptance": false,
+  "milestoneComplete": false,
+  "endUserResourceQualification": false,
+  "observedMetrics": {
+    "samples": 375,
+    "maximumSimultaneouslySampledApplicationRamBytes": 14608220160,
+    "maximumSimultaneouslySampledApplicationSwapBytes": 12852183040,
+    "maximumProverRamPeakBytes": 14495514624,
+    "maximumProverSwapPeakBytes": 12706979840,
+    "minimumHostAvailableRamKiB": 909384,
+    "minimumHostSwapFreeKiB": 1180,
+    "minimumHostDiskFreeBytes": 1178759168,
+    "maximumSampledProverOomKills": 0,
+    "maximumSampledClientOomKills": 0
+  },
+  "elapsedSeconds": 758.4815279840041,
+  "stopReason": null,
+  "proverFinalOomKilled": true,
+  "requestBufferReleasedEvents": [
+    {
+      "event": "action-request-bytes-released",
+      "processMemory": {
+        "rss": 829632512,
+        "heapTotal": 118210560,
+        "heapUsed": 110464208,
+        "external": 732472370,
+        "arrayBuffers": 2883439
+      }
+    }
+  ],
+  "proofReport": {},
+  "priorSealedGroups": {
+    "docs/evidence/M6/preprod-governance-v2-verification.json": {
+      "reportSha256": "0b0295411555a4ac52c767eb53b62935cb98a46b02f6598f6995fb70c8989942",
+      "artifactsVerified": 192
+    },
+    "docs/evidence/M6/preprod-runtime-ecs-v1-verification.json": {
+      "reportSha256": "c7a6ad7d7ff04b34deda2f61a8e49707a5bf0540cff224dcb134ba3e208d5c2c",
+      "artifactsVerified": 53
+    },
+    "docs/evidence/M6/preprod-error170-diagnostics-v1.json": {
+      "reportSha256": "61399a327a1eb7700a37c92fbdee408cc9df276c8b2be908a9876f92a048a973",
+      "artifactsVerified": 46
+    },
+    "docs/evidence/M6/preprod-continuation-v3-verification.json": {
+      "reportSha256": "665c76c47ebf50ac0fa037768da406dfec5f013760e931672a28b60a7b7449b4",
+      "artifactsVerified": 117
+    },
+    "logs/m6-action-diagnostic-integrity-audit-v1.json": {
+      "reportSha256": "d9c3432172eabfd2903896a0ef9e57e57386f4a60bcfd8b4a686f46ff62666f9",
+      "artifactsVerified": 231
+    },
+    "docs/evidence/M6/disk-paging-audit-v1-verification.json": {
+      "reportSha256": "581493647492fc5ea89f3541d49b537dec6d70593a6abcc75cf32ade8d92dab8",
+      "artifactsVerified": 5
+    },
+    "docs/evidence/M6/action-existing-swap-v8-verification.json": {
+      "reportSha256": "9346abf03fe1a443f16ce47d090eb08e736be8c0006303e41ef32c491a254ef5",
+      "artifactsVerified": 78
+    },
+    "docs/evidence/M6/action-proof-16g-v4-verification.json": {
+      "reportSha256": "8e452c037afc793460f5ce2edd16bd86402b4e73d2e6af5028f1e31c11cbd642",
+      "artifactsVerified": 20
+    },
+    "docs/evidence/M6/action-proof-disk-v5-verification.json": {
+      "reportSha256": "68dbc32655ac1d0149850b7e735430e913d2c898f1ff6caf9fa553b0efe13941",
+      "artifactsVerified": 26
+    }
+  },
+  "productionAndPriorEvidenceUnchanged": true,
+  "resultsDownloadedAndVerified": true,
+  "temporarySwapRemovedAndOriginalHostStateRestored": true,
+  "transactionsSubmitted": 0,
+  "newDeployment": false,
+  "finalCloudCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T14:40:15.285534+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-1d54369bd2c64fc0bf39",
+      "content": {
+        "FormatVersion": "OOS-2019-06-01",
+        "Description": "Exact Singapore build instance: rolling two-hour graceful economical stop; no deletion",
+        "RamRole": "OOSServiceRole",
+        "Tasks": [
+          {
+            "Name": "oneTimeTrigger",
+            "Action": "ACS::TimerTrigger",
+            "Properties": {
+              "Type": "at",
+              "Expression": "2026-10-17T16:40:06Z",
+              "TimeZone": "UTC",
+              "EndDate": "2026-10-17T16:45:06Z"
+            }
+          },
+          {
+            "Name": "requirePayAsYouGo",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceChargeType",
+              "DesiredValues": [
+                "PostPaid"
+              ]
+            }
+          },
+          {
+            "Name": "requireVpc",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceNetworkType",
+              "DesiredValues": [
+                "vpc"
+              ]
+            }
+          },
+          {
+            "Name": "gracefulEconomicalStop",
+            "Action": "ACS::ExecuteAPI",
+            "Properties": {
+              "Service": "ECS",
+              "API": "StopInstance",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceId": "i-t4ni11rkjyzgi0vlb68d",
+                "ForceStop": false,
+                "StoppedMode": "StopCharging"
+              }
+            }
+          },
+          {
+            "Name": "waitUntilStopped",
+            "Action": "ACS::WaitFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].Status",
+              "DesiredValues": [
+                "Stopped"
+              ]
+            }
+          },
+          {
+            "Name": "verifyEconomicalMode",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].StoppedMode",
+              "DesiredValues": [
+                "StopCharging"
+              ]
+            }
+          }
+        ]
+      },
+      "contentSha256": "84adc7b9bf3c678ae8ffb3ec70b3e30b002b56eaeaa5ba3c938c8ca5328eeb05",
+      "deadlineUtc": "2026-10-17T16:40:06+00:00",
+      "deadlineShanghai": "2026-10-18T00:40:06+08:00",
+      "lastRenewedAtUtc": "2026-10-17T14:40:12.911872+00:00",
+      "nextRefreshDueUtc": "2026-10-17T15:10:12.911877+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-39a1169eec1f4b48bcc5": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "artifactSha256": {
+    "docs/evidence/M6/action-proof-memory-v6.md": "7a9e06f375cae13800909b916f895dd4bf931c1e4543f2fec5883d3bd97ee535",
+    "scripts/m6-action-proof-http-memory.mjs": "41008ec4b09d807751341760b784d24cc4ac3641a0769a4bba6ec575de034cd3",
+    "scripts/run-m6-action-boundary-proof-memory.mjs": "e81efa1e103b216ee0cc9ef705e18f669ef2820584182a15c88328111b3c7748",
+    "scripts/m6-action-proof-http-memory.test.mjs": "219c2941763725ad0184a7cabcfc8e0523f17fc406f56dd703b388bd61982cec",
+    "scripts/cloud-m6-action-proof-memory.py": "1a1b03b9b46d6f2e7d49c6d3e31f7cbee76e655cdf7c5da9c937432c23715b9b",
+    "logs/m6-action-proof-ecs-v6/controller.log": "71d1ff3e0fe6f13980d15e67ee0b749c4e7efe281fd54c489792eebba2af86e8",
+    "logs/m6-action-proof-ecs-v6/controller.py": "1a1b03b9b46d6f2e7d49c6d3e31f7cbee76e655cdf7c5da9c937432c23715b9b",
+    "logs/m6-action-proof-ecs-v6/download-verification.json": "21de7b8896870107cda2faf9f81656791fc29f5e6eb4847abf8ef405fcbdce8a",
+    "logs/m6-action-proof-ecs-v6/public-proof-results-v6.tar.gz": "6863ecb6b8859a1b4c1807dc53cd79a0ae505c690977242db4fb5c47a61e70e1",
+    "logs/m6-action-proof-ecs-v6/transport-focused-tests.txt": "13b38807d68220478d5fe4785085009edcac322c4ed1b56ecaa186634b4518f4",
+    "logs/m6-action-proof-ecs-v6/client/public-source-manifest.json": "5f41f09a653e64f1eabfd8b9736b2b53038b483b954f0c163c112c065076474c",
+    "logs/m6-action-proof-ecs-v6/output/client.log": "adf822573e79a0ee3dbe0fcc5ce551da769f027a8ff525f5d7e98a00324a4c2a",
+    "logs/m6-action-proof-ecs-v6/output/final-environment.json": "910de4f3f9b2c0a66a25073c7d4b51df8b395e7df9a36e9b39f6d6f733b88827",
+    "logs/m6-action-proof-ecs-v6/output/host-checkpoint.json": "a44ff123a102a9b608b030c81f9bac76ea02f904d2bf5579f4bf37b3dbc9ad96",
+    "logs/m6-action-proof-ecs-v6/output/report.json": "64893a9f8ba69bc7f154b004c2c3c165c0763178f6c3d589a939d3c9f5791430",
+    "logs/m6-action-proof-ecs-v6/output/resources.jsonl": "3690b4b16a82a489bae38bf0f7ab124a75f85997568366179c95b32afc630ca9",
+    "logs/m6-action-proof-ecs-v6/client/scripts/m6-action-proof-http-memory.mjs": "41008ec4b09d807751341760b784d24cc4ac3641a0769a4bba6ec575de034cd3",
+    "logs/m6-action-proof-ecs-v6/client/scripts/m6-action-proof-http-memory.test.mjs": "219c2941763725ad0184a7cabcfc8e0523f17fc406f56dd703b388bd61982cec",
+    "logs/m6-action-proof-ecs-v6/client/scripts/m6-action-proof-http.mjs": "c94590644e6abff24247c70f10bd2f32b08c9441a4be18919d0671171d227d42",
+    "logs/m6-action-proof-ecs-v6/client/scripts/m6-action-proof-http.test.mjs": "0b7a2c85605319ad22c81cae2c8034e764278eaff1e68f2a7759af9de1e05942",
+    "logs/m6-action-proof-ecs-v6/client/scripts/m6-action-proof-payload-worker.mjs": "b8f71698c85840e2a99f0563badb40b58b3d25a1b692657b22a942996b203707",
+    "logs/m6-action-proof-ecs-v6/client/scripts/run-m6-action-boundary-proof-memory.mjs": "e81efa1e103b216ee0cc9ef705e18f669ef2820584182a15c88328111b3c7748",
+    "logs/m6-action-proof-ecs-v6/client/scripts/run-m6-action-boundary-proof.mjs": "5172d5e7ac02bb5a044be2e4ca422406da02f34617892b250bb40763d83afed6",
+    "logs/m6-action-proof-ecs-v6/client/logs/m6-action-boundary-xFPDIN/isolated-action-proof-failure-1792242469028.json": "9a274bb65b4ae6483548aabe3c10870c098474639bd855c4eb43b2b1cc70c0e5",
+    "logs/m6-proof-server-813-public-source/manifest.json": "96f8e73d28ec8d8f4e54120b2bc143695cecd5f00abc92823b438bfc5ddb10ae",
+    "logs/m6-proof-server-813-public-source/source-findings.json": "bf836064e9e02409ff63f2ed2cfb751b2c0e216e7b31a809652a568a41035b6f",
+    "logs/m6-proof-server-813-public-source/zkir/src/ir.rs": "45b49ae7e4f16103638e99b1220297e0d9460926a717e8c8325de74e9cf1d5c9",
+    "logs/m6-proof-server-813-public-source/transient-crypto/src/proofs.rs": "df652a80afc27a39e0b064f15b63e2cb0c08a4c881ad3fa6d0429c568467aac2",
+    "logs/m6-proof-server-813-public-source/proof-server/src/endpoints.rs": "20f7b5704a74b6d7ab5d0b774f5fdb3479788b72ba9866cc67c672b710842cd8",
+    "logs/m6-proof-server-813-public-source/proof-server/src/versioned_ir.rs": "d2b3a1d3c556a85c2072f718a1a609aaeb01f733f1ba2d46815ee9d095c508fc",
+    "logs/m6-action-proof-memory-v6-plan.json": "b601f4efad9a8aae6bc38769cb5df95445d0d84326c49e7fcf17e63bfbecaca6",
+    "logs/m6-action-proof-memory-v6-launch.json": "a1f47552a02d1b973afad1666473fccabd841be18c23fcf245d63eeb1d8d9a3a",
+    "logs/m6-action-proof-memory-v6-cloud-closeout.json": "ca00e6d7f244ddad4d2807b432b01bc2b3942227cb8a65c01efa38e7a0bfecb1",
+    "logs/m6-action-proof-16g-live-monitor-v6.jsonl": "6846a0d5019f07113691a633c5eceb99538de0dd0001e826eaf6feea956227b2"
+  }
+}

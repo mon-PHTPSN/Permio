@@ -14,7 +14,7 @@ import { hashRuntimeIdentifier } from "./runtime-credentials.ts";
 import { buildProofModuleBindingTree } from "./binding-manifest.ts";
 import type { Hex32, ProofModuleBinding, ProofModuleBindingManifest } from "./model.ts";
 
-export const RUNTIME_TEMPLATE_POLICY_VERSION = 2 as const;
+export const RUNTIME_TEMPLATE_POLICY_VERSION = 3 as const;
 const FAMILIES = new Map([
   ["delegated-capability-action-v1", "delegated-capability-action"],
   ["private-state-transition-v1", "private-state-transition"],
@@ -84,6 +84,29 @@ export function createRuntimeParticipantSlotRules(templateInput: unknown) {
   };
 }
 
+/** Ordered private required-type tree; no record contents or authority are supplied. */
+export function createRuntimeActionTypeTree(types: readonly string[], kind: "record-type" | "claim-type") {
+  if (!Array.isArray(types) || types.length === 0 || types.length > 2 ** 20 || new Set(types).size !== types.length ||
+      types.some(value => typeof value !== "string" || !value || value !== value.trim())) {
+    throw new TypeError("action types must be nonempty, unique ordered identifiers within depth-20 capacity");
+  }
+  const leaves = types.map(value => hash(kind, [value]));
+  const aligned = (value: Uint8Array) => ({ value: Bytes32Descriptor.toValue(value), alignment: Bytes32Descriptor.alignment() });
+  let tree = new StateBoundedMerkleTree(20);
+  leaves.forEach((leaf, index) => { tree = tree.update(BigInt(index), aligned(leaf)); });
+  tree = tree.rehash();
+  const root = tree.root();
+  if (!root) throw new Error("action type tree has no root");
+  return { root: CompactTypeMerkleTreeDigest.fromValue(root.value), count: BigInt(leaves.length),
+    at(index: number) {
+      const leaf = leaves[index];
+      if (!Number.isSafeInteger(index) || !leaf) throw new RangeError("action type index outside the exact ordered schema");
+      return { typeHash: leaf.slice(), path: new CompactTypeMerkleTreePath(20, Bytes32Descriptor)
+        .fromValue(tree.pathForLeaf(BigInt(index), aligned(leaf)).value) };
+    },
+  };
+}
+
 /** Data projection only: does not validate evidence, review, approve or activate a module. */
 export function createRuntimeTemplateActionPolicy(templateInput: unknown, actionId: string) {
   const template = parseScenarioTemplate(templateInput);
@@ -97,6 +120,8 @@ export function createRuntimeTemplateActionPolicy(templateInput: unknown, action
   }
   const rule = template.capabilityRules.find((candidate) => candidate.id === action.capabilityRuleId)!;
   const slotRules = createRuntimeParticipantSlotRules(template);
+  const inputRecords = createRuntimeActionTypeTree(action.inputRecordTypes, "record-type");
+  const outputClaims = createRuntimeActionTypeTree(action.outputClaimTypes, "claim-type");
   const version = parseSemanticVersion(template.version);
   const transitions: RuntimeTemplateTransition[] = template.transitions
     .filter((row) => row.actionId === actionId)
@@ -136,10 +161,12 @@ export function createRuntimeTemplateActionPolicy(templateInput: unknown, action
     revocable: rule.revocable,
     inputRecordTypesHash: hash("input-record-types", action.inputRecordTypes),
     outputClaimTypesHash: hash("output-claim-types", action.outputClaimTypes),
+    inputRecordTypesRoot: inputRecords.root, inputRecordTypeCount: inputRecords.count,
+    outputClaimTypesRoot: outputClaims.root, outputClaimTypeCount: outputClaims.count,
     executionAdapterHash: hash("execution-adapter", adapter ? ["present", adapter.id, adapter.kind, adapter.schemaId] : ["absent"]),
     transitionRoot: CompactTypeMerkleTreeDigest.fromValue(root.value), transitionCount: BigInt(transitions.length),
   };
-  return { policy: structuredClone(policy), moduleId, slotRules,
+  return { policy: structuredClone(policy), moduleId, slotRules, inputRecords, outputClaims,
     configurationHash: hex(pure.runtimeTemplateActionPolicyCommitment(policy)),
     transitionAt(index: number): RuntimeTemplateTransition {
       const row = transitions[index];

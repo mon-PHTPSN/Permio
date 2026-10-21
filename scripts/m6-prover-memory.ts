@@ -20,14 +20,14 @@ while read -r name value; do
   case "$name" in anon|file) printf 'cgroup.%s: %s\\n' "$name" "$value";; esac
 done < /sys/fs/cgroup/memory.stat
 while read -r name value; do
-  case "$name" in oom|oom_kill) printf 'cgroup.%s: %s\\n' "$name" "$value";; esac
+  case "$name" in high|max|oom|oom_kill) printf 'cgroup.%s: %s\\n' "$name" "$value";; esac
 done < /sys/fs/cgroup/memory.events
 `;
 
 export function parseProverMemoryCounters(output: string): Readonly<Record<string, number>> {
   const allowed = new Set<string>([
     ...COUNTERS, "memory.current", "memory.peak", "memory.swap.current",
-    "cgroup.anon", "cgroup.file", "cgroup.oom", "cgroup.oom_kill",
+    "cgroup.anon", "cgroup.file", "cgroup.high", "cgroup.max", "cgroup.oom", "cgroup.oom_kill",
   ]);
   const result: Record<string, number> = {};
   for (const line of output.split(/\r?\n/u)) {
@@ -45,9 +45,10 @@ export function parseProverMemoryCounters(output: string): Readonly<Record<strin
   return result;
 }
 
-export async function readProverMemory(): Promise<Readonly<Record<string, number>>> {
+export async function readProverMemory(container = "permio-m6-proof-server"): Promise<Readonly<Record<string, number>>> {
+  if (!["permio-m6-proof-server", "permio-m6-bounded-proof"].includes(container)) throw new TypeError("Unknown local prover container");
   const { stdout } = await execute("docker", [
-    "exec", "permio-m6-proof-server", "/bin/bash", "-c", MEMORY_COUNTER_COMMAND,
+    "exec", container, "/bin/bash", "-c", MEMORY_COUNTER_COMMAND,
   ], { timeout: 10_000, maxBuffer: 16_384, windowsHide: true });
   return parseProverMemoryCounters(stdout);
 }
@@ -107,11 +108,11 @@ export async function startProverMemorySampler(
 export function parseLiveM6Arguments(args: readonly string[]) {
   const accounts = args.filter((value) => !value.startsWith("--"));
   const options = args.filter((value) => value.startsWith("--"));
-  const allowed = new Set(["--governance-only", "--allocation-only", "--credential-binding", "--slot-state", "--memory-smoke", "--profile-memory"]);
+  const allowed = new Set(["--governance-only", "--allocation-only", "--credential-binding", "--slot-state", "--memory-smoke", "--profile-memory", "--bounded-prover"]);
   if (accounts.length > 1 || options.some((value) => !allowed.has(value)) ||
       new Set(options).size !== options.length ||
       ["--governance-only", "--allocation-only", "--credential-binding", "--slot-state", "--memory-smoke"].filter((option) => options.includes(option)).length > 1) {
-    throw new TypeError("usage: run-live-m6-admission.ts [account-file] [--governance-only | --allocation-only | --credential-binding | --slot-state | --memory-smoke] [--profile-memory]");
+    throw new TypeError("usage: run-live-m6-admission.ts [account-file] [--governance-only | --allocation-only | --credential-binding | --slot-state | --memory-smoke] [--profile-memory] [--bounded-prover]");
   }
   return {
     accountFile: accounts[0],
@@ -120,6 +121,7 @@ export function parseLiveM6Arguments(args: readonly string[]) {
     credentialBinding: options.includes("--credential-binding"),
     slotState: options.includes("--slot-state"),
     memorySmoke: options.includes("--memory-smoke"),
-    profileMemory: options.includes("--profile-memory") || options.includes("--memory-smoke"),
+    profileMemory: options.includes("--profile-memory") || options.includes("--memory-smoke") || options.includes("--bounded-prover"),
+    boundedProver: options.includes("--bounded-prover"),
   };
 }

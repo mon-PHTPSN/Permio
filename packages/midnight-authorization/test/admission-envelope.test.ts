@@ -11,12 +11,14 @@ import type {
 
 import {
   CapabilityAttenuationPlan,
+  governanceCircuitOperations,
   CredentialStatusTree,
   createEmptyRuntimeScopeProgress,
   createEmptyRuntimeSessionCredential,
   createRuntimeAccountCredential,
   createRuntimeCapabilityCredential,
   createRuntimeCredentialInstanceBinding,
+  advanceRuntimeCredentialInstanceBinding,
   createRuntimeCredentialStatusCommand,
   signRuntimeCapabilityCredential,
   signRuntimeCredentialStatusCommand,
@@ -47,6 +49,7 @@ import {
   signProofModuleReview,
   signTemplateLifecycleCommand,
   toCompactActivationAdmissionEnvelope,
+  toCompactProofModuleBinding,
   toCompactProofModuleProposal,
   type ActivationAdmissionInput,
   type ProofModuleBindingManifest,
@@ -484,10 +487,12 @@ function allocatedCredentialFixture(includeSecondaryIssuer = false, slotTemplate
   const capability = createRuntimeCapabilityCredential({ grant, instanceCommitment: f.allocation.instanceCommitment,
     subjectAccountCredential: account, statusIndex: 8n, namespaceIssuer: { principalId: grant.issuerRef, authority: f.issuer } });
   const capabilityHash = pureCircuits.runtimeCapabilityCredentialCommitment(capability.credential);
-  const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.issuer, instance.expiresAt - 2);
+  let binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.issuer, instance.expiresAt - 2,
+    { opening: f.stateOpening, sequence: 0n });
   let nonce = 60;
-  const command = (kind: "account" | "capability", revoke = false): RuntimeCredentialStatusCommand =>
-    createRuntimeCredentialStatusCommand({ namespace: instance.namespace,
+  const command = (kind: "account" | "capability", revoke = false,
+    effectiveAt = instance.createdAt): RuntimeCredentialStatusCommand =>
+    createRuntimeCredentialStatusCommand({ instanceBinding: binding, namespace: instance.namespace,
       governancePolicyHash: `0x${Buffer.from(f.allocation.governancePolicyHash).toString("hex")}`,
       authorityRootVersion: Number(f.allocation.authorityRootVersion),
       authorityRootSequence: Number(f.allocation.authorityRootSequence), credentialStatusRootSequence: status.sequence,
@@ -495,23 +500,25 @@ function allocatedCredentialFixture(includeSecondaryIssuer = false, slotTemplate
       subjectAccountCredentialCommitment: accountHash,
       revocationAuthorityAccountCredentialCommitment: kind === "account" ? accountHash : new Uint8Array(32),
       statusIndex: kind === "account" ? 7n : 8n, expectedStatus: revoke ? "active" : "empty",
-      nextStatus: revoke ? "revoked" : "active", effectiveAt: instance.createdAt,
+      nextStatus: revoke ? "revoked" : "active", effectiveAt,
       stagingExpiresAt: kind === "capability" && !revoke ? instance.createdAt + 500 : 0,
       commandNonce: `0x${(++nonce).toString(16).padStart(2, "0").repeat(32)}` });
   const entry = (kind: "account" | "capability") => ({ namespace: instance.namespace, kind,
     credentialCommitment: kind === "account" ? accountHash : capabilityHash,
     revocationAuthorityAccountCredentialCommitment: kind === "account" ? accountHash : new Uint8Array(32),
     statusIndex: kind === "account" ? 7n : 8n });
+  const invokedCommands = new WeakMap<object, RuntimeCredentialStatusCommand>();
   function invoke(operation: bigint, cmd: RuntimeCredentialStatusCommand, options: {
     binding?: RuntimeCredentialInstanceBinding; authority?: GovernanceActivatorLeaf; secret?: bigint;
     account?: RuntimeAccountCredential; capability?: RuntimeCapabilityCredential;
     pathIndex?: bigint; context?: typeof context; plan?: CapabilityAttenuationPlan; stage?: RuntimeScopeStage;
+    signature?: ReturnType<typeof signRuntimeCredentialStatusCommand>;
   } = {}) {
     const authority = options.authority ?? f.issuer;
     const cap = options.capability ?? capability.credential;
     const path = status.pathFor(options.pathIndex ?? cmd.statusIndex);
-    return f.contract.circuits.updateRuntimeCredentialStatus(options.context ?? context, operation, cmd,
-      signRuntimeCredentialStatusCommand(cmd, options.secret ?? 191n), authority,
+    const result = f.contract.circuits.updateRuntimeCredentialStatus(options.context ?? context, operation, cmd,
+      options.signature ?? signRuntimeCredentialStatusCommand(cmd, options.secret ?? 191n), authority,
       f.governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(authority)),
       options.account ?? account, status.pathFor(7n), path, cap,
       signRuntimeCapabilityCredential(cap, options.secret ?? 191n), capability.credential, status.pathFor(8n),
@@ -519,8 +526,17 @@ function allocatedCredentialFixture(includeSecondaryIssuer = false, slotTemplate
       options.stage?.element ?? { elementVersion: 1n, dimension: 1n, valueHash: new Uint8Array(32) },
       options.stage?.childPath ?? path, options.stage?.parentPath ?? path,
       createEmptyRuntimeSessionCredential(), options.binding ?? binding);
+    invokedCommands.set(result, cmd);
+    return result;
   }
-  const apply = (result: ReturnType<typeof invoke>) => { context = result.context; };
+  const apply = (result: ReturnType<typeof invoke>) => {
+    context = result.context;
+    const current = ledger(context.currentQueryContext.state).runtimeInstances.lookup(f.allocation.instanceCommitment);
+    const cmd = invokedCommands.get(result);
+    if (cmd && current.transitionSequence !== binding.stateSequence) {
+      binding = advanceRuntimeCredentialInstanceBinding(binding, cmd, new Uint8Array(32).fill(++nonce));
+    }
+  };
   const issueAccount = () => { apply(invoke(1n, command("account"))); status.issue(entry("account")); };
   function certifyRoot() {
     const cmd = command("capability");
@@ -529,7 +545,13 @@ function allocatedCredentialFixture(includeSecondaryIssuer = false, slotTemplate
     while (!plan.complete) apply(invoke(3n, cmd, { plan, stage: plan.stageNext() }));
     apply(invoke(4n, cmd, { plan })); status.issue(entry("capability"));
   }
-  return { ...f, account, accountHash, capability, binding, command, invoke, apply, issueAccount, certifyRoot, status,
+  return { ...f, account, accountHash, capability, get binding() { return binding; }, command, invoke, apply, issueAccount, certifyRoot, status,
+    syncPrivateState: (state: RuntimeStateOpening) => {
+      const current = ledger(context.currentQueryContext.state).runtimeInstances.lookup(f.allocation.instanceCommitment);
+      assert.deepEqual(current.currentStateCommitment, pureCircuits.runtimeStateCommitment(state));
+      binding = { ...binding, state: structuredClone(state), stateSequence: current.transitionSequence,
+        nextStateNonce: new Uint8Array(32).fill(++nonce) };
+    },
     currentContext: () => context,
     currentView: () => ledger(context.currentQueryContext.state),
     at: (time: number) => { context = createCircuitContext(dummyContractAddress(), "00".repeat(32),
@@ -543,6 +565,12 @@ describe("allocation-bound credential issuance (generated Compact, not node acce
     assert.deepEqual(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).allocationCommitment,
       pureCircuits.runtimeInstanceAllocationCommitment(f.allocation));
     assert.equal(f.capability.credential.credentialVersion, 3n);
+    const current = f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment);
+    assert.equal(current.transitionSequence, 2n);
+    assert.deepEqual(current.currentStateCommitment, pureCircuits.runtimeStateCommitment(f.binding.state));
+    assert.deepEqual(f.binding.state.stateIdHash, Uint8Array.from(f.stateOpening.stateIdHash));
+    assert.deepEqual(f.binding.state.slotAssignmentsRoot, f.stateOpening.slotAssignmentsRoot);
+    assert.deepEqual(f.binding.state.slotBindingsRoot, f.stateOpening.slotBindingsRoot);
   });
 
   it("rejects absent, altered, cross-instance and cross-template allocations before issuance", () => {
@@ -554,6 +582,73 @@ describe("allocation-bound credential issuance (generated Compact, not node acce
       { ...f.allocation, target: { ...f.allocation.target, templateContentHash: new Uint8Array(32).fill(203) } },
     ]) assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding, allocation } }), /immutable private allocation/);
     assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+  });
+
+  it("rejects legacy commands and altered allocation, state, sequence, or next-state hashes without mutation", () => {
+    const f = allocatedCredentialFixture(), cmd = f.command("account");
+    for (const changed of [
+      { ...cmd, commandVersion: 3n },
+      { ...cmd, allocationCommitment: new Uint8Array(32).fill(204) },
+      { ...cmd, instanceStateCommitment: new Uint8Array(32).fill(205) },
+      { ...cmd, instanceStateSequence: 1n },
+      { ...cmd, nextInstanceStateCommitment: new Uint8Array(32).fill(206) },
+    ]) assert.throws(() => f.invoke(1n, changed), /Unsupported|immutable private allocation|stale against|exact next private/);
+    const current = f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment);
+    assert.equal(current.transitionSequence, 0n);
+    assert.deepEqual(current.currentStateCommitment, f.allocation.initialStateCommitment);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 0n);
+  });
+
+  it("rejects substituted private state openings and zero, reused, or unsigned next nonces", () => {
+    const f = allocatedCredentialFixture(), cmd = f.command("account");
+    assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding,
+      state: { ...f.binding.state, stateIdHash: new Uint8Array(32).fill(207) } } }), /stale against/);
+    for (const nextStateNonce of [new Uint8Array(32), f.binding.state.nonce]) {
+      assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding, nextStateNonce } }), /fresh private state nonce/);
+    }
+    assert.throws(() => f.invoke(1n, cmd, { binding: { ...f.binding,
+      nextStateNonce: new Uint8Array(32).fill(208) } }), /exact next private/);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+  });
+
+  it("cryptographically binds a valid next-state change to the issuer's original signature", () => {
+    const f = allocatedCredentialFixture(), cmd = f.command("account");
+    const binding = { ...f.binding, nextStateNonce: new Uint8Array(32).fill(209) };
+    const altered = { ...cmd, nextInstanceStateCommitment: pureCircuits.runtimeStateCommitment(
+      pureCircuits.runtimeCredentialNextState(binding.state, cmd.effectiveAt, binding.nextStateNonce)) };
+    assert.throws(() => f.invoke(1n, altered, { binding,
+      signature: signRuntimeCredentialStatusCommand(cmd, 191n) }), /Invalid governance activation signature/);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+  });
+
+  it("keeps staging non-authorizing and rejects finalization after a competing credential mutation", () => {
+    const f = allocatedCredentialFixture(), cmd = f.command("capability");
+    const plan = new CapabilityAttenuationPlan(f.capability.scope);
+    f.apply(f.invoke(2n, cmd, { plan }));
+    while (!plan.complete) f.apply(f.invoke(3n, cmd, { plan, stage: plan.stageNext() }));
+    assert.equal(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).transitionSequence, 0n);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.size(), 0n);
+    f.issueAccount();
+    assert.throws(() => f.invoke(4n, cmd, { plan }), /stale against/);
+    assert.equal(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).transitionSequence, 1n);
+    assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 1n);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.member(cmd.commandNonce), false);
+    assert.equal(f.currentView().capabilityAttenuationSessions.member(cmd.commandNonce), true);
+    f.at(Number(cmd.stagingExpiresAt));
+    f.apply(f.invoke(4n, cmd, { plan }));
+    assert.equal(f.currentView().capabilityAttenuationSessions.member(cmd.commandNonce), false);
+    assert.equal(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).transitionSequence, 1n);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.member(cmd.commandNonce), false);
+  });
+
+  it("rejects a concurrent direct command without consuming its nonce or rewriting the winning state", () => {
+    const f = allocatedCredentialFixture(), losing = f.command("account");
+    f.issueAccount();
+    const winner = structuredClone(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment));
+    assert.throws(() => f.invoke(1n, losing), /stale against/);
+    assert.deepEqual(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment), winner);
+    assert.equal(f.currentView().usedCredentialStatusCommandNonces.member(losing.commandNonce), false);
   });
 
   it("rejects a current namespace issuer not on this instance's exact issuer list", () => {
@@ -595,7 +690,8 @@ describe("allocation-bound credential issuance (generated Compact, not node acce
   it("only the original issuer may revoke, even when a second issuer is allocated and signs correctly", () => {
     const f = allocatedCredentialFixture(true); f.issueAccount(); f.certifyRoot();
     const cmd = f.command("capability", true);
-    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore));
+    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore),
+      { opening: f.binding.state, sequence: f.binding.stateSequence, nextNonce: f.binding.nextStateNonce });
     assert.throws(() => f.invoke(1n, cmd, { authority: f.otherIssuer, secret: 193n, binding }), /exact original namespace issuer/);
     assert.equal(f.status.sequence, 2n);
     f.apply(f.invoke(1n, cmd));
@@ -609,7 +705,8 @@ describe("allocation-bound credential issuance (generated Compact, not node acce
     const plan = new CapabilityAttenuationPlan(f.capability.scope);
     f.apply(f.invoke(2n, cmd, { plan }));
     while (!plan.complete) f.apply(f.invoke(3n, cmd, { plan, stage: plan.stageNext() }));
-    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore));
+    const binding = createRuntimeCredentialInstanceBinding(f.allocation, f.issuers, f.otherIssuer, Number(f.binding.validBefore),
+      { opening: f.binding.state, sequence: f.binding.stateSequence, nextNonce: f.binding.nextStateNonce });
     assert.throws(() => f.invoke(4n, cmd, { plan, binding, authority: f.otherIssuer, secret: 193n }), /exact original namespace issuer/);
     assert.equal(f.currentView().credentialStatusRoots.lookup(f.allocation.target.namespaceHash).rootSequence, 1n);
     f.apply(f.invoke(4n, cmd, { plan }));
@@ -626,7 +723,7 @@ function slotManagementFixture() {
   const f = allocatedCredentialFixture(false, slotTemplate); f.issueAccount();
   const assignments = new RuntimePrivateMap(), bindings = new RuntimePrivateMap();
   const records = new Map<string, RuntimeSlotRecord>();
-  let state: RuntimeStateOpening = structuredClone(f.stateOpening);
+  let state: RuntimeStateOpening = structuredClone(f.binding.state);
   let nonce = 80;
   const hex = (value: Uint8Array) => Buffer.from(value).toString("hex");
   const zero = () => new Uint8Array(32);
@@ -709,13 +806,15 @@ function slotManagementFixture() {
       state = { ...state, slotAssignmentsRoot: assignments.root, slotAssignmentCount: assignments.count,
         lastMutationAt: command.effectiveAt,
         slotBindingsRoot: bindings.root, slotBindingCount: bindings.count, nonce: nextNonce };
+      f.syncPrivateState(state);
       assert.deepEqual(f.currentView().runtimeInstances.lookup(f.allocation.instanceCommitment).currentStateCommitment,
         pureCircuits.runtimeStateCommitment(state));
       return records.get(hex(id))!;
     }
     return { command, record, call, advance, finalize, begin: () => f.apply(call(1n)), progress: () => progress };
   }
-  return { f, assignments, bindings, records, request, state: () => state };
+  return { f, assignments, bindings, records, request, state: () => state,
+    syncCredentialState: () => { state = structuredClone(f.binding.state); } };
 }
 
 describe("staged private participant slots (generated Compact, not node acceptance)", () => {
@@ -723,14 +822,14 @@ describe("staged private participant slots (generated Compact, not node acceptan
     const s = slotManagementFixture(), issue = s.request();
     issue.begin();
     assert.equal(s.f.currentView().runtimeSlotSessions.size(), 1n);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
     const original = issue.finalize();
     assert.equal(s.f.currentView().runtimeSlotSessions.size(), 0n);
     assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 1n);
     assert.equal(s.assignments.count, 2n); assert.equal(s.bindings.count, 2n);
     const revoke = s.request({ kind: 2n, id: original.assignment.assignmentIdHash }); revoke.begin(); const revoked = revoke.finalize();
     assert.deepEqual(revoked.assignment, original.assignment); assert.equal(revoked.status, 2n);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 3n);
     assert.equal(s.assignments.count, 2n); assert.equal(s.bindings.count, 2n);
     assert.throws(() => issue.call(3n), /nonce was already consumed/);
     assert.throws(() => s.request({ id: original.assignment.assignmentIdHash }), /already exists/);
@@ -753,7 +852,7 @@ describe("staged private participant slots (generated Compact, not node acceptan
     assert.throws(() => child.call(3n), /verification is incomplete/);
     assert.throws(() => child.call(2n, { progress: { ...child.progress(), nextAssignmentIdHash: new Uint8Array(32).fill(99) } }), /exact staged opening/);
     child.advance(); assert.equal(child.progress().phase, 3n); child.finalize();
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 3n);
     assert.throws(() => child.call(2n), /nonce was already consumed/);
   });
 
@@ -783,7 +882,7 @@ describe("staged private participant slots (generated Compact, not node acceptan
     assert.throws(() => request.call(1n, { secret: 211n }), /Invalid governance activation signature/);
     for (const changed of [
       { ...cmd, authorityRootSequence: 0n }, { ...cmd, credentialStatusRootSequence: 0n },
-      { ...cmd, stateSequence: 1n }, { ...cmd, stateCommitment: new Uint8Array(32).fill(2) },
+      { ...cmd, stateSequence: 0n }, { ...cmd, stateCommitment: new Uint8Array(32).fill(2) },
       { ...cmd, allocationCommitment: new Uint8Array(32).fill(9) },
       { ...cmd, target: { ...cmd.target, templateContentHash: new Uint8Array(32).fill(3) } },
     ]) assert.throws(() => request.call(1n, { command: changed }), /stale|substitutes/);
@@ -791,7 +890,7 @@ describe("staged private participant slots (generated Compact, not node acceptan
     request.begin();
     assert.throws(() => request.call(3n, { progress: { ...request.progress(), steps: 99n } }), /verification is incomplete/);
     assert.throws(() => request.call(3n, { nextNonce: s.state().nonce }), /fresh private state nonce/);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
   });
 
   it("cleans an expired verification session without consuming a nonce, granting a slot or advancing state", () => {
@@ -800,7 +899,7 @@ describe("staged private participant slots (generated Compact, not node acceptan
     s.f.apply(request.call(2n));
     assert.equal(s.f.currentView().runtimeSlotSessions.size(), 0n);
     assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 0n);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 0n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
   });
 
   it("cannot backdate a slot mutation before the committed instance watermark", () => {
@@ -808,7 +907,7 @@ describe("staged private participant slots (generated Compact, not node acceptan
     const issue = s.request({ slot: "manager", effectiveAt: s.f.allocation.createdAt + 30n }); issue.begin(); issue.finalize();
     assert.equal(s.state().lastMutationAt, s.f.allocation.createdAt + 30n);
     assert.throws(() => s.request().call(1n), /stale against/);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
   });
 
   it("cannot finalize two different slot mutations from one state commitment and sequence", () => {
@@ -816,17 +915,57 @@ describe("staged private participant slots (generated Compact, not node acceptan
     first.begin(); competing.begin(); first.finalize();
     assert.throws(() => competing.call(3n), /stale against/);
     assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 1n);
-    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
   });
 
   it("invalidates staged authority after current account revocation advances the status root", () => {
     const s = slotManagementFixture(), root = s.request({ slot: "manager" }); root.begin(); const manager = root.finalize();
     const child = s.request({ parent: manager }); child.begin(); child.advance();
     s.f.apply(s.f.invoke(1n, s.f.command("account", true), { secret: 223n }));
+    s.syncCredentialState();
     s.f.status.revoke({ namespace: s.f.adapterInput.instance.namespace, kind: "account", credentialCommitment: s.f.accountHash,
       revocationAuthorityAccountCredentialCommitment: s.f.accountHash, statusIndex: s.f.account.statusIndex });
-    assert.throws(() => child.call(3n), /root is stale/);
+    assert.throws(() => child.call(3n), /stale against the exact allocation\/private instance state/);
     assert.throws(() => s.request({ parent: manager }).call(1n), /current credential-status root/);
+  });
+
+  it("rejects credential backdating after a later slot mutation, without consuming either command nonce", () => {
+    const s = slotManagementFixture(); s.f.at(Number(s.f.allocation.createdAt + 100n));
+    const slot = s.request({ slot: "manager", effectiveAt: s.f.allocation.createdAt + 30n });
+    slot.begin(); slot.finalize();
+    const cmd = s.f.command("account", true, Number(s.f.allocation.createdAt + 30n));
+    const effectiveAt = s.f.allocation.createdAt + 29n;
+    const forged = { ...cmd, effectiveAt, nextInstanceStateCommitment: pureCircuits.runtimeStateCommitment(
+      pureCircuits.runtimeCredentialNextState(s.f.binding.state, effectiveAt, s.f.binding.nextStateNonce)) };
+    assert.throws(() => s.f.invoke(1n, forged, { secret: 223n }), /cannot backdate/);
+    assert.equal(s.f.currentView().usedCredentialStatusCommandNonces.member(cmd.commandNonce), false);
+    assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+    assert.equal(s.f.binding.state.lastMutationAt, s.f.allocation.createdAt + 30n);
+  });
+
+  it("rejects slot backdating after a credential revocation advances the same private watermark", () => {
+    const s = slotManagementFixture(); s.f.at(Number(s.f.allocation.createdAt + 100n));
+    const cmd = s.f.command("account", true, Number(s.f.allocation.createdAt + 30n));
+    s.f.apply(s.f.invoke(1n, cmd, { secret: 223n }));
+    s.f.status.revoke({ namespace: s.f.adapterInput.instance.namespace, kind: "account", credentialCommitment: s.f.accountHash,
+      revocationAuthorityAccountCredentialCommitment: s.f.accountHash, statusIndex: s.f.account.statusIndex });
+    s.syncCredentialState();
+    assert.throws(() => s.request({ effectiveAt: s.f.allocation.createdAt + 29n }).call(1n), /stale against/);
+    assert.equal(s.f.currentView().usedRuntimeSlotCommandNonces.size(), 0n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
+  });
+
+  it("rejects finalizing a fully staged capability against an intervening slot mutation", () => {
+    const s = slotManagementFixture(), cmd = s.f.command("capability");
+    const plan = new CapabilityAttenuationPlan(s.f.capability.scope);
+    s.f.apply(s.f.invoke(2n, cmd, { plan }));
+    while (!plan.complete) s.f.apply(s.f.invoke(3n, cmd, { plan, stage: plan.stageNext() }));
+    const slot = s.request({ slot: "manager" }); slot.begin(); slot.finalize();
+    assert.throws(() => s.f.invoke(4n, cmd, { plan }), /stale against/);
+    assert.equal(s.f.currentView().usedCredentialStatusCommandNonces.member(cmd.commandNonce), false);
+    assert.equal(s.f.currentView().credentialStatusRoots.lookup(s.f.allocation.target.namespaceHash).rootSequence, 1n);
+    assert.equal(s.f.currentView().runtimeInstances.lookup(s.f.allocation.instanceCommitment).transitionSequence, 2n);
   });
 
   it("keeps duplicate-binding identity stable when only the runtime credential commitment changes", () => {
@@ -980,7 +1119,7 @@ function activateFixtureModule(
   governance: ReturnType<typeof moduleGovernance>,
   proposal: ReturnType<typeof moduleProposal>,
 ): CircuitContext<undefined> {
-  const proposed = contract.circuits.proposeProofModule(context, proposal);
+  const proposed = governanceCircuitOperations(contract).proposeProofModule(context, proposal);
   let nextContext = proposed.context;
   const proposalCommitment = pureCircuits.proofModuleProposalCommitment(proposal);
   const reviews: readonly [GovernanceActivatorLeaf, bigint, number][] = [
@@ -999,7 +1138,7 @@ function activateFixtureModule(
       reviewedAt: 1_700_000_010n + BigInt(index),
       reviewNonce: new Uint8Array(32).fill(120 + index),
     };
-    nextContext = contract.circuits.reviewProofModule(
+    nextContext = governanceCircuitOperations(contract).reviewProofModule(
       nextContext,
       review,
       signProofModuleReview(review, secret, 130n + BigInt(index)),
@@ -1025,7 +1164,7 @@ function activateFixtureModule(
     reasonHash: new Uint8Array(32).fill(140),
     commandNonce: new Uint8Array(32).fill(141),
   };
-  const firstApprovalResult = contract.circuits.governProofModule(
+  const firstApprovalResult = governanceCircuitOperations(contract).governProofModule(
     nextContext,
     firstApproval,
     signProofModuleLifecycleCommand(
@@ -1049,7 +1188,7 @@ function activateFixtureModule(
     effectiveAt: 1_700_000_021n,
     commandNonce: new Uint8Array(32).fill(142),
   };
-  const secondApprovalResult = contract.circuits.governProofModule(
+  const secondApprovalResult = governanceCircuitOperations(contract).governProofModule(
     nextContext,
     secondApproval,
     signProofModuleLifecycleCommand(
@@ -1075,7 +1214,7 @@ function activateFixtureModule(
     reasonHash: new Uint8Array(32).fill(150),
     commandNonce: new Uint8Array(32).fill(151),
   };
-  return contract.circuits.governProofModule(
+  return governanceCircuitOperations(contract).governProofModule(
     nextContext,
     activation,
     signProofModuleLifecycleCommand(
@@ -1124,6 +1263,49 @@ describe("M4 activation admission envelope", () => {
           .envelopeHash,
         baseline,
       );
+    }
+  });
+
+  it("rejects unsupported signature profiles before Compact conversion rather than normalizing them", () => {
+    const { input, record } = fixture();
+    const { envelope } = createActivationAdmissionArtifact(record, input);
+    assert.doesNotThrow(() => toCompactActivationAdmissionEnvelope(envelope));
+    for (const signatureProfile of ["ed25519-v1", "midnight-jubjub-schnorr-v2", undefined, null]) {
+      assert.throws(() => toCompactActivationAdmissionEnvelope({ ...envelope,
+        signatureProfile } as unknown as typeof envelope), /Unsupported governance signature profile/);
+    }
+  });
+
+  it("rejects unsupported registry protocol versions before Compact conversion rather than normalizing them", () => {
+    const { input, record } = fixture();
+    const { envelope } = createActivationAdmissionArtifact(record, input);
+    assert.equal(toCompactActivationAdmissionEnvelope(envelope).registryProtocolVersion, 1n);
+    for (const registryProtocolVersion of ["permio-midnight-authorization-v2", 1, undefined, null]) {
+      assert.throws(() => toCompactActivationAdmissionEnvelope({ ...envelope,
+        registryProtocolVersion } as unknown as typeof envelope), /Unsupported registry protocol version/);
+    }
+  });
+
+  it("rejects malformed envelope hashes instead of truncating an otherwise valid prefix", () => {
+    const { input, record } = fixture();
+    const { envelope } = createActivationAdmissionArtifact(record, input);
+    for (const [field, value] of Object.entries(envelope)) {
+      if (typeof value !== "string" || !value.startsWith("0x")) continue;
+      for (const malformed of [value + "zz", value.slice(0, -2), value.slice(2)]) {
+        assert.throws(() => toCompactActivationAdmissionEnvelope({ ...envelope,
+          [field]: malformed }), /lowercase 32-byte hexadecimal/, field);
+      }
+    }
+  });
+
+  it("rejects malformed module-binding hashes instead of truncating an otherwise valid prefix", () => {
+    const { input, record } = fixture();
+    const binding = createActivationAdmissionArtifact(record, input).bindings[0]!;
+    for (const field of ["implementationHash", "configurationHash", "receiptSchemaHash"] as const) {
+      for (const malformed of [binding[field] + "zz", binding[field].slice(0, -2), binding[field].slice(2)]) {
+        assert.throws(() => toCompactProofModuleBinding({ ...binding,
+          [field]: malformed as `0x${string}` }), /lowercase 32-byte hexadecimal/, field);
+      }
     }
   });
 
@@ -1234,6 +1416,20 @@ describe("M4 activation admission envelope", () => {
         publicKey,
       ),
     );
+    for (const [field, value] of Object.entries(envelope)) {
+      const candidates = value instanceof Uint8Array
+        ? [{ ...envelope, [field]: Uint8Array.from(value, (byte, index) => index === 0 ? byte ^ 1 : byte) }]
+        : typeof value === "bigint" ? [{ ...envelope, [field]: value + 1n }]
+        : "field" in value ? [{ ...envelope, [field]: { field: value.field + 1n } }]
+        : (["major", "minor", "patch"] as const).map(part =>
+          ({ ...envelope, semanticVersion: { ...envelope.semanticVersion, [part]: envelope.semanticVersion[part] + 1n } }));
+      for (const candidate of candidates) {
+        assert.notEqual(pureCircuits.governanceActivationSignatureChallenge(signature.announcement, publicKey, candidate),
+          pureCircuits.governanceActivationSignatureChallenge(signature.announcement, publicKey, envelope), field);
+        assert.throws(() => contract.circuits.verifyGovernanceActivationSignature(context, candidate, signature, publicKey),
+          /Invalid governance activation signature|Unsupported (admission envelope|registry protocol) version/, field);
+      }
+    }
     assert.throws(
       () =>
         contract.circuits.verifyGovernanceActivationSignature(
@@ -1777,6 +1973,19 @@ describe("M4 activation admission envelope", () => {
       () => call({ ...envelope, templateContentHash: new Uint8Array(32).fill(9) }),
       /Invalid governance activation signature/,
     );
+    const unchanged = context.currentQueryContext.state.state.encode();
+    for (const field of ["m4ActivationRecordHash", "approvalEvidenceCommitment"] as const) {
+      assert.throws(() => call({ ...envelope, [field]: new Uint8Array(32).fill(9) }),
+        /Invalid governance activation signature/, field);
+      assert.deepEqual(context.currentQueryContext.state.state.encode(), unchanged);
+    }
+    for (const [field, expected] of [["envelopeVersion", /Unsupported admission envelope version/],
+      ["registryProtocolVersion", /Unsupported registry protocol version/]] as const) {
+      const unsupported = { ...envelope, [field]: 2n };
+      assert.throws(() => call(unsupported, activator, authority.pathFor(eligibleCommitment),
+        signActivationAdmissionEnvelope(unsupported, secret, 59n)), expected);
+      assert.deepEqual(context.currentQueryContext.state.state.encode(), unchanged);
+    }
     assert.throws(
       () => call(envelope, { ...activator, authorityKind: 4n }),
       /outside the admission scope/,
@@ -1831,10 +2040,10 @@ describe("M4 activation admission envelope", () => {
       input.proofModuleBindings.bindings[0]!,
       envelope,
     );
-    const proposed = contract.circuits.proposeProofModule(context, proposal);
+    const proposed = governanceCircuitOperations(contract).proposeProofModule(context, proposal);
     context = proposed.context;
     assert.throws(
-      () => contract.circuits.proposeProofModule(context, proposal),
+      () => governanceCircuitOperations(contract).proposeProofModule(context, proposal),
       /already registered/,
     );
     const proposalCommitment = pureCircuits.proofModuleProposalCommitment(proposal);
@@ -1849,7 +2058,14 @@ describe("M4 activation admission envelope", () => {
       reviewedAt: 1_700_000_011n,
       reviewNonce: new Uint8Array(32).fill(171),
     };
-    const first = contract.circuits.reviewProofModule(
+    assert.throws(() => governanceCircuitOperations(contract).reviewProofModule(
+      context, firstReview,
+      signProofModuleLifecycleCommand(pureCircuits.emptyGovernanceDispatchInput().lifecycle,
+        governance.reviewerOneSecret, 172n),
+      governance.reviewerOne,
+      governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(governance.reviewerOne))),
+      /signature|schnorr/i, 'A signature for another governance operation must not authorize a review');
+    const first = governanceCircuitOperations(contract).reviewProofModule(
       context,
       firstReview,
       signProofModuleReview(firstReview, governance.reviewerOneSecret, 173n),
@@ -1871,7 +2087,7 @@ describe("M4 activation admission envelope", () => {
     };
     assert.throws(
       () =>
-        contract.circuits.reviewProofModule(
+        governanceCircuitOperations(contract).reviewProofModule(
           context,
           duplicateReview,
           signProofModuleReview(
@@ -1905,7 +2121,7 @@ describe("M4 activation admission envelope", () => {
     };
     assert.throws(
       () =>
-        contract.circuits.governProofModule(
+        governanceCircuitOperations(contract).governProofModule(
           context,
           prematureApproval,
           signProofModuleLifecycleCommand(
@@ -1925,7 +2141,7 @@ describe("M4 activation admission envelope", () => {
       reviewedAt: 1_700_000_012n,
       reviewNonce: new Uint8Array(32).fill(182),
     };
-    const second = contract.circuits.reviewProofModule(
+    const second = governanceCircuitOperations(contract).reviewProofModule(
       context,
       secondReview,
       signProofModuleReview(secondReview, governance.reviewerTwoSecret, 193n),
@@ -1946,7 +2162,7 @@ describe("M4 activation admission envelope", () => {
       expectedLifecycleStatus: 2n,
       commandNonce: new Uint8Array(32).fill(183),
     };
-    const firstApprovalResult = contract.circuits.governProofModule(
+    const firstApprovalResult = governanceCircuitOperations(contract).governProofModule(
       context,
       approval,
       signProofModuleLifecycleCommand(approval, governance.approverSecret, 197n),
@@ -1972,7 +2188,7 @@ describe("M4 activation admission envelope", () => {
     };
     assert.throws(
       () =>
-        contract.circuits.governProofModule(
+        governanceCircuitOperations(contract).governProofModule(
           context,
           prematureActivation,
           signProofModuleLifecycleCommand(
@@ -1997,7 +2213,7 @@ describe("M4 activation admission envelope", () => {
     };
     assert.throws(
       () =>
-        contract.circuits.governProofModule(
+        governanceCircuitOperations(contract).governProofModule(
           context,
           duplicateApproval,
           signProofModuleLifecycleCommand(
@@ -2018,7 +2234,7 @@ describe("M4 activation admission envelope", () => {
       effectiveAt: 1_700_000_022n,
       commandNonce: new Uint8Array(32).fill(185),
     };
-    const secondApprovalResult = contract.circuits.governProofModule(
+    const secondApprovalResult = governanceCircuitOperations(contract).governProofModule(
       context,
       secondApproval,
       signProofModuleLifecycleCommand(
@@ -2056,7 +2272,7 @@ describe("M4 activation admission envelope", () => {
     };
     assert.throws(
       () =>
-        contract.circuits.governProofModule(
+        governanceCircuitOperations(contract).governProofModule(
           context,
           activation,
           signProofModuleLifecycleCommand(
@@ -2071,7 +2287,7 @@ describe("M4 activation admission envelope", () => {
         ),
       /outside the required scope/,
     );
-    context = contract.circuits.governProofModule(
+    context = governanceCircuitOperations(contract).governProofModule(
       context,
       activation,
       signProofModuleLifecycleCommand(
@@ -2096,7 +2312,7 @@ describe("M4 activation admission envelope", () => {
       effectiveAt: 1_700_000_040n,
       commandNonce: new Uint8Array(32).fill(187),
     };
-    context = contract.circuits.governProofModule(
+    context = governanceCircuitOperations(contract).governProofModule(
       context,
       deprecation,
       signProofModuleLifecycleCommand(
@@ -2121,7 +2337,7 @@ describe("M4 activation admission envelope", () => {
       effectiveAt: 1_700_000_050n,
       commandNonce: new Uint8Array(32).fill(188),
     };
-    context = contract.circuits.governProofModule(
+    context = governanceCircuitOperations(contract).governProofModule(
       context,
       revocation,
       signProofModuleLifecycleCommand(
@@ -2261,9 +2477,40 @@ describe("M4 activation admission envelope", () => {
       nextRootSequence: rootUpdate.nextRootSequence + 1n,
       updateNonce: new Uint8Array(32).fill(202),
     };
+    const governor = governance.rootGovernorOne;
+    const governorPath = governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(governor));
+    const rootSignature = signAuthorityRootUpdateCommand(rootUpdate, governance.rootGovernorOneSecret, 251n);
+    const originalState = context.currentQueryContext.state.state.encode();
+    for (const [field, value] of Object.entries(rootUpdate)) {
+      const replacement = value instanceof Uint8Array
+        ? Uint8Array.from(value, (byte, index) => index === 0 ? byte ^ 1 : byte)
+        : typeof value === "bigint" ? value + 1n : { field: value.field + 1n };
+      const altered = { ...rootUpdate, [field]: replacement };
+      assert.notEqual(pureCircuits.authorityRootUpdateSignatureChallenge(rootSignature.announcement, governor.publicKey, altered),
+        pureCircuits.authorityRootUpdateSignatureChallenge(rootSignature.announcement, governor.publicKey, rootUpdate), field);
+      assert.throws(() => governanceCircuitOperations(contract).submitAuthorityRootApproval(
+        context, altered, rootSignature, governor, governorPath),
+      /Unsupported authority-root update version|No authority root|exact current root|advance exactly once|signature/iu, field);
+      assert.deepEqual(context.currentQueryContext.state.state.encode(), originalState);
+    }
+    for (const field of ["nextModuleReviewThreshold", "nextModuleApprovalThreshold", "nextAuthorityRootUpdateThreshold"] as const) {
+      const invalid = { ...rootUpdate, [field]: 1n };
+      assert.throws(() => governanceCircuitOperations(contract).submitAuthorityRootApproval(context, invalid,
+        signAuthorityRootUpdateCommand(invalid, governance.rootGovernorOneSecret, 253n), governor, governorPath),
+      /thresholds must be at least two/, field);
+      assert.deepEqual(context.currentQueryContext.state.state.encode(), originalState);
+    }
+    for (const [ineligible, secret] of [[activator, activatorSecret],
+      [governance.reviewerOne, governance.reviewerOneSecret],
+      [governance.moduleActivator, governance.moduleActivatorSecret]] as const) {
+      assert.throws(() => governanceCircuitOperations(contract).submitAuthorityRootApproval(context, rootUpdate,
+        signAuthorityRootUpdateCommand(rootUpdate, secret, 255n), ineligible,
+        governance.authority.pathFor(pureCircuits.governanceActivatorLeafCommitment(ineligible))), /outside the update scope/);
+      assert.deepEqual(context.currentQueryContext.state.state.encode(), originalState);
+    }
     assert.throws(
       () =>
-        contract.circuits.submitAuthorityRootApproval(
+        governanceCircuitOperations(contract).submitAuthorityRootApproval(
           context,
           skippedSequence,
           signAuthorityRootUpdateCommand(
@@ -2282,7 +2529,7 @@ describe("M4 activation admission envelope", () => {
     );
     assert.throws(
       () =>
-        contract.circuits.submitAuthorityRootApproval(
+        governanceCircuitOperations(contract).submitAuthorityRootApproval(
           context,
           rootUpdate,
           signAuthorityRootUpdateCommand(rootUpdate, activatorSecret, 257n),
@@ -2293,7 +2540,7 @@ describe("M4 activation admission envelope", () => {
         ),
       /outside the update scope/,
     );
-    const firstRootApproval = contract.circuits.submitAuthorityRootApproval(
+    const firstRootApproval = governanceCircuitOperations(contract).submitAuthorityRootApproval(
       context,
       rootUpdate,
       signAuthorityRootUpdateCommand(
@@ -2318,7 +2565,7 @@ describe("M4 activation admission envelope", () => {
     );
     assert.throws(
       () =>
-        contract.circuits.submitAuthorityRootApproval(
+        governanceCircuitOperations(contract).submitAuthorityRootApproval(
           context,
           rootUpdate,
           signAuthorityRootUpdateCommand(
@@ -2335,7 +2582,7 @@ describe("M4 activation admission envelope", () => {
         ),
       /Duplicate authority-root governor approval/,
     );
-    const secondRootApproval = contract.circuits.submitAuthorityRootApproval(
+    const secondRootApproval = governanceCircuitOperations(contract).submitAuthorityRootApproval(
       context,
       rootUpdate,
       signAuthorityRootUpdateCommand(
@@ -2361,7 +2608,7 @@ describe("M4 activation admission envelope", () => {
     assert.equal(state.authorityRootUpdateApprovals.size(), 2n);
     assert.throws(
       () =>
-        contract.circuits.submitAuthorityRootApproval(
+        governanceCircuitOperations(contract).submitAuthorityRootApproval(
           context,
           rootUpdate,
           signAuthorityRootUpdateCommand(
@@ -2397,7 +2644,7 @@ describe("M4 activation admission envelope", () => {
       reasonHash: new Uint8Array(32).fill(203),
       commandNonce: new Uint8Array(32).fill(204),
     };
-    context = contract.circuits.governProofModule(
+    context = governanceCircuitOperations(contract).governProofModule(
       context,
       moduleDeprecation,
       signProofModuleLifecycleCommand(

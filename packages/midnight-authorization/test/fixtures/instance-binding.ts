@@ -29,17 +29,21 @@ export function unitCreateCapability(input: CreateRuntimeCapabilityCredentialInp
 
 export function unitInstanceBinding(issuer: GovernanceActivatorLeaf, account: RuntimeAccountCredential): RuntimeCredentialInstanceBinding {
   const issuers = buildAuthorityRoot([issuer]);
+  const state = { stateVersion: 2n, instanceCommitment: account.instanceCommitment.slice(), stateIdHash: bytes(57),
+    lastMutationAt: 0n, slotAssignmentsRoot: pure.runtimePrivateMapEmptyRoot(), slotAssignmentCount: 1n,
+    slotBindingsRoot: pure.runtimePrivateMapEmptyRoot(), slotBindingCount: 1n, nonce: bytes(55) };
   return {
     allocation: { allocationVersion: 1n, target: structuredClone(account.target),
       instanceCommitment: account.instanceCommitment.slice(), instanceIdHash: bytes(51),
       allocationRequestIdHash: bytes(52), m4AuthorizationCommitment: bytes(53),
       allocatorAuthorityCommitment: bytes(54), capabilityIssuersRoot: issuers.root, capabilityIssuerCount: 1n,
-      initialStateCommitment: bytes(55), governancePolicyHash: issuer.governancePolicyHash.slice(),
+      initialStateCommitment: pure.runtimeStateCommitment(state), governancePolicyHash: issuer.governancePolicyHash.slice(),
       authorityRootVersion: 1n, authorityRootSequence: 1n, targetNetworkHash: bytes(1),
       targetContractIdentity: bytes(0), authorizedAt: 0n, createdAt: 0n, expiresAt: 2_000_000_000n,
       allocationValidBefore: 1_000n, allocationNonce: bytes(56) },
     issuerPath: issuers.pathFor(pure.governanceActivatorLeafCommitment(issuer)),
     validBefore: account.validBefore < issuer.validBefore ? account.validBefore : issuer.validBefore,
+    state, stateSequence: 0n, nextStateNonce: bytes(58),
   };
 }
 

@@ -1,6 +1,6 @@
 # Permio consumer and enterprise delivery feasibility
 
-Initial assessment: 2026-10-13; measured continuation: 2026-10-14. M6 remains
+Initial assessment: 2026-10-13; measured continuation: 2026-10-15. M6 remains
 incomplete. The existing implementation
 has proved and submitted real governance and credential transactions; it has
 not yet proved a normal customer action or established production capacity.
@@ -740,3 +740,450 @@ v7 源码已实现完整分阶段私有槽位，不截断链、不信任宿主�
 只加时间可解决、最低生产硬件或架构不可行。C/B 规划仍待实证，不销售“客户端 6 GiB”
 或 k20 SLA；后续须在已批架构内降成本，或按用户明确同意的资源配置实测，不能擅加
 资源／替换信任。精确指纹、保护、恢复及完整 255 项通过结果见独立 JSON。
+
+## 2026-10-15 — finite low-memory deployment-key build, not customer proof latency
+
+The separate experiment completed the exact k20/818608 slot pair with a
+5 GiB reclaim threshold, 6 GiB hard cgroup cap and up to 8 GiB swap. Total
+setup-to-cleanup time was 1153.098 monotonic seconds (19.22 minutes), actual
+cgroup memory peak about 5.00 GiB and swap peak 4.80 GiB, zero OOM events.
+Physical memory plus paging is the tested configuration; this is not a claim
+that the computation needs only 5 GiB of total storage or that paging is free.
+The guarded 674.337-second failure above remains a different historical
+profile, not a controlled speed comparison.
+
+The current v8 build then reused that exact slot pair after program/compiler/
+public-parameter/key fingerprint checks and generated the other ten pairs
+serially. Its full inventory/setup/cleanup span was 926.216 monotonic seconds
+(15.44 minutes), with maximum per-job cgroup memory peak 4.97 GiB, swap peak
+413696 bytes and zero OOM events. It does not include rebuilding the reused
+slot pair. New credential circuit measurement: k19/462645; allocation:
+k17/120603. All eleven matching key pairs pass the independent asset guard.
+
+This removes the indefinite-build concern for the exact current programs on
+the measured workstation. Deployment keys can be built before release and
+are not regenerated for every website customer action. The evidence does
+not establish browser/mobile proving, a 6 GiB ordinary-user proof budget,
+normal-action latency, P95/throughput, a minimum production configuration or
+an approved hosted-witness trust model. Real v8 local deployment/governance/
+allocation testing has started; credential/slot runtime proofs and ordinary
+actions still need their own measurements. Consumer/enterprise directions
+and privacy boundaries remain as above. See bounded-key-build-verification.json
+for exact timing boundaries, fingerprints, cleanup and regression checks.
+
+独立实验在 5 GiB 回收阈值／6 GiB cgroup 硬上限／最多 8 GiB swap 下真实完成
+精确 k20／818608 槽位密钥，设置至清理单调 1153.098 秒（19.22 分钟），实际内存
+约 5.00 GiB／swap 4.80 GiB，无 OOM。这是物理内存加换页，不是总存储只需 5 GiB
+或换页无代价；旧 674.337 秒失败保留为不同配置，不能做严格速度对照。v8 在验证
+程序／编译器／参数／密钥指纹后复用该对，真实串行生成另外十对，含设置／完整校验／
+清理单调 926.216 秒（15.44 分钟），每任务最高 cgroup 约 4.97 GiB／swap 413696
+bytes，无 OOM，不含重新生成旧槽位。凭证 k19／462645、分配 k17／120603，十一组
+匹配资产独立验证通过。
+
+这解除了本机精确当前程序“无限期无法构建”的担忧。部署密钥可在发布前构建，不是
+每个网站客户操作都要重新生成。但不证明浏览器／手机、普通用户 6 GiB 证明预算、
+普通动作耗时、P95／吞吐、最低生产配置或已批准的托管 witness 信任模型。v8 真实
+本地部署／治理／分配测试已开始，凭证／槽位运行时及普通动作仍需独立测量；C/B
+方向和隐私边界不变，详细时间边界／指纹／清理及回归见独立 JSON。
+
+## 2026-10-15 — fresh v8 real allocation measurement and capped runtime separation
+
+The real v8 Local Dev allocation/governance run now exits 0: a fresh contract,
+17 accepted post-deployment transactions, exact template activation and initial
+instance allocation, threshold root rotation, module deprecation/revocation,
+template retirement/revocation, retained instance/history and reconnect.
+A separate public-only reader later confirms the final ledger state without
+initializing a wallet or private witness. This is not a node/indexer restart
+test. Negative checks are generated Compact SDK preflight, not transactions
+rejected by the node. Thirteen known private sentinels are absent from the
+captured public log, not a complete wire/history privacy audit.
+
+One observed allocation interval, activation accepted to allocation accepted,
+is **48.268 seconds**. It includes client preparation, real proving,
+submission and indexer wait, and is not isolated proof latency or an ordinary
+customer action. Across this uncapped four-CPU, single-job workflow, 178
+samples have zero errors, maximum sampled container memory.current is
+4292292608 bytes (4.00 GiB), reported memory.peak 4324941824 bytes (4.03 GiB),
+sampled swap zero and OOM counters zero. The latter peak may include the
+existing service's lifetime; no exact per-proof peak or percentile is claimed.
+Do not substitute the earlier key-generation time for this runtime interval.
+
+The first separate 5 GiB-hard/8 GiB-swap runtime trial deploys and accepts a
+module proposal/two reviews, but the shared WSL reserve stops it during module
+approval, before slot transactions: 367516 KiB available RAM at 349.931 seconds,
+no OOM. Temporary resources are cleaned. Thus the first capped trial establishes
+neither slot feasibility nor an infinite proof. The next trial lowers only its
+new prover's hard RAM cap to 3.5 GiB so paging starts earlier, retaining the
+same swap budget, exact circuit/prover and 384 MiB safety reserve. Results
+must be measured independently. No global memory setting, privacy assumption
+or customer device requirement is changed. Exact allocation evidence and
+capped trial boundaries are in `v8-allocation-verification.json` and
+`capped-runtime-proving-v1.md`.
+
+当前 v8 实链分配／治理流程 exit 0：新合约及部署后 17 笔真实接受交易，覆盖精确激活／
+初始分配、阈值权限根轮换、模块弃用／撤销、模板退役／撤销、保留实例／历史和重连。
+另一次只读公开状态检查不用钱包／witness 核验最终账本，但不是节点／索引器重启。
+负例为 SDK 生成电路 preflight，不冒充节点拒绝交易；13 个已知私有哨兵在公开日志
+中未泄漏，不等于完整网络／历史隐私审计。一次激活接受至分配接受间隔 48.268 秒，
+含客户端、真实证明、提交和索引等待，不是纯证明或普通客户动作。原四 CPU 单任务、
+无容器 RAM 上限流程 178 次采样无错误，最高 memory.current 4.00 GiB、报告 peak
+4.03 GiB、swap 采样零、OOM 零；peak 可能包括服务历史，不宣称精确单证明峰值或
+百分位，也不用密钥构建时间替代运行时。
+
+独立 5 GiB 硬上限／8 GiB swap 测试虽部署并接受提案／两审查，但在模块批准期间
+349.931 秒、共享可用内存 367516 KiB 触发保护，尚无槽位交易、无 OOM，临时资源
+已清理。这既不能证明槽位可行，也不是“无限证明”。下次仅把新证明器硬上限降至
+3.5 GiB 使换页更早发生，保留原 swap 预算、精确电路／证明器及 384 MiB 保护，
+结果独立实测；不改全局内存、隐私或客户设备要求。详见独立证据及运行配置文档。
+
+### Joint runtime paging follow-up: finite capacity is not unlimited time-for-memory
+
+The 3.5 GiB prover-only trial also stopped at the unchanged shared reserve
+during account issuance, before slot transactions; its cleanup succeeded.
+A joint test then bounded client and prover separately (1 and 2.75 GiB RAM).
+It genuinely paged, but the prover was OOM-killed during account issuance:
+875.783-second stop observation, maximum sampled prover swap 6.805 GiB,
+client memory/swap reported peaks 0.7505/0.8167 GiB. Host free swap reached
+79732 KiB while about 1.4 GiB RAM remained available. This demonstrates that
+a hard physical cap can exhaust backing swap; more elapsed time is not an
+unlimited substitute for total working storage. It does not establish the
+exact minimum RAM/swap for this proof or for ordinary customer actions.
+
+The old combined low-RAM/low-swap emergency condition missed that case; the
+new policy independently stops below 512 MiB free swap. The next controlled
+trial permits 4 GiB prover plus 1 GiB client RAM, 5 GiB combined, sharing the
+same 8 GiB host swap. It is running, not a passed 5 GiB proving claim. The
+node/indexer/original service costs are outside that combined cap. Exact
+circuits, CPU/job profile, toolchain, privacy and trust remain unchanged.
+Both owned processes and swap were cleaned after the OOM. An independent
+public read confirms no credential/slot mutation was accepted; M6 remains
+incomplete, with representative ordinary-action proof cost still unmeasured.
+
+3.5 GiB 仅限证明器的测试在账户签发时也触及原保护并安全清理。随后分别限制客户端
+1 GiB／证明器 2.75 GiB，真实换页后证明器在签发时 OOM，875.783 秒观察到停止，
+证明器 swap 采样最大约 6.805 GiB，客户端内存／swap 报告峰值 0.7505／0.8167 GiB；
+主机空闲 swap 只有 79732 KiB，而 RAM 仍约 1.4 GiB。物理硬上限下仍可能耗尽换页
+后备空间，不能无限“用时间换内存”；不据此断言精确最低配置或普通客户证明需求。
+旧保护要求 RAM／swap 同时低，漏掉该情形；现在独立在空闲 swap 低于 512 MiB
+停止。下次证明器 4／客户端 1 GiB，合计 RAM 5 GiB，仍共享同样 8 GiB swap，
+正在运行而非宣称 5 GiB 证明通过，且不包含节点／索引器／原服务开销。密码、电路、
+CPU／任务、版本、隐私及信任不改；OOM 后已清理自有双方及 swap，独立公开读取
+确认没有凭证／槽位变更被接受。M6 未完成，普通动作证明成本仍未测量。
+
+### Actual account issuance within the 5 GiB combined physical cap
+
+The next joint run accepts one real v8 account-status transaction in
+**275.862 seconds** from call start to indexed acceptance (2026-10-14
+18:42:45.429–18:47:21.291 UTC). An independent public-only observation later
+confirms instance sequence 1, credential-status sequence 1, one consumed
+credential nonce, no slot staging/nonces. This is real runtime proving,
+not key generation, a simulation or a promise of future completion.
+
+Configured limits are prover 4 GiB RAM/client 1 GiB RAM; 8 GiB host swap is
+shared. Across the complete partial workflow, reported prover memory peak is
+4294971392 bytes (4 GiB plus one accounting page), maximum sampled prover
+swap.current 6407016448 bytes (5.967 GiB), client reported RAM/swap peaks
+805822464/687124480 bytes. These individual peaks are not necessarily
+simultaneous. There is no OOM or resource-guard stop; 182 prover samples have
+zero errors. This establishes one administrative account call can finish with
+bounded physical RAM and substantial disk-backed working storage on this
+machine. It does not mean total storage is only 5 GiB, every user needs this
+setup, or an ordinary-action/browser/mobile proof is production-ready.
+
+The first slot begin then fails in 9.259 seconds with a redacted unknown
+category; no slot staging is accepted. Later source inspection finds a missing
+SDK binary ZKIR for the reused slot pair. Its exact compiler-produced binary
+is restored and the asset guard now verifies all eleven binary hashes/sizes;
+keys and programs do not change. The corrected four-worker run stops at the
+512 MiB free-swap reserve during account issuance, before reaching the slot.
+No OOM occurs, cleanup succeeds, and independent public observation confirms
+no credential/slot mutation. One earlier successful account call therefore
+does not establish repeatable success with 5 GiB RAM and shared 8 GiB swap.
+The next one-worker trial keeps those budgets and all safety/circuit checks;
+reducing temporary parallel storage is a hypothesis, not a production claim.
+The first slot's original redacted error remains unclassified. Full M6, throughput/P95,
+ordinary-action cost and production readiness remain open.
+
+下一次联合配置真实 v8 账户状态交易从调用至索引接受为 275.862 秒（UTC
+18:42:45.429–18:47:21.291），之后独立只读观察确认实例／凭证序号 1、凭证 nonce1、
+无槽位暂存／nonce。这是真实运行时证明，不是密钥构建、模拟或未来承诺。证明器
+4 GiB／客户端1 GiB RAM、共享总swap8 GiB；整个部分流程报告证明器 peak为4 GiB
+加一个计费页、swap current最大采样5.967 GiB，客户端RAM／swap峰值805822464／
+687124480 bytes，各峰不一定同时发生。无OOM／资源保护停止，182采样无错误。
+证明本机一笔管理账户调用可在受限物理内存＋较多磁盘后备空间完成，不代表总存储
+只有5 GiB、每位用户都要此配置或普通动作／浏览器／手机已达生产要求。首个槽位
+begin随后9.259秒未知分类失败，无槽位暂存。后续源码发现复用槽位缺 SDK 二进制
+ZKIR，现已恢复精确编译器输出，guard 核验十一项二进制长度／哈希，密钥及程序不变。
+修正后的四线程测试在账户签发时触及空闲 swap512 MiB 保护，尚未到槽位，无 OOM，
+清理成功且独立读取确认凭证／槽位未变。因此一次成功不能证明 RAM5 GiB＋共享
+swap8 GiB 可稳定重复通过。下一次单线程仍保持预算、保护和电路检查；降低临时
+并行存储只是假设，不是生产结论。首个槽位原脱敏异常仍未分类；M6、P95／吞吐、普通动作与生产
+仍未完成。
+
+### Latest shared-runtime qualification result and avoidable overhead
+
+The explicit single-server/Rayon-worker trial with a ten-minute local HTTP
+wait still stops at the shared swap reserve during account proving:425300KiB
+free versus524288KiB required. The proof-provider stage is interrupted after
+363.413seconds to the final safety sample; no account/slot transaction is
+accepted and no OOM is observed. All owned temporary resources are cleaned;
+independent public observation confirms unchanged allocation/state sequence0.
+This is a finite backing-storage limit in this shared setup, not evidence
+that more waiting alone suffices, a captured request timeout, or a requirement
+that each ordinary customer have the same hardware. Ordinary-action proofs
+are still unimplemented/unmeasured.
+
+A subsequent read-only audit identifies avoidable background cost: the idle
+original prover retains roughly0.9GiB RAM and0.9GiB swap while a separate
+capped prover runs. Restarting only that idle stateless service under the
+user's prior unused-container authorization releases its retained memory;
+the same image/configuration is ready again, with about9.7MiB RSS and no swap.
+Node/indexer/databases and public disk parameters remain unchanged. The fresh
+normal four-CPU run accepts an account in184.905seconds end-to-end; its
+proof-provider component takes163.374seconds. Independent observation confirms
+state/status/credential nonce1, no slot session/nonce. However, the first real
+slot proof reaches the provider and is stopped48.290seconds later at the swap
+reserve, with341100KiB free. No slot transaction or OOM is observed. A
+post-account, pre-slot sample shows the temporary prover still holding about
+2.74GiB RAM plus5.06GiB swap. Whether these are live objects or allocator arenas
+is not established; no private heap/request/log is read. An opt-in cold-backend
+trial now restarts only the owned idle prover at this boundary, verifies exact
+identity/limits and unchanged public state, and retains private state in the
+caller. That trial accepts a third account in184.906seconds, then successfully
+restarts the same idle prover: RAM2997391360bytes/swap5317849088bytes falls to
+RAM13496320bytes/swap0. Public state remains sequence1 before/after. Yet the
+cold slot itself reaches4GiB prover RAM plus5.529GiB sampled swap before the
+shared reserve stops it113.803seconds into the provider stage. Free swap is
+482248KiB, no OOM or accepted slot; cleanup and independent post-cleanup reads
+pass. The5GiB RAM/shared8GiB swap budget is unchanged. This demonstrates that
+retained account buffers were avoidable overhead but not the sole capacity
+limit. The interrupted interval is neither successful proof latency nor a
+minimum storage estimate, and waiting alone cannot supply missing backing
+storage under fixed limits. A separately approved larger paging trial is a
+capacity test, not a cryptographic/privacy alternative or production promise.
+A larger16GiB shared-paging qualification is only a
+deferred proposal, not approved/implemented or a production minimum. Earlier
+failure traces are preserved; neither extra idle-service overhead nor one
+successful account call is used to claim general production feasibility.
+
+最新单server／Rayon、HTTP等十分钟仍在账户证明时触及共享swap保护：空闲425300KiB，
+低于524288。proof-provider至最后安全采样363.413秒被中断，账户／槽位未接受、无观察
+到的OOM，自有资源已清理，独立公开观察确认分配／状态序号0不变。这是该共享配置
+后备存储有限，不是多等即可完成、已捕获HTTP超时或每位普通客户都需要此硬件；普通
+动作证明尚未实现／测量。后续只读审计发现可避免后台开销：运行第二证明器时原闲置
+证明器仍约0.9GiB RAM＋0.9GiB swap。按用户此前允许停不用容器的授权仅重启此无状态
+服务，相同镜像／配置重新ready，RSS约9.7MiB、swap0，节点／索引器／数据库及公开
+磁盘参数不改。新四CPU测试账户端到端184.905秒接受，其中proof-provider163.374秒；
+独立观察状态／凭证序号及凭证nonce1、无槽位session／nonce。但首个真实槽位到达证明
+provider后48.290秒触及swap保护，空闲341100KiB，没有槽位交易或观察到的OOM。账户
+接受后、槽位开始前，临时证明器仍约2.74GiB RAM＋5.06GiB swap；未区分活对象或
+allocator保留区，不读取私有heap／请求／日志。现可选冷后端测试仅在该边界重启自有
+闲置证明器，核验精确身份／限制及公开状态不变，私有状态保留在客户端。
+该测试第三次账户184.906秒接受，随后同闲置证明器重启成功：RAM2997391360／swap
+5317849088bytes降至RAM13496320／swap0，前后公开状态仍序号1。但冷槽位本身
+达到证明器RAM4GiB＋采样swap5.529GiB，provider阶段113.803秒后仍触共享保护，
+空闲swap482248KiB、无OOM或槽位接受；清理及其后独立读取通过。仍合计RAM5GiB／
+共享总swap8GiB。这证明账户残留是可避免开销，却不是唯一容量限制。被中断时间
+不是成功证明延迟或最低存储估算；固定限制下仅多等不能产生缺失后备存储。另经
+批准扩大换页是容量测试，不是密码／隐私替代方案或生产承诺。总swap16GiB只是
+暂缓提案，非已批准／实施或生产最低配置。保留旧失败，不把闲置额外成本或一次成功
+签发泛化为生产可行性结论。
+
+### Successful experiment profile transferred to transaction proving: measured limit
+
+Identical retry after the user frees processes gets further: an account proof
+is accepted with a 427.301-second provider stage, and the owned prover restart
+releases retained RAM/swap while preserving caller/public state. The cold slot
+still stops at the unchanged free-swap reserve (431008 KiB versus 524288 KiB),
+without completing a proof or accepting a slot transaction. RAM remains above
+its separate reserve; no OOM is observed. This is real administrative proving
+under the stated bounds, not ordinary-user proving performance or full M6
+acceptance. Extra waiting alone cannot remove finite backing-storage limits;
+no larger limit, adaptive algorithm, new privacy/trust boundary or production
+SLA is adopted. The original shared-RAM stop below remains a separate result,
+not retrospectively relabeled. See the same verification JSON's retry section.
+
+用户释放进程后同配置重试推进更远：账户证明接受，provider阶段427.301秒；自有
+证明器重启释放残留RAM／swap，调用端及公开状态保留。但冷槽位仍触原空闲swap
+保护（431008KiB低于524288KiB），未完成证明或接受槽位交易。RAM仍高于独立保留
+阈值、无观察到的OOM。这是在所述上限内的真实管理证明，不是普通用户性能或M6
+完整验收；仅多等不能消除有限后备存储约束。未采用更大限制、自适应算法、新隐私／
+信任边界或生产SLA。下方原共享RAM停止保留为独立结果、不事后改称其他原因，详见
+同验证JSON的retry部分。
+
+On2026-10-15, BmF0kQ actually applies the known experiment's prover high5/max6GiB
+and one worker, retains the client's separate1GiB cap, and keeps shared swap8GiB.
+Combined long-lived hard RAM allowance is7GiB, not the previous5GiB or the whole
+machine. All exact v8 keys/programs remain unchanged. The actual soft threshold
+is independently read back;779reclaim events prove the control is active, with
+no observed hard-limit/OOM events. Deployment and11transactions through
+allocation pass, but account proving is interrupted at shared available RAM
+389256KiB, below the393216KiB reserve, with7075780KiB swap still free. No
+account or slot mutation is accepted; independent reads confirm sequence0 and
+no nonces/staging. Temporary resources clean up and original services remain
+healthy. This test does not establish successful slot latency, a hardware
+minimum or production readiness. It also does not support simply increasing
+swap: this stop is RAM-reserve pressure while swap is available.
+
+2026-10-15的BmF0kQ真实采用已知实验证明器high5／max6GiB、单线程，客户端另硬1GiB，
+共享总swap仍8GiB。长期双方合计硬RAM7GiB，不是此前5GiB或整机上限；v8精确程序／
+密钥均不变，软阈值独立读回。779回收事件证明控制生效，未观察硬上限／OOM。部署
+加11笔到分配交易通过，但账户证明时整机RAM389256KiB低于保留393216KiB触停止，
+swap仍空闲7075780KiB。无账户／槽位变更，独立读取序号0且无nonce／暂存。临时
+资源清理、原服务健康。未确定槽位成功耗时、最低硬件或生产可行，也不支持简单扩大
+swap：这次是仍有swap时的RAM保留压力。
+
+The transferable result is the reclamation/paging mechanism and the already
+reused exact key pair, not a guarantee that one fixed5GiB target fits every
+shared workload. The next operational correction is to choose/lower the soft
+target using the caller/services/reserve budget within the existing hard/swap
+ceilings. This dynamic budget control is not implemented or verified yet,
+and is different from a memory-adaptive cryptographic algorithm. No new trust,
+remote witness hosting, circuit decomposition or ledger upgrade is adopted.
+See reclaim-runtime-verification.json for exact timing/hashes, the preserved
+clock-source discrepancy and299passed regressions. Consumer/enterprise plans
+above remain future directions pending actual ordinary-action proof evidence.
+
+可迁移成果是回收／换页机制及已复用精确密钥，不是固定5GiB目标适合每种共享负载的
+保证。下一项运行修正应在现有硬／swap上限内，按客户端／服务／保留预算选择或降低
+软目标。此动态预算控制尚未实现／验证，且不同于密码算法本身自适应。没有增加信任、
+远程托管witness、拆电路或升级账本。精确时间／哈希、保留的时钟差异及299项回归
+通过见reclaim-runtime-verification.json；上述C／B交付方向仍需真实普通动作证明证据。
+
+### 2026-10-16 — A completed historical proof under bounded server paging
+
+The previously failing historical35-leaf k20 membership circuit now returns
+a real4508-byte proof using the exact stock8.1.0 image/program/key hashes.
+On the replacement16GiB/four-vCPU ECS, the prover is limited to one CPU and
+one Rayon worker,11.5GiB hard RAM with10GiB soft reclamation threshold, and
+8GiB swap. The separate client is capped at2.5GiB RAM/no swap. The successful
+provider call takes469.670seconds; prover RAM peaks10.00024GiB and swap
+4.68654GiB, with zero hard-limit/OOM events. Sampled client peak is2.17260GiB;
+maximum simultaneously sampled client/prover RAM is11.88377GiB, excluding
+the small controller/OS. This is measured successful proof latency, unlike
+earlier interrupted intervals. It demonstrates that disk paging can complete
+this exact bounded workload without raising its previous hard RAM ceiling.
+
+此前失败的历史35叶k20成员关系电路现已用精确原版8.1.0镜像／程序／密钥生成4508字节
+真实证明。在替代的16GiB／四vCPU ECS上，证明器仅用单CPU／Rayon线程，硬RAM11.5GiB、
+软回收阈值10GiB、swap8GiB；独立客户端硬RAM2.5GiB、无swap。成功provider调用
+469.670秒，证明器RAM峰值10.00024GiB、swap4.68654GiB，无硬上限或OOM事件。
+客户端采样峰值2.17260GiB，同时采样双方RAM最高11.88377GiB，不含小型控制器及系统。
+这是实际完成证明耗时，不是此前被中断的时间；证明该精确负载可以在不提高旧硬RAM
+上限的情况下通过磁盘换页完成。
+
+This does not establish6GiB operation, a minimum server size, browser proving,
+ordinary-user action latency, concurrent throughput, production SLA or Preprod
+acceptance. The old no-swap comparison used another ECS, so no completed
+same-host no-swap latency exists for a slowdown ratio. The proof format and
+downloaded hash/length are validated, not independent cryptographic/node
+verification. A transient-client cleanup bug is separately recovered and
+fixed without changing proving logic; original failure/recovery reports are
+preserved. Existing consumer/enterprise delivery directions remain future
+plans, requiring the actual current-contract ordinary-action and concurrency
+measurements rather than extrapolation from this one historical circuit.
+See cloud-membership-paging-verification.json for full reproducible evidence.
+
+这不证明6GiB运行、最低服务器配置、浏览器证明、普通动作耗时、并发吞吐、生产SLA或
+Preprod验收。旧无swap对照是另一台ECS，没有同机已完成无swap耗时，不能计算减速比。
+已核对证明格式和下载后的摘要／长度，尚非独立密码学／节点验证。临时客户端清理错误
+已另行恢复并修复，没有更改证明逻辑，原失败及恢复报告均保留。既有C／B交付方向仍是
+未来规划，须测量当前合约真实普通动作及并发，不能从单一历史电路推断。完整证据见上述JSON。
+
+### 2026-10-16 — Separate wallet cold-start latency from proof cost
+
+The existing fixture-1 wallet restores offline in WSL with the original SDK
+and unchanged saved files. After SDK import, inspection takes313.136seconds;
+ledger Dust deserialization alone takes312.111seconds. Final RSS is sampled at
+620MiB, not a known peak. Enforced ceilings are1.5GiB RAM/512MiB swap/one CPU,
+not minimum hardware requirements. The earlier300-second attempt records567MiB
+peak and zero swap before timing out. This is a CPU-heavy wallet cold start,
+not a failed proof or evidence that the wallet needs10–30GiB RAM. The scoped
+API reuses one restoration within a workflow; repeated cold starts still pay
+this cost, but it must not be added to every ordinary action automatically.
+
+现有fixture-1钱包已在WSL中用原SDK及不变文件离线恢复。SDK导入后检查耗时313.136秒，
+ledger Dust反序列化占312.111秒。结束RSS采样620MiB，峰值未知。已强制RAM1.5GiB／
+swap512MiB／单CPU，并非最低硬件要求。此前300秒尝试记录峰值567MiB、swap零后超时。
+这是CPU开销较大的钱包冷启动，不是证明失败，也不证明钱包需要10–30GiB。作用域API
+在工作流内复用一次恢复，重复冷启动仍需付出成本，但不能自动给每个普通动作加此耗时。
+
+This does not establish browser/mobile startup, current catch-up latency or
+production capacity. The upstream [Dust restoration issue](https://github.com/midnightntwrk/midnight-wallet/issues/639)
+has a matching symptom, not a confirmed identical cause. No tree rewrite or
+ledger upgrade is adopted. Consumer delivery still needs measured client
+startup and ordinary-action proof budgets. Enterprise delivery still needs
+explicit key custody, worker isolation and concurrency measurements. A warm
+worker is a future deployment direction, not permission to upload existing
+wallet secrets. The469.670-second historical membership proof is a separate
+measurement with prover10.00024GiB RAM/4.68654GiB swap and client2.17260GiB
+sampled RAM. Neither result qualifies a6GiB proof profile, production SLA or M6
+acceptance. Exact wallet evidence is in `preprod-wallet-readiness-verification.json`.
+
+这不能确定浏览器／手机启动、当前追赶耗时或生产容量。上述上游问题症状相符，但根因
+尚未确认相同；没有重写树或升级账本。C端仍需测量客户端启动和普通动作证明预算，B端
+仍需明确密钥保管、工作进程隔离及并发。保持温启动工作进程只是未来方向，不是上传
+现有钱包秘密的授权。此前469.670秒历史成员证明是另一项测量：证明器RAM10.00024GiB／
+swap4.68654GiB，客户端采样RAM2.17260GiB。两者均不能证明6GiB证明配置、生产SLA或
+M6验收；钱包精确证据见上述新JSON。
+
+The final-source read-only catch-up also succeeds: positive DUST confirmed,
+strict synchronization,75094ms catch-up after restoration. That run's entire
+post-import workflow is308173ms and full process is410.397003monotonic seconds,
+including SDK/module startup. Peak cgroup memory is623501312bytes with zero
+swap; final RSS sample713302016bytes is not an RSS peak. The same1.5GiB limit
+holds. Do not advertise the313-second isolated restore as the full application
+startup time, or the75-second catch-up as an action-proof latency. Neither
+measurement includes a submitted transaction or current action proof.
+
+最终源码的只读追赶也成功：确认DUST为正、严格同步，恢复后追赶75094ms。该次导入后
+完整工作流308173ms，含SDK／模块启动的全进程单调时钟410.397003秒。cgroup内存峰值
+623501312字节、swap零，结束RSS采样713302016字节不是RSS峰值，保持相同1.5GiB
+上限。不能将隔离测得313秒恢复宣传为完整应用启动，或将75秒追赶当成动作证明耗时；
+两项测量都没有提交交易或生成当前动作证明。
+
+### 2026-10-16 — Wallet fee proof is a separate, small measurement
+
+The actual Preprod deployment diagnostic now completes local wallet fee
+proving/balancing after missing public DUST/Zswap artifacts are provisioned.
+Its prover cgroup peak is88612864bytes with zero swap and CPU2742846000ns,
+under the unchanged3GiB prover cap. The client peaks at675127296bytes with
+zero swap; its whole process takes441.743103monotonic seconds, including
+current-asset checks, cold restoration and synchronization. These are distinct
+process/resource boundaries, not a summed proof latency. An observer-format
+bug stops this run before submission; the following real result is recorded
+in [deployment evidence](preprod-deployment-verification.json).
+
+补齐缺失公开DUST／Zswap产物后，实际Preprod部署诊断已完成本地钱包费用证明／平衡。
+证明器cgroup峰值88612864字节、swap零、CPU2742846000ns，保持原3GiB上限；客户端
+峰值675127296字节、swap零，含当前产物核验、冷恢复及同步的全进程单调耗时
+441.743103秒。它们是不同进程／资源边界，不能相加作为证明延迟。观察器格式错误
+使该次运行在提交前停止，后续真实结果见上述部署证据。
+
+This establishes that the small fee-proof path can execute on this bounded
+machine; it does not resolve the large current ordinary-action proof's memory
+problem, qualify consumer/browser performance, or establish transaction finality.
+Cold wallet restoration is not a per-action proving cost. C-end and B-end
+capacity estimates still require the exact current action proof and complete
+user-operation measurements, without extrapolating from the small fee circuit.
+
+这说明小型费用证明路径能在本次受限机器上执行，不等于解决当前大型普通动作证明
+内存问题、验证C端／浏览器性能或确认交易最终性。钱包冷恢复不是每次动作的证明
+成本。C端及B端容量估算仍需精确当前动作证明及完整用户操作实测，不能用小型费用
+电路外推。
+
+The subsequent corrected deployment succeeds and independent public state
+verification passes at Preprod block3004405. Its cold-start-to-completion
+process takes558.263059monotonic seconds with client peak677834752bytes,
+swap0. Fee balancing/finalization plus the pre-submit observer boundary spans
+about3.272wall seconds; this is not isolated cryptographic timing. The prover
+peak88612864bytes/swap0 is cumulative across two cache-fixed attempts. These
+results support bounded wallet fee proving and constructor deployment only,
+not ordinary-action or production/browser feasibility. Preserve the separate
+large-proof bottleneck and do not claim M6 completion.
+
+随后修正后的部署成功，独立公开状态核验通过Preprod区块3004405。冷启动至完成的
+全进程单调耗时558.263059秒，客户端峰值677834752字节、swap零。费用平衡／最终化
+加提交前观察器边界约3.272秒墙钟，不是独立密码学耗时；证明器峰值88612864字节／
+swap零是两次缓存修正尝试的累计值。结果仅支持受限钱包费用证明及构造部署，不证明
+普通动作或生产／浏览器可行性；保留大型证明瓶颈，不声称M6完成。

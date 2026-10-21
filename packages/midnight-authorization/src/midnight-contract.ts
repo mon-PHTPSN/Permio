@@ -18,6 +18,8 @@ import {
 } from "../contracts/managed/permio-authorization/contract/index.js";
 export type {
   GovernanceActivatorLeaf,
+  GovernanceDispatchInput,
+  GovernanceDispatchResult,
   ActiveTemplateRecord,
   AuthorityRootRecord,
   AuthorityRootUpdateCommand,
@@ -52,6 +54,10 @@ export type {
   RuntimeSlotProgress,
   RuntimeSlotSession,
   RuntimeAllocationPolicyWitness,
+  RuntimeActionCommand,
+  RuntimeActionProgress,
+  RuntimeSelectedActionValue,
+  RuntimeActionSession,
 } from "../contracts/managed/permio-authorization/contract/index.js";
 export const readPermioAuthorizationLedger = readGeneratedLedger;
 export const permioAuthorizationPureCircuits = generatedPureCircuits;
@@ -67,7 +73,7 @@ export type ConnectedPermioAuthorizationContract =
   FoundContract<PermioAuthorizationContract>;
 
 export const PERMIO_AUTHORIZATION_CONTRACT_TAG =
-  "permio-authorization-v7";
+  "permio-authorization-v10";
 export const PERMIO_AUTHORIZATION_ASSETS_PATH = path.resolve(
   path.dirname(fileURLToPath(import.meta.url)),
   "../contracts/managed/permio-authorization",

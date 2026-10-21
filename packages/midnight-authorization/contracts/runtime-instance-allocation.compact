@@ -35,6 +35,9 @@ export struct RuntimeCredentialInstanceBinding {
     issuerPath: MerkleTreePath<20, Bytes<32>>;
     // A selected public proof window, bounded by private lifetimes; not a grant.
     validBefore: Uint<64>;
+    state: RuntimeStateOpening;
+    stateSequence: Uint<64>;
+    nextStateNonce: Bytes<32>;
 }
 
 export struct RuntimeStateOpening {
@@ -119,6 +122,19 @@ export pure circuit runtimeInstanceIdentityNullifier(
 
 export pure circuit runtimeStateCommitment(opening: RuntimeStateOpening): Bytes<32> {
     return persistentHash<RuntimeStateOpening>(opening);
+}
+
+// Credential mutations change ordering, not the template state or slot maps.
+export pure circuit runtimeCredentialNextState(
+    state: RuntimeStateOpening, effectiveAt: Uint<64>, nextNonce: Bytes<32>
+): RuntimeStateOpening {
+    return RuntimeStateOpening{
+        stateVersion: state.stateVersion, instanceCommitment: state.instanceCommitment,
+        stateIdHash: state.stateIdHash, lastMutationAt: effectiveAt,
+        slotAssignmentsRoot: state.slotAssignmentsRoot, slotAssignmentCount: state.slotAssignmentCount,
+        slotBindingsRoot: state.slotBindingsRoot, slotBindingCount: state.slotBindingCount,
+        nonce: nextNonce
+    };
 }
 
 // Prepared predicate, not yet a ledger-bound credential or action entry point.

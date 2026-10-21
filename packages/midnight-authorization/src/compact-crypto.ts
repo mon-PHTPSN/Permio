@@ -20,6 +20,7 @@ import {
   type RuntimeCredentialStatusCommand,
   type RuntimeInstanceAllocation,
   type RuntimeSlotCommand,
+  type RuntimeActionCommand,
   type TemplateLifecycleCommand,
   type Witnesses,
 } from "../contracts/managed/permio-authorization/contract/index.js";
@@ -27,7 +28,13 @@ import { parseSemanticVersion } from "@permio/scenario-domain";
 
 import { hashProtocolIdentifier } from "./canonical.ts";
 import { merkleDigestFromHex } from "./binding-manifest.ts";
-import type { ActivationAdmissionEnvelope, Hex32 } from "./model.ts";
+import { decodeHex32 as hex32Bytes } from "./hex32.ts";
+import {
+  MIDNIGHT_GOVERNANCE_SIGNATURE_PROFILE,
+  MIDNIGHT_REGISTRY_PROTOCOL_VERSION,
+  type ActivationAdmissionEnvelope,
+  type Hex32,
+} from "./model.ts";
 
 export const JUBJUB_SCALAR_ORDER =
   6554484396890773809930967563523245729705921265872317281365359162392183254199n;
@@ -67,10 +74,6 @@ export function createPermioAuthorizationContract(): Contract<undefined> {
   return new Contract<undefined>(permioAuthorizationWitnesses);
 }
 
-function hex32Bytes(value: Hex32): Uint8Array {
-  return Uint8Array.from(Buffer.from(value.slice(2), "hex"));
-}
-
 function compactIdentifierHash(
   kind: "network-id" | "contract-identity",
   value: string,
@@ -81,6 +84,12 @@ function compactIdentifierHash(
 export function toCompactActivationAdmissionEnvelope(
   envelope: ActivationAdmissionEnvelope,
 ): CompactActivationAdmissionEnvelope {
+  if (envelope.signatureProfile !== MIDNIGHT_GOVERNANCE_SIGNATURE_PROFILE) {
+    throw new TypeError("Unsupported governance signature profile");
+  }
+  if (envelope.registryProtocolVersion !== MIDNIGHT_REGISTRY_PROTOCOL_VERSION) {
+    throw new TypeError("Unsupported registry protocol version");
+  }
   const semanticVersion = parseSemanticVersion(envelope.semanticVersion);
   return {
     envelopeVersion: BigInt(envelope.envelopeVersion),
@@ -244,6 +253,7 @@ export function signTemplateLifecycleCommand(
 }
 
 type RuntimeSignedValue =
+  | { readonly kind: "action-command"; readonly value: RuntimeActionCommand }
   | { readonly kind: "slot-command"; readonly value: RuntimeSlotCommand }
   | { readonly kind: "allocation"; readonly value: RuntimeInstanceAllocation }
   | { readonly kind: "account"; readonly value: RuntimeAccountCredential }
@@ -257,6 +267,8 @@ function runtimeSignatureChallenge(
   publicKey: JubjubPoint,
 ): bigint {
   switch (signed.kind) {
+    case "action-command":
+      return pureCircuits.runtimeActionCommandSignatureChallenge(announcement, publicKey, signed.value);
     case "slot-command":
       return pureCircuits.runtimeSlotCommandSignatureChallenge(announcement, publicKey, signed.value);
     case "allocation":
@@ -310,6 +322,10 @@ function signRuntimeValue(
 
 export function signRuntimeSlotCommand(command: RuntimeSlotCommand, secret: bigint, nonce = randomScalar()): GovernanceActivationSignature {
   return signRuntimeValue({ kind: "slot-command", value: command }, secret, nonce);
+}
+
+export function signRuntimeActionCommand(command: RuntimeActionCommand, secret: bigint, nonce = randomScalar()): GovernanceActivationSignature {
+  return signRuntimeValue({ kind: "action-command", value: command }, secret, nonce);
 }
 
 export function signRuntimeInstanceAllocation(

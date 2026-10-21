@@ -43,7 +43,7 @@ function sameTarget(left: TemplateTarget, right: TemplateTarget): boolean {
 
 /**
  * Reads an authenticated application-owned M5 source and builds complete private
- * openings against policy v2. The eventual ledger entry MUST independently verify
+ * openings against the current versioned policy. The ledger entry MUST independently verify
  * assignment issuance signatures/current status and use the actual activated
  * configuration and current ledger root/time. None of those are granted here.
  */

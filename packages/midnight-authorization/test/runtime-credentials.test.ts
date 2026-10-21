@@ -24,6 +24,7 @@ import {
   createRuntimeSessionCredential,
   createEmptyRuntimeSessionCredential,
   createRuntimeCredentialStatusCommand,
+  advanceRuntimeCredentialInstanceBinding,
   createEmptyRuntimeScopeProgress,
   assertRuntimeScopeHashesCanonicallyOrderable,
   buildRuntimeScopeTree,
@@ -533,7 +534,9 @@ describe("M6 Midnight runtime credential bindings", () => {
     const capabilityCommitment = permioAuthorizationPureCircuits
       .runtimeCapabilityCredentialCommitment(capability.credential);
     const status = new CredentialStatusTree();
+    const instanceBinding = unitInstanceBinding(issuer, account);
     const command = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -582,7 +585,6 @@ describe("M6 Midnight runtime credential bindings", () => {
       2n,
       2n,
     );
-    const instanceBinding = unitInstanceBinding(issuer, account);
     let context = createCircuitContext(
       dummyContractAddress(),
       "00".repeat(32),
@@ -683,6 +685,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       ).context;
     }
     context = invoke(4n, plan.currentProgress).context;
+    Object.assign(instanceBinding, advanceRuntimeCredentialInstanceBinding(instanceBinding, command));
     const transition = status.issue({
       namespace: TARGET.namespace,
       kind: "capability",
@@ -714,6 +717,7 @@ describe("M6 Midnight runtime credential bindings", () => {
     const expiringCommitment = permioAuthorizationPureCircuits
       .runtimeCapabilityCredentialCommitment(expiringCapability.credential);
     const expiringCommand = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -904,6 +908,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       statusIndex: 4n,
     });
     const equalCommand = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -958,6 +963,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       statusIndex: 5n,
     });
     const expandedCommand = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -1067,6 +1073,7 @@ describe("M6 Midnight runtime credential bindings", () => {
     const validChildCommitment = permioAuthorizationPureCircuits
       .runtimeCapabilityCredentialCommitment(validChild.credential);
     const validChildCommand = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -1138,6 +1145,7 @@ describe("M6 Midnight runtime credential bindings", () => {
     }
 
     const revokeParent = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -1200,7 +1208,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       status.pathFor(validChild.credential.statusIndex),
       status.pathFor(holder.statusIndex),
       status.pathFor(parent.credential.statusIndex),
-    ), /issuer or parent was revoked during staging|issuer and parent must remain active/);
+    ), /stale against the exact instance state/);
     const revokedLedger = readPermioAuthorizationLedger(context.currentQueryContext.state);
     assert.equal(revokedLedger.credentialStatusRoots.lookup(namespaceHash).rootSequence, 1n);
     assert.equal(revokedLedger.usedCredentialStatusCommandNonces.member(validChildCommand.commandNonce), false);
@@ -1280,6 +1288,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       200,
     );
     const issue = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,
@@ -1318,6 +1327,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       instanceBinding,
     );
     context = issued.context;
+    Object.assign(instanceBinding, advanceRuntimeCredentialInstanceBinding(instanceBinding, issue));
     const issuedTransition = status.issue({
       namespace: TARGET.namespace,
       kind: "account",
@@ -1362,6 +1372,7 @@ describe("M6 Midnight runtime credential bindings", () => {
       201,
     );
     const revoke = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace: TARGET.namespace,
       governancePolicyHash: `0x${Buffer.from(governancePolicyHash).toString("hex")}`,
       authorityRootVersion: 1,

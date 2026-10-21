@@ -50,12 +50,14 @@ for (const name of names) {
   const verifierBytes = (await stat(verifier)).size;
   assert(proverBytes > 0 && verifierBytes > 0, "Key generation produced an empty artifact");
   entries.push({ name, programSha256, proverSha256: await hash(prover),
-    verifierSha256: await hash(verifier), proverBytes, verifierBytes });
+    verifierSha256: await hash(verifier), proverBytes, verifierBytes,
+    binaryProgramSha256: await hash(path.join(assets, 'zkir', `${name}.bzkir`)),
+    binaryProgramBytes: (await stat(path.join(assets, 'zkir', `${name}.bzkir`))).size });
 }
 // Generated public build metadata; keys/ is ignored. This is written only
 // after every real key pair succeeds, so interrupted builds cannot claim ready.
 await writeFile(path.join(assets, "keys/build-manifest.json"), JSON.stringify({
-  manifestVersion: 1, compilerVersion: "0.31.1", runtimeVersion: "0.16.0",
+  manifestVersion: 2, compilerVersion: "0.31.1", runtimeVersion: "0.16.0",
   contractSha256: await hash(path.join(assets, "contract/index.js")),
   compilerInfoSha256: await hash(path.join(assets, "compiler/contract-info.json")),
   generatedAtUtc: new Date().toISOString(), mode: "real-sequential-keys", circuits: entries,

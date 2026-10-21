@@ -3,25 +3,13 @@ import { createHash } from "node:crypto";
 import { appendFile, copyFile, mkdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
-import {
-  createCircuitContext,
-  type CircuitContext,
-  type CircuitResults,
+import type {
+  CircuitContext,
+  CircuitResults,
 } from "@midnight-ntwrk/midnight-js-protocol/compact-runtime";
-import { CompiledContract, type Contract as CompactContract } from "@midnight-ntwrk/midnight-js-protocol/compact-js";
-import {
-  deployContract, findDeployedContract, type ContractProviders,
-} from "@midnight-ntwrk/midnight-js-contracts";
-import { httpClientProofProvider } from "@midnight-ntwrk/midnight-js-http-client-proof-provider";
-import { NodeZkConfigProvider } from "@midnight-ntwrk/midnight-js-node-zk-config-provider";
-import {
-  CredentialStatusTree, createRuntimeStatusMultiproof,
-  createFundedLocalWallet, createLocalAuthorizationProviders,
-  hashProtocolIdentifier, permioAuthorizationWitnesses,
-  PERMIO_AUTHORIZATION_ASSETS_PATH, LOCAL_MIDNIGHT_ENVIRONMENT,
-  verifyPermioAuthorizationAssets,
-  type PermioAuthorizationContract, type RuntimeStatusMultiproof,
-} from "@permio/midnight-authorization";
+import type { Contract as CompactContract } from "@midnight-ntwrk/midnight-js-protocol/compact-js";
+import type { ContractProviders } from "@midnight-ntwrk/midnight-js-contracts";
+import type { PermioAuthorizationContract, RuntimeStatusMultiproof } from "@permio/midnight-authorization";
 
 type ProbeCircuit = (context: CircuitContext<undefined>, namespace: Uint8Array,
   proof: RuntimeStatusMultiproof) => CircuitResults<undefined, []>;
@@ -54,7 +42,8 @@ async function event(name: string, fields: Record<string, unknown> = {}) {
   process.stdout.write(`${line}\n`);
 }
 
-async function prepareAssets() {
+async function prepareAssets(runtime: typeof import("@permio/midnight-authorization")) {
+  const { verifyPermioAuthorizationAssets, PERMIO_AUTHORIZATION_ASSETS_PATH } = runtime;
   await verifyPermioAuthorizationAssets(PERMIO_AUTHORIZATION_ASSETS_PATH);
   // Never pair a prior prover key with changed proof constraints. Only identical
   // generated baseline programs may reuse their existing key pair.
@@ -77,7 +66,24 @@ async function prepareAssets() {
 }
 
 async function main() {
-  await prepareAssets();
+  // Refuse an incomplete requested diagnostic before loading wallet SDKs or
+  // hashing the much larger production key inventory. Valid runs still verify
+  // every production asset and exact baseline program before wallet startup.
+  for (const relative of ["contract/index.js", "compiler/contract-info.json",
+    "keys/checkRuntimeStatusMultiproof.prover", "keys/checkRuntimeStatusMultiproof.verifier"]) {
+    assert((await stat(path.join(assets, relative))).size > 0,
+      "status diagnostic key generation must complete before wallet startup");
+  }
+  const runtime = await import("@permio/midnight-authorization");
+  const { CredentialStatusTree, createRuntimeStatusMultiproof, createFundedLocalWallet,
+    createLocalAuthorizationProviders, hashProtocolIdentifier, permioAuthorizationWitnesses,
+    LOCAL_MIDNIGHT_ENVIRONMENT } = runtime;
+  const { createCircuitContext } = await import("@midnight-ntwrk/midnight-js-protocol/compact-runtime");
+  const { CompiledContract } = await import("@midnight-ntwrk/midnight-js-protocol/compact-js");
+  const { deployContract, findDeployedContract } = await import("@midnight-ntwrk/midnight-js-contracts");
+  const { httpClientProofProvider } = await import("@midnight-ntwrk/midnight-js-http-client-proof-provider");
+  const { NodeZkConfigProvider } = await import("@midnight-ntwrk/midnight-js-node-zk-config-provider");
+  await prepareAssets(runtime);
   const generated = await import(pathToFileURL(path.join(assets, "contract", "index.js")).href);
   const Contract = generated.Contract as new (
     witnesses: typeof permioAuthorizationWitnesses

@@ -21,6 +21,7 @@ import type {
   IndexedProofModuleBinding,
   ProofModuleProposalInput,
 } from "./model.ts";
+import { decodeHex32 as hexBytes } from "./hex32.ts";
 
 export const PROOF_MODULE_BINDING_TREE_DEPTH = 20;
 
@@ -28,10 +29,6 @@ function identifierHash(kind: string, value: string): Uint8Array {
   return createHash("sha256")
     .update(encodeCanonical(`permio:${kind}:v1`, [value]))
     .digest();
-}
-
-function hexBytes(value: Hex32): Uint8Array {
-  return Uint8Array.from(Buffer.from(value.slice(2), "hex"));
 }
 
 function alignedBytes32(value: Uint8Array) {
@@ -46,6 +43,7 @@ function digestHex(digest: MerkleTreeDigest): Hex32 {
 }
 
 export function merkleDigestFromHex(value: Hex32): MerkleTreeDigest {
+  hexBytes(value);
   return { field: BigInt(value) };
 }
 

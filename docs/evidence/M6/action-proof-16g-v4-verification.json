@@ -1,0 +1,216 @@
+{
+  "kind": "m6-existing-16g-host-action-proof-v4-verification",
+  "result": "PASS",
+  "verifiedAtUtc": "2026-10-17T14:41:12.805229+00:00",
+  "realConstraintCheckPassed": true,
+  "realProofGenerated": false,
+  "proofIndependentlyVerified": false,
+  "ordinaryActionAcceptance": false,
+  "milestoneComplete": false,
+  "endUserResourceQualification": false,
+  "clientOutcome": {
+    "SubState": "running",
+    "MainPID": "35843",
+    "Result": "success",
+    "ExecMainCode": "0",
+    "ExecMainStatus": "0"
+  },
+  "stopReason": "shared-swap-reserve",
+  "elapsedSeconds": 370.8109226930028,
+  "observedMetrics": {
+    "samples": 184,
+    "maximumSimultaneouslySampledApplicationRamBytes": 14678802432,
+    "maximumSimultaneouslySampledApplicationSwapBytes": 8586706944,
+    "maximumProverCgroupRamPeakBytes": 13958643712,
+    "maximumProverSwapPeakBytes": 8106381312,
+    "minimumHostAvailableRamKiB": 817180,
+    "minimumHostSwapFreeKiB": 188,
+    "maximumSampledProverOomKills": 0,
+    "maximumSampledClientOomKills": 0
+  },
+  "productionAndPriorSealedArtifactsUnchanged": true,
+  "priorSealedGroups": {
+    "docs/evidence/M6/preprod-governance-v2-verification.json": {
+      "reportSha256": "0b0295411555a4ac52c767eb53b62935cb98a46b02f6598f6995fb70c8989942",
+      "artifactsVerified": 192
+    },
+    "docs/evidence/M6/preprod-runtime-ecs-v1-verification.json": {
+      "reportSha256": "c7a6ad7d7ff04b34deda2f61a8e49707a5bf0540cff224dcb134ba3e208d5c2c",
+      "artifactsVerified": 53
+    },
+    "docs/evidence/M6/preprod-error170-diagnostics-v1.json": {
+      "reportSha256": "61399a327a1eb7700a37c92fbdee408cc9df276c8b2be908a9876f92a048a973",
+      "artifactsVerified": 46
+    },
+    "docs/evidence/M6/preprod-continuation-v3-verification.json": {
+      "reportSha256": "665c76c47ebf50ac0fa037768da406dfec5f013760e931672a28b60a7b7449b4",
+      "artifactsVerified": 117
+    },
+    "logs/m6-action-diagnostic-integrity-audit-v1.json": {
+      "reportSha256": "d9c3432172eabfd2903896a0ef9e57e57386f4a60bcfd8b4a686f46ff62666f9",
+      "artifactsVerified": 231
+    },
+    "docs/evidence/M6/disk-paging-audit-v1-verification.json": {
+      "reportSha256": "581493647492fc5ea89f3541d49b537dec6d70593a6abcc75cf32ade8d92dab8",
+      "artifactsVerified": 5
+    },
+    "docs/evidence/M6/action-existing-swap-v8-verification.json": {
+      "reportSha256": "9346abf03fe1a443f16ce47d090eb08e736be8c0006303e41ef32c491a254ef5",
+      "artifactsVerified": 78
+    }
+  },
+  "resultsDownloadedAndVerified": true,
+  "originalHostSwapAndVmStateRestored": true,
+  "transactionsSubmitted": 0,
+  "newDeployment": false,
+  "finalCloudCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T14:40:15.285534+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-1d54369bd2c64fc0bf39",
+      "content": {
+        "FormatVersion": "OOS-2019-06-01",
+        "Description": "Exact Singapore build instance: rolling two-hour graceful economical stop; no deletion",
+        "RamRole": "OOSServiceRole",
+        "Tasks": [
+          {
+            "Name": "oneTimeTrigger",
+            "Action": "ACS::TimerTrigger",
+            "Properties": {
+              "Type": "at",
+              "Expression": "2026-10-17T16:40:06Z",
+              "TimeZone": "UTC",
+              "EndDate": "2026-10-17T16:45:06Z"
+            }
+          },
+          {
+            "Name": "requirePayAsYouGo",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceChargeType",
+              "DesiredValues": [
+                "PostPaid"
+              ]
+            }
+          },
+          {
+            "Name": "requireVpc",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceNetworkType",
+              "DesiredValues": [
+                "vpc"
+              ]
+            }
+          },
+          {
+            "Name": "gracefulEconomicalStop",
+            "Action": "ACS::ExecuteAPI",
+            "Properties": {
+              "Service": "ECS",
+              "API": "StopInstance",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceId": "i-t4ni11rkjyzgi0vlb68d",
+                "ForceStop": false,
+                "StoppedMode": "StopCharging"
+              }
+            }
+          },
+          {
+            "Name": "waitUntilStopped",
+            "Action": "ACS::WaitFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].Status",
+              "DesiredValues": [
+                "Stopped"
+              ]
+            }
+          },
+          {
+            "Name": "verifyEconomicalMode",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].StoppedMode",
+              "DesiredValues": [
+                "StopCharging"
+              ]
+            }
+          }
+        ]
+      },
+      "contentSha256": "84adc7b9bf3c678ae8ffb3ec70b3e30b002b56eaeaa5ba3c938c8ca5328eeb05",
+      "deadlineUtc": "2026-10-17T16:40:06+00:00",
+      "deadlineShanghai": "2026-10-18T00:40:06+08:00",
+      "lastRenewedAtUtc": "2026-10-17T14:40:12.911872+00:00",
+      "nextRefreshDueUtc": "2026-10-17T15:10:12.911877+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-39a1169eec1f4b48bcc5": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "artifactSha256": {
+    "scripts/cloud-m6-action-proof-16g.py": "45ab235f47f0dfc4295fe9f76433e949a6e467cf595d383e506e48db0ef0d098",
+    "docs/evidence/M6/action-proof-16g-v4.md": "93fd2d7e569ebb782fa8d461915c9948ce51d9e0d2d971c8220cbe4e88b6dd1f",
+    "logs/m6-action-proof-ecs-v4/controller.log": "51e7944085c9dc5619e353f47868017e7c6857dd4a97818d7cad72ba46e95dfa",
+    "logs/m6-action-proof-ecs-v4/controller.py": "45ab235f47f0dfc4295fe9f76433e949a6e467cf595d383e506e48db0ef0d098",
+    "logs/m6-action-proof-ecs-v4/download-verification.json": "1c1647c9676c375a160c031b36c747ad75f5a3b0bb5d626f96002b4f4c31bf50",
+    "logs/m6-action-proof-ecs-v4/public-proof-results-v4.tar.gz": "e46fa4fb6acbdd7c3c414b2c6acf159ea284648264902b058dc9941dec4c7859",
+    "logs/m6-action-proof-ecs-v4/client/public-source-manifest.json": "1a2b26735cec1106710eb1d3f2620e443bf42d1872814a3fd23faafe3226887e",
+    "logs/m6-action-proof-ecs-v4/output/client.log": "d9b9b3ff0147c4a8728abbeb175a4bd5179693086f75331113b69e5b10723ed6",
+    "logs/m6-action-proof-ecs-v4/output/final-environment.json": "94f27a22a89925e251e7eefe1ef3d925bc05c8e448c5adbdbefd63b3efcbb951",
+    "logs/m6-action-proof-ecs-v4/output/host-checkpoint.json": "a44ff123a102a9b608b030c81f9bac76ea02f904d2bf5579f4bf37b3dbc9ad96",
+    "logs/m6-action-proof-ecs-v4/output/report.json": "df989ef616caca658ca95519fcf21ca2a0299f963d88878f1c8862b58f0140f6",
+    "logs/m6-action-proof-ecs-v4/output/resources.jsonl": "24b0232fd8385a92732e3a76de55225dc1368e2922d9409fad4fb3a3447ce450",
+    "logs/m6-action-proof-ecs-v4/client/scripts/m6-action-proof-http.mjs": "c94590644e6abff24247c70f10bd2f32b08c9441a4be18919d0671171d227d42",
+    "logs/m6-action-proof-ecs-v4/client/scripts/m6-action-proof-http.test.mjs": "0b7a2c85605319ad22c81cae2c8034e764278eaff1e68f2a7759af9de1e05942",
+    "logs/m6-action-proof-ecs-v4/client/scripts/m6-action-proof-payload-worker.mjs": "b8f71698c85840e2a99f0563badb40b58b3d25a1b692657b22a942996b203707",
+    "logs/m6-action-proof-ecs-v4/client/scripts/run-m6-action-boundary-proof.mjs": "5172d5e7ac02bb5a044be2e4ca422406da02f34617892b250bb40763d83afed6",
+    "logs/m6-action-proof-16g-v4-plan.json": "868092776268be45a3ae9f00677fefcca04d426d44d9d796fde7c62ea02c3e4e",
+    "logs/m6-action-proof-16g-v4-launch.json": "1e110c4daa7f7d82072535d57f85424157b77be3726d2ca3263d99d97bda5cf4",
+    "logs/m6-action-proof-16g-v4-cloud-closeout.json": "ca00e6d7f244ddad4d2807b432b01bc2b3942227cb8a65c01efa38e7a0bfecb1",
+    "logs/m6-action-proof-16g-live-monitor-v4.jsonl": "a328fc721b1af83d3da025129b581691c5e0ef3a3eb620145ea9d35a13c88539"
+  }
+}

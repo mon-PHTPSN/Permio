@@ -21,21 +21,34 @@ it("rejects missing, stale, empty, duplicated and mismatched build assets before
     await writeFile(path.join(directory, "compiler/contract-info.json"), info);
     await writeFile(path.join(directory, "contract/index.js"), "fixture");
     await writeFile(path.join(directory, "zkir/testCircuit.zkir"), "program");
+    await writeFile(path.join(directory, "zkir/testCircuit.bzkir"), "binary-program");
     await writeFile(path.join(directory, "keys/testCircuit.prover"), "prover");
     await writeFile(path.join(directory, "keys/testCircuit.verifier"), "verifier");
     const entry = { name: "testCircuit", programSha256: hash("program"), proverSha256: hash("prover"),
-      verifierSha256: hash("verifier"), proverBytes: 6, verifierBytes: 8 };
-    const manifest = { manifestVersion: 1, compilerVersion: "0.31.1", runtimeVersion: "0.16.0",
+      verifierSha256: hash("verifier"), proverBytes: 6, verifierBytes: 8,
+      binaryProgramSha256: hash('binary-program'), binaryProgramBytes: 14 };
+    const manifest = { manifestVersion: 2, compilerVersion: "0.31.1", runtimeVersion: "0.16.0",
       mode: "real-sequential-keys", contractSha256: hash("fixture"), compilerInfoSha256: hash(info),
       circuits: [entry] };
     const save = async (value: unknown) => writeFile(path.join(directory, "keys/build-manifest.json"), JSON.stringify(value));
     await save(manifest);
     await verifyPermioAuthorizationAssets(directory);
+    await save({ ...manifest, manifestVersion: 1 });
+    await assert.rejects(verifyPermioAuthorizationAssets(directory), /current real-key build manifest/);
+    await save(manifest);
+    await rm(path.join(directory, 'zkir/testCircuit.bzkir'));
+    await assert.rejects(verifyPermioAuthorizationAssets(directory), /ENOENT/);
+    await writeFile(path.join(directory, 'zkir/testCircuit.bzkir'), 'binary-program');
+    await save({ ...manifest, mode: "real-bounded-keys" });
+    await verifyPermioAuthorizationAssets(directory);
+    await save({ ...manifest, mode: "mock-or-unverified-inventory" });
+    await assert.rejects(verifyPermioAuthorizationAssets(directory), /current real-key build manifest/);
     await save({ ...manifest, circuits: [entry, entry] });
     await assert.rejects(verifyPermioAuthorizationAssets(directory), /incomplete or duplicated/);
     await save(manifest);
     for (const [file, replacement, pattern] of [
       ["zkir/testCircuit.zkir", "altered", /proof program differs/],
+      ["zkir/testCircuit.bzkir", "altered", /binary proof program/],
       ["contract/index.js", "altered", /bindings differ/],
       ["keys/testCircuit.prover", "", /missing or mismatched/],
       ["keys/testCircuit.verifier", "replaced", /missing or mismatched/],

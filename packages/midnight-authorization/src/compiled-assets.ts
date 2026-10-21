@@ -12,7 +12,7 @@ async function sha256(file: string): Promise<string> {
 
 interface KeyEntry {
   name: string; programSha256: string; proverSha256: string; verifierSha256: string;
-  proverBytes: number; verifierBytes: number;
+  proverBytes: number; verifierBytes: number; binaryProgramSha256: string; binaryProgramBytes: number;
 }
 
 /** Local build integrity, not governance trust or proof verification. No wallet access. */
@@ -21,7 +21,7 @@ export async function verifyPermioAuthorizationAssets(assets: string): Promise<v
     manifestVersion: number; compilerVersion: string; runtimeVersion: string; mode: string;
     contractSha256: string; compilerInfoSha256: string; circuits: KeyEntry[];
   };
-  assert(manifest.manifestVersion === 1 && manifest.mode === "real-sequential-keys" &&
+  assert(manifest.manifestVersion === 2 && ["real-sequential-keys", "real-bounded-keys"].includes(manifest.mode) &&
     manifest.compilerVersion === "0.31.1" && manifest.runtimeVersion === "0.16.0",
   "Compact assets require the current real-key build manifest");
   const infoFile = path.join(assets, "compiler/contract-info.json");
@@ -42,6 +42,10 @@ export async function verifyPermioAuthorizationAssets(assets: string): Promise<v
   for (const entry of manifest.circuits) {
     assert(await sha256(path.join(assets, "zkir", `${entry.name}.zkir`)) === entry.programSha256,
       "Compact proof program differs from its key build");
+    const binary = path.join(assets, 'zkir', `${entry.name}.bzkir`);
+    assert(entry.binaryProgramBytes > 0 && Number.isSafeInteger(entry.binaryProgramBytes) &&
+      (await stat(binary)).size === entry.binaryProgramBytes && await sha256(binary) === entry.binaryProgramSha256,
+    'Compact SDK binary proof program is missing or mismatched');
     for (const suffix of ["prover", "verifier"] as const) {
       const file = path.join(assets, "keys", `${entry.name}.${suffix}`);
       const size = (await stat(file)).size;

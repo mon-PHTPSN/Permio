@@ -7,16 +7,204 @@ canonicalizes the admission envelope, commits the exact M4 activation and
 review evidence, and binds every template action to one exact proof-module
 implementation and receipt schema.
 
-The current working profile is `permio-authorization-v7`, with runtime policy
+## Current verification boundary (2026-10-21)
+
+The v10 Preprod ordinary-action flow has produced confirmed state changes and
+receipt v1. The final controlled sequence records 158 conservative attempts,
+156 native submissions, 152 successful confirmations, four intended native
+negative outcomes and three SDK receipts across five application instances.
+The 13 technical criteria have evidence with explicit limits; independent
+human security/privacy review remains **OPEN**. M6 remains `IN_PROGRESS` and is
+not production-ready.
+
+Start with the [acceptance reconciliation](../../docs/evidence/M6/acceptance-reconciliation-20261021-v1.md)
+and [M7/M8 integration handoff](../../docs/evidence/M6/integration-handoff-v1.md).
+The historical measurements below retain their original scope. They are not
+current performance guarantees. Raw logs and private test inputs remain local;
+the committed tests and public summaries do not include wallet data or witnesses.
+
+2026-10-21 当前边界：v10 Preprod 普通操作已完成真实状态变更和收据 v1 生成。
+最终受控流程保守计数为 158 次尝试、156 次原生提交、152 次成功确认、4 次预期
+原生负向结果，跨 5 个应用实例取得 3 份 SDK 收据。13 项技术标准已有注明限制的
+证据，人工安全／隐私审查仍为 OPEN；M6 尚未正式完成，也不可宣称生产就绪。
+请先阅读上面的验收对账与集成交接。下文历史测量保留原范围，不代表当前性能保证；
+原始日志和私有测试输入保留在本地，提交内容不包含钱包或见证数据。
+
+## Historical verification boundary (2026-10-17)
+
+The latest Preprod continuation finalized all 25 explicitly approved submissions
+on the same disposable v8 deployment: 14 governance and 11 runtime transactions
+(allocation, account issuance and nine slot transactions). Independent canonical
+block checks and final public-state reads passed. See
+[`preprod-continuation-v3-verification.json`](../../docs/evidence/M6/preprod-continuation-v3-verification.json).
+Earlier attempts below retain their original resource profiles and failures;
+the successful experimental profile does not qualify the five-GiB product target.
+
+| Observable behavior | Actual result |
+| --- | --- |
+| Govern one exact template/module version, rotate authority roots, retire/revoke prospectively | Earlier v8 governance evidence and the latest 25-submission Preprod continuation independently finalized. Final module/template revoked, authority root version/sequence 2/2. Synthetic fixtures, not production human review. |
+| Allocate only the exact activated version/hash and its declared initial private state | Accepted on Local Dev; immutable allocation and public sequence 0 independently checked. |
+| Issue an allocated context account and atomically advance private state/status | Four v8 calls accepted, each independently observed at sequence/status/nonce 1. Earlier call-to-index spans: 275.862/184.905/184.906 seconds. Latest one-worker reclaim-profile provider stage: 427.301 seconds, separate UTC call-to-index span 473.607 seconds. Not ordinary-action latency or a controlled performance comparison. |
+| Assign, revoke and reassign private participant slots through the creator or permitted governance actor | Nine slot transactions finalized in the latest Preprod continuation. Creator/governance issuance, creator revocation, previous-assignment verification and new-ID reassignment pass; final instance sequence 5, four slot nonces, no staging session. Full negative/long-ancestry acceptance remains open. |
+| Transfer the successful key experiment's soft-reclaim profile to transaction proving | Prover high5/max6 GiB plus capped1 GiB client, shared8 GiB swap. First run stops at RAM reserve. Identical retry after the user frees processes accepts the account and verifies owned restart/reapplication, then stops the cold slot at the swap reserve; no slot transaction or OOM observed. Not an adaptive proof algorithm or full workflow pass. |
+| Reject an exact already accepted transaction at the node | Actual RPC1010 rejection and unchanged entire public contract state pass; does not isolate the contract nullifier from ledger replay checks. |
+| Let an ordinary customer submit one purpose/recipient-bound action | Private signature/scope predicates exist, but the actual action ledger entry and selected-evidence enforcement are not implemented. No customer proof is claimed. |
+| Compile and simulate the complete current-root action predicate against allocation/state/governance checks | Isolated diagnostic compiles with fixed depth 16 and 35 status leaves. Baseline and combined equivalent-factoring each pass the final expanded twenty-four-case simulation, plus ten direct status-verifier comparisons. Earlier seventeen/nineteen-case records are retained. Production code/keys are unchanged; real-key outcomes are separate build evidence. |
+| Generate real keys for that isolated full action-ancestry diagnostic | Equivalent factoring reduces 2,281,576 rows / k22 to 1,713,336 / k21 (24.9%), but the final existing-server trial still OOMs at 14 GiB RAM plus 4.5 GiB paging; no usable keys. Temporary paging is removed and public cache/VM settings restored. The eleven existing production key pairs are unchanged. |
+| Recover the existing Local Dev stack after the approved Docker Desktop restart | The same three M6 containers become healthy; a fresh wallet-free read matches the historical v8 allocation and final governance assertions. No ordinary action, in-flight recovery or selective-outage acceptance is inferred. |
+| Make a template-declared state transition, consume its scoped nullifier, emit a common receipt and survive action replay/restart | Required M6 work remains. Administrative transactions and reconnect do not replace these acceptance gates. |
+
+The latest retained full root regression evidence passes 359 tests, including
+six local Hardhat contract tests. It was not rerun for the diagnostic-only
+continuation. This is not full M6 acceptance or a production-readiness claim.
+See [action-boundary diagnostics](../../docs/evidence/M6/action-boundary-diagnostic-v1.md)
+for the isolated candidates, retained failures and exact verification limits.
+
+## 当前验证边界（2026-10-17）
+
+最新 Preprod 续接在同一一次性 v8 部署上最终确认全部 25 笔明确获批提交：14 笔治理、11 笔运行时（分配、账户签发和九笔槽位交易）。独立规范链区块核验及最终公开状态读取通过，证据见上述 JSON。下方早期尝试保留原始资源配置和失败；成功的实验配置不代表五 GiB 产品目标合格。
+
+| 可观察行为 | 实际结果 |
+| --- | --- |
+| 治理精确模板／模块版本、轮换权限根、按后续生效规则退役／撤销 | 早期 v8 治理证据及最新 25 笔 Preprod 续接均已独立最终确认。最终模块／模板已撤销，权限根版本／序号为 2／2。只是合成测试材料，不是生产人类安全审查。 |
+| 只能分配精确已激活版本／哈希及其声明的初始私有状态 | Local Dev接受，不可变分配及公开序号0独立核验。 |
+| 签发已分配实例的上下文账户，并原子推进私有状态／凭证根 | 四次v8调用接受，各自独立观察序号／状态／nonce1；前三次调用至索引跨度275.862／184.905／184.906秒。最新单线程回收配置provider阶段427.301秒，另列UTC调用至索引跨度473.607秒。不是普通动作延迟或受控性能比较。 |
+| 创建者或模板允许的治理者分配、撤销、重新分配私有槽位 | 最新 Preprod 续接中的九笔槽位交易已最终确认。创建者／治理者签发、创建者撤销、旧分配核验及新 ID 重新分配通过；最终实例序号为 5、四个槽位 nonce、无暂存会话。完整负面及长祖先链验收仍未完成。 |
+| 将成功密钥实验的软回收配置用于交易证明 | 证明器high5／max6 GiB加硬1 GiB客户端、共享总swap8 GiB。首轮触RAM保留阈值；用户释放进程后同配置重试账户接受、自有重启及重新应用阈值通过，但冷槽位触swap保留阈值，无槽位交易或观察到的OOM。不是自适应证明算法或全流程通过。 |
+| 节点拒绝一笔已接受交易的原样重放 | 真实RPC1010拒绝且整个公开合约状态不变；未单独隔离合约nullifier与账本重放检查。 |
+| 普通客户提交一个目的／接收方限定的动作 | 私有签名／范围predicate已有；真正动作账本入口及指定证据验证尚未实现，不宣称客户证明通过。 |
+| 在分配／状态／治理检查下编译并模拟完整当前根动作谓词 | 保留深度 16 和 35 个状态叶的独立诊断编译通过；基线和组合等价优化各通过最终扩展的二十四项模拟，另有十项状态验证器直接对比通过；早期十七／十九项原始记录保留。生产代码／密钥未变；真实密钥结果是独立构建证据。 |
+| 为上述完整动作祖先独立诊断生成真实密钥 | 等价合并使 2,281,576 行／k22 降至 1,713,336 行／k21，约减 24.9%；但现有服务器最后一次 14 GiB 内存加 4.5 GiB 交换空间试验仍 OOM，无可用密钥。临时交换已移除，公共缓存／主机设置恢复；原有十一组生产密钥未变。 |
+| 在获批 Docker Desktop 重启后恢复现有 Local Dev | 原有三个 M6 容器恢复健康；无钱包重新读取匹配历史 v8 分配及最终治理断言，不据此宣称普通动作、在途恢复或定向故障验收通过。 |
+| 执行模板声明的状态转换、消耗限定nullifier、生成通用收据并通过动作重放／重启 | 仍是M6必做项；管理交易或重连不能替代这些验收门槛。 |
+
+最新保留的完整根回归证据为 359 项通过，含六项本地 Hardhat 合约测试；仅有诊断改动的续接未重跑根测试。这不是 M6 完整验收或生产就绪宣称。
+独立候选、保留失败和精确边界见上述动作边界诊断文档。
+
+The current working profile is `permio-authorization-v8`, with runtime policy
 v2 and private instance-state opening v2. Its new consolidated slot-management
 entry point implements signed begin, bounded parent verification and atomic
 finalization against current roots/state. It adds a narrow slot-governance
-authority (kind 13), not implicit activation/reviewer privileges. Fresh real
-keys and a new deployment are required; the live slot acceptance is pending.
+authority (kind 13), not implicit activation/reviewer privileges. The current
+eleven-pair real-key inventory is complete; the latest Preprod slot sequence
+passed, while full slot negative/long-ancestry acceptance remains pending.
 
-当前工作配置为 v7，策略 v2 和私有实例状态 opening v2。新增合并的槽位管理入口，在当前根／状态下执行签名开始、逐个验证上级和原子最终执行；增加窄槽位治理权限 13，不隐式赋予激活者／审查者权力。需要新真实密钥及新部署，当前槽位实链验收仍待完成。
+当前工作配置为 v8，策略 v2 和私有实例状态 opening v2。合并的槽位管理入口，在当前根／状态下执行签名开始、逐个验证上级和原子最终执行；窄槽位治理权限 13 不隐式赋予激活者／审查者权力。当前十一组真实密钥已齐备，最新 Preprod 槽位流程已通过，完整负面及长祖先链验收仍待完成。
 
-Current v7 results: 250 regression cases pass. The real compiler measures
+Credential-status command v4 also binds the immutable allocation, exact current
+state/sequence and circuit-derived next state. Final issuance/revocation
+atomically advances the same private mutation watermark and instance sequence
+as slot changes; staging and cleanup do not. This closes the cross-credential/
+slot ordering gap without changing M5/M5-P1 or adding an authority. Ordinary
+action ordering and complete credential/slot negative-node coverage remain incomplete. See
+[`runtime-credential-state-v1.md`](../../docs/evidence/M6/runtime-credential-state-v1.md).
+
+凭证状态命令 v4 同时绑定不可变分配、精确当前状态／序号及电路计算的下一状态。
+最终签发／撤销原子更新与槽位共用的私有变更水位和实例序号，暂存及清理不更新。
+这补齐凭证／槽位排序缺口，不改 M5/M5-P1、不增权限；普通动作排序及完整凭证／槽位节点负面覆盖仍未完成，详见上述文档。
+
+Pre-build v8 verification: pinned Compact compilation and the complete root
+check pass (266 cases, including six local Hardhat contract tests). The real
+credential-node attempt still stops before wallet initialization on the missing
+matching-key manifest; no fresh v8 Midnight proof is claimed. Exact failed
+attempts, asset fingerprints and results are recorded in
+[`credential-state-verification.json`](../../docs/evidence/M6/credential-state-verification.json).
+
+构建前 v8 固定 Compact 编译及完整根检查通过（266 项，含六项本地 Hardhat 合约
+测试）；真实凭证链尝试仍因缺少匹配密钥清单在钱包初始化前停止，不声称 v8 Midnight
+证明通过。具体失败、资产指纹及检查结果见上述 JSON。
+
+Latest continuation (2026-10-15): the opt-in bounded serial build installs and
+independently verifies all eleven current real key pairs, including one
+byte-exact slot pair reused from the separate experiment. Ten new pairs plus
+setup/verification/cleanup took 926.216 monotonic seconds; the earlier slot
+build's 19.22 minutes are not included. Owned build swap is removed; the
+build-stage root check passes 272 tests and the subsequent CLI/prover/reader
+root check passes 277, then 279 with the joint-budget guards and 283 with
+redacted failures/partial observation, then 284 with the explicit worker-profile
+parser. The missing-assets blocker is
+resolved; fresh live v8 deployment, 17 post-deployment governance/allocation
+transactions, reconnect and independent final public-state verification pass.
+The current slot-runtime test separately bounds the same-image localhost:6301
+prover at 4 GiB RAM and its client at 1 GiB (5 GiB combined), sharing the
+same 8 GiB swap budget. One real v8 account issuance passes in 275.862 seconds
+end-to-end and independently advances the instance/status sequences to 1;
+the first slot call then fails without OOM/guard stop. The reused slot pair
+was missing its SDK-required binary ZKIR; the exact compiler-produced binary
+has since been restored and manifest v2 binds binary size/hash for all eleven
+entries. Keys/programs are unchanged. The corrected four-worker run stops at
+the shared swap reserve during account issuance, with no OOM and no credential
+or slot mutation (confirmed by independent public observation). Cleanup passes.
+A first one-CPU/Rayon trial then fails during account issuance after 319.192
+seconds with no OOM/guard stop and no accepted credential/slot mutation; its
+original redacted error stays unclassified. A fresh serial trial explicitly
+uses one server/Rayon worker, the same RAM/swap/circuit/workflow limits and a
+ten-minute local HTTP wait (original endpoint remains five). Redacted proof
+stage timing passes arguments/results/errors unchanged and logs no witnesses.
+That run stops at the unchanged shared swap reserve during account proving;
+cleanup and independent state observation confirm no accepted credential/slot
+mutation. Before increasing storage, a measured idle original prover's retained
+memory is released by restarting only that stateless service under the user's
+prior unused-container authorization. A fresh four-CPU retry keeps the same
+5 GiB RAM / 8 GiB shared swap; it is pending. Proposed 16 GiB paging remains
+deferred and has not been implemented/run. This is not slot
+or ordinary-action acceptance.
+The preceding 2.75+1 GiB trial hit actual prover OOM
+during account issuance, with no accepted credential mutation; cleanup and
+an independent public read are recorded. Preceding prover-only 5/3.5 GiB trials stopped at the unchanged
+shared-machine reserve during module approval/account issuance, before slot
+transactions, and cleaned their temporary resources; no OOM occurred.
+Only the idle original prover is restarted once to release retained buffers;
+its configuration/image/disk cache and all node/indexer/database services remain
+unchanged. No ordinary action/common receipt or full M6
+completion is claimed. See [bounded build](../../docs/evidence/M6/bounded-key-build-v1.md)
+and [exact evidence](../../docs/evidence/M6/bounded-key-build-verification.json),
+plus [real allocation evidence](../../docs/evidence/M6/v8-allocation-verification.json)
+and [separate capped runtime profile](../../docs/evidence/M6/capped-runtime-proving-v1.md).
+
+An independent opt-in `npm run verify:m6:node-replay -- --submit-duplicate <public-log>`
+also resubmits one exact previously accepted Local Dev allocation using public
+bytes only. The actual node rejects it with RPC1010 and the entire serialized
+public contract state is unchanged. This is not merely SDK preflight, but it
+does not isolate the Permio nullifier from ledger replay checks or replace
+malicious-new-proof, slot, ordinary-action or restart acceptance. It uses no
+wallet/private witness/new signature; transport errors cannot pass. Exact
+formats, source-verified SDK connection timing caveat and limits are in
+[node replay evidence](../../docs/evidence/M6/node-replay-verification.json).
+
+独立显式 node-replay 命令只使用公开字节重放一笔已接受的 Local Dev 分配，真实节点
+以 RPC1010 拒绝，整个序列化公开合约状态不变。不是仅 SDK preflight，但不单独隔离
+Permio nullifier 与账本重放检查，也不替代新恶意证明、槽位、普通动作或重启验收。
+不使用钱包／witness／新签名，连接错误不能通过；精确格式、SDK 连接时序限制及范围
+见上述 JSON。
+
+最新进展（2026-10-15）：显式受限串行构建已安装并独立核验全部十一组当前真实密钥，
+其中一组槽位来自独立实验且程序逐字节相同。十组新生成加设置／核验／清理共单调
+926.216 秒，不含旧槽位构建 19.22 分钟；构建临时 swap 已删除，构建阶段完整 272 项
+通过，后续 CLI／证明器／读取器完整检查为 277 项，联合预算保护后 279 项、脱敏
+错误及部分观察后 283 项、显式工作线程配置参数解析后 284 项全通过。
+缺资产阻碍已解除，v8 新部署及其后 17 笔实链治理／分配交易、重连和独立最终公开状态
+检查通过。当前槽位运行时共同限制同镜像 localhost:6301 证明器 4 GiB、客户端
+1 GiB，合计 RAM 5 GiB，仍共享原 8 GiB swap。一笔真实 v8 账户签发端到端 275.862
+秒通过，独立读取确认实例／状态序号到 1；首个槽位调用随后失败，非 OOM／保护停止。
+复用槽位缺少 SDK 要求的二进制 ZKIR，现已恢复精确编译器输出，清单 v2 绑定全部十一
+项二进制长度／哈希，密钥／程序不变。修正后的四线程测试在账户签发时触及共享 swap
+保护，无 OOM，独立公开读取确认未发生凭证／槽位变更，清理通过。新的显式
+--serial-prover 首轮单CPU／Rayon在账户签发319.192秒后未知分类失败，无OOM／保护，
+无凭证／槽位变更；原脱敏异常保留未知。新测试显式server／Rayon各1，同RAM／swap／
+电路／全流程保护，本地HTTP等十分钟（原端点仍五分钟），脱敏证明阶段计时原样传递
+参数／结果／异常，不记witness。该轮仍在账户证明时触及原共享swap保护，清理及独立
+观察确认没有凭证／槽位变更。扩大存储前，测得原闲置证明器保留内存，按用户此前
+可停不用容器的授权仅重启该无状态服务，释放保留缓存；新四CPU重试仍RAM5GiB／
+总共享swap8GiB，结果待定。较大16GiB换页方案暂缓、尚未实施／运行，不当作槽位或普通
+动作通过。先前
+2.75+1 GiB 在账户签发时证明器实际 OOM，没有接受凭证变更，清理和独立公开读取
+已记录；先前仅限证明器的 5／3.5 GiB 测试
+分别在模块批准／账户签发时触发未降低的共享保护，尚无槽位交易，临时资源已清理、
+无 OOM。只有原闲置证明器为释放保留内存重启一次，镜像／配置／磁盘缓存及节点／
+索引器／数据库不改；不声称普通动作／通用收据或 M6 完成。
+
+Historical v7 results: 250 regression cases passed. The real compiler measured
 818,608 slot rows (k20), down 25.76% from k21, but the isolated resource-guarded
 key probe stopped and no complete current real-key inventory exists. The live
 --slot-state command fails before wallet startup on the missing build manifest;
@@ -25,7 +213,7 @@ Docker is separately unavailable. See
 [`runtime-slot-state-verification.json`](../../docs/evidence/M6/runtime-slot-state-verification.json).
 No new node slot proof, ordinary action or DecisionReceipt is claimed.
 
-当前 v7 的 250 项回归通过；真实编译器测得槽位 818608 行／k20，比 k21 减少 25.76%，但受保护探测停止，尚无完整匹配真实密钥。实链 --slot-state 在缺少 manifest 的钱包启动前失败，Docker 也单独不可用。证据见上述文件，不声称新节点槽位证明、普通动作或收据通过。
+历史 v7 当时的 250 项回归通过；真实编译器测得槽位 818608 行／k20，比 k21 减少 25.76%，但受保护探测停止，没有完整匹配真实密钥。当时实链 --slot-state 在缺少 manifest 的钱包启动前失败，Docker 也单独不可用。证据见上述文件，不重新标为当前 v8 节点槽位证明、普通动作或收据通过。
 
 The preceding v6 profile added an activation-authenticated root of M2 slot-assignment rules and
 private witness preparation against the separately committed M5-P1 patch.
@@ -844,6 +1032,75 @@ slot-key-resource-attempt-verification.json；这些是中止的密钥生成测�
 证明耗时、最低硬件或当前 v7 链上验收。
 
 ## Consumer and enterprise delivery planning
+
+The explicit Preprod adapter foundation now includes fixed authenticated
+endpoints, private checkpoint-binding helpers, bounded read-only RPC/WS probes
+and offline three-component SDK restoration/identity checks. See
+[adapter implementation and actual restore diagnostic](../../docs/evidence/M6/preprod-adapter-v1.md).
+An explicit [Preprod runner](../../docs/evidence/M6/preprod-runner-v1.md) now
+reuses the existing admission workflow with network-bound constructor and
+activation envelopes, read-only preflight, named opt-in submission scopes and
+owned-process supervision. Wiring alone is not a deployment claim; the
+subsequent explicitly approved deployment now has independent Preprod evidence.
+Authenticated RPC and both
+live subscriptions pass on Windows and WSL. The existing fixture-1 wallet fully
+restores offline in about313seconds after SDK import, with a final620MiB RSS
+sample (not a peak). A scoped wallet API reuses one restore, requires explicit
+catch-up and spendable DUST before signing transport, and always closes its
+resources. Exact measurements and the current catch-up outcome are in
+[wallet readiness evidence](../../docs/evidence/M6/preprod-wallet-readiness-verification.json).
+Exact current constructor deployment and wallet DUST fee proving now pass on
+Preprod, independently verified as SucceedEntirely at block3004405. The initial
+network/root/threshold state is correct and no template is activated. Governance
+and ordinary-action proof compatibility/acceptance remain unverified.
+The first two approved deployment attempts stop before submission; the second
+identifies a local wallet fee-prover failure. Missing public DUST/Zswap artifacts
+are provisioned with pinned release hashes before the next attempt, while
+retaining local-only private proving. See [deployment diagnostics](../../docs/evidence/M6/preprod-deployment-verification.json).
+Do not bypass these gates with a fresh wallet or upload existing wallet data.
+
+显式Preprod适配器基础包含固定认证端点、私有检查点绑定工具、有时限的只读RPC／WS探测，
+以及三组件离线SDK恢复／身份核对。具体实现及真实恢复诊断见上述文档。既有admission
+工作流现已通过显式Preprod runner接线，构造函数及激活封装绑定网络，提供只读
+预检、具名提交范围及自有进程监督；接线不表示部署成功。Windows和WSL的认证RPC及
+两类真实订阅均已通过，现有fixture-1钱包
+离线恢复在SDK导入后约313秒完成，结束时RSS采样约620MiB（不是峰值）。新作用域API
+复用一次恢复，显式追赶且具备可花费DUST才开放签名传输，结束后清理资源。精确测量和
+当前追赶结果见钱包就绪证据。随后明确获批的精确当前构造部署及钱包DUST费用证明已
+在Preprod通过，独立核对区块3004405中SucceedEntirely；初始网络／根／阈值正确且没有
+激活模板。治理及普通动作证明兼容／验收仍未验证。不用新钱包绕过门槛，也不上传
+既有钱包数据。
+
+首次两次获批部署尝试均在提交前停止，第二次定位为本地钱包费用证明器失败。下一次
+尝试前按固定版本哈希补齐缺失公开DUST／Zswap产物，私密证明仍限本地。具体见上述
+部署诊断，不把配置修正本身当成交易验收。
+
+User-approved 2026-10-15 acceptance amendment: Preprod is now the primary
+deployment/end-to-end network, with Local Dev retained for controlled
+infrastructure-failure tests. The [Preprod acceptance plan](../../docs/evidence/M6/preprod-acceptance-plan-v1.md)
+records the exact split, current compatibility observations and the ECS outbound
+connectivity blocker. Existing Local Dev scripts/results remain local evidence;
+they have not been silently converted into a Preprod adapter or acceptance.
+
+2026-10-15用户批准修订：Preprod为主要部署及端到端验收网络，Local Dev保留可控
+基础设施故障测试。上述计划记录精确分工、实测兼容性及ECS出站连通阻塞。已有Local Dev
+脚本和结果仍属于本地证据，未擅自转换为Preprod适配器或验收。
+
+Heavy M6 verification is being prepared on an isolated disposable Linux cloud
+server to avoid local proving-memory pressure. This is test infrastructure,
+not a hosted production prover or evidence that an ordinary user's hardware
+can run the proof. Use the exact source snapshot, key/program hashes and pinned
+node/indexer/prover versions; generate disposable test accounts on the server,
+never transfer existing wallet files or private witnesses. Current preparation,
+failed startup diagnostics and verification results are recorded in the
+[development log](../../docs/evidence/M6/development-log.md). A running node or
+indexer does not satisfy the outstanding slot/action/receipt acceptance gates.
+
+大型M6验证正在隔离的临时Linux云服务器上准备，以避免本地证明内存压力。这属于
+测试设施，不是生产托管证明器，也不证明普通用户设备可运行。必须使用精确源码快照、
+密钥／程序哈希和固定node/indexer/prover版本；临时账户在服务器生成，不传既有钱包
+文件或私密见证。具体准备、启动失败诊断及检查结果记录于开发日志。节点或索引器运行
+不代表尚未完成的槽位／动作／收据验收通过。
 
 The [delivery feasibility assessment](../../docs/evidence/M6/product-delivery-feasibility.md)
 separates completed proof/chain work, outstanding M6 authorization, consumer

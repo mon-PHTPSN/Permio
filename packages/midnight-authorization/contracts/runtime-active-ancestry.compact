@@ -127,12 +127,7 @@ export pure circuit assertRuntimeActiveAncestry(
                     session.expiresAt <= account.validBefore,
                     "Runtime session does not match its exact terminal capability and account window"
                 );
-                assertRuntimeActiveStatus(ancestry.statusProof, RuntimeCredentialStatusLeaf{
-                    leafVersion: 2, namespaceHash: session.target.namespaceHash,
-                    credentialKind: 3, credentialCommitment: runtimeSessionCredentialCommitment(session),
-                    revocationAuthorityAccountCredentialCommitment: accountCommitments[i],
-                    statusIndex: session.statusIndex, status: 1
-                });
+
             }
         } else {
             assert(
@@ -141,5 +136,13 @@ export pure circuit assertRuntimeActiveAncestry(
             );
         }
     }
+    // The loop proves this exact subject is the terminal account. Check the
+    // same session status once after establishing that terminal relation.
+    assertRuntimeActiveStatus(ancestry.statusProof, RuntimeCredentialStatusLeaf{
+        leafVersion: 2, namespaceHash: session.target.namespaceHash,
+        credentialKind: 3, credentialCommitment: runtimeSessionCredentialCommitment(session),
+        revocationAuthorityAccountCredentialCommitment: session.subjectAccountCredentialCommitment,
+        statusIndex: session.statusIndex, status: 1
+    });
     assertRuntimeStatusMultiproof(ancestry.statusProof, expectedRoot, expectedSequence);
 }

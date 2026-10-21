@@ -13,6 +13,7 @@ import {
   pureCircuits,
   type RuntimeCredentialStatusCommand,
   type RuntimeCredentialStatusLeaf,
+  type RuntimeCredentialInstanceBinding,
 } from "../contracts/managed/permio-authorization/contract/index.js";
 import { hashProtocolIdentifier } from "./canonical.ts";
 import type { Hex32 } from "./model.ts";
@@ -67,6 +68,7 @@ export interface CredentialStatusMembershipPath {
 }
 
 export interface CreateCredentialStatusCommandInput {
+  readonly instanceBinding: RuntimeCredentialInstanceBinding;
   readonly namespace: string;
   readonly governancePolicyHash: Hex32;
   readonly authorityRootVersion: number;
@@ -326,13 +328,26 @@ export function createRuntimeCredentialStatusCommand(
   }
   const subject = input.subjectAccountCredentialCommitment ?? new Uint8Array(32);
   assertBytes32(subject, "subjectAccountCredentialCommitment");
+  const binding = input.instanceBinding;
+  assertBytes32(binding.nextStateNonce, "nextStateNonce");
+  if (binding.state.stateVersion !== 2n || binding.stateSequence < 0n || binding.stateSequence >= 2n ** 64n - 1n ||
+      BigInt(input.effectiveAt) < binding.state.lastMutationAt || binding.nextStateNonce.every((byte) => byte === 0) ||
+      binding.nextStateNonce.every((byte, index) => byte === binding.state.nonce[index]) ||
+      !binding.state.instanceCommitment.every((byte, index) => byte === binding.allocation.instanceCommitment[index])) {
+    throw new TypeError("credential command requires an exact current state, monotonic time and fresh nonce");
+  }
   return {
-    commandVersion: 3n,
+    commandVersion: 4n,
     namespaceHash: bytes(hashProtocolIdentifier("namespace", input.namespace)),
     governancePolicyHash: bytes(input.governancePolicyHash),
     authorityRootVersion: BigInt(input.authorityRootVersion),
     authorityRootSequence: BigInt(input.authorityRootSequence),
     credentialStatusRootSequence: input.credentialStatusRootSequence,
+    allocationCommitment: pureCircuits.runtimeInstanceAllocationCommitment(binding.allocation),
+    instanceStateCommitment: pureCircuits.runtimeStateCommitment(binding.state),
+    instanceStateSequence: binding.stateSequence,
+    nextInstanceStateCommitment: pureCircuits.runtimeStateCommitment(
+      pureCircuits.runtimeCredentialNextState(binding.state, BigInt(input.effectiveAt), binding.nextStateNonce)),
     credentialKind: RUNTIME_CREDENTIAL_KINDS[input.kind],
     credentialCommitment: input.credentialCommitment.slice(),
     subjectAccountCredentialCommitment: subject.slice(),

@@ -68,17 +68,17 @@ describe("exact M2 runtime policy projection", () => {
     for (const [field, value] of Object.entries(f.projection.policy)) {
       const altered = value instanceof Uint8Array ? new Uint8Array(32).fill(127)
         : typeof value === "bigint" ? value + 1n : typeof value === "boolean" ? !value
-        : field === "transitionRoot" || field === "slotAssignmentRulesRoot" ? { field: (value as { field: bigint }).field + 1n }
+        : typeof value === "object" && "field" in value ? { field: (value as { field: bigint }).field + 1n }
         : { ...f.projection.policy.target, templateContentHash: new Uint8Array(32).fill(127) };
       assert.throws(() => f.verify({ ...f.projection.policy, [field]: altered }),
         /exact template action binding|configuration hash/, field);
     }
   });
 
-  it("binds slot assignment rules into policy v2 rather than silently accepting legacy policy", () => {
+  it("binds slot rules and selected evidence types into policy v3 rather than accepting legacy policy", () => {
     const f = fixture(), p = f.projection.policy;
-    assert.equal(RUNTIME_TEMPLATE_POLICY_VERSION, 2);
-    assert.equal(p.policyVersion, 2n);
+    assert.equal(RUNTIME_TEMPLATE_POLICY_VERSION, 3);
+    assert.equal(p.policyVersion, 3n);
     assert.equal(p.slotAssignmentRulesRoot.field, f.projection.slotRules.root.field);
     assert.equal(p.slotAssignmentRuleCount, f.projection.slotRules.count);
     assert.throws(() => f.verify({ ...p, policyVersion: 1n }), /exact template action binding/);

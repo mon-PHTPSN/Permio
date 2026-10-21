@@ -156,6 +156,19 @@ function occupied(accountId: string, assignmentId: string): SlotAssignmentActor 
 }
 
 describe("M5 follow-up: template-governed participant slots", () => {
+  it("allows creator slot setup before a future grant starts but rejects session issuance until the real parent window", () => {
+    const f = setup();
+    f.system.issueRootCapability("issuer.service", { grantId: "grant.future", instanceId: "instance.one",
+      contextId: "operation-context", subjectAccountId: "account.one", scope: f.scope,
+      notBefore: 300, expiresAt: 900, maxDelegationDepth: 0 }, 120);
+    assert.equal(f.system.assignParticipantSlot(creator, f.assignment(), 130).assignedAt, 130);
+    const session = { sessionId: "session.future", publicKeyPem: keys().publicKeyPem,
+      scope: { ...f.scope, resources: ["resource.one"] }, notBefore: 300, expiresAt: 800 };
+    expectError(() => f.system.issueSession("account.one", "grant.future", session, 299), "INVALID_TIME");
+    assert.equal(f.system.issueSession("account.one", "grant.future", session, 300).issuedAt, 300);
+    assert.equal(f.system.getCapabilityGrant("grant.future").expiresAt, 900);
+  });
+
   it("requires a slot as well as a capability, without consuming denied intent state or nonce", () => {
     const f = setup();
     const intent = f.intent();

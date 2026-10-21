@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { setTimeout as delay } from "node:timers/promises";
-import { parseLiveM6Arguments, parseProverMemoryCounters, startProverMemorySampler } from "../m6-prover-memory.ts";
+import { parseLiveM6Arguments, parseProverMemoryCounters, startProverMemorySampler, readProverMemory } from "../m6-prover-memory.ts";
 
 test("memory parser retains only whitelisted numeric resource counters", () => {
   assert.deepEqual(parseProverMemoryCounters("VmRSS:\t123 kB\nVmHWM: 456 kB\nThreads: 4\nmemory.current: 8192\ncgroup.oom_kill: 0\nprivateWitness: 123\nmnemonic: private\n"), {
@@ -15,8 +15,14 @@ test("memory parser rejects incomplete, duplicate and unsafe counters", () => {
   assert.throws(() => parseProverMemoryCounters("VmRSS: 999999999999999999\nVmHWM: 3"), /Invalid/u);
 });
 
+test("prover sampling distinguishes soft reclaim events from hard-limit and OOM events", () => {
+  assert.deepEqual(parseProverMemoryCounters('VmRSS: 1\nVmHWM: 2\ncgroup.high: 13988\ncgroup.max: 0\ncgroup.oom: 0\ncgroup.oom_kill: 0\n'), {
+    VmRSS: 1, VmHWM: 2, 'cgroup.high': 13988, 'cgroup.max': 0, 'cgroup.oom': 0, 'cgroup.oom_kill': 0,
+  });
+});
+
 test("diagnostic arguments cannot silently replace the full acceptance scope", () => {
-  assert.deepEqual(parseLiveM6Arguments([]), { accountFile: undefined, governanceOnly: false, allocationOnly: false, credentialBinding: false, slotState: false, memorySmoke: false, profileMemory: false });
+  assert.deepEqual(parseLiveM6Arguments([]), { accountFile: undefined, governanceOnly: false, allocationOnly: false, credentialBinding: false, slotState: false, memorySmoke: false, profileMemory: false, boundedProver: false });
   assert.equal(parseLiveM6Arguments(["--slot-state"]).slotState, true);
   assert.equal(parseLiveM6Arguments(["--slot-state"]).governanceOnly, true);
   assert.throws(() => parseLiveM6Arguments(["--slot-state", "--allocation-only"]), /usage/u);
@@ -31,6 +37,14 @@ test("diagnostic arguments cannot silently replace the full acceptance scope", (
   for (const args of [["--memory-smoke", "--governance-only"], ["--typo"], ["a", "b"], ["--memory-smoke", "--memory-smoke"]]) {
     assert.throws(() => parseLiveM6Arguments(args), /usage/u);
   }
+});
+
+test("secondary local prover selection requires explicit flag, enables sampling and cannot inject a container command", async () => {
+  const selected = parseLiveM6Arguments(["--slot-state", "--bounded-prover"]);
+  assert.equal(selected.boundedProver, true);
+  assert.equal(selected.profileMemory, true);
+  assert.throws(() => parseLiveM6Arguments(["--bounded-prover", "--bounded-prover"]), /usage/u);
+  await assert.rejects(readProverMemory("arbitrary-container; private-command"), /Unknown/u);
 });
 
 test("sampler bounds concurrent reads and finishes with a final sample", async () => {

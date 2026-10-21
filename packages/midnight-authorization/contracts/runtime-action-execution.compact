@@ -1,0 +1,380 @@
+// Ordinary-user preparation grants no authority. Only executeRuntimeAction can
+// consume an action nullifier, change instance state or create a receipt.
+export struct RuntimeActionCommand {
+    commandVersion: Uint<16>;
+    intentCommitment: Bytes<32>;
+    allocationCommitment: Bytes<32>;
+    stateCommitment: Bytes<32>;
+    stateSequence: Uint<64>;
+    authorityRootVersion: Uint<64>;
+    authorityRootSequence: Uint<64>;
+    statusRootSequence: Uint<64>;
+    policyCommitment: Bytes<32>;
+    bindingCommitment: Bytes<32>;
+    slotAssignmentIdHash: Bytes<32>;
+    selectedInputsCommitment: Bytes<32>;
+    selectedOutputsCommitment: Bytes<32>;
+    nextStateCommitment: Bytes<32>;
+    transitioning: Boolean;
+    effectiveAt: Uint<64>;
+    validBefore: Uint<64>;
+}
+
+export struct RuntimeSelectedActionValue {
+    valueVersion: Uint<16>;
+    typeHash: Bytes<32>;
+    contextHash: Bytes<32>;
+    resourceHash: Bytes<32>;
+    payloadCommitment: Bytes<32>;
+    nonce: Bytes<32>;
+}
+
+export struct RuntimeActionProgress {
+    slot: RuntimeSlotProgress;
+    nextInputIndex: Uint<32>;
+    nextOutputIndex: Uint<32>;
+    inputsAccumulator: Bytes<32>;
+    outputsAccumulator: Bytes<32>;
+}
+
+export struct RuntimeActionSession {
+    progressCommitment: Bytes<32>;
+    expiresAt: Uint<64>;
+}
+
+struct RuntimeActionCommandHashInput {
+    domain: Bytes<32>;
+    command: RuntimeActionCommand;
+}
+
+struct RuntimeActionValueStep {
+    domain: Bytes<32>;
+    previous: Bytes<32>;
+    index: Uint<32>;
+    selected: RuntimeSelectedActionValue;
+}
+
+struct RuntimeActionImplementationReference {
+    domain: Bytes<32>;
+    network: Bytes<32>;
+    deployment: Bytes<32>;
+    contractVersion: Uint<16>;
+    entryPoint: Bytes<32>;
+    moduleIdHash: Bytes<32>;
+}
+
+export pure circuit runtimeActionCommandCommitment(command: RuntimeActionCommand): Bytes<32> {
+    return persistentHash<RuntimeActionCommandHashInput>(RuntimeActionCommandHashInput{
+        domain: pad(32, "permio:action-command:v1"), command: command
+    });
+}
+
+pure circuit runtimeActionCommandMessage(command: RuntimeActionCommand): Vector<1, Field> {
+    return [transientHash<RuntimeActionCommandHashInput>(RuntimeActionCommandHashInput{
+        domain: pad(32, "permio:action-command:v1"), command: command
+    })];
+}
+
+export pure circuit runtimeActionCommandSignatureChallenge(
+    announcement: JubjubPoint, publicKey: JubjubPoint, command: RuntimeActionCommand
+): Field {
+    return Schnorr_schnorrChallenge(jubjubPointX(announcement), jubjubPointY(announcement),
+        jubjubPointX(publicKey), jubjubPointY(publicKey), runtimeActionCommandMessage(command));
+}
+
+export pure circuit runtimeActionProgressCommitment(progress: RuntimeActionProgress): Bytes<32> {
+    return persistentHash<RuntimeActionProgress>(progress);
+}
+
+export pure circuit runtimeSelectedActionValueStep(
+    previous: Bytes<32>, index: Uint<32>, selected: RuntimeSelectedActionValue, output: Boolean
+): Bytes<32> {
+    return persistentHash<RuntimeActionValueStep>(RuntimeActionValueStep{
+        domain: output ? pad(32, "permio:action-output:v1") : pad(32, "permio:action-input:v1"),
+        previous: previous, index: index, selected: selected
+    });
+}
+
+export pure circuit runtimeActionImplementationReference(
+    network: Bytes<32>, deployment: Bytes<32>, moduleIdHash: Bytes<32>
+): Bytes<32> {
+    // Frozen v9 action-implementation profile, independent of the v10 governance
+    // ABI. This action program is byte-identical; network and exact deployment
+    // identity still bind every reference, in addition to its registered code hash.
+    return persistentHash<RuntimeActionImplementationReference>(RuntimeActionImplementationReference{
+        domain: pad(32, "permio:implementation:v1"), network: network, deployment: deployment,
+        contractVersion: 9, entryPoint: pad(32, "executeRuntimeAction"), moduleIdHash: moduleIdHash
+    });
+}
+
+export pure circuit runtimeActionReceiptSchemaHash(): Bytes<32> {
+    return [254,115,125,210,4,180,78,205,171,126,44,90,70,200,93,3,
+        137,159,98,142,234,33,171,20,162,148,75,27,88,149,125,168] as Bytes<32>;
+}
+
+export pure circuit runtimeDelegatedActionModuleId(): Bytes<32> {
+    return [95,222,255,203,83,187,137,187,126,3,150,183,35,146,228,104,
+        134,242,128,252,155,212,6,51,138,193,85,224,248,192,156,87] as Bytes<32>;
+}
+
+export pure circuit runtimeStateTransitionModuleId(): Bytes<32> {
+    return [126,171,248,207,74,238,118,56,154,53,228,137,58,97,213,190,
+        210,218,109,94,205,113,245,85,121,145,32,229,165,146,170,32] as Bytes<32>;
+}
+
+export pure circuit runtimeActionInputSchemaHash(): Bytes<32> {
+    return persistentHash<Bytes<32>>(pad(32, "permio:action-input:v1"));
+}
+export pure circuit runtimeActionConfigurationSchemaHash(): Bytes<32> {
+    return persistentHash<Bytes<32>>(pad(32, "permio:runtime-policy:v3"));
+}
+export pure circuit runtimeActionCompilerProfileHash(): Bytes<32> {
+    return persistentHash<Bytes<32>>(pad(32, "compact:0.31.1/runtime:0.16.0"));
+}
+export pure circuit runtimeActionCompatibilityPolicyHash(): Bytes<32> {
+    return persistentHash<Bytes<32>>(pad(32, "permio:active-module-only:v1"));
+}
+
+// Reuse the exact admitted-slot predicates; this context is never signed or
+// passed to slot management and cannot authorize issuance/revocation.
+export pure circuit runtimeActionSlotContext(intent: RuntimeActionIntent, command: RuntimeActionCommand): RuntimeSlotCommand {
+    return RuntimeSlotCommand{
+        commandVersion: 1, kind: 1, target: intent.target, instanceCommitment: intent.instanceCommitment,
+        allocationCommitment: command.allocationCommitment, stateCommitment: command.stateCommitment,
+        stateSequence: command.stateSequence, authorityRootVersion: command.authorityRootVersion,
+        authorityRootSequence: command.authorityRootSequence, credentialStatusRootSequence: command.statusRootSequence,
+        contextHash: intent.contextHash, slotIdHash: default<Bytes<32>>,
+        subjectAccountCredentialCommitment: default<Bytes<32>>, subjectAccountIdHash: default<Bytes<32>>,
+        assignmentIdHash: command.slotAssignmentIdHash, parentAssignmentIdHash: default<Bytes<32>>,
+        assignerAccountCredentialCommitment: default<Bytes<32>>, authorityKind: 1,
+        namespaceAuthorityCommitment: default<Bytes<32>>, m5AssignmentCommitment: default<Bytes<32>>,
+        effectiveAt: command.effectiveAt, validBefore: command.validBefore,
+        commandNonce: runtimeActionCommandCommitment(command)
+    };
+}
+
+export pure circuit runtimeActionInitialProgress(
+    command: RuntimeActionCommand, session: RuntimeSessionCredential
+): RuntimeActionProgress {
+    assert(command.stateSequence < 18446744073709551615, "Action preparation sequence cannot overflow");
+    return RuntimeActionProgress{
+        slot: RuntimeSlotProgress{phase: 1, nextAssignmentIdHash: command.slotAssignmentIdHash,
+            expectedAccountCommitment: session.subjectAccountCredentialCommitment,
+            childIssuedSequence: (command.stateSequence + 1) as Uint<64>,
+            previousBindingAssignmentIdHash: default<Bytes<32>>,
+            previousBindingAccountCommitment: default<Bytes<32>>, inactive: false, steps: 0},
+        nextInputIndex: 0, nextOutputIndex: 0,
+        inputsAccumulator: default<Bytes<32>>, outputsAccumulator: default<Bytes<32>>
+    };
+}
+
+// Shared freshness boundary, re-evaluated on every preparation and execution.
+circuit assertRuntimeActionContext(
+    command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
+    intent: RuntimeActionIntent, session: RuntimeSessionCredential,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening,
+    policy: RuntimeTemplateActionPolicy, binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>
+): [] {
+    assert(command.commandVersion == 1 && command.intentCommitment == runtimeActionIntentCommitment(intent) &&
+        command.allocationCommitment == runtimeInstanceAllocationCommitment(allocation) &&
+        command.stateCommitment == runtimeStateCommitment(state) &&
+        command.policyCommitment == runtimeTemplateActionPolicyCommitment(policy) &&
+        command.bindingCommitment == proofModuleBindingCommitment(binding) &&
+        command.slotAssignmentIdHash != default<Bytes<32>> && intent.nonceHash != default<Bytes<32>>,
+        "Action command substitutes its exact signed inputs");
+    assert(allocation.allocationVersion == 1 && allocation.target == intent.target &&
+        allocation.instanceCommitment == intent.instanceCommitment &&
+        state.stateVersion == 2 && state.instanceCommitment == intent.instanceCommitment &&
+        intent.intentVersion == 1 && session.credentialVersion == 2 &&
+        session.target == intent.target && session.instanceCommitment == intent.instanceCommitment &&
+        session.contextHash == intent.contextHash &&
+        runtimeSessionCredentialCommitment(session) == intent.sessionCredentialCommitment,
+        "Action command crosses its exact allocation, context, or signed session");
+    assert(allocation.targetNetworkHash == targetNetworkHash, "Action targets another network");
+    assert(allocation.targetContractIdentity == kernel.self().bytes, "Action targets another deployment");
+    assert(runtimeInstances.member(disclose(intent.instanceCommitment)), "Action instance does not exist");
+    const instance = runtimeInstances.lookup(disclose(intent.instanceCommitment));
+    assert(instance.lifecycleStatus == 1 && instance.allocationCommitment == command.allocationCommitment &&
+        instance.currentStateCommitment == command.stateCommitment && instance.transitionSequence == command.stateSequence,
+        "Action state or allocation is stale");
+    assert(command.effectiveAt >= state.lastMutationAt && command.effectiveAt >= allocation.createdAt &&
+        intent.issuedAt <= command.effectiveAt && command.validBefore > command.effectiveAt &&
+        command.validBefore <= allocation.expiresAt && command.effectiveAt >= session.notBefore &&
+        command.effectiveAt >= session.issuedAt && command.validBefore <= session.expiresAt,
+        "Action window is backdated or outside the allocation/session lifetime");
+    assert(blockTimeGte(disclose(command.effectiveAt)) && blockTimeLt(disclose(command.validBefore)),
+        "Action proof window is not current");
+    assert(authorityRoots.member(disclose(intent.target.namespaceHash)) &&
+        credentialStatusRoots.member(disclose(intent.target.namespaceHash)), "Action namespace roots are absent");
+    const authority = authorityRoots.lookup(disclose(intent.target.namespaceHash));
+    const status = credentialStatusRoots.lookup(disclose(intent.target.namespaceHash));
+    assert(authority.rootVersion == command.authorityRootVersion && authority.rootSequence == command.authorityRootSequence &&
+        status.rootSequence == command.statusRootSequence, "Action authority or credential-status root is stale");
+    const templateKey = persistentHash<TemplateRegistryTarget>(intent.target);
+    assert(activeTemplates.member(disclose(templateKey)), "Action template is not registered");
+    const template = activeTemplates.lookup(disclose(templateKey));
+    assert(template.lifecycleStatus == 1 || template.lifecycleStatus == 2, "Revoked template cannot authorize an action");
+    assertRuntimeTemplatePolicyBinding(intent.target, policy, binding, bindingPath,
+        template.proofModuleBindingRoot, template.proofModuleBindingCount);
+    assertRuntimeTemplateActionIntent(policy, intent);
+    assert(policy.inputRecordTypeCount > 0 && policy.inputRecordTypeCount <= 1048576 &&
+        policy.outputClaimTypeCount > 0 && policy.outputClaimTypeCount <= 1048576,
+        "Action evidence schema has unsupported type counts");
+    const moduleKey = proofModuleRegistryKeyFromBinding(binding);
+    assert(proofModules.member(disclose(moduleKey)), "Action proof module is not registered");
+    const moduleRecord = proofModules.lookup(disclose(moduleKey));
+    const implementationReference = runtimeActionImplementationReference(
+        targetNetworkHash, allocation.targetContractIdentity, binding.moduleIdHash);
+    assert(moduleRecord.lifecycleStatus == 4 && binding.moduleVersion.major == 1 &&
+        binding.moduleVersion.minor == 0 && binding.moduleVersion.patch == 0 &&
+        moduleRecord.receiptSchemaHash == binding.receiptSchemaHash &&
+        binding.receiptSchemaHash == runtimeActionReceiptSchemaHash() &&
+        moduleRecord.inputSchemaHash == runtimeActionInputSchemaHash() &&
+        moduleRecord.configurationSchemaHash == runtimeActionConfigurationSchemaHash() &&
+        moduleRecord.compilerVersionHash == runtimeActionCompilerProfileHash() &&
+        moduleRecord.compatibilityPolicyHash == runtimeActionCompatibilityPolicyHash() &&
+        moduleRecord.implementationReferenceHash == implementationReference,
+        "Action module implementation, lifecycle, version or receipt schema is unsupported");
+    assert((command.transitioning && binding.moduleIdHash == runtimeStateTransitionModuleId()) ||
+        (!command.transitioning && binding.moduleIdHash == runtimeDelegatedActionModuleId()),
+        "UNSUPPORTED_PROOF_REQUIREMENT");
+    Schnorr_schnorrVerify<1>(runtimeActionCommandMessage(command), signature, session.runtimePublicKey);
+    assert(!usedRuntimeActionNullifiers.member(disclose(runtimeScopedActionNullifier(allocation, intent))),
+        "Action nullifier already consumed");
+}
+
+export ledger runtimeActionSessions: Map<Bytes<32>, RuntimeActionSession>;
+
+// Operations: 1 begin, 2 slot ancestor, 3 selected input/output,
+// 4 expired-session cleanup. Operation counts/timing are observable; witnesses
+// and dimension-specific counts remain private.
+export circuit prepareRuntimeAction(
+    operation: Uint<8>, command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
+    intent: RuntimeActionIntent, session: RuntimeSessionCredential,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening,
+    policy: RuntimeTemplateActionPolicy, binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>, progress: RuntimeActionProgress,
+    slotStep: RuntimeSlotAncestryStep, selected: RuntimeSelectedActionValue,
+    typePath: MerkleTreePath<20, Bytes<32>>
+): [] {
+    const op = disclose(operation);
+    assert(op >= 1 && op <= 4, "Unsupported action preparation operation");
+    const key = runtimeActionCommandCommitment(command);
+    if (runtimeActionSessions.member(disclose(key))) {
+        const old = runtimeActionSessions.lookup(disclose(key));
+        if (blockTimeGte(old.expiresAt)) {
+            runtimeActionSessions.remove(disclose(key));
+            return;
+        }
+    }
+    assert(op != 4, "Only an expired action session can be cleaned");
+    assertRuntimeActionContext(command, signature, intent, session, allocation, state, policy, binding, bindingPath);
+    if (op == 1) {
+        assert(!runtimeActionSessions.member(disclose(key)), "Action preparation already exists");
+        const initial = runtimeActionInitialProgress(command, session);
+        runtimeActionSessions.insert(disclose(key), disclose(RuntimeActionSession{
+            progressCommitment: runtimeActionProgressCommitment(initial), expiresAt: command.validBefore
+        }));
+        return;
+    }
+    assert(runtimeActionSessions.member(disclose(key)), "Action preparation is absent");
+    const pending = runtimeActionSessions.lookup(disclose(key));
+    assert(pending.expiresAt == command.validBefore && pending.progressCommitment == runtimeActionProgressCommitment(progress),
+        "Action preparation progress is altered or stale");
+    if (op == 2) {
+        if (progress.slot.steps == 0) {
+            assert(slotStep.record.assignment.slotIdHash == policy.actorSlotIdHash &&
+                slotStep.record.assignment.assignmentIdHash == command.slotAssignmentIdHash &&
+                slotStep.record.assignment.subjectAccountCredentialCommitment == session.subjectAccountCredentialCommitment,
+                "Action subject does not occupy its exact required slot");
+        }
+        const status = credentialStatusRoots.lookup(disclose(intent.target.namespaceHash));
+        const nextSlot = runtimeSlotAdvanceProgress(progress.slot, slotStep, state,
+            runtimeActionSlotContext(intent, command), status.root);
+        runtimeActionSessions.insert(disclose(key), disclose(RuntimeActionSession{
+            progressCommitment: runtimeActionProgressCommitment(RuntimeActionProgress{
+                slot: nextSlot, nextInputIndex: progress.nextInputIndex, nextOutputIndex: progress.nextOutputIndex,
+                inputsAccumulator: progress.inputsAccumulator, outputsAccumulator: progress.outputsAccumulator
+            }), expiresAt: command.validBefore
+        }));
+        return;
+    }
+    assert(progress.slot.phase == 3 && !progress.slot.inactive, "Action slot ancestry is incomplete or inactive");
+    assert(selected.valueVersion == 1 && selected.contextHash == intent.contextHash &&
+        selected.resourceHash == intent.resourceHash && selected.payloadCommitment != default<Bytes<32>> &&
+        selected.nonce != default<Bytes<32>>, "Selected action evidence is outside its exact scope or empty");
+    const output = progress.nextInputIndex == policy.inputRecordTypeCount;
+    const index = output ? progress.nextOutputIndex : progress.nextInputIndex;
+    const count = output ? policy.outputClaimTypeCount : policy.inputRecordTypeCount;
+    const root = output ? policy.outputClaimTypesRoot : policy.inputRecordTypesRoot;
+    assert((!output && progress.nextOutputIndex == 0) ||
+        (output && progress.nextInputIndex == policy.inputRecordTypeCount),
+        "Selected action evidence is out of order");
+    assert(index < count && runtimeCredentialStatusPathIndex(typePath) == index &&
+        typePath.leaf == selected.typeHash && merkleTreePathRoot<20, Bytes<32>>(typePath) == root,
+        "Selected action evidence type/index is not required by the activated policy");
+    const next = runtimeSelectedActionValueStep(output ? progress.outputsAccumulator : progress.inputsAccumulator,
+        index, selected, output);
+    runtimeActionSessions.insert(disclose(key), disclose(RuntimeActionSession{
+        progressCommitment: runtimeActionProgressCommitment(RuntimeActionProgress{
+            slot: progress.slot, nextInputIndex: output ? progress.nextInputIndex : (index + 1) as Uint<32>,
+            nextOutputIndex: output ? (index + 1) as Uint<32> : progress.nextOutputIndex,
+            inputsAccumulator: output ? progress.inputsAccumulator : next,
+            outputsAccumulator: output ? next : progress.outputsAccumulator
+        }), expiresAt: command.validBefore
+    }));
+}
+
+export circuit executeRuntimeAction(
+    command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
+    intent: RuntimeActionIntent, ancestry: RuntimeActiveAncestry,
+    sessionSignature: Schnorr_SchnorrSignature, intentSignature: Schnorr_SchnorrSignature,
+    capabilityPaths: RuntimeActionScopePaths, sessionPaths: RuntimeActionScopePaths,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening,
+    policy: RuntimeTemplateActionPolicy, binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>, progress: RuntimeActionProgress,
+    issuer: GovernanceActivatorLeaf, instanceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    namespaceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    transition: RuntimeTemplateTransition, transitionPath: MerkleTreePath<20, Bytes<32>>,
+    nextStateIdHash: Bytes<32>, nextNonce: Bytes<32>
+): Bytes<32> {
+    assertRuntimeActionContext(command, signature, intent, ancestry.session,
+        allocation, state, policy, binding, bindingPath);
+    const key = runtimeActionCommandCommitment(command);
+    assert(runtimeActionSessions.member(disclose(key)), "Action preparation is absent");
+    const pending = runtimeActionSessions.lookup(disclose(key));
+    assert(pending.expiresAt == command.validBefore && pending.progressCommitment == runtimeActionProgressCommitment(progress) &&
+        progress.slot.phase == 3 && !progress.slot.inactive && progress.slot.steps > 0 &&
+        progress.nextInputIndex == policy.inputRecordTypeCount && progress.nextOutputIndex == policy.outputClaimTypeCount &&
+        progress.inputsAccumulator == command.selectedInputsCommitment &&
+        progress.outputsAccumulator == command.selectedOutputsCommitment,
+        "Action slot/evidence preparation is incomplete, substituted or stale");
+    const authority = authorityRoots.lookup(disclose(intent.target.namespaceHash));
+    const status = credentialStatusRoots.lookup(disclose(intent.target.namespaceHash));
+    assertRuntimeInstanceIssuer(allocation, issuer, instanceIssuerPath, authority,
+        namespaceIssuerPath, command.effectiveAt);
+    assert(governanceActivatorLeafCommitment(issuer) == ancestry.capabilities[0].namespaceIssuerAuthorityCommitment &&
+        command.validBefore <= issuer.validBefore, "Action root capability issuer is no longer eligible");
+    verifyRuntimeActionAuthorization(ancestry, intent, sessionSignature, intentSignature,
+        capabilityPaths, sessionPaths, status.root, status.rootSequence, command.effectiveAt);
+    for (const i of 0..17) {
+        if (i < ancestry.capabilityCount) {
+            assert(command.validBefore <= ancestry.capabilities[i].expiresAt &&
+                command.validBefore <= ancestry.accounts[i].validBefore &&
+                ancestry.capabilities[i].maxDelegationDepth <= policy.maxDelegationDepth &&
+                ancestry.capabilities[i].expiresAt - ancestry.capabilities[i].notBefore <= policy.maxCapabilityDuration,
+                "Action ancestry exceeds activated policy or its proof window");
+        }
+    }
+    assertRuntimeTemplateTransition(policy, transition, transitionPath, state.stateIdHash, nextStateIdHash);
+    const nextState = runtimeActionNextState(state, nextStateIdHash, nextNonce, command.effectiveAt, command.transitioning);
+    assert(runtimeStateCommitment(nextState) == command.nextStateCommitment,
+        "Action signature does not bind the exact next private state");
+    const receiptId = commitRuntimeActionOutcome(allocation, intent, state, command.stateSequence,
+        nextStateIdHash, nextNonce, command.effectiveAt, command.validBefore, command.transitioning,
+        ProofModuleIdentity{moduleIdHash: binding.moduleIdHash, moduleVersion: binding.moduleVersion,
+            implementationHash: binding.implementationHash}, command.selectedOutputsCommitment);
+    runtimeActionSessions.remove(disclose(key));
+    return receiptId;
+}

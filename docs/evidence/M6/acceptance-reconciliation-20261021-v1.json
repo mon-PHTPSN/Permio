@@ -1,0 +1,361 @@
+{
+  "schemaVersion": 1,
+  "reconciledAtUtc": "2026-10-21T00:55:07.979150+00:00",
+  "milestone": "M6",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "engineeringEvidenceReconciled": true,
+  "sourceBaseline": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "evidencePathsRelativeTo": "docs/evidence/M6",
+  "sourceHashesRelativeTo": "repository-root",
+  "independentHumanReview": "OPEN",
+  "authorizationExpanded": false,
+  "nativeAttempts": 158,
+  "successfulFinals": 152,
+  "nativeNegatives": 4,
+  "actualNativeSubmissions": 156,
+  "countedPreSendFailures": 2,
+  "approvedNativeCap": 172,
+  "applicationInstances": 5,
+  "approvedApplicationMaximum": 5,
+  "additionalNativeSubmissions": 0,
+  "additionalProofRequests": 0,
+  "originalGates": [
+    {
+      "criterion": 1,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Partial115 final evidence verified: 284 public artifacts scanned against 143 actual private sentinels with zero findings; 285 downloaded files hashed; 114 exact transaction pairs, two receipt decodes and two causal replays passed. All 16 public offloads, 23 duplicate pairs and 52,411 dependency files restored with recorded metadata. Remaining live cases and independent human review remain open."
+    },
+    {
+      "criterion": 2,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Generated-circuit mutations tested; complete attributable Preprod negative matrix remains open."
+    },
+    {
+      "criterion": 3,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Stale-authority action rejected natively; exact public-program causal replay passed under both historical parameter sets, with final evidence downloaded and verified. Stale credential-status-root action case remains open."
+    },
+    {
+      "criterion": 4,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Activation finalized; M4/preflight tests do not replace negative Preprod transactions."
+    },
+    {
+      "criterion": 5,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Retirement/revocation finalized, history retained; deprecated selection/revoked-action negative tests remain open."
+    },
+    {
+      "criterion": 6,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Module/schema checks implemented and regression-tested; full live substitution rejection remains open."
+    },
+    {
+      "criterion": 7,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Competing transaction87 has exact indexed bytes, intended fallible-segment rejection and unchanged entire contract state. Both historical parameter sets reproduce the causal row change; public download and offline protocol replay passed."
+    },
+    {
+      "criterion": 8,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Historical v8 Local Dev transaction replay rejected; Preprod action-nullifier replay after reconnect remains open."
+    },
+    {
+      "criterion": 9,
+      "status": "OPEN",
+      "resultAndRemaining": "Non-transitioning action regression passed; real finalization and unchanged instance remain required."
+    },
+    {
+      "criterion": 10,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Preprod deployment, stateful action, receipt insertion and cold public reconnect passed; negative matrix remains open."
+    },
+    {
+      "criterion": 11,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Partial115 final evidence verified: 284 public artifacts scanned against 143 actual private sentinels with zero findings; 285 downloaded files hashed; 114 exact transaction pairs, two receipt decodes and two causal replays passed. All 16 public offloads, 23 duplicate pairs and 52,411 dependency files restored with recorded metadata. Remaining live cases and independent human review remain open."
+    },
+    {
+      "criterion": 12,
+      "status": "PARTIAL",
+      "resultAndRemaining": "Root authorization implemented with earlier live governance evidence; current action/root negative matrix remains open."
+    },
+    {
+      "criterion": 13,
+      "status": "PASSED_TARGETED_HISTORICAL_LOCAL_DEV",
+      "resultAndRemaining": "Owned pinned node/indexer interruption and cold state/transaction reconnect passed on v8, not current Preprod v10 proof acceptance."
+    }
+  ],
+  "criteria": [
+    {
+      "criterion": 1,
+      "status": "PASSED_CONTROLLED_PREPROD_PRIVACY",
+      "resultAndRemaining": "417 final public artifacts were scanned against 183 actual private values with zero findings; 418 downloaded files and the manifest were rechecked. This is controlled-test evidence, not the independent human security/privacy review.",
+      "evidenceTiers": [
+        "remote-private-value-artifact-scan",
+        "offline-public-integrity"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/complete-privacy-scan.json"
+      ]
+    },
+    {
+      "criterion": 2,
+      "status": "PASSED_MIXED_BINDING_CHECKS",
+      "resultAndRemaining": "All Compact admission-envelope fields and semantic-version components are challenged with the original signature; M4/evidence hash substitutions cannot create records. Twenty action substitutions per exercised indexed-state action, generated credential/scope/policy tests, and the additional semantic matrix cover the named fields. Generated evaluation is not a native rejection transaction.",
+      "evidenceTiers": [
+        "preprod-indexed-generated-circuit",
+        "local-generated-circuit",
+        "native-preprod-selected-cases"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/source/public-source-manifest.json",
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v2/client-public.jsonl",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v5/client-public.jsonl",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v9/client-public.jsonl"
+      ],
+      "observedIndexedGeneratedMutationRejections": 60,
+      "observedMutationLabelsPerRun": 20,
+      "observedMutationRuntimes": [
+        2,
+        5,
+        9
+      ],
+      "observedMutationEvidence": "Sixty logged generated-circuit mutation rejections cover 20 labels in each of runtime-v2, runtime-v5 and runtime-v9, each after a successful generated baseline; these are not native submissions."
+    },
+    {
+      "criterion": 3,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Native negatives 116 and 150 reject stale authority and credential-status roots. Paired positive controls and fixed-clock, fixed-parameter public-program replays attribute the failure to the changed root; exact bound bytes are verified.",
+      "evidenceTiers": [
+        "native-preprod",
+        "read-only-node-validation",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 4,
+      "status": "PASSED_GENERATED_AND_ADAPTER",
+      "resultAndRemaining": "Generated admission tests reject ineligible keys/roles, original-signature M4/evidence commitment changes and admission nonce replay. Runtime conversion now rejects unsupported signature profiles/protocol identifiers and malformed hashes. Re-signed unsupported envelope/registry versions fail their semantic checks. An eligible activator attests M4; v1 does not independently replay all M4 Ed25519 reviewer checks.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "local-sdk-adapter"
+      ],
+      "evidence": [
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 5,
+      "status": "PASSED_MIXED_LIFECYCLE",
+      "resultAndRemaining": "Actual native lifecycle transitions retain historical records. Two genuine historical binding-program replays reject actual indexed deprecated module rows with row-only positive controls. Four remote generated-circuit checks reject actual final revoked module/template rows with original retained private arguments. Offline verification checks their public provenance; it does not replay the private witnesses.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm",
+        "remote-generated-circuit",
+        "offline-public-provenance"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/deprecated-module-admission-155.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/deprecated-module-admission-158.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/generated-lifecycle-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 6,
+      "status": "PASSED_GENERATED_AND_ADAPTER",
+      "resultAndRemaining": "Both action families reject coherent, correctly signed unsupported module IDs/versions, an unregistered exact implementation, unsupported receipt schemas, policy versions and configuration commitments at their intended predicates. Existing registered-row tests separately reject input/configuration schema, compiler, compatibility and implementation-reference mismatches. Adapter/profile and receipt-format tests remain separately labeled; no fallback is inferred from a signature failure.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "local-sdk-adapter"
+      ],
+      "evidence": [
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 7,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Competing transaction 87 has exact indexed bytes and intended fallible-segment failure. The winner alone advances state/sequence. The saved negative public program passes on its original state and fails on the changed row under each historical parameter set.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 8,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Transaction 148 is an independently proved replay after cold reconnect, with exact saved/indexed bytes and an intended native failure. Projecting only the consumed nullifier into the original prepared state reproduces rejection, separately from consumed preparation.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/transactions/rejection-148.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 9,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Successful action 147 leaves every runtime-instance record unchanged, inserts the third receipt and consumes its scoped nullifier. Exact historical states and SDK receipt decoding were rechecked locally.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-state-and-receipt-decoder"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/historical/state-146.bin",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/historical/state-147.bin",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/receipts/decision-receipts.json"
+      ]
+    },
+    {
+      "criterion": 10,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "The approved run includes deployment, 152 successful confirmations and four genuine native negative outcomes, indexed-state reads, cold reconnect/replay and three verified receipts. All 156 submitted public transaction byte pairs are reconciled. The two local pre-send failures are counted separately in the conservative total of 158.",
+      "evidenceTiers": [
+        "native-preprod",
+        "indexed-read",
+        "offline-exact-bytes"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/summary.json"
+      ]
+    },
+    {
+      "criterion": 11,
+      "status": "PASSED_CONTROLLED_ARTIFACT_SCAN",
+      "resultAndRemaining": "The final chain/indexer/receipt/log/render/restoration package has 417 privacy-scanned artifacts, 183 actual private sentinels and zero findings. The package has 418 integrity-verified files, including the final scan itself. New local test reports contain synthetic fixtures and are outside that frozen remote scan.",
+      "evidenceTiers": [
+        "remote-private-value-artifact-scan",
+        "offline-public-integrity"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/complete-privacy-scan.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/render/final-public-state.html"
+      ]
+    },
+    {
+      "criterion": 12,
+      "status": "PASSED_GENERATED_AUTHORIZATION",
+      "resultAndRemaining": "Every authority-root command field is bound to its original signature; re-signed sub-threshold updates and eligible non-governor roles fail without state mutation. Existing generated status tests enforce exact physical paths, allocated/original issuer eligibility, credential signatures and private-state continuity. Live authorized root/status transitions and stale-root negatives are separate positive/native evidence; no unauthorized-root native transaction is claimed.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "native-preprod-authorized-transitions"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json",
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 13,
+      "status": "PASSED_TARGETED_HISTORICAL_LOCAL_DEV",
+      "resultAndRemaining": "The pinned owned Local Dev node/indexer interruption, persisted contract state and cold reconnect check passed on historical v8. This is infrastructure evidence, not current v10 authorization/proof acceptance and not control of shared Preprod.",
+      "evidenceTiers": [
+        "historical-owned-local-dev-infrastructure"
+      ],
+      "evidence": [
+        "local-infrastructure-recovery-verification.json"
+      ]
+    }
+  ],
+  "validation": {
+    "fullRootPassed": true,
+    "command": "npm run check",
+    "completedAtUtc": "2026-10-21T00:55:07.979150+00:00",
+    "totalPassed": 456,
+    "nodePassCounts": [
+      141,
+      6,
+      15,
+      14,
+      16,
+      51,
+      207
+    ],
+    "hardhatPassed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "rootLog": "logs/m6-remaining-preprod-20261019/acceptance-field-matrix-root-check-v1.txt",
+    "rootLogSha256": "beaf5f0393a7215fe4171c286b660bc660b7079387c5d7338fbd29548756b713",
+    "contractAndCompactSourceUnchanged": true,
+    "source13ContractFilesVerified": 4,
+    "newNativeSubmissions": 0
+  },
+  "originalLatestValidation": {
+    "fullRootPassed": true,
+    "totalPassed": 445,
+    "nodePassCounts": [
+      138,
+      6,
+      15,
+      14,
+      16,
+      51,
+      199
+    ],
+    "hardhatPassed": 6,
+    "failed": 0,
+    "rootLog": "logs/m6-remaining-preprod-20261019/approved172-source12-root-check-v1.txt",
+    "rootLogSha256": "b86e346207b67c9dd70bcec0e3937a93016b5bb19dcff0ec471b7be14244d98f",
+    "source13ImportClosure": {
+      "passed": true,
+      "reachableModules": 98,
+      "missingModules": 0,
+      "typecheckPassed": true
+    }
+  },
+  "freshOfflineVerification": "../../../logs/m6-remaining-preprod-20261019/acceptance-protocol-recheck-v1.json",
+  "privacyScanScope": "Frozen final remote public evidence; not newly created local test/documentation files",
+  "sourceHashes": {
+    "packages/midnight-authorization/src/compact-crypto.ts": "09c1f9f592996a91de7b319721233e5bfe69e98ee392d7f62f201c5c6a657ebb",
+    "packages/midnight-authorization/src/binding-manifest.ts": "5fe06e756c98d6421e8cf4cf5da38bb57926296a2c1f772e8f03532857e8e358",
+    "packages/midnight-authorization/src/hex32.ts": "609522aa4aac852200d33fc7f3d4192a9721cf9739ee65940e6248c5fbb5f384",
+    "packages/midnight-authorization/test/admission-envelope.test.ts": "690069e16762a0ac611c53dd4f2b58c4af401a466a5646cc68019b69db97b07b",
+    "packages/midnight-authorization/test/module-semantic-rejection.test.ts": "751a65b929440da411bd14c581cf83de23f3743d9dd3da0419762814e2cc13e9"
+  },
+  "contractSourceSha256": "21afd7ea01ad0727a5c8c8d865d7f557eebd4e276a10471ca3122fb14c751d53",
+  "sourceManifestSha256": "483b5d5373b467cd92ca04a95ec24aa6418463f96d1e51023f535999fb23a024",
+  "qualityReview": {
+    "type": "independent-local-agent-read-only-source-review",
+    "reviewer": "/root/m6_adapter_review",
+    "actionableFindings": 0,
+    "testsRunByReviewer": 0,
+    "externalOperations": 0,
+    "independentHumanReview": false,
+    "limits": "Narrow SDK conversion repair and new test attribution only; not a full M6 security audit"
+  },
+  "routingLimits": [
+    "Wiki predates M6 implementation",
+    "Configured codebase index belongs to information-flow; exact Permio source used"
+  ]
+}

@@ -420,6 +420,10 @@ export struct RuntimeCredentialStatusCommand {
     authorityRootVersion: Uint<64>;
     authorityRootSequence: Uint<64>;
     credentialStatusRootSequence: Uint<64>;
+    allocationCommitment: Bytes<32>;
+    instanceStateCommitment: Bytes<32>;
+    instanceStateSequence: Uint<64>;
+    nextInstanceStateCommitment: Bytes<32>;
     credentialKind: Uint<16>;
     credentialCommitment: Bytes<32>;
     subjectAccountCredentialCommitment: Bytes<32>;
@@ -502,6 +506,8 @@ export ledger capabilityAttenuationSessions: Map<Bytes<32>, CapabilityAttenuatio
 
 include "runtime-instance-allocation";
 include "runtime-participant-slots";
+include "runtime-action-outcome";
+include "runtime-action-execution";
 
 constructor(
     networkHash: Bytes<32>,
@@ -1175,7 +1181,7 @@ circuit commitAuthorityRootUpdateApproval(
     return disclose(nextCount);
 }
 
-export circuit submitAuthorityRootApproval(
+circuit submitAuthorityRootApproval(
     command: AuthorityRootUpdateCommand,
     signature: Schnorr_SchnorrSignature,
     governor: GovernanceActivatorLeaf,
@@ -1273,7 +1279,7 @@ circuit updatedProofModuleRecord(
     };
 }
 
-export circuit proposeProofModule(
+circuit proposeProofModule(
     proposal: ProofModuleProposal
 ): Bytes<32> {
     assert(proposal.proposalVersion == 1, "Unsupported proof-module proposal version");
@@ -1332,7 +1338,7 @@ export circuit proposeProofModule(
     return disclose(moduleKey);
 }
 
-export circuit reviewProofModule(
+circuit reviewProofModule(
     review: ProofModuleReview,
     signature: Schnorr_SchnorrSignature,
     reviewer: GovernanceActivatorLeaf,
@@ -1506,7 +1512,7 @@ circuit commitProofModuleLifecycle(
     proofModuleRegistrySequence.increment(1);
 }
 
-export circuit governProofModule(
+circuit governProofModule(
     command: ProofModuleLifecycleCommand,
     signature: Schnorr_SchnorrSignature,
     authority: GovernanceActivatorLeaf,
@@ -1690,6 +1696,48 @@ export circuit governProofModule(
         );
         commitProofModuleLifecycle(command, updated);
         return disclose(record.approvalCount);
+    }
+}
+
+// v10: one verifier for four governance operations. Each branch calls the
+// unchanged operation, with its original message domain and authority checks.
+export struct GovernanceDispatchInput {
+    operation: Uint<8>;
+    rootUpdate: AuthorityRootUpdateCommand;
+    proposal: ProofModuleProposal;
+    review: ProofModuleReview;
+    lifecycle: ProofModuleLifecycleCommand;
+    signature: Schnorr_SchnorrSignature;
+    authority: GovernanceActivatorLeaf;
+    authorityPath: MerkleTreePath<20, Bytes<32>>;
+}
+
+export struct GovernanceDispatchResult {
+    moduleKey: Bytes<32>;
+    approvalCount: Uint<16>;
+}
+
+export circuit emptyGovernanceDispatchInput(): GovernanceDispatchInput {
+    return default<GovernanceDispatchInput>;
+}
+
+export circuit governAuthorization(input: GovernanceDispatchInput): GovernanceDispatchResult {
+    assert(input.operation <= 3, "Unknown governance dispatch operation");
+    if (disclose(input.operation == 0)) {
+        const count = submitAuthorityRootApproval(input.rootUpdate, input.signature,
+            input.authority, input.authorityPath);
+        return GovernanceDispatchResult{moduleKey: default<Bytes<32>>, approvalCount: count};
+    } else if (disclose(input.operation == 1)) {
+        const key = proposeProofModule(input.proposal);
+        return GovernanceDispatchResult{moduleKey: key, approvalCount: 0};
+    } else if (disclose(input.operation == 2)) {
+        const count = reviewProofModule(input.review, input.signature,
+            input.authority, input.authorityPath);
+        return GovernanceDispatchResult{moduleKey: default<Bytes<32>>, approvalCount: count};
+    } else {
+        const count = governProofModule(input.lifecycle, input.signature,
+            input.authority, input.authorityPath);
+        return GovernanceDispatchResult{moduleKey: default<Bytes<32>>, approvalCount: count};
     }
 }
 
@@ -2323,7 +2371,7 @@ export circuit updateRuntimeCredentialStatus(
     sessionCredential: RuntimeSessionCredential,
     instanceBinding: RuntimeCredentialInstanceBinding
 ): Uint<64> {
-    assert(command.commandVersion == 3, "Unsupported credential-status command version");
+    assert(command.commandVersion == 4, "Unsupported credential-status command version");
     assert(operation >= 1 && operation <= 4, "Unsupported credential-status operation");
     assert(
         command.credentialKind >= 1 && command.credentialKind <= 3,
@@ -2487,9 +2535,30 @@ export circuit updateRuntimeCredentialStatus(
         allocation.allocationVersion == 1 && allocation.target == boundTarget &&
         allocation.target.namespaceHash == command.namespaceHash &&
         allocation.instanceCommitment == boundInstance &&
-        runtimeInstanceAllocationCommitment(allocation) == instance.allocationCommitment,
+        runtimeInstanceAllocationCommitment(allocation) == instance.allocationCommitment &&
+        command.allocationCommitment == instance.allocationCommitment,
         "Runtime credential does not match the immutable private allocation"
     );
+    const currentInstanceState = instanceBinding.state;
+    assert(
+        currentInstanceState.stateVersion == 2 &&
+        currentInstanceState.instanceCommitment == boundInstance &&
+        runtimeStateCommitment(currentInstanceState) == command.instanceStateCommitment &&
+        command.instanceStateCommitment == instance.currentStateCommitment &&
+        instanceBinding.stateSequence == command.instanceStateSequence &&
+        command.instanceStateSequence == instance.transitionSequence,
+        "Credential command is stale against the exact instance state and sequence"
+    );
+    assert(command.effectiveAt >= currentInstanceState.lastMutationAt,
+        "Credential mutation cannot backdate the instance mutation watermark");
+    assert(instanceBinding.nextStateNonce != default<Bytes<32>> &&
+        instanceBinding.nextStateNonce != currentInstanceState.nonce,
+        "Credential mutation requires a fresh private state nonce");
+    const nextInstanceState = runtimeCredentialNextState(
+        currentInstanceState, command.effectiveAt, instanceBinding.nextStateNonce
+    );
+    assert(runtimeStateCommitment(nextInstanceState) == command.nextInstanceStateCommitment,
+        "Credential command does not bind the exact next private instance state");
     assert(instanceBinding.validBefore > command.effectiveAt,
         "Credential proof window must end after its effective time");
     assert(blockTimeLt(disclose(instanceBinding.validBefore)),
@@ -2807,6 +2876,12 @@ export circuit updateRuntimeCredentialStatus(
         );
         capabilityAttenuationSessions.remove(disclose(command.commandNonce));
         usedCredentialStatusCommandNonces.insert(disclose(command.commandNonce));
+        runtimeInstances.insert(disclose(boundInstance), disclose(RuntimeInstanceRecord{
+            allocationCommitment: instance.allocationCommitment,
+            currentStateCommitment: command.nextInstanceStateCommitment,
+            transitionSequence: (instance.transitionSequence + 1) as Uint<64>,
+            lifecycleStatus: instance.lifecycleStatus
+        }));
         return disclose(nextSequence);
     }
 
@@ -2941,5 +3016,11 @@ export circuit updateRuntimeCredentialStatus(
         )
     );
     usedCredentialStatusCommandNonces.insert(disclose(command.commandNonce));
+    runtimeInstances.insert(disclose(boundInstance), disclose(RuntimeInstanceRecord{
+        allocationCommitment: instance.allocationCommitment,
+        currentStateCommitment: command.nextInstanceStateCommitment,
+        transitionSequence: (instance.transitionSequence + 1) as Uint<64>,
+        lifecycleStatus: instance.lifecycleStatus
+    }));
     return disclose(nextSequence);
 }

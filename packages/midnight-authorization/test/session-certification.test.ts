@@ -74,7 +74,9 @@ function fixture(options: {
   status.issue(accountEntry);
   status.issue(parentEntry);
   const authority = buildAuthorityRoot([authorityLeaf]);
+  const instanceBinding = unitInstanceBinding(authorityLeaf, account);
   const command = createRuntimeCredentialStatusCommand({
+    instanceBinding,
     namespace, governancePolicyHash: policyHash, authorityRootVersion: 1, authorityRootSequence: 1,
     credentialStatusRootSequence: status.sequence - 2n, kind: "session", credentialCommitment: sessionHash,
     subjectAccountCredentialCommitment: accountHash,
@@ -85,7 +87,6 @@ function fixture(options: {
   const contract = createPermioAuthorizationContract();
   const initial = contract.initialState(createConstructorContext(undefined, "00".repeat(32)),
     bytes(1), namespaceHash, bytes(0x22), authority.root, 1n, 1n, status.root, 2n, 2n, 2n);
-  const instanceBinding = unitInstanceBinding(authorityLeaf, account);
   let context = createCircuitContext(dummyContractAddress(), "00".repeat(32),
     seedUnitAllocation(initial.currentContractState.data, instanceBinding), undefined, undefined, undefined, 150);
   const plan = new SessionAttenuationPlan(sessionTrees, parentTrees);
@@ -123,6 +124,7 @@ function fixture(options: {
   function revokeParentOrHolder(kind: "parent" | "holder") {
     const entry = kind === "parent" ? parentEntry : accountEntry;
     const revocation = createRuntimeCredentialStatusCommand({
+      instanceBinding,
       namespace, governancePolicyHash: policyHash, authorityRootVersion: 1, authorityRootSequence: 1,
       credentialStatusRootSequence: status.sequence - 2n, kind: entry.kind,
       credentialCommitment: entry.credentialCommitment,
@@ -149,7 +151,7 @@ function fixture(options: {
 describe("complete private session-scope certification", () => {
   it("activates only after all seven dimensions and exact finalization", () => {
     const f = fixture();
-    assert.equal(f.command.commandVersion, 3n);
+    assert.equal(f.command.commandVersion, 4n);
     assert.equal(f.plan.totalElementCount, 7n);
     f.apply(2n);
     assert.equal(f.view().credentialStatusRoots.lookup(namespaceHash).rootSequence, 0n);
@@ -255,10 +257,10 @@ describe("complete private session-scope certification", () => {
   });
 
   for (const kind of ["parent", "holder"] as const) {
-    it(`rechecks current ${kind} status after full staging`, () => {
+    it(`rejects ${kind} revocation during staging without activating the session`, () => {
       const f = fixture();
       f.apply(2n); f.complete(); f.revokeParentOrHolder(kind);
-      assert.throws(() => f.invoke(4n), /revoked during staging/);
+      assert.throws(() => f.invoke(4n), /stale against the exact instance state/);
       assert.equal(f.view().credentialStatusRoots.lookup(namespaceHash).rootSequence, 1n);
       assert.equal(f.view().usedCredentialStatusCommandNonces.member(f.command.commandNonce), false);
     });

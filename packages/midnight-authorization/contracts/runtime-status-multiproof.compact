@@ -95,6 +95,8 @@ pure circuit runtimeStatusMembershipNode(
     };
 }
 
+// Same v1 transcript and hash domains. Factor common stack-hash calls
+// across private selections; preserve all instruction and stack predicates.
 pure circuit runtimeStatusMultiproofStep(
     state: RuntimeStatusProofState,
     step: RuntimeStatusProofStep
@@ -127,9 +129,11 @@ pure circuit runtimeStatusMultiproofStep(
     assert(!merging || state.stackSize >= popped, "Status multiproof stack underflow");
     const right = step.right;
     const left = step.left;
-    const opened = step.leftFromStack && step.rightFromStack
-        ? runtimeStatusStackPush(runtimeStatusStackPush(step.stackTail, left), right)
-        : runtimeStatusStackPush(step.stackTail, step.leftFromStack ? left : right);
+    const leftHead = runtimeStatusStackPush(step.stackTail, left);
+    const opened = runtimeStatusStackPush(
+        step.leftFromStack && step.rightFromStack ? leftHead : step.stackTail,
+        step.rightFromStack ? right : left
+    );
     assert(!merging || opened == state.stackCommitment, "Status multiproof stack opening is altered");
     assert(
         !merging || state.stackSize != popped || step.stackTail == 0,
@@ -146,17 +150,21 @@ pure circuit runtimeStatusMultiproofStep(
             [left.digest.field, right.digest.field]
         )}
     };
+    const nextStack = runtimeStatusStackPush(
+        pushing ? state.stackCommitment : step.stackTail,
+        pushing ? left : parent
+    );
     return RuntimeStatusProofState{
         leafCount: state.leafCount,
         leafAccumulator: pushing ? runtimeStatusAccumulateLeaf(state.leafAccumulator, left) : state.leafAccumulator,
         nextLeaf: (state.nextLeaf + (pushing as Uint<8>)) as Uint<8>,
-        stackCommitment: padding ? state.stackCommitment
-            : (pushing ? runtimeStatusStackPush(state.stackCommitment, left) : runtimeStatusStackPush(step.stackTail, parent)),
+        stackCommitment: padding ? state.stackCommitment : nextStack,
         top: padding ? state.top : (pushing ? left : parent),
         stackSize: padding ? state.stackSize : (state.stackSize + 1 - popped) as Uint<8>,
         finished: state.finished || padding
     };
 }
+
 
 export pure circuit runtimeStatusMultiproofRoot(
     proof: RuntimeStatusMultiproof

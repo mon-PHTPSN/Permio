@@ -1,5 +1,15 @@
 # M6 private slot state v1 / instance opening v2
 
+Historical v7 slice: the later v8 credential-state continuation is documented
+in [runtime-credential-state-v1.md](runtime-credential-state-v1.md). It shares
+the instance watermark/sequence with credentials; the slot fixture now ends
+at sequence 5 (one account plus four slot mutations), with four slot nonces.
+The v7 measurements and failed attempts below remain historical evidence.
+
+此文保留 v7 阶段历史；后续 v8 凭证状态接入见上述文档。凭证与槽位共用实例水位／
+序号，槽位 fixture 现最终为序号 5（一次账户及四次槽位变更），槽位 nonce 仍为 4。
+下方 v7 测量及失败不重新标为新版本验收。
+
 Implementation started 2026-10-14 after the user approved the staged/private
 state direction. Working SDK tag: permio-authorization-v7. Policy remains v2;
 M2 JSON hashes, M4 Ed25519 reviews and accepted M5-P1 remain unchanged. This

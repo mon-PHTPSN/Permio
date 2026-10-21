@@ -11,6 +11,10 @@ packages/midnight-authorization/contracts/managed/**/zkir/
 # Compilation output
 /dist
 
+# Python diagnostic caches
+__pycache__/
+*.py[cod]
+
 # pnpm deploy output
 /bundle
 
