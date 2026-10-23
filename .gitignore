@@ -1,5 +1,5 @@
 # Node modules
-/node_modules
+**/node_modules/
 
 # Local Midnight/test logs
 **/logs/
@@ -37,3 +37,9 @@ __pycache__/
 
 # Hardhat local state
 /ignition/deployments/chain-31337
+
+# Private local application accounts and sessions
+/packages/execution-dashboard/.data/
+
+# Derived local code-navigation cache
+/.claude/cache/codebase-index/

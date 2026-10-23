@@ -56,3 +56,14 @@ it("pins the observed Preprod indexer protocol while retaining finality/identity
     }
   } finally { globalThis.fetch = originalFetch; setNetworkId(originalNetwork); }
 });
+it("the exact SDK reader preserves a sanitized transient finality-read category", async () => {
+  const previous = (() => { try { return getNetworkId(); } catch { return "undeployed"; } })();
+  try {
+    setNetworkId("undeployed");
+    const reader = createIndexedDecisionReceiptReader({ network: "undeployed", indexerUrl: "http://127.0.0.1:8088/api/v4/graphql",
+      contract: `0x${"16".repeat(32)}`, receiptId: `0x${"17".repeat(32)}`,
+      publicDataProvider: { async watchForTxData() { throw new TypeError("fetch failed"); } } as unknown as PublicDataProvider });
+    await assert.rejects(reader.readReceiptAtTransaction("00" + "18".repeat(32)),
+      error => error instanceof Error && error.name === "IndexedReceiptUnavailableError" && error.message === "INDEXED_RECEIPT_UNAVAILABLE");
+  } finally { setNetworkId(previous); }
+});

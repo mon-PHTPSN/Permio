@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M7",
+  "status": "PREPARATION_CHECKPOINT_NOT_MILESTONE_ACCEPTANCE",
+  "capturedAtUtc": "2026-10-14T13:59:33Z",
+  "branch": "feat/m7-preparation",
+  "baseCommit": "c50959c1b71125f6dfda447423e0dbbe047a04cd",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "checkpointAuthorization": "User requested local commits of current M6/M7 work, keeping the already committed M5 patch separate, then a preparation-only experiment worktree.",
+  "implemented": [
+    "Public source identity and opaque observed receipt-byte validation with rejection of extra fields.",
+    "Keccak-256 hash bound to exact observed receipt bytes; no M6 wire decoder or policy reinterpretation.",
+    "Exact network, contract and receipt-version source allowlist.",
+    "Versioned domain-separated outbox identity bound to six required dimensions.",
+    "Deterministic newest eligible signing-key epoch and separate signing/verification cutoff windows."
+  ],
+  "regression": {
+    "command": "npm run check",
+    "environment": "Windows; approved native execution",
+    "exitCode": 0,
+    "passed": 77,
+    "failed": 0,
+    "skipped": 0,
+    "counts": { "protocol": 6, "M2": 15, "M3": 14, "M4": 16, "M5Baseline": 13, "gateway": 7, "hardhat": 6 },
+    "docsTypecheckSolidityBuildPassed": true,
+    "hardhatReportedDurationMs": 21800,
+    "M6SuiteNotPresentOnThisIndependentBranch": true
+  },
+  "remaining": [
+    "Finalized-event observer and actual final M6 receipt wire decoder.",
+    "Durable checkpoint/outbox store, recovery and reorg integration.",
+    "Transport signatures, delivery worker, retries and actual downstream integration.",
+    "Complete M7 acceptance after final M6 contract/receipt integration."
+  ],
+  "preserved": {
+    "noNewM7ImplementationDuringCheckpoint": true,
+    "noM5OrM5P1Changes": true,
+    "existingMilestoneMarkdownAndGeneratedHtmlOnlyCommittedNotReedited": true,
+    "noPrivateInstructionsLogsWalletsOrSigningKeysIncluded": true,
+    "noBranchMergeOrRebase": true,
+    "noPush": true,
+    "memoryExperimentNotStarted": true
+  }
+}

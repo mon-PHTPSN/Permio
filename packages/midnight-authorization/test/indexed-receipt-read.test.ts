@@ -31,3 +31,14 @@ it("bounds transient failures and never retries terminal HTTP, invalid JSON or G
     assert.equal(calls, kind === "transient" ? 3 : 1);
   }
 });
+it("exhausted transient reads expose only a fixed typed retry category", async () => {
+  for (const failure of ["http", "network"] as const) {
+    let calls = 0;
+    await assert.rejects(readIndexedReceiptPayload(url, id, async () => {
+      calls++; if (failure === "network") throw new TypeError("fetch failed");
+      return new Response("credential-must-not-escape", { status: 503 });
+    }, async () => {}), error => error instanceof Error && error.name === "IndexedReceiptUnavailableError" &&
+      error.message === "INDEXED_RECEIPT_UNAVAILABLE");
+    assert.equal(calls, 3);
+  }
+});

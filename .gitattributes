@@ -6,3 +6,6 @@ scripts/proof-server-memory/Dockerfile text eol=lf
 packages/midnight-authorization/contracts/managed/**/contract/*.js text eol=lf
 packages/midnight-authorization/contracts/managed/**/contract/*.ts text eol=lf
 packages/midnight-authorization/contracts/managed/**/compiler/*.json text eol=lf
+
+# Preserve the source checksum of the recorded public M6 receipts.
+packages/gateway/test/fixtures/recorded-preprod-public-receipts.json text eol=lf

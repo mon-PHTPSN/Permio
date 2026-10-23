@@ -1,0 +1,28 @@
+# Deploy this branch from the repository root. This disk-backed demo uses a paid plan.
+services:
+  - type: web
+    name: permio
+    runtime: node
+    branch: feat/m8-execution-registry
+    plan: starter
+    numInstances: 1
+    buildCommand: npm ci --include=dev && npm run dashboard:typecheck
+    startCommand: npm run dashboard:start
+    healthCheckPath: /healthz
+    envVars:
+      - key: NODE_VERSION
+        value: 24.13.1
+      - key: NODE_ENV
+        value: production
+      - key: PERMIO_DASHBOARD_HOST
+        value: 0.0.0.0
+      - key: PERMIO_APP_LOCAL_DEMO
+        value: "false"
+      - key: PERMIO_APP_SECURE_COOKIES
+        value: "true"
+      - key: PERMIO_APP_DATABASE
+        value: /var/data/permio/application.sqlite
+    disk:
+      name: permio-data
+      mountPath: /var/data/permio
+      sizeGB: 1

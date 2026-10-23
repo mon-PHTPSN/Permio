@@ -10,7 +10,7 @@ import { runtimeDecisionReceiptAlignedValue, runtimeDecisionReceiptId,
   type DecisionReceiptSourceReader, type RuntimeDecisionReceiptBody } from "./decision-receipt.ts";
 import type { Hex32 } from "./model.ts";
 import { PreprodConnectionProfile } from "./preprod-profile.ts";
-import { readIndexedReceiptPayload } from "./indexed-receipt-read.ts";
+import { IndexedReceiptUnavailableError, isTransientIndexedReceiptRead, readIndexedReceiptPayload } from "./indexed-receipt-read.ts";
 
 const index = new CompactTypeUnsignedInteger(255n, 1);
 const alignedIndex = (value: bigint): AlignedValue => ({ value: index.toValue(value), alignment: index.alignment() });
@@ -108,7 +108,11 @@ export function createIndexedDecisionReceiptReader(input: {
     }), "Receipt was not created by this exact call transcript");
     return { network, contract, transactionId, ledgerSequence: BigInt(finalized.blockHeight),
       finalized: true, transactionSucceeded: true, receiptIdFromCall: receiptId, bodyAtTransaction: body };
-    } catch {
+    } catch (error) {
+      if (error instanceof IndexedReceiptUnavailableError ||
+          stage === "source-and-finality" && isTransientIndexedReceiptRead(error)) {
+        throw new IndexedReceiptUnavailableError();
+      }
       // The authenticated profile contains a provider credential in its URL.
       // Preserve a useful fixed stage without forwarding fetch/SDK error data.
       throw Error(`Indexed decision receipt verification failed at ${stage}; transport details withheld`);
