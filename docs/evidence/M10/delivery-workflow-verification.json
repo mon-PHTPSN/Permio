@@ -1,0 +1,61 @@
+{
+  "date": "2026-11-15",
+  "baseline": "30f3f361b63b08492b37e9272a59ceb4151d05cd",
+  "branch": "feat/m10-encrypted-evidence",
+  "focused": {
+    "command": "npm test --workspace @permio/evidence-vault",
+    "tests": 18,
+    "passed": 18,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullSuite": {
+    "command": "npm test",
+    "exitCode": 0,
+    "nodeTests": 603,
+    "evmTests": 44,
+    "passed": 647,
+    "failed": 0,
+    "skipped": 0,
+    "note": "Completed before the test-only namespace vector refinement; production behavior is unchanged, and focused tests were rerun after the refinement."
+  },
+  "typecheck": {
+    "scoped": "passed",
+    "project": "passed"
+  },
+  "documentationCheck": "passed",
+  "proof": {
+    "initialRed": "7 failures: evidence delivery workflow is not implemented",
+    "diagnosticsRed": "AUTHORIZATION_FAILED when signer diagnostics crossed the request boundary",
+    "manifestOpeningRed": "AUTHORIZATION_FAILED when local proof adapter lacked the manifest opening"
+  },
+  "actualComponents": [
+    "WebCrypto encryption/decryption",
+    "context-account Ed25519 signatures",
+    "Mera SDK secret-vault encryption with software authenticator",
+    "loopback HTTP transmission, error and byte-identical retry",
+    "Solidity execution tests"
+  ],
+  "syntheticBoundaries": [
+    "bridge admission/finality",
+    "current bridge authorization/revocation fixture",
+    "software authenticator"
+  ],
+  "notEstablished": [
+    "live approved bridge deployment integration",
+    "authenticated production evidence storage/retrieval",
+    "browser disclosure UI",
+    "durable channel recovery after restart",
+    "real passkey/device compatibility"
+  ],
+  "review": {
+    "status": "complete",
+    "verdict": "Ready to merge",
+    "runId": "20261115-014058-a5e3ee8c",
+    "reviewers": 7,
+    "actionableFindings": 0,
+    "coverage": "Full local review; no external peer or live integration acceptance",
+    "remainingCoverageObservation": "Independent receipt-window negative cases; guards are implemented and no defect was established."
+  },
+  "testVectorCorrection": "Valid namespace substitution reaches the encrypted vault binding check; final focused 18-test suite and scoped typecheck rerun afterward passed."
+}

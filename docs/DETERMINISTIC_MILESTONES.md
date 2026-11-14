@@ -1126,7 +1126,13 @@ fields, or if any pack bypasses the common privacy invariants.
 
 ## 13 M10 — Encrypted evidence and cross-context bridge
 
-Status: `NOT_STARTED`; depends on M6 and M9
+Status: `IN_PROGRESS_LIVE_BLOCKED`; depends on M6 and M9
+
+Local evidence encryption, recipient-key custody and the confirmed client delivery
+workflow are implemented. Live bridge authorization, production retrieval/storage,
+browser confirmation UI and real passkey compatibility remain required.
+Current evidence: [the workflow log](evidence/M10/delivery-workflow-development.md).
+Local tests do not satisfy the live acceptance gate.
 
 ### Artifacts
 
@@ -2206,7 +2212,11 @@ intent。
 
 ## 13 M10——加密证据与跨上下文桥接
 
-状态：`NOT_STARTED`；依赖 M6 和 M9
+状态：`IN_PROGRESS_LIVE_BLOCKED`；依赖 M6 和 M9
+
+本地证据加密、接收方密钥保管及明确确认后的客户端交付流程已实现。真实桥接授权、生产环境的
+检索／存储、浏览器确认界面及真实通行密钥兼容性仍须完成。当前证据见
+[工作流程日志](evidence/M10/delivery-workflow-development.md)。本地测试不满足在线验收门槛。
 
 产物包括选定记录 manifest、接收方加密与密钥轮换接口、供应商中立的
 `RecipientKeyCustodyAdapter` 与具体 `mera-prf-v1` 实现、显式跨上下文 `ActionIntent`、桥接收据

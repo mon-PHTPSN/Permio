@@ -2,7 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-  Source SHA-256: cfa2632e9b89655d489e5f281cc3637962d2167abb6d15110a9838f7a42d56ad
+  Source SHA-256: cadd2465a28618c6101f7de4ac1837f3f8fc3248a9b2cbbfeaaa0254cf794605
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-  <meta name="source-sha256" content="cfa2632e9b89655d489e5f281cc3637962d2167abb6d15110a9838f7a42d56ad">
+  <meta name="source-sha256" content="cadd2465a28618c6101f7de4ac1837f3f8fc3248a9b2cbbfeaaa0254cf794605">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -1275,7 +1275,12 @@ fields, or if any pack bypasses the common privacy invariants.</p>
 <section aria-labelledby="13-m10-encrypted-evidence-and-cross-context-bridge">
 <h2 id="13-m10-encrypted-evidence-and-cross-context-bridge">13 M10 — Encrypted evidence and cross-context bridge</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on M6 and M9</p>
+<p>Status: <code>IN_PROGRESS_LIVE_BLOCKED</code>; depends on M6 and M9</p>
+<p>Local evidence encryption, recipient-key custody and the confirmed client delivery
+workflow are implemented. Live bridge authorization, production retrieval/storage,
+browser confirmation UI and real passkey compatibility remain required.
+Current evidence: <a href="evidence/M10/delivery-workflow-development.md">the workflow log</a>.
+Local tests do not satisfy the live acceptance gate.</p>
 <h3 id="artifacts-9">Artifacts</h3>
 
 <ul>
@@ -1604,7 +1609,7 @@ hide an environmental failure.</p>
         </article>
         <footer>
           Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-          Source SHA-256: <code>cfa2632e9b89655d489e5f281cc3637962d2167abb6d15110a9838f7a42d56ad</code>.
+          Source SHA-256: <code>cadd2465a28618c6101f7de4ac1837f3f8fc3248a9b2cbbfeaaa0254cf794605</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
@@ -2297,7 +2302,10 @@ intent。</p>
 <section aria-labelledby="zh-13-m10-加密证据与跨上下文桥接">
 <h2 id="zh-13-m10-加密证据与跨上下文桥接">13 M10——加密证据与跨上下文桥接</h2>
 
-<p>状态：<code>NOT_STARTED</code>；依赖 M6 和 M9</p>
+<p>状态：<code>IN_PROGRESS_LIVE_BLOCKED</code>；依赖 M6 和 M9</p>
+<p>本地证据加密、接收方密钥保管及明确确认后的客户端交付流程已实现。真实桥接授权、生产环境的
+检索／存储、浏览器确认界面及真实通行密钥兼容性仍须完成。当前证据见
+<a href="evidence/M10/delivery-workflow-development.md">工作流程日志</a>。本地测试不满足在线验收门槛。</p>
 <p>产物包括选定记录 manifest、接收方加密与密钥轮换接口、供应商中立的
 <code>RecipientKeyCustodyAdapter</code> 与具体 <code>mera-prf-v1</code> 实现、显式跨上下文 <code>ActionIntent</code>、桥接收据
 与撤销/到期行为，以及证据保险库验证 API。版本化 Mera vault manifest 只能包含 relying-party
@@ -2466,7 +2474,7 @@ npm run compile
         </article>
         <footer>
           由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
-          源文件 SHA-256：<code>cfa2632e9b89655d489e5f281cc3637962d2167abb6d15110a9838f7a42d56ad</code>。
+          源文件 SHA-256：<code>cadd2465a28618c6101f7de4ac1837f3f8fc3248a9b2cbbfeaaa0254cf794605</code>。
         </footer>
       </div>
     </main>
