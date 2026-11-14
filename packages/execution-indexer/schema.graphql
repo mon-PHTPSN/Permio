@@ -2,7 +2,7 @@ type ReceiptProjection {
   id: ID!
   registry: String!
   receiptVersion: Bytes!
-  recipient: String!
+  recipient: Bytes!
   actionSchemaId: Bytes! @index
   purposeHash: Bytes! @index
   validAfter: BigInt!
@@ -16,15 +16,16 @@ type ReceiptProjection {
   registeredBlock: BigInt!
   registeredTransaction: String!
   sourceNetwork: Bytes
+  sourceNetworkName: String
   sourceContract: Bytes
   sourceTransaction: Bytes
   sourceLedgerSequence: BigInt
   namespaceHash: Bytes
   templateIdHash: Bytes
-  templateVersion: Bytes
+  templateVersion: String
   templateContentHash: Bytes
   proofModuleId: Bytes
-  proofModuleVersion: Bytes
+  proofModuleVersion: String
   proofModuleImplementationHash: Bytes
   instanceCommitment: Bytes
   previousStateCommitment: Bytes
@@ -44,7 +45,7 @@ type ExecutionProjection {
   adapter: String! @index
   actionSchemaId: Bytes! @index
   relayer: String!
-  recipient: String!
+  recipient: Bytes!
   success: Boolean! @index
   resultCommitment: Bytes!
   errorHash: Bytes!
@@ -71,7 +72,8 @@ type GatewayKeyEpoch {
   gatewayKeyId: Bytes!
   signer: String! @index
   validAfter: BigInt!
-  validBefore: BigInt!
+  signingCutoff: BigInt!
+  verificationCutoff: BigInt!
   disabled: Boolean! @index
   updatedAt: BigInt!
   updatedBlock: BigInt!
@@ -108,6 +110,19 @@ type TimeBucketAggregate {
   executionSuccesses: BigInt!
   executionFailures: BigInt!
   receiptsRevoked: BigInt!
+  updatedAt: BigInt!
+  updatedBlock: BigInt!
+}
+
+type RecipientAdapterBinding {
+  id: ID!
+  registry: String!
+  bindingKey: Bytes!
+  receiptVersion: Bytes! @index
+  actionSchemaId: Bytes! @index
+  recipient: Bytes! @index
+  adapter: String!
+  enabled: Boolean! @index
   updatedAt: BigInt!
   updatedBlock: BigInt!
 }

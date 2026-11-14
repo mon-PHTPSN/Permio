@@ -1,0 +1,184 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_INTEGRATION_IMPLEMENTED_LIVE_ACCEPTANCE_PENDING",
+  "milestonesComplete": false,
+  "productionReady": false,
+  "independentHumanReview": "OPEN",
+  "baseM6": "f96ed6e1795e4193a1bd05b2baa7bae79dccd64a",
+  "integratedM7": "bc2b93001cdb3bf90bfe0515848a44ce7da28509",
+  "integratedM8": "5142daf557064e86fd126f2fb5cfa29187cf98cf",
+  "newNativeSubmissions": 0,
+  "newProofRequests": 0,
+  "ecsUsed": false,
+  "validation": {
+    "command": "npm run check",
+    "node": "v24.13.1",
+    "nodePassCounts": [
+      142,
+      6,
+      15,
+      14,
+      16,
+      51,
+      209,
+      66,
+      40
+    ],
+    "hardhatPass": 44,
+    "totalPassed": 603,
+    "failures": 0,
+    "skips": 0,
+    "log": "logs/integration-20261021/review-final-check.txt",
+    "sha256": "9398687ab115c7bd0855c448deb3677a11e9ea40398fb0358860e929bb86411f",
+    "finalFullRun": "PASSED",
+    "scope": "Final reviewed-and-fixed integration tree; all six confirmed findings resolved",
+    "lint": "NO_ROOT_LINT_COMMAND_CONFIGURED"
+  },
+  "evidenceTiers": {
+    "syntheticSourceAndLoopbackHttp": true,
+    "recordedPreprodFeedingNewIntegration": true,
+    "genuinelyLiveEndToEnd": false,
+    "envioConfiguration": "LOCAL_FIXTURE_SOURCE_UNTIL_LIVE_DEPLOYMENT",
+    "envioCurrentRun": {
+      "status": "PASSED",
+      "command": "npm install --ignore-scripts --no-audit --no-fund; npm run codegen; npm run typecheck; npm test",
+      "environment": "isolated WSL copy; Node22.23.2/npm10.9.8",
+      "handlerTestsPassed": 6,
+      "failed": 0,
+      "skipped": 0,
+      "log": "logs/integration-20261021/review-null-indexer-green.txt",
+      "liveIndexerVerified": false,
+      "sha256": "4844a3956ba84dafa964585c47f3c795b98e86982b1dc21c200bc5d9f475e228",
+      "compiledEventSignaturesAndIndexedFieldsMatched": 14
+    },
+    "recordedPublicInput": {
+      "codecReport": "docs/evidence/integration/recorded-preprod-codec.json",
+      "localEvmReport": "docs/evidence/integration/recorded-preprod-local-evm.json",
+      "receipts": 3,
+      "registrationsPerReceipt": 1,
+      "executionsPerReceipt": 1,
+      "deliveryAttemptsPerReceipt": 2,
+      "identicalPacketAfterRestart": true,
+      "sourceDiscoveryVerifiedByReplayScript": false,
+      "newLiveEndToEnd": false,
+      "inputFixture": "packages/gateway/test/fixtures/recorded-preprod-public-receipts.json",
+      "sourceSha256": "c8dd5774ed0ca60a20c3eac444c6612fb42343237cfd914b59addb811bec7a73",
+      "reproducibleCommandVerified": true,
+      "replayLog": "logs/integration-20261021/reproducible-recorded-replay.txt"
+    },
+    "sourceAdapter": {
+      "policy": "trusted-finalized-only-midnight-indexer",
+      "officialVersion": "v4.3.3",
+      "independentConsensusVerification": false,
+      "recordedSerializedCallTest": true,
+      "liveProviderSessionVerified": false
+    },
+    "dashboard": {
+      "desktopAndMobileRendering": "PASSED_SYNTHETIC_PUBLIC_RECEIPT",
+      "mobileViewport": "390x844",
+      "liveIndexedDataVerified": false,
+      "postFixNoTransitionBrowserCheck": "PASSED_SYNTHETIC_PUBLIC_RECEIPT"
+    }
+  },
+  "remaining": [
+    "Operational source credentials and signing/relayer configuration for an explicitly authorized deployment",
+    "New live M6-to-EVM acceptance with separate concrete authorization; prior controlled Preprod reserve does not authorize a fresh positive instance or deployment",
+    "Live Envio indexing and required GraphQL consumer acceptance",
+    "Independent human security/privacy review and protected code-owner approval",
+    "Cleanup only after accepted integration and complete per-branch preservation checks"
+  ],
+  "cleanup": {
+    "branchesDeleted": [],
+    "worktreesRemoved": [],
+    "m9Preserved": true,
+    "lowMemoryExperimentPreserved": true
+  },
+  "m6CiRepair": {
+    "commit": "b3c490595e997c11c68ba04c362f31b7f53041e4",
+    "publishedTo": "https://github.com/mon-PHTPSN/Permio/pull/1",
+    "freshCheckoutTypecheck": true,
+    "freshCheckoutFocusedPassed": 15,
+    "realAssetsDeploymentWiringPassed": 1,
+    "localSyntheticProofProviderHooks": 1,
+    "httpProofRequests": 0,
+    "nativeSubmissions": 0,
+    "temporaryPublicAssetLinksRemoved": true,
+    "generatedBytesRestoredFromExactGitBlobs": true,
+    "githubCi": [
+      {
+        "conclusion": "SUCCESS",
+        "runId": "39590478421"
+      },
+      {
+        "conclusion": "SUCCESS",
+        "runId": "39590485663"
+      }
+    ]
+  },
+  "architectureDecision": {
+    "status": "APPROVED_BY_USER",
+    "date": "2026-10-21",
+    "choice": "Lossless M8 fields and separate exact recipient-to-adapter binding",
+    "implemented": true
+  },
+  "priorReview": {
+    "skill": "ce-code-review",
+    "runId": "20261021-permio-integration-review",
+    "status": "complete",
+    "findingsResolved": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "postFixValidation": "complete",
+    "additionalDispatchAllowlistRegression": "passed",
+    "independentHumanReview": "OPEN",
+    "crossModelPass": "not run; in-process adversarial fallback"
+  },
+  "review": {
+    "skill": "ce-code-review",
+    "runId": "20261021-lossless-m7-m8-review",
+    "status": "complete",
+    "originalVerdict": "Ready with fixes",
+    "findingsResolved": [
+      1,
+      2,
+      3,
+      6,
+      7,
+      9
+    ],
+    "unresolvedFindings": [],
+    "postFixValidation": "complete",
+    "fullRootPassed": 603,
+    "sourceAdapterPassed": 16,
+    "deliveryPassed": 11,
+    "dashboardPassed": 40,
+    "envioHandlerPassed": 6,
+    "isolatedGuardRemovalMutationsFailedAsExpected": 3,
+    "dispatchTestingGapsClosed": [
+      "policy changes while signing",
+      "receipt expires while signing"
+    ],
+    "independentHumanReview": "OPEN",
+    "crossModelPass": "not run; no different-provider CLI installed; in-process adversarial fallback"
+  },
+  "implemented": [
+    "Lossless M6 v1 codec and Solidity verifier preserving the original receipt identity, exact recipient, complete source transaction and canonical versions",
+    "Separate immutable exact-recipient adapter binding in registry, Envio and dashboard",
+    "Consecutive indexed-block discovery and call-specific historical template/module eligibility, reconciled with authoritative M6 reader",
+    "Append-only public signed packets persisted before HTTP, reused after restart and key overlap",
+    "Separate gateway signing and verification cutoffs in Solidity and Envio",
+    "Typed terminal source rejection and integrity-halt propagation"
+  ],
+  "navigation": {
+    "scopedIntegrationIndexBuilt": true,
+    "indexedFiles": 562,
+    "symbols": 2446,
+    "parseFailures": 0,
+    "cacheIgnored": true,
+    "configuredMcpConnectionStillTargetsOriginalM8Checkout": true,
+    "globalMcpConfigurationChanged": false
+  }
+}

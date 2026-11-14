@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 1,
+  "reviewedAtUtc": "2026-10-20T15:48:32.479573+00:00",
+  "milestoneStatus": "IN_PROGRESS",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "approvedNativeCap": 172,
+  "approvedApplicationMaximum": 5,
+  "currentPhasePlannedCalls": 42,
+  "noAdditionalNativeSubmissionsByThisReview": true,
+  "futureOutcomesAreConditional": true,
+  "liveSnapshot": {
+    "observedAtUtc": "2026-10-20T15:46:47.645985+00:00",
+    "nativeAttempts": 118,
+    "normalFinals": 115,
+    "newNativeNegativeOutcomes": 2,
+    "reservations": 119
+  },
+  "specification": {
+    "path": "docs/DETERMINISTIC_MILESTONES.md",
+    "sha256": "00161e5c27b8dc4cbf4d0137cf95a76ba0474c718ff0c603330814be862a8c9c"
+  },
+  "evidenceTierRule": "Generated circuit evaluation, public-VM replay, exact node read-only validation and native submission outcomes are distinct. None may be silently relabeled.",
+  "criteria": [
+    {
+      "criterion": 1,
+      "recordedStatus": "PARTIAL",
+      "assessment": "The final full-set privacy scan and verified download remain pending. The partial115 checkpoint remains independently verified; new witness values must be included in the final scan.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 2,
+      "recordedStatus": "PARTIAL",
+      "assessment": "The current runner checks20 generated-circuit mutations against indexed Preprod state per selected action. These are not native rejection transactions. Admission/profile/version coverage still needs an explicit evidence-by-field audit.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 3,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Authority-root native116 and its causal audit are complete. Credential-status native150 and its independent positive control/causal audit remain planned.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 4,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Existing generated-circuit/unit admission tests cover key eligibility, altered deployment/root/hash and signatures. Their precise live-evidence coverage remains to be reconciled; positive activations alone do not close this criterion.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 5,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Planned155/157 deprecation checks replay historical public programs. Added generated-circuit lifecycle controls will evaluate original private witnesses against actual final revoked records for both action families, with exact expected failure checks and restored positive controls. These remain read-only, not new native submissions; new-template selection under deprecation still requires its own evidence assessment.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 6,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Existing configuration/version/schema tests and action mutations must be mapped to every named unsupported input. Fail-closed signature rejection must not be mislabeled as a particular unsupported-schema check.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 7,
+      "recordedStatus": "PASSED_PREPROD_NATIVE",
+      "assessment": "Native87 conflict and both historical-parameter causal controls are verified; preserve exact bytes and replay in the final package.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 8,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Native148 is planned with an independently proved outer identifier after cold reconnect. A public-VM nullifier-only projection distinguishes consumed-nullifier rejection from consumed preparation.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 9,
+      "recordedStatus": "OPEN",
+      "assessment": "Native147 is planned; require unchanged entire target-instance record across the action plus a newly inserted receipt and scoped nullifier.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 10,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Live deployment/stateful success, existing negative outcomes and cold read are already present. Finish the authorized remaining cases and exact-byte/source-height final verification.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 11,
+      "recordedStatus": "PARTIAL",
+      "assessment": "The final package must scan every chain/indexer/receipt/log/HTML/report artifact against actual private values, then verify archive contents and hashes locally before final stop.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 12,
+      "recordedStatus": "PARTIAL",
+      "assessment": "Successful authorized root rotation and stale-root rejection are present. Unauthorized root-transition tests must retain their exact tier and attribution; no partial result may silently close the full criterion.",
+      "statusNotAutomaticallyPromoted": true
+    },
+    {
+      "criterion": 13,
+      "recordedStatus": "PASSED_TARGETED_HISTORICAL_LOCAL_DEV",
+      "assessment": "The historical pinned Local Dev node/indexer outage and persisted-state reconnect evidence stays separately labeled; it does not claim control over shared Preprod.",
+      "statusNotAutomaticallyPromoted": true
+    }
+  ],
+  "addedLocalVerification": {
+    "testsPassed": 2,
+    "testLog": "logs/m6-remaining-preprod-20261019/approved172-generated-lifecycle-tests-v2.txt",
+    "typecheckPassed": true,
+    "typecheckLog": "logs/m6-remaining-preprod-20261019/approved172-generated-lifecycle-typecheck-v3.txt",
+    "actualPreprodRecordChecksNotYetExecuted": true,
+    "frozenNativeSourceUnchanged": true,
+    "nativeSubmissions": 0,
+    "proofsRequested": 0
+  },
+  "independentHumanReview": "OPEN; this agent review is not independent human security/privacy approval"
+}

@@ -1,0 +1,77 @@
+// Appended only to an isolated snapshot of the complete current contract.
+// Feasibility diagnostic: no state mutation, action acceptance or receipt.
+export circuit diagnoseLedgerBoundActionAncestry(
+    ancestry: RuntimeActiveAncestry,
+    intent: RuntimeActionIntent,
+    sessionSignature: Schnorr_SchnorrSignature,
+    intentSignature: Schnorr_SchnorrSignature,
+    capabilityPaths: RuntimeActionScopePaths,
+    sessionPaths: RuntimeActionScopePaths,
+    allocation: RuntimeInstanceAllocation,
+    state: RuntimeStateOpening,
+    stateSequence: Uint<64>,
+    authorityVersion: Uint<64>,
+    authoritySequence: Uint<64>,
+    statusSequence: Uint<64>,
+    policy: RuntimeTemplateActionPolicy,
+    binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>,
+    effectiveAt: Uint<64>,
+    validBefore: Uint<64>
+): Boolean {
+    assert(runtimeInstances.member(disclose(intent.instanceCommitment)),
+        "Action diagnostic requires an allocated instance");
+    const instance = runtimeInstances.lookup(disclose(intent.instanceCommitment));
+    assert(allocation.targetNetworkHash == targetNetworkHash,
+        "Action diagnostic allocation targets another network");
+    assert(allocation.targetContractIdentity == kernel.self().bytes,
+        "Action diagnostic allocation targets another deployment");
+    assert(allocation.allocationVersion == 1 && allocation.target == intent.target &&
+        allocation.instanceCommitment == intent.instanceCommitment &&
+        runtimeInstanceAllocationCommitment(allocation) == instance.allocationCommitment,
+        "Action diagnostic substitutes its exact allocation or deployment");
+    assert(state.stateVersion == 2 && state.instanceCommitment == intent.instanceCommitment &&
+        runtimeStateCommitment(state) == instance.currentStateCommitment &&
+        stateSequence == instance.transitionSequence && instance.lifecycleStatus == 1 &&
+        effectiveAt >= state.lastMutationAt && effectiveAt >= allocation.createdAt &&
+        validBefore > effectiveAt && validBefore <= allocation.expiresAt,
+        "Action diagnostic is stale against its exact private state or lifetime");
+    assert(blockTimeGte(disclose(effectiveAt)) && blockTimeLt(disclose(validBefore)),
+        "Action diagnostic proof window is not current");
+    assert(authorityRoots.member(disclose(intent.target.namespaceHash)) &&
+        credentialStatusRoots.member(disclose(intent.target.namespaceHash)),
+        "Action diagnostic namespace roots do not exist");
+    const authority = authorityRoots.lookup(disclose(intent.target.namespaceHash));
+    const status = credentialStatusRoots.lookup(disclose(intent.target.namespaceHash));
+    assert(authorityVersion == authority.rootVersion && authoritySequence == authority.rootSequence &&
+        statusSequence == status.rootSequence,
+        "Action diagnostic is stale against the current namespace roots");
+    const templateKey = persistentHash<TemplateRegistryTarget>(intent.target);
+    assert(activeTemplates.member(disclose(templateKey)), "Action diagnostic template is not registered");
+    const template = activeTemplates.lookup(disclose(templateKey));
+    assert(template.lifecycleStatus == 1, "Action diagnostic requires the active-template baseline");
+    assertRuntimeTemplatePolicyBinding(intent.target, policy, binding, bindingPath,
+        template.proofModuleBindingRoot, template.proofModuleBindingCount);
+    assertRuntimeTemplateActionIntent(policy, intent);
+    const moduleKey = proofModuleRegistryKeyFromBinding(binding);
+    assert(proofModules.member(disclose(moduleKey)), "Action diagnostic module is not registered");
+    const moduleRecord = proofModules.lookup(disclose(moduleKey));
+    assert(moduleRecord.lifecycleStatus == 4 && moduleRecord.receiptSchemaHash == binding.receiptSchemaHash,
+        "Action diagnostic requires the exact active-module baseline");
+    // Preserve the full 17-capability/35-leaf/588-instruction witness, both
+    // Schnorr signatures and all seven memberships in each certified scope.
+    verifyRuntimeActionAuthorization(ancestry, intent, sessionSignature, intentSignature,
+        capabilityPaths, sessionPaths, status.root, status.rootSequence, effectiveAt);
+    assert(validBefore <= ancestry.session.expiresAt,
+        "Action diagnostic deadline exceeds its signed session");
+    for (const i of 0..17) {
+        if (i < ancestry.capabilityCount) {
+            assert(validBefore <= ancestry.capabilities[i].expiresAt &&
+                validBefore <= ancestry.accounts[i].validBefore,
+                "Action diagnostic deadline exceeds an active ancestor or account");
+        }
+    }
+    // No slot provenance, selected evidence, issuer-policy revalidation,
+    // transition, nullifier or receipt acceptance is claimed by this probe.
+    return true;
+}

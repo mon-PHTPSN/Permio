@@ -1,0 +1,23 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { ordinaryActionFixture,testBytes as bytes } from "../../packages/midnight-authorization/test/fixtures/ordinary-action.ts";
+import { seedGeneratedMap } from "../../packages/midnight-authorization/test/fixtures/generated-genesis.ts";
+test("second application uses namespace status sequence6 and preserves old leaves and instance through atomic action",()=>{
+  const f=ordinaryActionFixture({preservedStatusLeaves:true});
+  assert.equal(f.status.sequence,6n);
+  assert.deepEqual(f.ancestry.accounts.filter(x=>x.credentialVersion===1n).map(x=>x.statusIndex),[10n]);
+  const old={...f.instanceRecord,transitionSequence:4n,currentStateCommitment:bytes(212)};
+  f.current=seedGeneratedMap(f.current,"runtimeInstances",bytes(211),old);
+  const leaves=[7n,8n,9n].map(i=>f.status.pathFor(i).leaf);
+  f.finishPreparation();
+  assert.equal(f.view().decisionReceipts.size(),0n);
+  assert.equal(f.view().runtimeInstances.lookup(f.intent.instanceCommitment).transitionSequence,4n);
+  f.execute();
+  assert.equal(f.view().runtimeInstances.size(),2n);
+  assert.deepEqual(f.view().runtimeInstances.lookup(bytes(211)),old);
+  assert.equal(f.view().runtimeInstances.lookup(f.intent.instanceCommitment).transitionSequence,5n);
+  assert.equal(f.view().decisionReceipts.size(),1n);
+  assert.equal(f.view().usedRuntimeActionNullifiers.size(),1n);
+  assert.deepEqual([7n,8n,9n].map(i=>f.status.pathFor(i).leaf),leaves);
+  assert.equal(f.view().credentialStatusRoots.lookup(f.target.namespaceHash).rootSequence,6n);
+});

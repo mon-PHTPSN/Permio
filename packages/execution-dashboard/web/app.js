@@ -101,6 +101,18 @@ function detailRows(rows) {
   return `<dl class="receipt">${rows.map(([label, value]) => `<dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd>`).join("")}</dl>`;
 }
 
+export function stateReferenceRows(receipt) {
+  if (receipt.instanceCommitment != null && receipt.contextHash != null &&
+      receipt.previousStateCommitment === null && receipt.nextStateCommitment === null && receipt.transitionSequence === null) {
+    return [["State transition", "No state transition"]];
+  }
+  return [
+    ["Previous state", receipt.previousStateCommitment],
+    ["Next state", receipt.nextStateCommitment],
+    ["Transition sequence", receipt.transitionSequence],
+  ];
+}
+
 function renderReceiptDetails(id) {
   if (!currentReadModel) return;
   const receipt = currentReadModel.receipts.find((item) => item.id === id);
@@ -117,13 +129,17 @@ function renderReceiptDetails(id) {
       ["Valid from", formatUnix(receipt.validAfter)], ["Valid until", formatUnix(receipt.validBefore)],
     ])}
     <section class="detail-section"><h3>Transactions</h3>${detailRows([
-      ["Source transaction", receipt.sourceTransaction], ["Registration", receipt.registeredTransaction],
-      ...(execution ? [["Execution", execution.transactionHash], ["Executed", formatUnix(execution.executedAt)]] : []),
+      ["Source network", receipt.sourceNetworkName], ["Source contract", receipt.sourceContract],
+      ["Source ledger sequence", receipt.sourceLedgerSequence], ["Source transaction", receipt.sourceTransaction], ["Registration", receipt.registeredTransaction],
+      ...(execution ? [["Execution", execution.transactionHash], ["Execution adapter", execution.adapter], ["Executed", formatUnix(execution.executedAt)]] : []),
     ])}</section>
     <details class="detail-section"><summary>Additional references</summary>${detailRows([
       ["Purpose", receipt.purposeHash], ["Action", receipt.actionSchemaId], ["Template", receipt.templateIdHash],
       ["Template version", receipt.templateVersion], ["Proof module", receipt.proofModuleId],
-      ["Module version", receipt.proofModuleVersion],
+      ["Module version", receipt.proofModuleVersion], ["Namespace", receipt.namespaceHash],
+      ["Template commitment", receipt.templateContentHash], ["Module implementation", receipt.proofModuleImplementationHash],
+      ["Instance", receipt.instanceCommitment], ...stateReferenceRows(receipt),
+      ["Context", receipt.contextHash], ["Scoped nullifier", receipt.scopedNullifier], ["Output commitment", receipt.outputCommitment],
       ...(execution?.success === false ? [["Error reference", execution.errorHash]] : []),
     ])}</details>`;
 }

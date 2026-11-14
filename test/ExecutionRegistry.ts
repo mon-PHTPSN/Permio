@@ -22,11 +22,11 @@ const ZERO_HASH = `0x${"00".repeat(32)}` as const;
 const EXPECTED_RECEIPT_FIELDS = [
   { name: "receiptVersion", type: "bytes32" },
   { name: "proofModuleId", type: "bytes32" },
-  { name: "proofModuleVersion", type: "bytes32" },
+  { name: "proofModuleVersion", type: "string" },
   { name: "proofModuleImplementationHash", type: "bytes32" },
   { name: "namespaceHash", type: "bytes32" },
   { name: "templateIdHash", type: "bytes32" },
-  { name: "templateVersion", type: "bytes32" },
+  { name: "templateVersion", type: "string" },
   { name: "templateContentHash", type: "bytes32" },
   { name: "instanceCommitment", type: "bytes32" },
   { name: "previousStateCommitment", type: "bytes32" },
@@ -35,14 +35,15 @@ const EXPECTED_RECEIPT_FIELDS = [
   { name: "contextHash", type: "bytes32" },
   { name: "actionSchemaId", type: "bytes32" },
   { name: "purposeHash", type: "bytes32" },
-  { name: "recipient", type: "address" },
+  { name: "recipient", type: "bytes32" },
   { name: "validAfter", type: "uint64" },
   { name: "validBefore", type: "uint64" },
   { name: "scopedNullifier", type: "bytes32" },
   { name: "outputCommitment", type: "bytes32" },
   { name: "sourceNetwork", type: "bytes32" },
+  { name: "sourceNetworkName", type: "string" },
   { name: "sourceContract", type: "bytes32" },
-  { name: "sourceTransaction", type: "bytes32" },
+  { name: "sourceTransaction", type: "bytes" },
   { name: "sourceLedgerSequence", type: "uint64" },
   { name: "gatewayKeyId", type: "bytes32" },
   { name: "gatewaySignedAt", type: "uint64" },
@@ -57,11 +58,11 @@ const EXPECTED_RECEIPT_TYPES = {
 interface ExpectedReceipt {
   readonly receiptVersion: Hex;
   readonly proofModuleId: Hex;
-  readonly proofModuleVersion: Hex;
+  readonly proofModuleVersion: string;
   readonly proofModuleImplementationHash: Hex;
   readonly namespaceHash: Hex;
   readonly templateIdHash: Hex;
-  readonly templateVersion: Hex;
+  readonly templateVersion: string;
   readonly templateContentHash: Hex;
   readonly instanceCommitment: Hex;
   readonly previousStateCommitment: Hex;
@@ -70,12 +71,13 @@ interface ExpectedReceipt {
   readonly contextHash: Hex;
   readonly actionSchemaId: Hex;
   readonly purposeHash: Hex;
-  readonly recipient: Address;
+  readonly recipient: Hex;
   readonly validAfter: bigint;
   readonly validBefore: bigint;
   readonly scopedNullifier: Hex;
   readonly outputCommitment: Hex;
   readonly sourceNetwork: Hex;
+  readonly sourceNetworkName: string;
   readonly sourceContract: Hex;
   readonly sourceTransaction: Hex;
   readonly sourceLedgerSequence: bigint;
@@ -147,11 +149,15 @@ describe("ExecutionRegistry M8 preparation", async function () {
       account: sourceAdmin.account,
     });
     await registry.write.registerGatewayKeyEpoch(
-      [gatewayKeyId, gateway.account.address, block.timestamp - 1n, block.timestamp + 10_000n],
+      [gatewayKeyId, gateway.account.address, block.timestamp - 1n, block.timestamp + 10_000n, block.timestamp + 20_000n],
       { account: gatewayKeyManager.account },
     );
     await registry.write.registerAdapter(
       [FIXTURE_RECEIPT_VERSION, actionSchemaId, adapter.address],
+      { account: adapterRegistrar.account },
+    );
+    await registry.write.bindRecipientAdapter(
+      [FIXTURE_RECEIPT_VERSION, actionSchemaId, hash("exact-runtime-recipient"), adapter.address],
       { account: adapterRegistrar.account },
     );
   });
@@ -163,11 +169,11 @@ describe("ExecutionRegistry M8 preparation", async function () {
     return {
       receiptVersion: FIXTURE_RECEIPT_VERSION,
       proofModuleId: hash("delegated-capability-action-v1"),
-      proofModuleVersion: hash("1.0.0"),
+      proofModuleVersion: "1.0.0",
       proofModuleImplementationHash: hash("fixture-proof-module-implementation"),
       namespaceHash: hash("fixture.namespace"),
       templateIdHash: hash("fixture-template"),
-      templateVersion: hash("1.0.0"),
+      templateVersion: "18446744073709551615.2.3",
       templateContentHash: hash("fixture-template-content"),
       instanceCommitment: hash("fixture-instance"),
       previousStateCommitment: ZERO_HASH,
@@ -176,14 +182,15 @@ describe("ExecutionRegistry M8 preparation", async function () {
       contextHash: hash("fixture-context"),
       actionSchemaId,
       purposeHash: hash("fixture-purpose"),
-      recipient: adapter.address,
+      recipient: hash("exact-runtime-recipient"),
       validAfter: block.timestamp,
       validBefore: block.timestamp + 1_000n,
       scopedNullifier: hash("fixture-nullifier"),
       outputCommitment: hash("fixture-public-output"),
       sourceNetwork,
+      sourceNetworkName: "midnight-local-dev-fixture",
       sourceContract,
-      sourceTransaction: hash("fixture-midnight-transaction"),
+      sourceTransaction: `${hash("fixture-midnight-transaction")}ab`,
       sourceLedgerSequence: 42n,
       gatewayKeyId,
       gatewaySignedAt: block.timestamp,
@@ -227,6 +234,51 @@ describe("ExecutionRegistry M8 preparation", async function () {
     );
     return keccak256(encoded);
   }
+
+
+  it("requires an explicit exact recipient binding even when low address bytes match", async function () {
+    const low = adapter.address.slice(2).toLowerCase();
+    const first = `0x${"11".repeat(12)}${low}` as Hex;
+    const second = `0x${"22".repeat(12)}${low}` as Hex;
+    await registry.write.bindRecipientAdapter(
+      [FIXTURE_RECEIPT_VERSION, actionSchemaId, first, adapter.address],
+      { account: adapterRegistrar.account },
+    );
+    const firstId = await register(await createReceipt({recipient: first}));
+    await registry.write.executeReceipt([firstId, "0x"], {account: relayer.account});
+    const secondId = await register(await createReceipt({recipient: second, scopedNullifier: hash("second-low-byte-nullifier")}));
+    await assert.rejects(registry.write.executeReceipt([secondId,"0x"], {account: relayer.account}), /RecipientAdapterMismatch/);
+    assert.equal((await registry.read.getReceipt([secondId])).consumed, false);
+  });
+
+  it("restricts recipient binding, prevents replacement and checks disable at execution time", async function () {
+    const recipient = hash("exact-runtime-recipient");
+    await assert.rejects(registry.write.bindRecipientAdapter(
+      [FIXTURE_RECEIPT_VERSION, actionSchemaId, hash("another-recipient"), adapter.address],
+      {account: gateway.account}), /AccessControlUnauthorizedAccount/);
+    await assert.rejects(registry.write.bindRecipientAdapter(
+      [FIXTURE_RECEIPT_VERSION, actionSchemaId, recipient, adapter.address],
+      {account: adapterRegistrar.account}), /RecipientBindingAlreadyRegistered/);
+    const id = await register(await createReceipt());
+    await registry.write.disableRecipientAdapter([FIXTURE_RECEIPT_VERSION,actionSchemaId,recipient], {account: adapterRegistrar.account});
+    await assert.rejects(registry.write.executeReceipt([id,"0x"], {account: relayer.account}), /RecipientAdapterMismatch/);
+    await assert.rejects(registry.write.bindRecipientAdapter(
+      [FIXTURE_RECEIPT_VERSION, actionSchemaId, recipient, adapter.address],
+      {account: adapterRegistrar.account}), /RecipientBindingAlreadyRegistered/);
+    assert.equal((await registry.read.getReceipt([id])).consumed, false);
+  });
+
+  it("does not carry a recipient binding to another action or version", async function () {
+    const otherAction = hash("other-boundary-action");
+    await registry.write.registerAdapter([FIXTURE_RECEIPT_VERSION,otherAction,adapter.address], {account: adapterRegistrar.account});
+    const id = await register(await createReceipt({actionSchemaId:otherAction}));
+    await assert.rejects(registry.write.executeReceipt([id,"0x"], {account: relayer.account}), /RecipientAdapterMismatch/);
+    const key1 = await registry.read.recipientAdapterKey([FIXTURE_RECEIPT_VERSION,actionSchemaId,hash("exact-runtime-recipient")]);
+    const key2 = await registry.read.recipientAdapterKey([hash("other-version"),actionSchemaId,hash("exact-runtime-recipient")]);
+    assert.notEqual(key1,key2);
+    assert.equal((await registry.read.recipientAdapters([key2]))[1], false);
+    await assert.rejects(registry.write.bindRecipientAdapter([FIXTURE_RECEIPT_VERSION,otherAction,hash("exact-runtime-recipient"),unauthorized.account.address], {account: adapterRegistrar.account}), /RecipientAdapterMismatch/);
+  });
 
   it("requires six distinct initial authorities", async function () {
     await assert.rejects(
@@ -281,7 +333,7 @@ describe("ExecutionRegistry M8 preparation", async function () {
     const block = await publicClient.getBlock();
     await assert.rejects(
       registry.write.registerGatewayKeyEpoch(
-        [gatewayKeyId, gateway.account.address, block.timestamp, block.timestamp + 100n],
+        [gatewayKeyId, gateway.account.address, block.timestamp, block.timestamp + 100n, block.timestamp + 200n],
         { account: gatewayKeyManager.account },
       ),
       /GatewayKeyAlreadyRegistered/,
@@ -306,7 +358,10 @@ describe("ExecutionRegistry M8 preparation", async function () {
     assert.equal(record.sourceTransaction, receipt.sourceTransaction);
     assert.equal(record.templateContentHash, receipt.templateContentHash);
     assert.equal(record.proofModuleImplementationHash, receipt.proofModuleImplementationHash);
-    assert.equal(record.recipient, getAddress(adapter.address));
+    assert.equal(record.recipient, receipt.recipient);
+    assert.equal(record.proofModuleVersion, "1.0.0");
+    assert.equal(record.templateVersion, "18446744073709551615.2.3");
+    assert.equal(record.sourceNetworkName, "midnight-local-dev-fixture");
     assert.equal(record.gatewaySigner, getAddress(gateway.account.address));
     assert.equal(record.revoked, false);
     assert.equal(record.consumed, false);
@@ -367,7 +422,7 @@ describe("ExecutionRegistry M8 preparation", async function () {
     const configuredSignatures = [...config.matchAll(/- event: "([^"]+)"/g)].map(
       (match) => match[1],
     );
-    assert.equal(configuredSignatures.length, 12);
+    assert.equal(configuredSignatures.length, 14);
 
     const configured = configuredSignatures
       .map((signature) => ({
@@ -397,7 +452,7 @@ describe("ExecutionRegistry M8 preparation", async function () {
     const signature = await signReceipt(receipt);
     const substitutions: ReadonlyArray<Partial<ExpectedReceipt>> = [
       { purposeHash: hash("different-purpose") },
-      { recipient: unauthorized.account.address },
+      { recipient: hash("unbound-runtime-recipient") },
       { actionSchemaId: hash("different-action") },
       { sourceContract: hash("different-source") },
       { outputCommitment: hash("different-output") },
@@ -435,13 +490,75 @@ describe("ExecutionRegistry M8 preparation", async function () {
     const block = await publicClient.getBlock();
     const futureKeyId = hash("fixture-future-key");
     await registry.write.registerGatewayKeyEpoch(
-      [futureKeyId, gateway.account.address, block.timestamp + 100n, block.timestamp + 1_000n],
+      [futureKeyId, gateway.account.address, block.timestamp + 100n, block.timestamp + 1_000n, block.timestamp + 2_000n],
       { account: gatewayKeyManager.account },
     );
     const futureReceipt = await createReceipt({ gatewayKeyId: futureKeyId });
     await assert.rejects(register(futureReceipt), /GatewaySignatureOutsideEpoch/);
   });
 
+  it("accepts a pre-cutoff signature during the verification overlap", async function () {
+    const block = await publicClient.getBlock();
+    const keyId = hash("overlapping-gateway-key");
+    const signingCutoff = block.timestamp + 20n;
+    const verificationCutoff = block.timestamp + 40n;
+    await registry.write.registerGatewayKeyEpoch(
+      [keyId, gateway.account.address, block.timestamp - 1n, signingCutoff, verificationCutoff],
+      { account: gatewayKeyManager.account },
+    );
+    const receipt = await createReceipt({gatewayKeyId:keyId, gatewaySignedAt:block.timestamp});
+    const signature = await signReceipt(receipt);
+    await networkHelpers.time.increaseTo(signingCutoff + 1n);
+    await registry.write.registerReceipt(
+      [FIXTURE_RECEIPT_VERSION, encodeReceipt(receipt), signature], {account:relayer.account.address},
+    );
+    assert.equal((await registry.read.getReceipt([keccak256(encodeReceipt(receipt))])).gatewaySignedAt, block.timestamp);
+  });
+
+  it("rejects a captured signature at the verification cutoff before receipt expiry", async function () {
+    const block = await publicClient.getBlock();
+    const keyId = hash("verification-cutoff-gateway-key");
+    const signingCutoff = block.timestamp + 20n;
+    const verificationCutoff = block.timestamp + 40n;
+    await registry.write.registerGatewayKeyEpoch(
+      [keyId, gateway.account.address, block.timestamp - 1n, signingCutoff, verificationCutoff],
+      { account: gatewayKeyManager.account },
+    );
+    const receipt = await createReceipt({gatewayKeyId:keyId, gatewaySignedAt:block.timestamp});
+    const signature = await signReceipt(receipt);
+    await networkHelpers.time.increaseTo(verificationCutoff);
+    assert.equal((await publicClient.getBlock()).timestamp, verificationCutoff);
+    assert(receipt.validBefore > verificationCutoff);
+    await assert.rejects(registry.simulate.registerReceipt(
+      [FIXTURE_RECEIPT_VERSION, encodeReceipt(receipt), signature], {account:relayer.account.address},
+    ), /GatewayVerificationCutoffReached/);
+  });
+
+  it("rejects signatures made exactly at the signing cutoff", async function () {
+    const block = await publicClient.getBlock();
+    const keyId = hash("signing-cutoff-gateway-key");
+    const signingCutoff = block.timestamp + 20n;
+    await registry.write.registerGatewayKeyEpoch(
+      [keyId, gateway.account.address, block.timestamp - 1n, signingCutoff, signingCutoff + 20n],
+      { account: gatewayKeyManager.account },
+    );
+    const receipt = await createReceipt({gatewayKeyId:keyId, gatewaySignedAt:signingCutoff});
+    const signature = await signReceipt(receipt);
+    await networkHelpers.time.increaseTo(signingCutoff);
+    await assert.rejects(registry.simulate.registerReceipt(
+      [FIXTURE_RECEIPT_VERSION, encodeReceipt(receipt), signature], {account:relayer.account.address},
+    ), /GatewaySignatureOutsideEpoch/);
+  });
+
+  it("rejects gateway epochs with invalid signing and verification cutoff ordering", async function () {
+    const block = await publicClient.getBlock();
+    for (const [index, signing, verification] of [[0n, 0n, 20n], [1n, 20n, 19n]] as const) {
+      await assert.rejects(registry.write.registerGatewayKeyEpoch(
+        [hash(`invalid-cutoffs-${index}`), gateway.account.address, block.timestamp, block.timestamp + signing, block.timestamp + verification],
+        {account:gatewayKeyManager.account},
+      ), /InvalidGatewayKeyEpoch/);
+    }
+  });
   it("fails closed for disabled, missing, and future gateway keys", async function () {
     const block = await publicClient.getBlock();
     const futureSignedReceipt = await createReceipt({
@@ -613,7 +730,7 @@ describe("ExecutionRegistry M8 preparation", async function () {
 
   it("rejects a receipt whose named recipient is not the registered adapter", async function () {
     const receiptId = await register(
-      await createReceipt({ recipient: unauthorized.account.address }),
+      await createReceipt({ recipient: hash("unbound-runtime-recipient") }),
     );
     await assert.rejects(
       registry.write.executeReceipt([receiptId, "0x"], { account: relayer.account }),

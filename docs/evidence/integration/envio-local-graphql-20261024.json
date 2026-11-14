@@ -1,0 +1,112 @@
+{
+  "tier": "RECORDED_PREPROD_TO_ISOLATED_LOCAL_EVM_REAL_ENVIO_GRAPHQL",
+  "sourceCommit": "08193480dc7644b3ee5d3b242e331ebdf9212163",
+  "envio": "3.14.0",
+  "chainId": 31337,
+  "registry": "0x5fbdb2315678afecb367f032d93f642f64180aa3",
+  "head": "22",
+  "receipts": 3,
+  "executions": 3,
+  "losslessSourceFieldsVerified": true,
+  "nonTransitioningNullFieldsVerified": true,
+  "realDashboardQueryConsumed": true,
+  "dashboardStatus": "available",
+  "aggregateRows": 3,
+  "liveMidnightAcceptance": false,
+  "liveMonadAcceptance": false,
+  "newMidnightSubmissions": 0,
+  "ecsUsed": false,
+  "schemaVersion": 1,
+  "observedAtUtc": "2026-10-23T17:25:21.015656+00:00",
+  "status": "LOCAL_RECORDED_RECEIPT_ENVIO_GRAPHQL_PASSED",
+  "milestonesComplete": false,
+  "productionReady": false,
+  "independentHumanReview": "OPEN",
+  "mainReconciliation": {
+    "commit": "8cae6665708fdfd7e234c378c8ea4dd90cdd3420",
+    "main": "6f6a857781ce89553fe086298354f99d92a30f89",
+    "treeUnchangedFromTestedSource": true
+  },
+  "inputReceiptIds": [
+    "0x3affb22ebf29fe0e3c829399e5cdc7a5c6f48b9cbfc3f5f554d5dcfe7ee3a2cf",
+    "0x996cb8c7a141e0c533d73bc30174ac9a1611c9853b1a0cc190a882430c23310f",
+    "0xed3440392a20161c3fa7d5a858f10338abf240511f4890cc382641009d6a0864"
+  ],
+  "services": {
+    "postgres": "18.3",
+    "hasura": "v2.43.0",
+    "graphqlBinding": "127.0.0.1:18088",
+    "postgresBinding": "127.0.0.1:15433",
+    "evmBinding": "172.30.192.1:18545 on verified vEthernet WSL interface",
+    "publicPortsOpened": false
+  },
+  "assertionsVerified": [
+    "Three actual recorded SDK receipts registered and executed on isolated chain 31337",
+    "Current Envio handlers indexed the real local EVM events into PostgreSQL and Hasura",
+    "Exact 32-byte recipients and all 33 source transaction bytes matched recorded receipts",
+    "Template/module semantic versions and source network names matched",
+    "Non-transitioning receipts retained the canonical null state triple",
+    "Actual dashboard DASHBOARD_QUERY and fetchDashboardReadModel consumed the real GraphQL endpoint",
+    "Three receipt rows, three execution rows and three time-bucket aggregates were returned"
+  ],
+  "evidenceLimits": [
+    "Recorded public Preprod inputs, not a new Midnight action or a live source-discovery run",
+    "Local Hardhat chain, not the required Monad deployment",
+    "Real local Envio and dashboard read-model function, not full M11 authenticated browser/live acceptance",
+    "No new restart/backfill/reorg claim is made by this single-run check"
+  ],
+  "priorCoreChecks": {
+    "sourceCommit": "08193480dc7644b3ee5d3b242e331ebdf9212163",
+    "projectTestsPassed": 603,
+    "envioHandlerTestsPassed": 6,
+    "rerun": false,
+    "reason": "No executable files changed; main reconciliation preserves the exact tested tree. This report adds fresh service-level validation."
+  },
+  "codeReview": {
+    "shippingSummary": "Code review: skipped (mechanical diff)",
+    "reason": "Generated observation report only; no contract, handler, gateway, dashboard, test or runtime configuration file is modified."
+  },
+  "remainingGates": [
+    "Protected owner approval for PR 2 before merge and branch cleanup",
+    "Separately authorized fresh live M6-to-Monad acceptance with operator-owned configuration",
+    "Required live Envio/M11 product consumer acceptance",
+    "Independent human security/privacy review"
+  ],
+  "cleanup": {
+    "taskOwnedEnvioProcessStopped": true,
+    "taskOwnedServicesStopRequested": true,
+    "otherServicesUnchanged": true,
+    "branchesDeleted": [],
+    "temporaryTestConfiguration": "Retained with restricted Windows ACL for this isolated acceptance database; never committed",
+    "taskOwnedContainerStatesVerified": {
+      "permio-m8-hasura-20261024": "exited",
+      "permio-m8-pg-20261024": "exited"
+    }
+  },
+  "reproduction": {
+    "configuration": "Current packages/execution-indexer config/schema/handlers at sourceCommit; RPC endpoint alone overridden in isolated copy",
+    "input": "packages/gateway/test/fixtures/recorded-preprod-public-receipts.json",
+    "steps": [
+      "Start an isolated historical-time Hardhat chain 31337; deploy current registry, M6V1ReceiptVerifier and recording adapter",
+      "Use the shared M6 codec and gateway signing path to register/execute the three committed public receipts in time order",
+      "Start pinned Envio 3.14.0 against a separate database and Hasura; never restart the existing shared database",
+      "Query the actual dashboard projection and compare identity, source, state and execution fields against the input",
+      "Stop only task-owned services and retain the public report"
+    ],
+    "machineLocalHarness": "Workspace .tmp/m8-envio-acceptance-20261024.mjs and m8-*-envio-20261024.sh; these are machine-local diagnostics, not a supported deployment entry point"
+  },
+  "sourceFingerprints": {
+    "contracts/ExecutionRegistry.sol": "8b35f3e127c841bedc1baf7dd95231d8b7f57ffc62e310fb7808e8efc1b914d4",
+    "contracts/M6V1ReceiptVerifier.sol": "c605b3223e3d218a8c33cdaa4ff9aeeded5e9af19fc19846f8e878dc0254b50e",
+    "packages/execution-indexer/config.yaml": "f72c30107207e33cd95719129a34bb8a89d07df41e7fa8e8a0b5b48c04ba723f",
+    "packages/execution-indexer/schema.graphql": "5dd14216abab9aaa8c01116609e2e1419f82df9479689ef3fd2bca395789e096",
+    "packages/execution-indexer/src/handlers/execution-registry.ts": "d98e09ca8a1a452f1c50d0ffb9f4e0ec76fce3a8b8426a6dde11d8f94740521e",
+    "packages/execution-dashboard/src/server.ts": "e78d38bffe749998f320d7b68186d1606b49f15c77b661165ba0d56d0052bd42",
+    "packages/gateway/test/fixtures/recorded-preprod-public-receipts.json": "c8dd5774ed0ca60a20c3eac444c6612fb42343237cfd914b59addb811bec7a73"
+  },
+  "publicationPrivacyScan": {
+    "credentialValuesChecked": 2,
+    "findings": 0,
+    "scope": "this generated report only"
+  }
+}

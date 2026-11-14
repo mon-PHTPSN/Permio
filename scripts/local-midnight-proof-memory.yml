@@ -1,0 +1,7 @@
+# Experimental override for the glibc-linked 8.1.0 prover. Compare the same
+# --memory-smoke workload with and without this file before claiming a benefit.
+# No allocator injection, image rebuild, protocol change or automatic recycling.
+services:
+  proof-server:
+    environment:
+      GLIBC_TUNABLES: 'glibc.malloc.arena_max=2:glibc.malloc.mmap_threshold=131072:glibc.malloc.trim_threshold=131072'

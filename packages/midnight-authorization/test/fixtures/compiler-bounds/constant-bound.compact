@@ -1,0 +1,12 @@
+pragma language_version >= 0.23;
+
+// Valid isolated diagnostic control; no ledger, deployment or production keys.
+import CompactStandardLibrary;
+
+export pure circuit constantSizedAncestry(count: Uint<32>): Uint<32> {
+    const values = default<Vector<17, Uint<32>>>;
+    for (const index of 0..17) {
+        assert(values[index] == 0, "diagnostic vector element");
+    }
+    return count;
+}

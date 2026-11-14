@@ -1,0 +1,69 @@
+// Isolated candidate only. Same v1 transcript and hash domains; factor common
+// stack-hash calls across private selections instead of hashing both branches.
+pure circuit runtimeStatusMultiproofStep(
+    state: RuntimeStatusProofState,
+    step: RuntimeStatusProofStep
+): RuntimeStatusProofState {
+    const padding = step.kind == 0;
+    const pushing = step.kind == 1;
+    const merging = step.kind == 2;
+    assert(padding || pushing || merging, "Unsupported status multiproof instruction");
+    assert(padding || !state.finished, "Status multiproof cannot resume after padding");
+    assert(
+        !padding || (state.stackSize == 1 && state.nextLeaf == state.leafCount &&
+            state.top.level == 20 && state.top.index == 0),
+        "Status multiproof padding cannot precede its complete root"
+    );
+    assert(!padding || step == default<RuntimeStatusProofStep>, "Status multiproof padding is not canonical");
+    assert(
+        !pushing || (state.nextLeaf < state.leafCount && state.stackSize < 21),
+        "Status multiproof leaf push exceeds its private bounds"
+    );
+    assert(
+        !pushing || (!step.leftFromStack && !step.rightFromStack && step.left.level == 0 &&
+            step.right == default<RuntimeStatusProofNode> && step.parentIndex == 0 && step.stackTail == 0),
+        "Status multiproof leaf instruction has unused input"
+    );
+    assert(
+        !merging || step.leftFromStack || step.rightFromStack,
+        "Status multiproof merge must cover a required leaf"
+    );
+    const popped = (step.leftFromStack as Uint<8>) + (step.rightFromStack as Uint<8>);
+    assert(!merging || state.stackSize >= popped, "Status multiproof stack underflow");
+    const right = step.right;
+    const left = step.left;
+    const leftHead = runtimeStatusStackPush(step.stackTail, left);
+    const opened = runtimeStatusStackPush(
+        step.leftFromStack && step.rightFromStack ? leftHead : step.stackTail,
+        step.rightFromStack ? right : left
+    );
+    assert(!merging || opened == state.stackCommitment, "Status multiproof stack opening is altered");
+    assert(
+        !merging || state.stackSize != popped || step.stackTail == 0,
+        "Status multiproof empty stack tail is not canonical"
+    );
+    assert(
+        !merging || (left.level == right.level && left.level < 20 &&
+        left.index == step.parentIndex * 2 && right.index == step.parentIndex * 2 + 1),
+        "Status multiproof children are not adjacent at the same exact level"
+    );
+    const parent = RuntimeStatusProofNode{
+        level: (left.level + 1) as Uint<8>, index: step.parentIndex,
+        digest: MerkleTreeDigest{field: transientHash<Vector<2, Field>>(
+            [left.digest.field, right.digest.field]
+        )}
+    };
+    const nextStack = runtimeStatusStackPush(
+        pushing ? state.stackCommitment : step.stackTail,
+        pushing ? left : parent
+    );
+    return RuntimeStatusProofState{
+        leafCount: state.leafCount,
+        leafAccumulator: pushing ? runtimeStatusAccumulateLeaf(state.leafAccumulator, left) : state.leafAccumulator,
+        nextLeaf: (state.nextLeaf + (pushing as Uint<8>)) as Uint<8>,
+        stackCommitment: padding ? state.stackCommitment : nextStack,
+        top: padding ? state.top : (pushing ? left : parent),
+        stackSize: padding ? state.stackSize : (state.stackSize + 1 - popped) as Uint<8>,
+        finished: state.finished || padding
+    };
+}

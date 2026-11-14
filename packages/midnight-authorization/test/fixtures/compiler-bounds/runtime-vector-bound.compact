@@ -1,0 +1,10 @@
+pragma language_version >= 0.23;
+
+// Intentionally invalid diagnostic fixture. It is NOT an M6 contract.
+// Checks whether pinned Compact accepts a runtime-sized ancestry vector.
+import CompactStandardLibrary;
+
+export pure circuit runtimeSizedAncestry(count: Uint<32>): Uint<32> {
+    const values = default<Vector<count, Uint<32>>>;
+    return count;
+}

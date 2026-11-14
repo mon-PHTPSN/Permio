@@ -1,0 +1,91 @@
+{
+  "evidenceVersion": 1,
+  "scope": "Retrospective event-to-event runtime assessment; not isolated ZK timings or M6 acceptance",
+  "milestoneComplete": false,
+  "sourceLogs": {
+    "weakCacheDiagnostic": "logs/m6-live-2026-10-13T11-53-48.490Z.jsonl",
+    "stockStagedRun": "logs/m6-live-2026-10-13T08-33-41.073Z.jsonl"
+  },
+  "observedProfile": {
+    "cpuQuota": 4,
+    "rayonThreads": 4,
+    "provingWorkers": 1,
+    "sharedVmMemoryGiB": 7.648,
+    "hostPhysicalMemoryGiB": 15.79,
+    "proverVersion": "8.1.0"
+  },
+  "isolatedProofGenerationSeconds": null,
+  "normalCustomerActionProofSeconds": null,
+  "customerAssessment": {
+    "implementedCircuitExecutionFeasible": true,
+    "productionReady": false,
+    "hardwareOnlyCauseEstablished": false,
+    "planningEnvelopeCompletedOperationSeconds": [30, 300],
+    "planningEnvelopeScope": "Rough risk allowance for similarly sized tested server-side circuit operations on the observed four-CPU profile, including submission/confirmation; not a measured normal-user proof time or larger-circuit upper bound",
+    "enterpriseDirection": "Customer-controlled low-frequency asynchronous workloads after missing authorization/security and sustained-load acceptance",
+    "consumerDirection": "Requires actual ordinary-action circuit completion and target-device/privacy/latency qualification",
+    "remainingProductionRequirements": [
+      "Complete current-root ancestry/account checks, runtime authorization, atomic state/nullifier updates and common receipt",
+      "Pass full required chain negatives, restart/reconnect and sustained memory/load verification",
+      "Measure per-proof latency and hardware scaling with exact circuit/key hashes",
+      "Optimize circuit or prover if ordinary-action latency/memory exceeds agreed product requirements"
+    ]
+  },
+  "weakCacheDiagnostic": {
+    "credentialEventIntervalSeconds": 264.647,
+    "proposalEventIntervalSeconds": 29.165,
+    "reviewEventIntervalsSeconds": [
+      35.4,
+      36.123
+    ],
+    "approvalEventIntervalsSeconds": [
+      78.753,
+      82.543
+    ],
+    "observedProverPeakGiB": 6.419,
+    "postCredentialRssMiB": 203.266
+  },
+  "stockStagedRun": {
+    "rootScopeStageIntervalsSeconds": [
+      137.588,
+      154.868,
+      138.831,
+      150.406,
+      149.58,
+      144.079,
+      144.222,
+      156.282
+    ],
+    "delegatedScopeStageIntervalsSeconds": [
+      150.853,
+      144.178,
+      156.118,
+      149.513,
+      156.112,
+      144.273,
+      142.79
+    ],
+    "rootProvisioningPreviousMilestoneToFinalizationSeconds": 1488.209,
+    "delegatedProvisioningPreviousMilestoneToFinalizationSeconds": 1356.048,
+    "subsequentCombinedGovernanceRunFailed": true
+  },
+  "qualifications": [
+    "Intervals include local preparation, all proving/checking, balancing, submission and indexed confirmation, not isolated proof latency.",
+    "The first approval interval must start at the last review, not the first review.",
+    "Parent/child timing is from an earlier stock-prover run that subsequently OOM-failed during governance; it is not a patched-prover full-workflow pass.",
+    "No measured scaling factor from 4 to 8 or 16 CPU cores exists.",
+    "The 16 GiB single-worker configuration is an unverified memory-headroom estimate, not a latency guarantee."
+  ],
+  "assessedAt": "2026-10-13 14:19:37 UTC",
+  "derivation": "elapsed seconds = (end event timestamp - start event timestamp) / 1000; public milestone events only",
+  "configurationEstimate": {
+    "isolatedWorkerVcpuRange": [
+      4,
+      8
+    ],
+    "isolatedWorkerRamGiB": 16,
+    "activeProvingJobs": 1,
+    "measuredOnThisConfiguration": false,
+    "latencySpeedupFactor": null
+  }
+}

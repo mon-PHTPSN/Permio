@@ -1,0 +1,12 @@
+{
+  "kind": "already-indexed-public-preprod-transaction-fixture",
+  "transactionId": "00b35caddcea4ecf97905dccfc9a497544c71eabc9015831d725d478c0ec358ea0",
+  "blockHeight": 3045403,
+  "contract": "70c139af18859fc0074f015c8c88bd727dd2a4a63afa85dcc427d98e127bbd8c",
+  "sha256": "5124cd02bdeeea756bddda4e3f084153db9bbd28655e6e425b89e64cb2a1e310",
+  "privacyScanned": true,
+  "feeIntentSegmentId": 1,
+  "contractCallSegmentId": 18649,
+  "privateWitnessesOrCredentialsIncluded": false,
+  "boundary": "offline-deserialization-regression-only; no replay or submission"
+}

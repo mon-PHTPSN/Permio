@@ -1,0 +1,425 @@
+{
+  "evidenceVersion": 1,
+  "milestone": "M6",
+  "milestoneComplete": false,
+  "scope": "Staged root/delegated capability issuance and combined governance regression on the pinned local ledger-8 stack",
+  "build": {
+    "compiler": "0.31.1",
+    "compactLanguage": "0.23.0",
+    "compactRuntime": "0.16.0",
+    "transactionCircuitCount": 9,
+    "dispatcherK": 19,
+    "dispatcherRows": 517658,
+    "dispatcherProverBytes": 169945774,
+    "sha256": {
+      "compactSource": "c073e130a3e23e1e758117e31ee5e3fb859099e4bee0b590b9babdbcdae4ebce",
+      "dispatcherProver": "40d056b67a064200890a732cd9c3c43335aa7d77ec225557ae7cf6818f6a35b0",
+      "dispatcherVerifier": "48936bbbdddea04870a2e1ef3966847eaf5df6bbd0dd206035bf9d24d62c5682"
+    }
+  },
+  "localStack": {
+    "networkId": "undeployed",
+    "node": "midnight-node:1.0.0",
+    "indexer": "indexer-standalone:4.3.3",
+    "proofServer": "proof-server:8.1.0",
+    "nodeReset": false,
+    "indexerReset": false,
+    "ledgerHistoryReset": false
+  },
+  "proverProfile": {
+    "configuration": "scripts/local-midnight-proof-server.yml",
+    "container": "permio-m6-proof-server",
+    "containerStartedAt": "2026-10-13T06:28:53.782883201Z",
+    "imageIdAndRepositoryDigest": "sha256:801bbc0340e9e96f16735f77b523f23c7459e3359842f7c79c2c53f4e994d531",
+    "provingWorkers": 1,
+    "queueCapacity": 1,
+    "rayonThreads": 4,
+    "cpuQuota": 4,
+    "verboseRequestLogging": false,
+    "originalContainerPreservedStopped": true,
+    "publicParametersCopiedOnly": true,
+    "restartedBetweenAttempts": false,
+    "processLifetimeMeasurements": [
+      {
+        "phase": "first-root-staging",
+        "rssKiB": 6764092,
+        "highWaterKiB": 7063988,
+        "swapKiB": 537804
+      },
+      {
+        "phase": "first-delegated-begin",
+        "rssKiB": 5944632,
+        "highWaterKiB": 7103640,
+        "swapKiB": 701948
+      },
+      {
+        "phase": "after-workstation-resume",
+        "rssKiB": 4596164,
+        "highWaterKiB": 7103640,
+        "swapKiB": 549352
+      },
+      {
+        "phase": "retry-parent-staging",
+        "rssKiB": 6153788,
+        "highWaterKiB": 7103640,
+        "swapKiB": 482564
+      },
+      {
+        "phase": "retry-delegated-begin",
+        "rssKiB": 6651928,
+        "highWaterKiB": 7103640,
+        "swapKiB": 655112
+      },
+      {
+        "phase": "after-delegation-before-governance",
+        "rssKiB": 6801524,
+        "highWaterKiB": 7103640,
+        "swapKiB": 505596,
+        "qualification": "Last sampled values before failure, not the fatal peak."
+      }
+    ]
+  },
+  "repositoryChecks": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "packageTestsPassed": 93,
+    "midnightAuthorizationTestsPassed": 29,
+    "hardhatTestsPassed": 6,
+    "typecheck": "passed",
+    "solidityBuild": "passed",
+    "documentationFreshness": "passed",
+    "sandboxCaveat": "Native sandbox fs.realpath EPERM was misreported as Hardhat HHE22; unchanged local Hardhat 3.14.0 passed with reviewed escalation, without reinstall."
+  },
+  "interruptedAttempt": {
+    "command": "npm run test:live:m6",
+    "ignoredPublicEventLog": "logs/m6-live-2026-10-13T06-34-11.724Z.jsonl",
+    "contractAddress": "1190277f08c250654d94c68b8c56d4774bc2b2d541b67040351e9fca2528764f",
+    "exitCode": 1,
+    "lastAcceptedStatusRootSequence": 3,
+    "rootScopeStagesAccepted": 8,
+    "rootFinalizationAccepted": true,
+    "delegateAccountAccepted": true,
+    "delegatedBeginAccepted": false,
+    "delegatedFinalizationAccepted": false,
+    "governanceRegressionReached": false,
+    "proverOomKilled": false,
+    "failure": "Wallet proof returned internal error after a confirmed workstation Modern Standby interruption; exact internal-error mechanism is unproven.",
+    "observedLongWalletProofRequest": {
+      "startedAt": "2026-10-13T07:08:02.231378Z",
+      "finishedAt": "2026-10-13T08:28:41.617943Z",
+      "elapsedSeconds": 4839.392273
+    },
+    "windowsSystemEvents": [
+      {
+        "provider": "Microsoft-Windows-Kernel-Power",
+        "id": 506,
+        "time": "2026-10-13T15:07:34+08:00",
+        "summary": "Entering Modern Standby: Idle Timeout"
+      },
+      {
+        "provider": "Microsoft-Windows-Kernel-Power",
+        "id": 172,
+        "time": "2026-10-13T15:08:09+08:00",
+        "summary": "Standby connectivity disconnected"
+      },
+      {
+        "provider": "Microsoft-Windows-Kernel-Power",
+        "id": 506,
+        "time": "2026-10-13T15:30:38+08:00",
+        "summary": "Entering Modern Standby: Battery Drain Budget Exceeded"
+      },
+      {
+        "provider": "Microsoft-Windows-Kernel-Power",
+        "id": 507,
+        "time": "2026-10-13T16:28:20+08:00",
+        "summary": "Exiting Modern Standby: Input Keyboard"
+      }
+    ],
+    "acceptedPublicMilestones": [
+      {
+        "timestamp": "2026-10-13T06:34:32.553Z",
+        "event": "contract-deployed",
+        "contractAddress": "1190277f08c250654d94c68b8c56d4774bc2b2d541b67040351e9fca2528764f"
+      },
+      {
+        "timestamp": "2026-10-13T07:00:21.311Z",
+        "event": "runtime-root-capability-staged-and-activated",
+        "contractAddress": "1190277f08c250654d94c68b8c56d4774bc2b2d541b67040351e9fca2528764f",
+        "beginTransactionId": "003144e1d4c154827707df550300c868c908e56c31c90a6df831e6e3d911de8d6a",
+        "stagedTransactionIds": [
+          "0085cbaea5da7d0d7b485437fe96449800786d78f35fe4b92729a27397b49ab395",
+          "0041578f21c23144b221ddad8a44b2a98ea9026cfd632ddfeecd85d184160b9d28",
+          "00793fd4a7b92d85a2a166561576e2fc431feae6be134311dd99371e84b6b8673b",
+          "00add223aede72d1ee61fa158a8e2bec39cc52a0f071c5d59b26bab3a8ac4e83cc",
+          "00eda33d92aebd3445d1a966858568ca90b85b7e9f9eac79c15457b4d8301fb5bd",
+          "0009530375dfd432d08840944f5fd3cb792b3b682656e6d57400325493bdc92724",
+          "004b59ca7347a7dd10e15e08f35800c10b40b0ea3403be1c35eb05ce6d1905bade",
+          "00d9c2493f8ac055733531b65ca7846148723bb5bd369a12f2b3d1e2368dcc322c"
+        ],
+        "finalizeTransactionId": "000bd8869e01fe69e5e75176fb4537673c38a1cf9e09fda760c294c0d392f305cf",
+        "stagedScopeElementCount": 8,
+        "credentialStatusRootSequence": 2
+      },
+      {
+        "timestamp": "2026-10-13T07:03:44.696Z",
+        "event": "runtime-delegate-account-status-activated",
+        "contractAddress": "1190277f08c250654d94c68b8c56d4774bc2b2d541b67040351e9fca2528764f",
+        "transactionId": "0068679e001dc343377dcc578317c7bcbe0ecae9d3ffc2e31c3450026c5db30319",
+        "credentialStatusRootSequence": 3
+      }
+    ]
+  },
+  "offChainMultiproofPreparation": {
+    "testFile": "packages/midnight-authorization/test/credential-status-multiproof.test.ts",
+    "testsPassed": 7,
+    "membershipLeafCapacityFixture": 35,
+    "contiguousFixtureSharedSiblingCount": 18,
+    "equivalentIndependentPathSiblingCount": 700,
+    "semantics": "Membership only; valid empty/revoked memberships are not active authorization. No on-chain ancestry claim.",
+    "privateWitnessLogged": false,
+    "isolatedCompilerDiagnostic": {
+      "compiler": "0.31.1",
+      "skipZk": true,
+      "exitCode": 0,
+      "exactLeafDigestVectorsPassed": 3,
+      "privateQueueRotationPassed": true,
+      "transactionCircuitCount": 0,
+      "provingKeysGenerated": false,
+      "authorizationClaim": false
+    }
+  },
+  "remainingRequiredWork": [
+    "Resolve and reverify sustained mixed-circuit proving memory; bounded concurrency did not prevent OOM",
+    "Circuit-side issuance-certified ancestry and all ancestor/account validity predicates under the exact current status root",
+    "Both runtime authorization proof families",
+    "Atomic action-state and nullifier ordering",
+    "Common versioned public receipt and final upstream integration contract",
+    "Remaining negative live cases, including revocation during delegated staging",
+    "Required restart and complete M6 acceptance suite"
+  ],
+  "negativeCaseClassification": "Existing live-run negative assertions are generated-circuit client preflight against indexed contract state, not submitted invalid transactions rejected by the node.",
+  "acceptanceFileCreated": false,
+  "committed": false,
+  "pushed": false,
+  "retry": {
+    "command": "npm run test:live:m6",
+    "ignoredPublicEventLog": "logs/m6-live-2026-10-13T08-33-41.073Z.jsonl",
+    "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+    "status": "failed",
+    "exitCode": 1,
+    "startedAt": "2026-10-13T08:33:41.073Z",
+    "temporaryAutomaticSleepPrevention": true,
+    "permanentPowerSettingsChanged": false,
+    "expiryRulesChanged": false,
+    "independentIndexedSnapshots": [
+      {
+        "timestamp": "2026-10-13T09:01:24.269Z",
+        "phase": "parent-all-elements-staged-before-finalization",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "statusRootSequence": 1,
+        "usedCommandNonceCount": 1,
+        "sessionPresent": true,
+        "stagedElements": 8,
+        "totalElements": 8,
+        "capabilityCommandNonceConsumed": false
+      },
+      {
+        "timestamp": "2026-10-13T09:13:55.998Z",
+        "phase": "child-partially-staged-before-finalization",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "statusRootSequence": 3,
+        "usedCommandNonceCount": 3,
+        "sessionPresent": true,
+        "stagedElements": 2,
+        "totalElements": 7,
+        "capabilityCommandNonceConsumed": false
+      },
+      {
+        "timestamp": "2026-10-13T09:25:27.244Z",
+        "phase": "child-all-elements-staged-before-finalization",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "statusRootSequence": 3,
+        "usedCommandNonceCount": 3,
+        "sessionPresent": true,
+        "stagedElements": 7,
+        "totalElements": 7,
+        "capabilityCommandNonceConsumed": false
+      },
+      {
+        "timestamp": "2026-10-13T09:37:29.274Z",
+        "phase": "after-prover-oom-and-prover-only-recovery",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "statusRootSequence": 5,
+        "usedCommandNonceCount": 5,
+        "attenuationSessionCount": 0,
+        "parentNonceConsumed": true,
+        "childNonceConsumed": true,
+        "proofModuleRegistrySequence": 3,
+        "proofModuleReviewCount": 2,
+        "proofModuleApprovalCount": 0,
+        "activeTemplateCount": 0
+      }
+    ],
+    "runtimeCredentialScopeResult": "passed",
+    "combinedGovernanceRegressionResult": "failed",
+    "rootScopeStagesAccepted": 8,
+    "delegatedScopeStagesAccepted": 7,
+    "delegatedChainDepthTested": 1,
+    "finalAcceptedStatusRootSequence": 5,
+    "parentBeginToFinalSeconds": 1325.484,
+    "childBeginToFinalSeconds": 1201.34,
+    "elapsedWallClockUntilProverFailureSeconds": 3441.128,
+    "failure": {
+      "phase": "first proof-module approval after proposal and two reviews",
+      "clientError": "ECONNREFUSED 127.0.0.1:6300",
+      "proverOomKilled": true,
+      "proverExitCode": 137,
+      "proverFinishedAt": "2026-10-13T09:31:02.201342746Z",
+      "failedProofRequestStartedAt": "2026-10-13T09:30:40.204922Z",
+      "rootCauseBeyondMemoryExhaustion": "Unproven: allocator retention, parameter caching, key decoding, or a combination still require isolation."
+    },
+    "temporaryAutomaticSleepPreventionReleased": true,
+    "observedNegativeCases": [
+      {
+        "timestamp": "2026-10-13T09:26:33.301Z",
+        "event": "runtime-account-unauthorized-revocation-rejected",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "rejectionLayer": "generated-circuit client preflight; no invalid transaction submitted"
+      }
+    ],
+    "acceptedPublicMilestones": [
+      {
+        "timestamp": "2026-10-13T08:33:43.608Z",
+        "event": "local-stack-ready",
+        "networkId": "undeployed",
+        "node": "midnight-node:1.0.0",
+        "indexer": "indexer-standalone:4.3.3",
+        "proofServer": "proof-server:8.1.0",
+        "compiler": "0.31.1",
+        "verificationScope": "governance-and-runtime-scope"
+      },
+      {
+        "timestamp": "2026-10-13T08:34:02.981Z",
+        "event": "contract-deployed",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd"
+      },
+      {
+        "timestamp": "2026-10-13T08:36:50.104Z",
+        "event": "runtime-account-status-activated",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "00241e5b7099bcfa2b4e8f5bf647480c6b28afbf90ca5e6d71f2a2bd78a598ed3e",
+        "credentialStatusRootSequence": 1
+      },
+      {
+        "timestamp": "2026-10-13T09:01:38.313Z",
+        "event": "runtime-root-capability-staged-and-activated",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "beginTransactionId": "003049fadd5efc484cd13ce2a759ec12c879f9cbac7bfb930ca66c0eba3ee10b3a",
+        "stagedTransactionIds": [
+          "0062b5b969199e100adc5252575cb9bcccae48af82afc7c2eca29814e515898186",
+          "00ebe570787ac78db8f72a56eee395d63801c8f11c439c47939d3a4b5f8693c861",
+          "00a6b87c27caf6c0ff14651904a036b18520c3c31c83278eb0764629ed7f5ddfe8",
+          "00d64aee899d2ade63a968d0b6792930f1866bb88422b6e38b8aabaf5f2a28bf00",
+          "0091c8595175e7167f210195fa51c5c9558bab9a409cb5e423f1ac5c71558ffccf",
+          "00586f7471b569f6929d296c87eddbeefc14dd2b0592081ec860c54caf92ce8fdb",
+          "00db07c447996e6f3fe9a212672e51580c658a652a94daee35cd1a6776ac051f94",
+          "00ce0cd116431ffd0c0c54ab8821ada6639779fe61f3de5abdb56ded570510fdb8"
+        ],
+        "finalizeTransactionId": "0023e781e7cd360af92b246916ff9ec4c2abb45df3803ebbf5d2db47ecb628eac5",
+        "stagedScopeElementCount": 8,
+        "credentialStatusRootSequence": 2
+      },
+      {
+        "timestamp": "2026-10-13T09:03:57.125Z",
+        "event": "runtime-delegate-account-status-activated",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "0093bf2c06c85291a3529ef1aab0a8452d8bf6b9cdd1b05e152756c5fac488dfd2",
+        "credentialStatusRootSequence": 3
+      },
+      {
+        "timestamp": "2026-10-13T09:26:33.173Z",
+        "event": "runtime-delegated-capability-staged-and-activated",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "beginTransactionId": "001ce14006efc776dcd53fb91d31feec0585474303b8548a3970032709b93bd493",
+        "stagedTransactionIds": [
+          "00d5bf13e7d33acd5187c08232c4d79af108c2324897caf99c26498c0fa72ee7f2",
+          "00dd00c1e0ed33c8bc8cc91aa9584baebeab41de6b83ec8dce81745634480b98e2",
+          "0031a033912492404d1578d371a6aec5161a949d0c71b88326fd2eeb3438ea76af",
+          "00b85dfd5439451e602f421ccbbb163362a06e5f6fba697e5da6281c2f214f8cde",
+          "00c27dab52e976be8d344031ae3b5ea6443f3a72bbf267b4dfe491c42124758f1d",
+          "00f797089d1be5fbee79a96c2aa2a3b59bafd85a8a1bbdaf137d37990c02816331",
+          "00a8120b1c6e9b822b7f8cffd33f2dc615e320241e9f34434eea12b7b7f4873f06"
+        ],
+        "finalizeTransactionId": "005915dad46ef0440f90bc1cb4598cabe210474f3f910f543e485a27536161bbe3",
+        "stagedScopeElementCount": 7,
+        "credentialStatusRootSequence": 4
+      },
+      {
+        "timestamp": "2026-10-13T09:28:56.016Z",
+        "event": "runtime-account-status-revoked",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "005f2964d0ba3ab1fdde391340c265d476251b7492b22cc9cbea744fe9f8473106",
+        "credentialStatusRootSequence": 5
+      },
+      {
+        "timestamp": "2026-10-13T09:29:26.502Z",
+        "event": "test-module-proposed",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "00a12bb9a4ebb5d28bd7e474b732c829f34127986a6257dfb89577059b22bf8e9c",
+        "grantsTrust": false
+      },
+      {
+        "timestamp": "2026-10-13T09:30:07.862Z",
+        "event": "test-module-review-recorded",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "005dc5fe92973db5527f8eb6930e278ef770d04883399e37afc509205408a020a1",
+        "reviewCount": 1
+      },
+      {
+        "timestamp": "2026-10-13T09:30:38.551Z",
+        "event": "test-module-review-recorded",
+        "contractAddress": "0855ad62c3bbbaac29f85d2ff00ab74dc2ff9dcd8e4cc06d41f2256948e9a7bd",
+        "transactionId": "00fda4ff93cef6d87cee2f3a303c31c75ecc3335fe958c9fc6fab01edb98cc54a1",
+        "reviewCount": 2
+      }
+    ]
+  },
+  "recordedAt": "2026-10-13T09:40:07Z",
+  "previousUnconstrainedFailureEvidence": "docs/evidence/M6/scope-uniqueness-verification.json",
+  "recovery": {
+    "proverOnlyRestartedAt": "2026-10-13T09:33:27.584634530Z",
+    "proverVersion": "8.1.0",
+    "health": "healthy",
+    "jobsProcessing": 0,
+    "jobsPending": 0,
+    "jobCapacity": 1,
+    "nodeAndIndexerRestarted": false,
+    "ledgerHistoryReset": false,
+    "originalProverContainerStillPreservedStopped": true,
+    "hostPhysicalMemoryGiB": 15.79,
+    "hostFreePhysicalMemoryGiBObserved": 3.96,
+    "userWslConfigExists": false,
+    "sharedVmBudgetChanged": false,
+    "globalWslRestarted": false
+  },
+  "publicEventLogPrivacyScans": [
+    {
+      "publicEventLogPrivacyScan": "passed",
+      "file": "logs/m6-live-2026-10-13T06-34-11.724Z.jsonl",
+      "eventsChecked": 14,
+      "privateScopeDimensionsChecked": 7,
+      "privateScopeValuesChecked": 8,
+      "privateIndividualDigestsChecked": 16,
+      "scope": "Persisted milestone events only; not every SDK process output"
+    },
+    {
+      "publicEventLogPrivacyScan": "passed",
+      "file": "logs/m6-live-2026-10-13T08-33-41.073Z.jsonl",
+      "eventsChecked": 28,
+      "privateScopeDimensionsChecked": 7,
+      "privateScopeValuesChecked": 8,
+      "privateIndividualDigestsChecked": 16,
+      "scope": "Persisted milestone events only; not every SDK process output"
+    }
+  ]
+}

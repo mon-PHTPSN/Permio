@@ -1,0 +1,16 @@
+// TEST ONLY. This entry intentionally omits authorization so generated-code
+// tests can exercise the internal atomic mutation kernel against synthetic
+// genesis. Never deploy, sign, prove or submit this fixture.
+include "runtime-action-outcome";
+
+export circuit testOnlyActionOutcome(
+    allocation: RuntimeInstanceAllocation, intent: RuntimeActionIntent,
+    state: RuntimeStateOpening, stateSequence: Uint<64>,
+    nextStateIdHash: Bytes<32>, nextNonce: Bytes<32>,
+    effectiveAt: Uint<64>, validBefore: Uint<64>, transitioning: Boolean,
+    moduleIdentity: ProofModuleIdentity, outputCommitment: Bytes<32>
+): Bytes<32> {
+    return commitRuntimeActionOutcome(allocation, intent, state, stateSequence,
+        nextStateIdHash, nextNonce, effectiveAt, validBefore, transitioning,
+        moduleIdentity, outputCommitment);
+}

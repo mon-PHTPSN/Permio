@@ -22,11 +22,11 @@ const ZERO_HASH = `0x${"00".repeat(32)}` as const;
 const EXPECTED_RECEIPT_FIELDS = [
   { name: "receiptVersion", type: "bytes32" },
   { name: "proofModuleId", type: "bytes32" },
-  { name: "proofModuleVersion", type: "bytes32" },
+  { name: "proofModuleVersion", type: "string" },
   { name: "proofModuleImplementationHash", type: "bytes32" },
   { name: "namespaceHash", type: "bytes32" },
   { name: "templateIdHash", type: "bytes32" },
-  { name: "templateVersion", type: "bytes32" },
+  { name: "templateVersion", type: "string" },
   { name: "templateContentHash", type: "bytes32" },
   { name: "instanceCommitment", type: "bytes32" },
   { name: "previousStateCommitment", type: "bytes32" },
@@ -35,14 +35,15 @@ const EXPECTED_RECEIPT_FIELDS = [
   { name: "contextHash", type: "bytes32" },
   { name: "actionSchemaId", type: "bytes32" },
   { name: "purposeHash", type: "bytes32" },
-  { name: "recipient", type: "address" },
+  { name: "recipient", type: "bytes32" },
   { name: "validAfter", type: "uint64" },
   { name: "validBefore", type: "uint64" },
   { name: "scopedNullifier", type: "bytes32" },
   { name: "outputCommitment", type: "bytes32" },
   { name: "sourceNetwork", type: "bytes32" },
+  { name: "sourceNetworkName", type: "string" },
   { name: "sourceContract", type: "bytes32" },
-  { name: "sourceTransaction", type: "bytes32" },
+  { name: "sourceTransaction", type: "bytes" },
   { name: "sourceLedgerSequence", type: "uint64" },
   { name: "gatewayKeyId", type: "bytes32" },
   { name: "gatewaySignedAt", type: "uint64" },
@@ -55,11 +56,11 @@ const hash = (label: string): Hex => keccak256(stringToHex(label));
 interface ExpectedReceipt {
   readonly receiptVersion: Hex;
   readonly proofModuleId: Hex;
-  readonly proofModuleVersion: Hex;
+  readonly proofModuleVersion: string;
   readonly proofModuleImplementationHash: Hex;
   readonly namespaceHash: Hex;
   readonly templateIdHash: Hex;
-  readonly templateVersion: Hex;
+  readonly templateVersion: string;
   readonly templateContentHash: Hex;
   readonly instanceCommitment: Hex;
   readonly previousStateCommitment: Hex;
@@ -68,12 +69,13 @@ interface ExpectedReceipt {
   readonly contextHash: Hex;
   readonly actionSchemaId: Hex;
   readonly purposeHash: Hex;
-  readonly recipient: Address;
+  readonly recipient: Hex;
   readonly validAfter: bigint;
   readonly validBefore: bigint;
   readonly scopedNullifier: Hex;
   readonly outputCommitment: Hex;
   readonly sourceNetwork: Hex;
+  readonly sourceNetworkName: string;
   readonly sourceContract: Hex;
   readonly sourceTransaction: Hex;
   readonly sourceLedgerSequence: bigint;
@@ -110,11 +112,11 @@ const runId = `${block.number.toString()}-${block.timestamp.toString()}`;
 const receipt: ExpectedReceipt = {
   receiptVersion: FIXTURE_RECEIPT_VERSION,
   proofModuleId: hash("delegated-capability-action-v1"),
-  proofModuleVersion: hash("1.0.0"),
+  proofModuleVersion: "1.0.0",
   proofModuleImplementationHash: hash("fixture-proof-module-implementation"),
   namespaceHash: hash("fixture.namespace"),
   templateIdHash: hash("fixture-template"),
-  templateVersion: hash("1.0.0"),
+  templateVersion: "1.0.0",
   templateContentHash: hash("fixture-template-content"),
   instanceCommitment: hash(`fixture-instance-${runId}`),
   previousStateCommitment: ZERO_HASH,
@@ -123,12 +125,13 @@ const receipt: ExpectedReceipt = {
   contextHash: hash("fixture-context"),
   actionSchemaId: hash("permio.fixture.action.v0"),
   purposeHash: hash("fixture-purpose"),
-  recipient: adapterAddress,
+  recipient: hash("fixture-runtime-recipient"),
   validAfter: block.timestamp,
   validBefore: block.timestamp + 3_600n,
   scopedNullifier: hash(`fixture-nullifier-${runId}`),
   outputCommitment: hash(`fixture-public-output-${runId}`),
   sourceNetwork: hash("midnight-local-dev-fixture"),
+  sourceNetworkName: "midnight-local-dev-fixture",
   sourceContract: hash("expected-m6-contract-fixture"),
   sourceTransaction: hash(`fixture-midnight-transaction-${runId}`),
   sourceLedgerSequence: block.number,

@@ -1,0 +1,11 @@
+include "../permio-authorization";
+
+// Diagnostic deployment only; never an action authorization entry point.
+// Includes the actual nine-circuit contract to measure the combined deployment.
+export circuit checkRuntimeStatusMultiproof(
+    namespaceHash: Bytes<32>,
+    proof: RuntimeStatusMultiproof
+): [] {
+    const current = credentialStatusRoots.lookup(disclose(namespaceHash));
+    assertRuntimeStatusMultiproof(proof, current.root, current.rootSequence);
+}

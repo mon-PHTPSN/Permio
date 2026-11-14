@@ -1,0 +1,162 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M5",
+  "patchId": "M5-P1",
+  "patchStatus": "VERIFIED",
+  "scope": "additive off-chain participant-slot assignment patch only",
+  "acceptedAt": "2026-10-14",
+  "timeZone": "Asia/Shanghai",
+  "implementationBaseCommit": "b8710a43c7b324e348d19176f0a2659421866b5c",
+  "implementationState": "committed with this patch acceptance record",
+  "historicalMilestoneAcceptance": "docs/evidence/M5/acceptance.json",
+  "historicalMilestoneReopened": false,
+  "environment": {
+    "os": "Windows",
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "typescript": "7.0.2",
+    "hardhat": "3.14.0",
+    "solidity": "0.8.31",
+    "evmTarget": "osaka"
+  },
+  "commands": [
+    {
+      "command": "npm run test:context-accounts",
+      "result": "passed",
+      "tests": 50,
+      "originalTests": 13,
+      "patchTests": 37,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "command": "npm run typecheck",
+      "result": "passed"
+    },
+    {
+      "command": ".\\node_modules\\.bin\\tsc.cmd --ignoreConfig --noEmit --strict --skipLibCheck --module node16 --moduleResolution node16 --target es2022 --lib es2023 --types node --esModuleInterop --allowImportingTsExtensions packages/context-accounts/src/index.ts packages/context-accounts/test/context-accounts.test.ts packages/context-accounts/test/slot-assignments.test.ts",
+      "result": "passed",
+      "boundary": "M5 entry graph with explicit compiler options; does not load dirty root tsconfig or import M6 implementation"
+    },
+    {
+      "command": "npm run check",
+      "executionAccess": "approved escalation for installed Hardhat runtime resolution",
+      "result": "passed",
+      "checks": ["documentation freshness", "TypeScript", "Solidity build", "all repository test suites"],
+      "tests": 217,
+      "testBreakdown": {
+        "diagnostics": 16,
+        "protocol": 6,
+        "scenarioDomain": 15,
+        "scenarioGenerator": 14,
+        "scenarioGovernance": 16,
+        "contextAccounts": 50,
+        "midnightAuthorization": 94,
+        "hardhatContracts": 6
+      },
+      "skipped": 0,
+      "workingTreeBoundary": "Includes existing uncommitted M6 implementation for regression only; that work is excluded from the M5-P1 commit"
+    }
+  ],
+  "developmentFailures": [
+    {
+      "check": "initial TypeScript checks",
+      "observed": ["TS2540 readonly test mutation", "TS2322 literal-inferred test actor"],
+      "resolution": "Explicit mutable casts only in deliberate tampering tests; production readonly types preserved"
+    },
+    {
+      "check": "restricted npm run check",
+      "observed": "HHE22 at hardhat build after docs and typecheck passed",
+      "resolution": "Same installed check passed with approved execution access; no dependencies installed"
+    },
+    {
+      "check": "initial isolated TypeScript entry check",
+      "observed": "TS5112 requires --ignoreConfig when files are supplied beside tsconfig.json",
+      "resolution": "Added diagnostic-prescribed compiler flag; no configuration or toolchain change"
+    }
+  ],
+  "verifiedProperties": [
+    "Exact namespace, template ID, semantic version and template hash bind every assignment",
+    "Only template-eligible creator, exact-namespace governance or active same-context occupied-slot authority may assign or revoke",
+    "Account registration and capability issuance confer no implicit slot authority",
+    "A capability and an active exact actor-slot assignment are both required for action success",
+    "Cross-instance and cross-context subjects and assignment authorities are rejected",
+    "Duplicate active bindings and all assignment-ID reuse are rejected without imposing singleton slots",
+    "Separate immutable assignment and revocation records retain exact parent assignment IDs",
+    "Parent assignment or account revocation prospectively invalidates descendants; replacement parent IDs cannot revive old children",
+    "Instance revocation and expiry invalidate slot eligibility",
+    "Backdated mutations and action evaluation cannot evade a later recorded change",
+    "Denied actions consume neither nonce nor state, and failed operations do not advance the time watermark",
+    "Legacy capability, session, attenuation, fresh-key, scope, state and replay checks remain mandatory",
+    "Returned snapshots cannot mutate internal assignment, authority or revocation records",
+    "No universal administrator, implicit governance override or privilege collapse is introduced"
+  ],
+  "trustBoundary": {
+    "callerAuthentication": "Host authenticates principal/account references before invoking mutations, as in original M5",
+    "governanceSource": "Trusted M4 registry including exact-namespace getNamespacePolicy",
+    "clock": "Host-supplied integer times; nondecreasing successful operations per instance",
+    "equalTimestamps": "Synchronous call order; time-based queries are not transaction-sequenced historical proofs",
+    "storage": "Private in-memory records, not durable or cryptographically authenticated standalone credentials"
+  },
+  "chainVerification": {
+    "newChainLogic": false,
+    "hardhatRegression": {
+      "network": "Hardhat local EVM",
+      "contract": "RecipientBoundAttestationRegistry",
+      "command": "npm run test:contracts (executed within npm run check)",
+      "result": "passed",
+      "tests": 6
+    },
+    "midnightRegression": {
+      "tests": 94,
+      "result": "passed",
+      "boundary": "Existing generated-Compact and local predicate tests; not new live Midnight slot-assignment acceptance"
+    },
+    "liveMidnightSlotProof": "NOT_IMPLEMENTED_BY_THIS_PATCH"
+  },
+  "integrationCaveats": [
+    "Opt in to SlotBoundContextAccountSystem; original ContextAccountSystem behavior is intentionally unchanged",
+    "No migration or persistence for existing in-memory instances",
+    "Creator means exact recorded allocatedBy, not an independently modeled end-user creator",
+    "M6 legacy fixtures remain legacy-only until explicitly migrated",
+    "M6 must bind assignments and current revocation state in its authoritative proof contract and run real positive and negative Midnight transactions",
+    "This patch does not complete M6 or define a competing receipt, commitment or chain-admission format"
+  ],
+  "baselinePreservation": {
+    "unchangedFromParent": [
+      "packages/context-accounts/src/system.ts",
+      "packages/context-accounts/src/model.ts",
+      "packages/context-accounts/src/errors.ts",
+      "packages/context-accounts/src/action-intent.ts",
+      "packages/context-accounts/test/context-accounts.test.ts",
+      "packages/context-accounts/README.md",
+      "docs/evidence/M5/",
+      "docs/DETERMINISTIC_MILESTONES.md",
+      "docs/*.html",
+      "package-lock.json"
+    ],
+    "rootManifestIncludedInPatch": false,
+    "privateAgentInstructionsIncluded": false,
+    "dependenciesChanged": false,
+    "lockfileChangeRequired": false,
+    "pushAuthorized": false
+  },
+  "artifacts": [
+    "packages/context-accounts/package.json",
+    "packages/context-accounts/src/index.ts",
+    "packages/context-accounts/src/slot-assignments.ts",
+    "packages/context-accounts/test/slot-assignments.test.ts",
+    "packages/context-accounts/SLOT_ASSIGNMENT_PATCH.md",
+    "docs/evidence/M5-P1/development-log.md",
+    "docs/evidence/M5-P1/acceptance.json"
+  ],
+  "artifactHashNormalization": "SHA-256 of UTF-8 text after CRLF-to-LF normalization; this acceptance record excludes itself",
+  "artifactSha256": {
+    "packages/context-accounts/package.json": "b6f334910b56a0c0b4aa68016242ebab5af638da9dd83d5b8856b89abf3bb54b",
+    "packages/context-accounts/src/index.ts": "8ca4220f83ce0c60f3f8318e160d16ae81acd45b274ef949a9867fd957f7797c",
+    "packages/context-accounts/src/slot-assignments.ts": "ed8efc46618d7f692834fa0da42791fd413bdd705899ff3ec89cb6ce26ae65d6",
+    "packages/context-accounts/test/slot-assignments.test.ts": "0f59f97ff3e975756945775c17639ad496990b08ff9ec30ede0559ca08127cb1",
+    "packages/context-accounts/SLOT_ASSIGNMENT_PATCH.md": "8de96a98cae9a946226827f8cff67cf7af43d8299211665de86a76cbc28ef406",
+    "docs/evidence/M5-P1/development-log.md": "d705d4abd60810d586e1c8e09368576677fd68fe20b6353e20316bf548bbe32e"
+  }
+}

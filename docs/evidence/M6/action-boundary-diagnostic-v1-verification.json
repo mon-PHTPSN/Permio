@@ -1,0 +1,417 @@
+{
+  "kind": "m6-ledger-bound-action-feasibility-and-local-recovery",
+  "version": 1,
+  "observedAtUtc": "2026-10-17T08:53:06.817533+00:00",
+  "baselineCommit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "productionSourcesBindingsMetadataAndKeyManifestUnchanged": true,
+  "compilerVersion": "0.31.1",
+  "compactRuntimeVersion": "0.16.0",
+  "zkirVersion": "2.1.0",
+  "nativeNodeVersion": "24.13.1",
+  "wslCompileNodeVersion": "22.23.2",
+  "diagnosticPrograms": {
+    "baseline": "logs/m6-action-boundary-5POgvw/report.json",
+    "stackOnly": "logs/m6-action-boundary-WOssko/report.json",
+    "combined": "logs/m6-action-boundary-xFPDIN/report.json"
+  },
+  "generatedCodeChecks": [
+    {
+      "kind": "baseline",
+      "source": "logs/m6-action-boundary-5POgvw/generated-tests-1792219475474.json",
+      "passed": 17
+    },
+    {
+      "kind": "stack-only",
+      "source": "logs/m6-action-boundary-WOssko/generated-tests-1792220607722.json",
+      "passed": 17
+    },
+    {
+      "kind": "combined",
+      "source": "logs/m6-action-boundary-xFPDIN/generated-tests-1792220607923.json",
+      "passed": 19
+    },
+    {
+      "kind": "direct-status-comparison",
+      "source": "logs/m6-action-boundary-xFPDIN/status-factoring-tests-1792220755935.json",
+      "passed": 10
+    },
+    {
+      "kind": "expanded-baseline",
+      "source": "logs/m6-action-boundary-5POgvw/generated-tests-1792226506319.json",
+      "passed": 24,
+      "verifierScriptSha256": "771ff39cba0130e8878bcaeccf67cf638a6c2aaf6762930a1af8b930788825d7"
+    },
+    {
+      "kind": "expanded-combined",
+      "source": "logs/m6-action-boundary-xFPDIN/generated-tests-1792226519978.json",
+      "passed": 24,
+      "verifierScriptSha256": "771ff39cba0130e8878bcaeccf67cf638a6c2aaf6762930a1af8b930788825d7"
+    }
+  ],
+  "realKeyBuilds": {
+    "baseline": {
+      "source": "logs/m6-action-keygen-ecs-v3/keygen-report.json",
+      "realKeyBuildCompleted": false,
+      "k": 22,
+      "rows": 2281576,
+      "elapsedSeconds": 1202.6616678240025,
+      "memoryHighBytes": 12884901888,
+      "memoryMaxBytes": 12884901888,
+      "timeoutSeconds": 1200,
+      "swapMaxBytes": 0,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 1,
+      "sampledPeakMemoryBytes": 12884901888,
+      "oomCounter": 1,
+      "oomKillCounter": 1,
+      "jobOutcome": {
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainCode": "2",
+        "ExecMainStatus": "9"
+      },
+      "keyFiles": {
+        "action.prover": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "action.verifier": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "ownedJobStopped": true,
+      "stopReason": null,
+      "sampledPeakSwapBytes": 0,
+      "controllerErrorType": null
+    },
+    "combinedEquivalentCandidate": {
+      "source": "logs/m6-action-keygen-ecs-v4/keygen-report.json",
+      "realKeyBuildCompleted": false,
+      "k": 21,
+      "rows": 1713336,
+      "elapsedSeconds": 886.9178362079983,
+      "memoryHighBytes": 12884901888,
+      "memoryMaxBytes": 12884901888,
+      "timeoutSeconds": 3600,
+      "swapMaxBytes": 0,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 1,
+      "sampledPeakMemoryBytes": 12884901888,
+      "oomCounter": 0,
+      "oomKillCounter": 0,
+      "jobOutcome": {
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainCode": "2",
+        "ExecMainStatus": "9"
+      },
+      "keyFiles": {
+        "action.prover": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "action.verifier": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "ownedJobStopped": true,
+      "stopReason": null,
+      "sampledPeakSwapBytes": 0,
+      "controllerErrorType": null
+    },
+    "fourteenGiBWithTwoGiBOwnedPaging": {
+      "source": "logs/m6-action-keygen-ecs-v5/keygen-report.json",
+      "realKeyBuildCompleted": false,
+      "k": 21,
+      "rows": 1713336,
+      "elapsedSeconds": 886.9618570950006,
+      "memoryHighBytes": 15032385536,
+      "memoryMaxBytes": 15032385536,
+      "timeoutSeconds": 3600,
+      "swapMaxBytes": 2147483648,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 1,
+      "sampledPeakMemoryBytes": 14842740736,
+      "oomCounter": 0,
+      "oomKillCounter": 0,
+      "jobOutcome": {
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainCode": "2",
+        "ExecMainStatus": "9"
+      },
+      "keyFiles": {
+        "action.prover": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "action.verifier": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "ownedJobStopped": true,
+      "stopReason": null,
+      "sampledPeakSwapBytes": 0,
+      "controllerErrorType": null
+    },
+    "effectivePagingWithFourteenGiBRamAndThreeGiBOwnedSwap": {
+      "source": "logs/m6-action-keygen-ecs-v6/keygen-report.json",
+      "realKeyBuildCompleted": false,
+      "k": 21,
+      "rows": 1713336,
+      "elapsedSeconds": 993.0984238739984,
+      "memoryHighBytes": 14495514624,
+      "memoryMaxBytes": 15032385536,
+      "timeoutSeconds": 3600,
+      "swapMaxBytes": 3221225472,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 1,
+      "sampledPeakMemoryBytes": 15029821440,
+      "oomCounter": 0,
+      "oomKillCounter": 0,
+      "jobOutcome": {
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainCode": "2",
+        "ExecMainStatus": "9"
+      },
+      "keyFiles": {
+        "action.prover": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "action.verifier": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "ownedJobStopped": true,
+      "stopReason": null,
+      "sampledPeakSwapBytes": 3218104320,
+      "controllerErrorType": null
+    },
+    "finalExistingServerTrialWithFourAndHalfGiBOwnedSwap": {
+      "source": "logs/m6-action-keygen-ecs-v7/keygen-report.json",
+      "realKeyBuildCompleted": false,
+      "k": 21,
+      "rows": 1713336,
+      "elapsedSeconds": 1080.2063514890033,
+      "memoryHighBytes": 14495514624,
+      "memoryMaxBytes": 15032385536,
+      "timeoutSeconds": 3600,
+      "swapMaxBytes": 4831838208,
+      "cpuQuotaCores": 2,
+      "rayonThreads": 1,
+      "sampledPeakMemoryBytes": 15031447552,
+      "oomCounter": 0,
+      "oomKillCounter": 0,
+      "jobOutcome": {
+        "ActiveState": "failed",
+        "SubState": "failed",
+        "MainPID": "0",
+        "Result": "oom-kill",
+        "ExecMainCode": "2",
+        "ExecMainStatus": "9"
+      },
+      "keyFiles": {
+        "action.prover": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "action.verifier": {
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "ownedJobStopped": true,
+      "stopReason": null,
+      "sampledPeakSwapBytes": 4831682560,
+      "controllerErrorType": null
+    }
+  },
+  "constraintRowsReduced": 568240,
+  "constraintRowsReductionPercent": 24.9055915735439,
+  "originalCacheEnvironmentFailurePreserved": "logs/m6-action-keygen-ecs-v1/keygen-report.json",
+  "softLimitStallOriginalFinalReportMissing": true,
+  "softLimitStallEvidence": "logs/m6-action-keygen-ecs-v2/download-verification.json",
+  "candidateTimeBudgetAmendment": "logs/m6-action-candidate-time-budget-v4.json",
+  "allRequiredResultsDownloadedAndVerified": true,
+  "dockerRecovery": "logs/m6-action-local-docker-recovery-verification-v1.json",
+  "serverLifecycleCloseout": {
+    "kind": "ecs-active-work-lifecycle",
+    "operation": "finish",
+    "observedAtUtc": "2026-10-17T08:52:12.461352+00:00",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatus": "Running",
+    "automaticDeletionDeadlineEmpty": true,
+    "activeOwners": [],
+    "timer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-5255a49c81fb45e59530",
+      "content": {
+        "FormatVersion": "OOS-2019-06-01",
+        "Description": "Exact Singapore build instance: rolling two-hour graceful economical stop; no deletion",
+        "RamRole": "OOSServiceRole",
+        "Tasks": [
+          {
+            "Name": "oneTimeTrigger",
+            "Action": "ACS::TimerTrigger",
+            "Properties": {
+              "Type": "at",
+              "Expression": "2026-10-17T10:52:03Z",
+              "TimeZone": "UTC",
+              "EndDate": "2026-10-17T10:57:03Z"
+            }
+          },
+          {
+            "Name": "requirePayAsYouGo",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceChargeType",
+              "DesiredValues": [
+                "PostPaid"
+              ]
+            }
+          },
+          {
+            "Name": "requireVpc",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].InstanceNetworkType",
+              "DesiredValues": [
+                "vpc"
+              ]
+            }
+          },
+          {
+            "Name": "gracefulEconomicalStop",
+            "Action": "ACS::ExecuteAPI",
+            "Properties": {
+              "Service": "ECS",
+              "API": "StopInstance",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceId": "i-t4ni11rkjyzgi0vlb68d",
+                "ForceStop": false,
+                "StoppedMode": "StopCharging"
+              }
+            }
+          },
+          {
+            "Name": "waitUntilStopped",
+            "Action": "ACS::WaitFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].Status",
+              "DesiredValues": [
+                "Stopped"
+              ]
+            }
+          },
+          {
+            "Name": "verifyEconomicalMode",
+            "Action": "ACS::CheckFor",
+            "Properties": {
+              "Service": "ECS",
+              "API": "DescribeInstances",
+              "Parameters": {
+                "RegionId": "ap-southeast-1",
+                "InstanceIds": "[\"i-t4ni11rkjyzgi0vlb68d\"]"
+              },
+              "PropertySelector": "Instances.Instance[0].StoppedMode",
+              "DesiredValues": [
+                "StopCharging"
+              ]
+            }
+          }
+        ]
+      },
+      "contentSha256": "138e9a934824026debf0d630b5685ed223007ca83af4ed1e276a512b3ac336bb",
+      "deadlineUtc": "2026-10-17T10:52:03+00:00",
+      "deadlineShanghai": "2026-10-17T18:52:03+08:00",
+      "lastRenewedAtUtc": "2026-10-17T08:52:10.105692+00:00",
+      "nextRefreshDueUtc": "2026-10-17T09:22:10.105695+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-cfd9569f5da04115986b": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "officialAlibabaCloudCliUsed": true,
+    "noRamGrantsChanged": true
+  },
+  "rootRegressionTestsHistorical": 359,
+  "rootSuiteRerun": false,
+  "newDeployment": false,
+  "transactionsSubmittedThisContinuation": 0,
+  "ordinaryActionAcceptance": false,
+  "productionHelperFactoringAdopted": false,
+  "selectedEvidenceEnforcementImplemented": false,
+  "commonDecisionReceiptAcceptance": false,
+  "fiveGiBProductResourceTargetQualified": false,
+  "milestoneComplete": false,
+  "productionReady": false,
+  "exclusions": [
+    "slot provenance at ordinary-action time",
+    "selected-record evidence",
+    "issuer-policy revalidation",
+    "atomic action state/nullifier/receipt",
+    "ordinary-action live-chain acceptance",
+    "in-flight/selective-outage/replay acceptance",
+    "production resource or latency qualification"
+  ],
+  "publicParameterCache22RestoredAndHashVerified": true,
+  "lastExistingServerProfile": true,
+  "ownedPagingDisabledAndRemovedVerified": true,
+  "globalVmSettingsChangedTemporarily": true,
+  "globalVmSettingRestored": true,
+  "originalSwappiness": 0,
+  "swappinessAfterCleanup": 0,
+  "pagingPreflight": {
+    "pagingPreflightPassed": true,
+    "swapUsedBytes": 268431360,
+    "allocationBytes": 402653184,
+    "memoryMaxBytes": 268435456
+  },
+  "cliTransportReadEvidence": "logs/m6-action-cli-system-proxy-read-v1.json",
+  "cliBridgeTransportChangeEvidence": "logs/m6-action-cli-bridge-transport-verification-v1.json",
+  "independentRemoteEnvironmentCloseout": "logs/m6-action-final-remote-environment-v1.json",
+  "capacityReadDenialEvidence": "logs/m6-action-capacity-read-failure-classification-v1.json"
+}

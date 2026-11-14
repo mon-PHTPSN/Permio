@@ -1,0 +1,97 @@
+{
+  "schemaVersion": 1,
+  "tier": "M9_TEMPLATE_TO_AUTHORITATIVE_M6_POLICY_GATE",
+  "status": "BLOCKED_UNSUPPORTED_PROOF_REQUIREMENT",
+  "total": 10,
+  "accepted": 0,
+  "rejected": 10,
+  "cases": [
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-primary-v1",
+      "flowId": "treatment-referral",
+      "publicOutputSchemaId": "treatment-referral-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-primary-v1",
+      "flowId": "research-consent",
+      "publicOutputSchemaId": "research-consent-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-primary-v1",
+      "flowId": "emergency-access",
+      "publicOutputSchemaId": "emergency-access-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-variant-v1",
+      "flowId": "treatment-referral",
+      "publicOutputSchemaId": "treatment-referral-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-variant-v1",
+      "flowId": "research-consent",
+      "publicOutputSchemaId": "research-consent-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "clinical-referral-consent",
+      "seed": "test:m9-clinical-variant-v1",
+      "flowId": "emergency-access",
+      "publicOutputSchemaId": "emergency-access-output-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "professional-site-access",
+      "seed": "test:m9-professional-primary-v1",
+      "flowId": "qualification-site-access",
+      "publicOutputSchemaId": "current-qualification-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "professional-site-access",
+      "seed": "test:m9-professional-variant-v1",
+      "flowId": "qualification-site-access",
+      "publicOutputSchemaId": "current-qualification-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "delegated-purchasing-agent",
+      "seed": "test:m9-delegated-agent-primary-v1",
+      "flowId": "bounded-purchase",
+      "publicOutputSchemaId": "bounded-purchase-authorization-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "packId": "delegated-purchasing-agent",
+      "seed": "test:m9-delegated-agent-variant-v1",
+      "flowId": "bounded-purchase",
+      "publicOutputSchemaId": "bounded-purchase-authorization-v1",
+      "accepted": false,
+      "error": "UNSUPPORTED_PROOF_REQUIREMENT"
+    }
+  ],
+  "sourceSha256": {
+    "m9Templates": "635ad257e90e1f7becff4685845cab70166f7def2a0bfec86b3ac845dffbe869",
+    "m6Policy": "e57e0dff7eefe75cba1e98b6b16c8585a8fe30ca3c410861a7b9d057ce2c3db5"
+  },
+  "liveEndToEnd": false,
+  "newMidnightSubmissions": 0,
+  "newProofRequests": 0
+}

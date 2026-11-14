@@ -6,6 +6,7 @@ import {
 } from "envio";
 
 const HOUR_SECONDS = 3_600n;
+const ZERO_COMMITMENT = `0x${"00".repeat(32)}`;
 
 function registryId(address: string): string {
   return address.toLowerCase();
@@ -110,7 +111,8 @@ indexer.onEvent(
       gatewayKeyId: event.params.gatewayKeyId,
       signer: event.params.signer.toLowerCase(),
       validAfter: event.params.validAfter,
-      validBefore: event.params.validBefore,
+      signingCutoff: event.params.signingCutoff,
+      verificationCutoff: event.params.verificationCutoff,
       disabled: false,
       updatedAt: BigInt(event.block.timestamp),
       updatedBlock: BigInt(event.block.number),
@@ -194,6 +196,7 @@ indexer.onEvent(
       registeredBlock: BigInt(event.block.number),
       registeredTransaction: event.transaction.hash,
       sourceNetwork: undefined,
+      sourceNetworkName: undefined,
       sourceContract: undefined,
       sourceTransaction: undefined,
       sourceLedgerSequence: undefined,
@@ -238,6 +241,7 @@ indexer.onEvent(
     context.ReceiptProjection.set({
       ...current,
       sourceNetwork: event.params.sourceNetwork,
+      sourceNetworkName: event.params.sourceNetworkName,
       sourceContract: event.params.sourceContract,
       sourceTransaction: event.params.sourceTransaction,
       sourceLedgerSequence: event.params.sourceLedgerSequence,
@@ -278,12 +282,15 @@ indexer.onEvent(
       id,
       `Missing receipt ${event.params.receiptId}`,
     );
+    const noStateTransition = event.params.transitionSequence === 0n &&
+      event.params.previousStateCommitment === ZERO_COMMITMENT &&
+      event.params.nextStateCommitment === ZERO_COMMITMENT;
     context.ReceiptProjection.set({
       ...current,
       instanceCommitment: event.params.instanceCommitment,
-      previousStateCommitment: event.params.previousStateCommitment,
-      nextStateCommitment: event.params.nextStateCommitment,
-      transitionSequence: event.params.transitionSequence,
+      previousStateCommitment: noStateTransition ? undefined : event.params.previousStateCommitment,
+      nextStateCommitment: noStateTransition ? undefined : event.params.nextStateCommitment,
+      transitionSequence: noStateTransition ? undefined : event.params.transitionSequence,
       contextHash: event.params.contextHash,
     });
   },
@@ -357,5 +364,28 @@ indexer.onEvent(
         executionFailures: event.params.success ? 0n : 1n,
       },
     );
+  },
+);
+
+indexer.onEvent(
+  { contract: "ExecutionRegistry", event: "RecipientAdapterBound" },
+  async ({ event, context }) => {
+    const registry = registryId(event.srcAddress);
+    context.RecipientAdapterBinding.set({
+      id: entityId(registry, event.params.bindingKey), registry,
+      bindingKey: event.params.bindingKey, receiptVersion: event.params.receiptVersion,
+      actionSchemaId: event.params.actionSchemaId, recipient: event.params.recipient,
+      adapter: event.params.adapter.toLowerCase(), enabled: true,
+      updatedAt: BigInt(event.block.timestamp), updatedBlock: BigInt(event.block.number),
+    });
+  },
+);
+indexer.onEvent(
+  { contract: "ExecutionRegistry", event: "RecipientAdapterDisabled" },
+  async ({ event, context }) => {
+    const registry = registryId(event.srcAddress);
+    const current = await context.RecipientAdapterBinding.getOrThrow(entityId(registry, event.params.bindingKey));
+    context.RecipientAdapterBinding.set({ ...current, enabled: false,
+      updatedAt: BigInt(event.block.timestamp), updatedBlock: BigInt(event.block.number) });
   },
 );

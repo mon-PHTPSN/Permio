@@ -1,0 +1,453 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "status": "PARTIAL_M6_SLOT_SOURCE_VERIFIED_REAL_KEYS_AND_CHAIN_PENDING",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "subsequentContinuationEvidence": "docs/evidence/M6/slot-key-resource-attempt-verification.json",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "baseCommit": "07df341ffabc65aa5e23302fddc644498017b018",
+  "contractProfile": "permio-authorization-v7",
+  "runtimePolicyVersion": 2,
+  "privateInstanceStateVersion": 2,
+  "approvedDirection": {
+    "authorization": "User's subsequent continue after the staged/private-state and narrow-governance proposal.",
+    "architectureRecord": "docs/evidence/M6/architecture-decision.md",
+    "newNamespaceRole": {
+      "name": "participantSlotGovernor",
+      "kind": 13
+    },
+    "M5Unchanged": true,
+    "noUniversalAdmin": true,
+    "noSeparatePublicInstanceAuthorityRoot": true,
+    "noNewSigningScheme": true,
+    "noSlotDepthCutoff": true
+  },
+  "compiler": {
+    "compilerVersion": "0.31.1",
+    "runtimeVersion": "0.16.0",
+    "proofEntries": [
+      "allocateRuntimeInstance",
+      "manageRuntimeParticipantSlots",
+      "submitAuthorityRootApproval",
+      "proposeProofModule",
+      "reviewProofModule",
+      "governProofModule",
+      "terminateTemplate",
+      "beginM4Activation",
+      "stageM4ActivationBinding",
+      "finalizeM4Activation",
+      "updateRuntimeCredentialStatus"
+    ],
+    "completeMatchingKeyInventory": false,
+    "buildManifestExists": false,
+    "realCurrentSlotKeyPairGenerated": false,
+    "prober": "scripts/probe-m6-slot-key.mjs",
+    "mockKeysUsed": false
+  },
+  "measuredSize": {
+    "unoptimized": {
+      "k": 21,
+      "rows": 1102647,
+      "buildLog": "logs/m6-key-retry-2026-10-14T05-50-18.933Z/compiler.log"
+    },
+    "optimized": {
+      "k": 20,
+      "rows": 818608,
+      "probeReport": "logs/m6-slot-key-probe-c10vpD/report.json"
+    },
+    "rowsSaved": 284039,
+    "reductionPercent": 25.759739971178448,
+    "networkOrLedgerRejectionObserved": false,
+    "k19GuardIsLocalResourcePolicyNotProtocolLimit": true,
+    "k20FullKeyMemoryCostMeasured": false,
+    "proofLatencyMeasured": false
+  },
+  "keyAttempts": [
+    {
+      "log": "logs/m6-key-retry-2026-10-14T05-47-54.315Z/resources.jsonl",
+      "startedAtUtc": "2026-10-14T05:47:54.335Z",
+      "endedAtUtc": "2026-10-14T05:49:33.034Z",
+      "signal": "SIGTERM",
+      "reason": "Owned build deliberately stopped before adding committed no-backdating watermark.",
+      "complete": false,
+      "monitorElapsedSeconds": 96.5,
+      "newKernelOomRecords": 0
+    },
+    {
+      "log": "logs/m6-key-retry-2026-10-14T05-50-18.933Z/resources.jsonl",
+      "startedAtUtc": "2026-10-14T05:50:18.959Z",
+      "endedAtUtc": "2026-10-14T06:06:55.794Z",
+      "utcSpanSeconds": 996.835,
+      "monitorElapsedSeconds": 929.3,
+      "signal": "SIGTERM",
+      "reason": "Owned unoptimized k21 slot build deliberately stopped for optimization/allocation signature binding.",
+      "complete": false,
+      "maxObservedCompilerHwmKiB": 5097304,
+      "maxSampledCompilerSwapKiB": 0,
+      "newKernelOomRecords": 0,
+      "exactPeakGuaranteed": false,
+      "clocksKeptSeparate": true
+    },
+    {
+      "reportVersion": 1,
+      "kind": "real-isolated-slot-key-probe",
+      "startedAtUtc": "2026-10-14T06:17:11.981Z",
+      "completedAtUtc": "2026-10-14T06:20:02.227Z",
+      "compilerVersion": "0.31.1",
+      "runtimeVersion": "0.16.0",
+      "programSha256": "70ea49d8ddab0189ba95daa52d91f060e3d7ee90700e8982999353d3417f70e4",
+      "compilerInfoSha256": "14400f56bdc18c165e4e29d3a0d131148df2819c78d1ba08f57e226854bc1049",
+      "contractSha256": "7265a73ddf509324247949bd6c22b21d3171bcaea402035a92c5fffd3b10f391",
+      "measurement": {
+        "k": 20,
+        "rows": 818608,
+        "observedAtUtc": "2026-10-14T06:20:02.212Z"
+      },
+      "result": {
+        "code": null,
+        "signal": "SIGTERM",
+        "spawnFailed": false
+      },
+      "localGuardMaximumK": 19,
+      "guardStopped": true,
+      "guardIsProtocolLimit": false,
+      "keys": null,
+      "resourceSamples": [
+        {
+          "timestamp": "2026-10-14T06:17:21.999Z",
+          "VmRSS": 226556,
+          "VmHWM": 627184,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:17:32.004Z",
+          "VmRSS": 499104,
+          "VmHWM": 627260,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:17:42.025Z",
+          "VmRSS": 160560,
+          "VmHWM": 627264,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:17:52.020Z",
+          "VmRSS": 462604,
+          "VmHWM": 627264,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:02.048Z",
+          "VmRSS": 133336,
+          "VmHWM": 628676,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:12.057Z",
+          "VmRSS": 577888,
+          "VmHWM": 628676,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:22.065Z",
+          "VmRSS": 315092,
+          "VmHWM": 671756,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:34.274Z",
+          "VmRSS": 33404,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:44.280Z",
+          "VmRSS": 535032,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:18:54.289Z",
+          "VmRSS": 292468,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:06.602Z",
+          "VmRSS": 46968,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:16.606Z",
+          "VmRSS": 478980,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:26.611Z",
+          "VmRSS": 296752,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:36.619Z",
+          "VmRSS": 111156,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:48.877Z",
+          "VmRSS": 517856,
+          "VmHWM": 722880,
+          "VmSwap": 0,
+          "Threads": 2
+        },
+        {
+          "timestamp": "2026-10-14T06:19:58.881Z",
+          "VmRSS": 271788,
+          "VmHWM": 723232,
+          "VmSwap": 0,
+          "Threads": 2
+        }
+      ],
+      "exactPeakGuaranteed": false,
+      "productionKeyInventoryReady": false,
+      "chainTransactions": 0,
+      "milestoneComplete": false
+    }
+  ],
+  "regression": {
+    "command": "npm run check",
+    "exitCode": 0,
+    "passed": 250,
+    "failed": 0,
+    "skipped": 0,
+    "counts": {
+      "diagnostics": 16,
+      "protocol": 6,
+      "M2": 15,
+      "M3": 14,
+      "M4": 16,
+      "M5": 50,
+      "midnight": 127,
+      "hardhat": 6
+    },
+    "midnightTestDurationMs": 111938.9854,
+    "hardhatReportedDurationMs": 2951,
+    "sourceCaveat": "After this full check, the live fixture's implementation-reference string was corrected to use the dynamic v7 tag. Typecheck/diff and diagnostic checks were rerun; no Compact or tested authorization predicate changed by that label fix.",
+    "newSlotManagementCases": 11,
+    "newPrivateMapCases": 5,
+    "newCanonicalM5EvidenceCase": 1,
+    "currentLongM5ChainWitnessCases": 12
+  },
+  "checksImplemented": [
+    "Exact signed allocation/deployment commitment, immutable state/sequence and root references.",
+    "Current authenticated template slot rules; distinct original-creator/governance/occupied-slot authority.",
+    "Full-key private sorted maps; exact ID uniqueness and immutable original assignment on revocation.",
+    "Staged complete parent progression with strictly decreasing issued sequences and current account statuses.",
+    "Duplicate active binding rejection; inactive exact predecessor evaluation and non-revival of old parent IDs.",
+    "Final-only mutation/nonces; no role/receipt from staging/cleanup; slot watermark.",
+    "Generated-circuit concurrency, account-status invalidation, signatures/hashes/roots/state/replay/expiry/privilege separation."
+  ],
+  "liveAttempt": {
+    "command": "node scripts/run-live-m6-admission.ts --slot-state",
+    "log": "logs/m6-live-2026-10-14T06-24-20.735Z.jsonl",
+    "exitCode": 1,
+    "event": {
+      "timestamp": "2026-10-14T06:24:20.742Z",
+      "event": "failed",
+      "category": "missing-or-mismatched-build-assets",
+      "milestoneComplete": false,
+      "detailsWithheldToProtectPrivateWitness": true
+    },
+    "prerequisite": "Matching real-key manifest absent; fail-fast before account-file/wallet initialization.",
+    "newDeployments": 0,
+    "newMidnightTransactions": 0,
+    "newOrdinaryActionReceipts": 0,
+    "nodeRejectedNegativeTransactions": 0,
+    "expectedFutureFixture": {
+      "accountTransactions": 1,
+      "slotTransactions": 9,
+      "instanceSequence": 4,
+      "slotNonces": 4,
+      "credentialStatusSequence": 1,
+      "pendingSlotSessions": 0
+    },
+    "scopeNotClaimed": [
+      "node slot acceptance",
+      "long occupied-slot node flow",
+      "ordinary action receipts",
+      "restart/private-state recovery",
+      "production proof timing"
+    ]
+  },
+  "infrastructure": {
+    "observationScope": "Historical pre-user-restart failure; subsequent recovery is in docker-wsl-recovery-verification.json.",
+    "dockerEnginePipe": "npipe:////./pipe/dockerDesktopLinuxEngine",
+    "engineReachable": false,
+    "oneNormalStartAttempt": true,
+    "startCliEndedByTask": true,
+    "onlyOwnedStartCliPidStopped": 136924,
+    "dockerDesktopAndBackendProcessesLeftRunning": true,
+    "visibleStartupMessageRequestedFromUser": true,
+    "rootCauseConfirmed": false,
+    "sanitizedErrorPatterns": {
+      "cannotFind": 12,
+      "contextCanceled": 1,
+      "contextDeadlineExceeded": 1,
+      "AF_UNIX": 0,
+      "addressAlreadyInUse": 0
+    },
+    "factoryReset": false,
+    "runDirectoryRenamed": false,
+    "dataDeleted": false,
+    "wslRestarted": false,
+    "resourceOrToolchainChanged": false
+  },
+  "sources": {
+    "observationScope": "Source fingerprint of the earlier measured probe/check, not an assertion that later diagnostic-script edits have the same bytes.",
+    "capturedAtUtc": "2026-10-14 06:29:58 UTC",
+    "hashAlgorithm": "sha256 raw file bytes",
+    "files": [
+      {
+        "path": "packages/midnight-authorization/contracts/permio-authorization.compact",
+        "sha256": "1901959c0e14eeb9c25ac886e5e2de1b478e0abe52f2f36aad9243429846d4d4"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/runtime-private-map.compact",
+        "sha256": "58991d68e98d36c29d2e6e57d9da1f3d9ab7eca6eb2244f20f9fce7c5b70d3db"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/runtime-instance-allocation.compact",
+        "sha256": "d61fcfcf14c76cabaa3f5b8d162606c2313b5af47363d18a44ff6349b6994e44"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/runtime-participant-slots.compact",
+        "sha256": "4bbfdf354e57d8997dab9a9ac590aae64d0c440b36825ca5a640749d2b74db74"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/runtime-template-policy.compact",
+        "sha256": "5e5bc2f0d37e539f311be7a2608a7e14fe281440dbc38853c890a55dbb2f8ee3"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/managed/permio-authorization/contract/index.js",
+        "sha256": "7265a73ddf509324247949bd6c22b21d3171bcaea402035a92c5fffd3b10f391"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/managed/permio-authorization/contract/index.d.ts",
+        "sha256": "a9c78837dedc90ccbf922df0640d3372f5497a260f56853b4acb7d9f92e78050"
+      },
+      {
+        "path": "packages/midnight-authorization/contracts/managed/permio-authorization/compiler/contract-info.json",
+        "sha256": "14400f56bdc18c165e4e29d3a0d131148df2819c78d1ba08f57e226854bc1049"
+      },
+      {
+        "path": "packages/midnight-authorization/src/private-map.ts",
+        "sha256": "c255f61921b1659838d56f97ef1385b7a616807f22756c31bcd040a59ebf8a20"
+      },
+      {
+        "path": "packages/midnight-authorization/src/runtime-credentials.ts",
+        "sha256": "8462f79e7bf57308b2efc74968bece7e3ee1815e6e16e238147d35bf690fa1bf"
+      },
+      {
+        "path": "packages/midnight-authorization/src/compact-crypto.ts",
+        "sha256": "b41af540ca1e5f7264b5904d9f72082550d90c55ff1d3d67ee34f72bb86abf7f"
+      },
+      {
+        "path": "packages/midnight-authorization/src/instance-allocation.ts",
+        "sha256": "a1d9b06a34bc6aae8c8d8b8d256505ca3e514e4739faaafb1513b8b781686190"
+      },
+      {
+        "path": "packages/midnight-authorization/src/template-policy.ts",
+        "sha256": "d8bf309610b24b66de60a82941da000b1abc8ce0b44933b6cce2cf2cafc6a971"
+      },
+      {
+        "path": "packages/midnight-authorization/src/midnight-contract.ts",
+        "sha256": "8e9edc6f2077ca995dcc9ea932951b534168d832f3ee35843fd80f9583fb08b6"
+      },
+      {
+        "path": "packages/midnight-authorization/src/index.ts",
+        "sha256": "76c8c14193351974ccaac6045cc580f4151e7d5ebb4b569de51b01a438627cc8"
+      },
+      {
+        "path": "packages/midnight-authorization/test/private-map.test.ts",
+        "sha256": "af8afd1bd531ea1aa1b878cec9c6f06845dc9b4aac157fcbbc5a14f3021c4b0b"
+      },
+      {
+        "path": "packages/midnight-authorization/test/admission-envelope.test.ts",
+        "sha256": "56dc256cbc3383891206935f4243e1e423e4f43205dec798a8014fbddcefc1e2"
+      },
+      {
+        "path": "packages/midnight-authorization/test/slot-assignments.test.ts",
+        "sha256": "6db527e563d9b41001816218f8ffbcbc0d10305f46cc735f3a8533b8459b2100"
+      },
+      {
+        "path": "packages/midnight-authorization/test/template-policy.test.ts",
+        "sha256": "ec8b71e879cb96f57b8de35ba9665745de9f3ecec49be3f7584240185cfc87f4"
+      },
+      {
+        "path": "scripts/m6-slot-state-workflow.ts",
+        "sha256": "cec5801968553688f7a18c0741b0b636fcd02f332980706e61c5145581887420"
+      },
+      {
+        "path": "scripts/m6-prover-memory.ts",
+        "sha256": "94c75e1eacf6f0346f11e1f06fd3f2cd613f7f19064bb134c5d4c0b1f3d9943b"
+      },
+      {
+        "path": "scripts/run-live-m6-admission.ts",
+        "sha256": "009012bcbd2938e2d685ef0f4188b34ddc369b485db683f940ace0f888af6e04"
+      },
+      {
+        "path": "scripts/verify-live-m6-public-state.ts",
+        "sha256": "25a81415b0cff2d5d93e5b52a33953583189d1c44cce2d29884eaab3c1574944"
+      },
+      {
+        "path": "scripts/probe-m6-slot-key.mjs",
+        "sha256": "5c5c4625edcb1b1c5fff45f05543cebcfa2ffab5c790226c27cdab6b25076601"
+      },
+      {
+        "path": "scripts/test/m6-prover-memory.test.ts",
+        "sha256": "a683480cd1ba36a5976878e0922b0203eccf713ca7ed580e2a7c861e2d5d5457"
+      },
+      {
+        "path": "scripts/test/m6-public-state.test.ts",
+        "sha256": "257d9e4f2e38934a4bf7213d9a9bc57e42f060fd76918610205d5821cef539e6"
+      }
+    ],
+    "compiledHashesMatchIsolatedProbe": true
+  },
+  "preserved": {
+    "M5SourceAndAcceptedEvidence": true,
+    "M5P1SeparateCommit": true,
+    "sharedMilestoneMarkdown": true,
+    "generatedHtml": true,
+    "privateAgentInstructions": true,
+    "lockfileAndDependencies": true,
+    "noM6Commit": true,
+    "noPush": true
+  },
+  "remaining": [
+    "Further size optimization or measured resource-qualified real-key build; no fabricated readiness.",
+    "Existing Docker stack recovered in docker-wsl-recovery-verification.json; fresh v7 slot deployment/transactions/public reconnect still pending matching keys.",
+    "Real long occupied-chain/ancestor revocation/negative-node tests and full privacy scan.",
+    "Ordinary actions with role+capability, active exact module/schema, evidence, atomic nullifiers/state, common receipts.",
+    "Cross-credential/action watermark, actual restart/wallet/private-state recovery and production feasibility."
+  ]
+}

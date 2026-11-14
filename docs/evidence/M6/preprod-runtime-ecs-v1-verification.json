@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "date": "2026-10-17",
+  "observedAtUtc": "2026-10-17T00:43:10.900Z",
+  "status": "PREPROD_RUNTIME_REVIEW_DUST_PROOF_REJECTED_DIAGNOSTICS_RECORDED_M6_OPEN",
+  "baselineCommit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+  "branch": "feat/m6-m8-midnight-delivery",
+  "uncommittedWorktree": true,
+  "priorGovernanceEvidence": "docs/evidence/M6/preprod-governance-v2-verification.json",
+  "priorSeventeenGovernanceTransactionsUnchanged": true,
+  "currentSourceSha256": {
+    "scripts/run-live-m6-admission.ts": "32c9958a6180907b702ffb548ab326d9591fecc4ab324b2c7c7b5d0fea0631a6",
+    "scripts/m6-slot-state-workflow.ts": "1b567557e2540e6e07c2d9febe8bd46f8d2cfbb6edd1cd22bca7c191a3931d39",
+    "packages/midnight-authorization/src/preprod-checkpoint.ts": "c1b12f01a2cbc89a8074117e980744a2e3f3df371432a9a0720005c8dd1c373b",
+    "packages/midnight-authorization/test/preprod-checkpoint.test.ts": "3c9ca001a10c41c02007b520179f98f2540ec6bd038964b9a9b700384bdff15d"
+  },
+  "freshContractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+  "runtimeAttempt": {
+    "passed": false,
+    "actualWalletInitializationOccurred": true,
+    "submissionBoundaryObservations": 3,
+    "sdkReturns": 2,
+    "finalizedSuccessfulTransactions": [
+      {
+        "transactionId": "0019c6618fa6840ccebf49995ebbe7264f996df1556502dfa7359326122f34d4e9",
+        "status": "SUCCESS",
+        "blockHeight": 3012979,
+        "blockHash": "74fbd75ad0051ad3058af8afdecdee40ff4767892b1b1bf68f92c42fa2e76333"
+      },
+      {
+        "transactionId": "0033424553ba622122e9436b88a7c621b5b9b6dea65cab67e6a89be39f8f1124c6",
+        "status": "SUCCESS",
+        "blockHeight": 3012987,
+        "blockHash": "170c2011d12b14bb8afd421d15b0021ba1838cf04a7b4e93dd1433077af6507b"
+      }
+    ],
+    "capturedNodeRejection": {
+      "category": "node-submission-error",
+      "rpcCode": 1010,
+      "customCode": 170
+    },
+    "unindexedCandidateAloneDoesNotProveRejection": true,
+    "rejectedTransactionBytesNotRetained": true,
+    "rejectedCandidateDustContentsNotRetrospectivelyAsserted": true,
+    "automaticSubmissionRetry": false,
+    "originalControllerWalletInitializedFalseWasPreparationFieldNotUpdated": true,
+    "originalControllerReportPreserved": true,
+    "allocationReached": false,
+    "credentialIssuanceReached": false,
+    "slotWorkflowReached": false
+  },
+  "publicState": {
+    "authorityRootVersion": 1,
+    "authorityRootSequence": 1,
+    "moduleLifecycleStatus": 1,
+    "moduleRegistrySequence": 1,
+    "templateLifecycleStatus": null,
+    "templateActivationSequence": 0,
+    "templateLifecycleSequence": 0,
+    "credentialStatusRootSequence": 0,
+    "allocationRequestNullifiers": 0,
+    "instanceIdentityNullifiers": 0,
+    "remainingCredentialSessions": 0,
+    "remainingSlotSessions": 0,
+    "usedSlotCommandNonces": 0,
+    "instances": []
+  },
+  "publicStateCanonicalBlock": {
+    "height": 3012987,
+    "hash": "170c2011d12b14bb8afd421d15b0021ba1838cf04a7b4e93dd1433077af6507b"
+  },
+  "keyReproduction": {
+    "allElevenExactPairs": true,
+    "originalManifestUnchanged": true,
+    "elapsedSeconds": 1176.724,
+    "memoryPeakBytes": 5369212928,
+    "notTransactionProvingLatency": true,
+    "originalCleanupFailurePreserved": true,
+    "hostRecoveryVerified": true
+  },
+  "readinessGuard": {
+    "currentSynchronizationAndSpendableDustBeforeEveryBalance": true,
+    "boundedWaitSeconds": 60,
+    "pendingWorkJoinedBeforeCleanup": true,
+    "threeRegressionCasesPassed": true,
+    "causeOf170Established": false,
+    "fixFor170Established": false
+  },
+  "nonSubmittingReviewDiagnostic": {
+    "source": "logs/m6-review-diagnostic-public-v1/m6-review-diagnostic-outcome-v1.json",
+    "outcome": {
+      "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+      "passed": false,
+      "lastPhase": "readonly-runtime-result",
+      "childExitCode": 1,
+      "childSignal": null,
+      "report": {
+        "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+        "passed": false,
+        "category": "unclassified-private-error",
+        "detailsWithheld": true,
+        "transactionSubmitted": false
+      },
+      "observations": [
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "preflight-passed",
+          "allSixGatesPassed": true
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "restore"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "synchronize"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "read-existing-proposal"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "prepare-prove-balance"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "wallet-balance-started"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "wallet-balance-completed"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "candidate-intercepted-before-submit"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "candidate-structure-observed",
+          "transactionIds": [
+            "008423cd06f39f70d6378ffcc42d4a9be441c2fc9a30313f554b378705120780d9",
+            "009a9448cc7a0ae1b6f57b9e8adc2085e34fdc218fb342e8a2b1ea8ceafe2802ab"
+          ],
+          "dustSections": [
+            {
+              "spendCount": 1,
+              "registrationCount": 0,
+              "creationTimeUtc": "2026-10-17T00:35:42.000Z"
+            }
+          ],
+          "transactionSubmitted": false
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "readonly-runtime-validation"
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "phase": "readonly-runtime-result",
+          "validation": {
+            "responded": false,
+            "rpcCode": 4003,
+            "category": "runtime-execution",
+            "rawErrorWithheld": true
+          },
+          "transactionSubmitted": false
+        },
+        {
+          "kind": "m6-preprod-nonsubmitting-review-diagnostic-v1",
+          "passed": false,
+          "category": "unclassified-private-error",
+          "detailsWithheld": true,
+          "transactionSubmitted": false
+        }
+      ],
+      "observedAtUtc": "2026-10-17T00:36:08.811Z",
+      "rawSdkOutputWithheld": true,
+      "transactionSubmitted": false,
+      "ordinaryActionAcceptance": false,
+      "milestoneComplete": false
+    },
+    "controller": "logs/m6-review-diagnostic-controller-closeout-v1.json",
+    "underlyingWalletSubmitNotCalled": true,
+    "notAReplayOfRejectedTransaction": true,
+    "notLedgerAcceptance": true,
+    "contractProofAndBalanceCompleted": true,
+    "observedDustSpendCount": 1,
+    "readOnlyValidationRpcCode": 4003,
+    "originalHarnessFailedOnWrappedInterception": true,
+    "correctedGuardFocusedTestsPassed": 3,
+    "correctedWorkerRerun": false,
+    "finalIndependentPublicState": {
+      "kind": "m6-preprod-final-readonly-contract-state",
+      "result": "PASS",
+      "observedAtUtc": "2026-10-17T00:40:04.521Z",
+      "contractAddress": "7d40639830890a77cfc5e7aa447610095458dfb3f8e7f5c2a70d9ce83df7f567",
+      "networkId": "preprod",
+      "finalizedHead": {
+        "hash": "0x04417d219ebf547047ac5ab6da04c80fdf677c715fd865fefb2580626fb7afac",
+        "height": 3013291
+      },
+      "latestIndexedContractActionAtCanonicalFinalizedBlock": {
+        "hash": "170c2011d12b14bb8afd421d15b0021ba1838cf04a7b4e93dd1433077af6507b",
+        "height": 3012987
+      },
+      "publicState": {
+        "moduleLifecycleStatus": 1,
+        "moduleReviewCount": 0,
+        "moduleRegistrySequence": 1,
+        "activeTemplates": 0,
+        "runtimeInstances": 0
+      },
+      "diagnosticDidNotChangeReviewedPublicState": true,
+      "walletLoaded": false,
+      "transactionSubmitted": false,
+      "milestoneComplete": false
+    },
+    "baselineUnsignedRemarkAlsoTraps": {
+      "kind": "m6-preprod-runtime-validation-probe",
+      "observedAtUtc": "2026-10-17T00:36:57.380Z",
+      "responded": false,
+      "failedStage": "call-runtime",
+      "rpcErrorCode": 4003,
+      "category": "runtime-execution",
+      "rawErrorWithheld": true,
+      "missingRuntimeMethod": false,
+      "wasmTrapOrPanic": true,
+      "decodeFailure": false,
+      "unavailableBlock": false,
+      "taggedTransactionQueueMentioned": true,
+      "unsignedRemarkUsedOnlyAsReadOnlyDiagnostic": true,
+      "walletLoaded": false,
+      "transactionSubmitted": false
+    }
+  },
+  "boundary": {
+    "allAttachedGroupsAndMembershipVerified": true,
+    "onlyWorkbenchPrivateSshInbound": true,
+    "actualLoopbackProverPublicationVerified": true,
+    "externalProbeApplicationBytes": 0,
+    "externalTimeoutAloneNotPersistentProof": true,
+    "publicNetworkCapabilityPreserved": true,
+    "websiteDeployed": false
+  },
+  "credentials": {
+    "explicitDisposableTestSetupVerified": true,
+    "ossReceivesCiphertextOnly": true,
+    "ownerOnlyRemotePlaintext": true,
+    "temporaryRemoteTestCredentialsRemoved": true,
+    "syntheticFixtureRetainedForContinuingRecovery": 1,
+    "privateFixtureNotExported": true
+  },
+  "verification": {
+    "rootChecksPassed": 359,
+    "nodeTestsPassed": 353,
+    "hardhatTestsPassed": 6,
+    "lifecycleSafetyTestsPassed": 5,
+    "cleanupSafetyTestsPassed": 6,
+    "priorHistoricalArtifactCount": 192,
+    "dependencyLockUnchanged": true
+  },
+  "economicalStop": {
+    "activeRefreshMinutes": 30,
+    "rollingDelayHours": 2,
+    "finalTimer": {
+      "instance": "i-t4ni11rkjyzgi0vlb68d",
+      "region": "ap-southeast-1",
+      "executionId": "exec-b827717e7702435d8638",
+      "contentSha256": "15a5a43a6db7a594b54783797e035c29f95c79caa9a10470c57aa7d21b35269f",
+      "deadlineUtc": "2026-10-17T02:42:42+00:00",
+      "deadlineShanghai": "2026-10-17T10:42:42+08:00",
+      "lastRenewedAtUtc": "2026-10-17T00:42:49.898708+00:00",
+      "nextRefreshDueUtc": "2026-10-17T01:12:49.898711+00:00",
+      "lastStatus": "Waiting",
+      "exactTemplateVerified": true,
+      "mode": "StopCharging",
+      "forceStop": false,
+      "refreshIntervalMinutes": 30,
+      "rollingDelayHours": 2,
+      "previousTimerStates": {
+        "exec-d1a86278ab5640c09a1e": "Cancelled",
+        "exec-ebc483682b6d48d2b2d5": "Success"
+      }
+    },
+    "instanceAndDisksPreserved": true,
+    "automaticDeletionDeadlineEmpty": true,
+    "notYetClaimedStopped": true
+  },
+  "unresolved": [
+    "InvalidDustSpendProof cause",
+    "original keygen cleanup failure cause",
+    "ordinary action and common receipt implementation/acceptance",
+    "real allocation/credential/slot acceptance",
+    "privacy and replay/restart acceptance",
+    "M7-M9 integration gates"
+  ],
+  "ordinaryActionAcceptance": false,
+  "milestoneComplete": false,
+  "productionReady": false,
+  "artifactSha256": {
+    "docs/evidence/M6/preprod-governance-v2-verification.json": "0b0295411555a4ac52c767eb53b62935cb98a46b02f6598f6995fb70c8989942",
+    "logs/m6-active-work-lifecycle-safety-tests-20261017.txt": "1659b266e104a0c65f7e8014190f999d99a94d5a0c80a7bf3ae8261beae5f1b1",
+    "logs/m6-preprod-final-contract-state-v2-1792197604523.json": "c8ce900ee5aee90305bfc8dce5ed986fe1012627dd743f1bb14ebed4cd5b26a2",
+    "logs/m6-preprod-runtime-public-reconciliation-1792196063960.json": "8eea878658001aa6086f3c4a612b14eb75c44775f21eaef93649ad12674084c7",
+    "logs/m6-preprod-runtime-validation-probe-v2-1792197417421.json": "392c7d413a4f2157634927d90f2a780ee154868b89042baa9345aa0ad3aee831",
+    "logs/m6-preprod-validation-capabilities-1792196717489.json": "82cceab21647b55406c3c1b260f7ff03887455d73cd05d5080921dab02bcef78",
+    "logs/m6-review-diagnostic-cleanup-safety-tests-20261017.txt": "2dcf03e524c93c794675ac44aa18caea8cfff4c797949985b8b2ceb78354e2d9",
+    "logs/m6-review-diagnostic-controller-closeout-v1.json": "54cc1d46f713227ac468b2db31e1bb611f87c51cd603a245797c00e603de06a6",
+    "logs/m6-review-diagnostic-public-evidence-v1.tar.gz": "9a1b033a1e93818b52ee6d3f787f486722ebf22edd5559e146b8eaa587f54fa1",
+    "logs/m6-review-diagnostic-public-v1/m6-exact-key-reproduction-report.json": "2d4a2a8085ca9d71b08e533da0fda61681699af8e775a706714d535eb6471c83",
+    "logs/m6-review-diagnostic-public-v1/m6-keygen-cleanup-recovery-report.json": "2139894bf82961e59aab466d4bf6f2d8ac5be74ac1786d1643e5035ed5181a1b",
+    "logs/m6-review-diagnostic-public-v1/m6-keygen-original-cleanup-report.json": "5299fb2e67dc7853ac02df2e37be5afb20e9fab765ed16a1ebcb2b7796f2ff18",
+    "logs/m6-review-diagnostic-public-v1/m6-live-2026-10-17T00-05-01.694Z.jsonl": "4d6ca84de81abebaa84a29584b866a9e6875d4f99dd773b005158370ca377e6a",
+    "logs/m6-review-diagnostic-public-v1/m6-review-diagnostic-controller-report-v1.json": "9b64936077c692a6e519c350eba1fce979cea06cfb5eb2a11490fab31653c253",
+    "logs/m6-review-diagnostic-public-v1/m6-review-diagnostic-outcome-v1.json": "2ec11fc017a71105e5f491cddea2fa5887244faa783bfbfc31fd42670d71f6cb",
+    "logs/m6-review-diagnostic-public-v1/m6-review-diagnostic-resource-samples-v1.jsonl": "de2491bb0615a3e372bd8d8e30e60d5320b5c17eb6ce88204040c825ccda6704",
+    "logs/m6-review-diagnostic-public-v1/m6-review-diagnostic-worker-public-v1.jsonl": "b6aba412d1b08b8b28b44fdd25edf1c7d862caa88113b2d506ed765b627cf9a9",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-controller-preflight-v6-report.json": "c2f280c5a704953aa7d98ca42d9e3ca92cb7b8c2fdddf854f41939404549e1b2",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-controller-report.json": "4af84b3f063d67dfb839799e5a745fbde1917f1a89dea0280e505402063e6f8a",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-dependency-download-readiness.json": "9fb30183f07aa0cf53abbc2d35a70d4c512a80430209ddbe253541be653809bb",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-ecs-v3-outcome.json": "a0fe49c3dae097c669dce7ba176ee4cd065ba99b07cbb3c7e47fbaed1337a9ec",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-resource-samples.jsonl": "3ec176b5bbc396584a0448ba83669a30872d9a623cb518610a094fc3bb78d0a2",
+    "logs/m6-review-diagnostic-public-v1/m6-runtime-worker-public.jsonl": "865068b2d8072f0d5733510f71c44016a7b27bcbc7c968874f53c049d9879a0f",
+    "logs/m6-review-interception-guard-v1.mjs": "8f055e287a2e7949913a2d0071daa7cc6e59006f3c92d604f0023561a8c34148",
+    "logs/m6-review-interception-regression-20261017.txt": "b7d9f94ed17f17455b728d24e533397c4e53a8486faa10fd84555ade6f1eec9a",
+    "logs/m6-review-interception-regression-v1.mjs": "29c8df9533da7e18c318dd46e4b70308f3ff71c5260d1cfb57f54af63869e06a",
+    "logs/m6-runtime-balance-readiness-root-check-20261017.txt": "967558a09e269e47433df6898549bd52b043a2a0e63f6cb80dca562f6f8e88de",
+    "logs/m6-runtime-cloud-boundary-20261017.json": "327e288df079a3bddc076e3aa000e1df5a30e80035c24ddcec5448fa09f2cc35",
+    "logs/m6-runtime-ecs-v7-controller-closeout.json": "97d298ad7e27f1e044ef318002484fb6251e3ede53a5281505ca3407377247ca",
+    "logs/m6-runtime-ecs-v7-public-evidence.tar.gz": "ae7bb22482c97917d2f73e07d8d5a67e67d47d5fdf686011abf182da60d10d59",
+    "logs/m6-runtime-ecs-v7-public/m6-exact-key-reproduction-report.json": "2d4a2a8085ca9d71b08e533da0fda61681699af8e775a706714d535eb6471c83",
+    "logs/m6-runtime-ecs-v7-public/m6-keygen-cleanup-recovery-report.json": "2139894bf82961e59aab466d4bf6f2d8ac5be74ac1786d1643e5035ed5181a1b",
+    "logs/m6-runtime-ecs-v7-public/m6-keygen-original-cleanup-report.json": "5299fb2e67dc7853ac02df2e37be5afb20e9fab765ed16a1ebcb2b7796f2ff18",
+    "logs/m6-runtime-ecs-v7-public/m6-live-2026-10-17T00-05-01.694Z.jsonl": "4d6ca84de81abebaa84a29584b866a9e6875d4f99dd773b005158370ca377e6a",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-controller-preflight-v6-report.json": "c2f280c5a704953aa7d98ca42d9e3ca92cb7b8c2fdddf854f41939404549e1b2",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-controller-report.json": "4af84b3f063d67dfb839799e5a745fbde1917f1a89dea0280e505402063e6f8a",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-dependency-download-readiness.json": "9fb30183f07aa0cf53abbc2d35a70d4c512a80430209ddbe253541be653809bb",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-ecs-v3-outcome.json": "a0fe49c3dae097c669dce7ba176ee4cd065ba99b07cbb3c7e47fbaed1337a9ec",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-resource-samples.jsonl": "3ec176b5bbc396584a0448ba83669a30872d9a623cb518610a094fc3bb78d0a2",
+    "logs/m6-runtime-ecs-v7-public/m6-runtime-worker-public.jsonl": "865068b2d8072f0d5733510f71c44016a7b27bcbc7c968874f53c049d9879a0f",
+    "logs/m6-runtime-external-probe-20261017.json": "5d3fa4cda4a24a0b974fa019126935b752aa5d59828e38b0e91d7aaf4962ea67",
+    "logs/m6-runtime-final-cloud-boundary-20261017.json": "ad1cef4c999b26006a9755dbd92f4d45904cf904126d5b0ead739fc90028fdf3",
+    "logs/m6-runtime-final-server-audit-20261017.json": "37ff2e36e6b157ec9cd2c0fe057e38fec12acb30ed6ff3ff241aa2a64d217f99",
+    "logs/m6-runtime-final-stop-20261017.json": "136a67910d0bc6e9c28728727e55591eed6093c58e25fbe10fa1f0c37390af16",
+    "logs/m6-runtime-integrity-audit-v3.json": "d8162c7c3800ebceef2252457c3c6a18b5ea557aa4ce3ec15e24a7fb20afc050",
+    "logs/m6-runtime-preflight-v6-controller-closeout.json": "64cf5bedb83f4389980009de065e27448501b3fd61cabadc8731b9fa67dc3b2d",
+    "logs/m6-runtime-preflight-v6-public-evidence.tar.gz": "00d9096292028a53451f2feb6f4ef9d48111943e20e6a389f4f95b0cd51c2885",
+    "logs/m6-runtime-preflight-v6-public/m6-exact-key-reproduction-report.json": "2d4a2a8085ca9d71b08e533da0fda61681699af8e775a706714d535eb6471c83",
+    "logs/m6-runtime-preflight-v6-public/m6-keygen-cleanup-recovery-report.json": "2139894bf82961e59aab466d4bf6f2d8ac5be74ac1786d1643e5035ed5181a1b",
+    "logs/m6-runtime-preflight-v6-public/m6-keygen-original-cleanup-report.json": "5299fb2e67dc7853ac02df2e37be5afb20e9fab765ed16a1ebcb2b7796f2ff18",
+    "logs/m6-runtime-preflight-v6-public/m6-runtime-controller-report.json": "c2f280c5a704953aa7d98ca42d9e3ca92cb7b8c2fdddf854f41939404549e1b2",
+    "logs/m6-runtime-preflight-v6-public/m6-runtime-dependency-download-readiness.json": "9fb30183f07aa0cf53abbc2d35a70d4c512a80430209ddbe253541be653809bb",
+    "logs/m6-runtime-source-manifest-v3.json": "1b3b69e1370e6d8044a4303344342fc1c921557801b3e5fe8193879f8b1d4ddc"
+  }
+}

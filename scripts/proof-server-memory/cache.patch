@@ -1,0 +1,111 @@
+diff --git a/transient-crypto/src/proofs.rs b/transient-crypto/src/proofs.rs
+index 75ae647..1c9c72f 100644
+--- a/transient-crypto/src/proofs.rs
++++ b/transient-crypto/src/proofs.rs
+@@ -43,7 +43,7 @@ use std::io::Write;
+ use std::io::{self, Read};
+ #[cfg(feature = "proptest")]
+ use std::marker::PhantomData;
+-use std::sync::{Arc, Mutex};
++use std::sync::{Arc, Mutex, Weak};
+ use std::{any::Any, cmp::Ordering};
+ use std::{borrow::Cow, num::NonZeroUsize};
+ use storage_core::Storable;
+@@ -249,9 +249,21 @@ impl<T: Zkir> Tagged for ProverKey<T> {
+ const PK_COMPRESSION_LEVEL: u32 = 6;
+ const PK_CACHE_SIZE: usize = 5;
+ 
++// Permio's opt-in memory experiment: cache handles, not ownership. An active
++// proof still owns its exact decoded key through Arc; completed proofs must
++// not leave several multi-GiB decoded keys alive solely for future reuse.
++type ProverKeyCache = LruCache<HashOutput, Weak<dyn Any + Send + Sync>>;
++
++fn cached_prover_key<T: Any + Send + Sync>(
++    cache: &mut ProverKeyCache,
++    hash: &HashOutput,
++) -> Option<Arc<T>> {
++    cache.get(hash)?.upgrade()?.downcast().ok()
++}
++
+ lazy_static! {
+-    // forall<T> Arc<MidnightPK<T>>
+-    static ref PK_CACHE: Mutex<LruCache<HashOutput, Arc<dyn Any + Send + Sync>>> =
++    // forall<T> Weak<MidnightPK<T>>
++    static ref PK_CACHE: Mutex<ProverKeyCache> =
+         Mutex::new(LruCache::new(NonZeroUsize::new(PK_CACHE_SIZE).unwrap()));
+ }
+ 
+@@ -264,8 +276,7 @@ impl<T: Zkir> InnerProverKey<T> {
+         if let Some(pk) = PK_CACHE
+             .lock()
+             .ok()
+-            .and_then(|mut c| c.get(&hash).cloned())
+-            .and_then(|ptr| ptr.downcast().ok())
++            .and_then(|mut c| cached_prover_key(&mut c, &hash))
+         {
+             *self = InnerProverKey::Initialized(pk);
+         }
+@@ -296,10 +307,11 @@ impl<T: Zkir> ProverKey<T> {
+         match res {
+             Ok(pk) => {
+                 let key = Arc::new(pk);
++                let cached: Arc<dyn Any + Send + Sync> = key.clone();
+                 PK_CACHE
+                     .lock()
+                     .ok()
+-                    .and_then(|mut c| c.put(persistent_hash(&data), key.clone()));
++                    .and_then(|mut c| c.put(persistent_hash(&data), Arc::downgrade(&cached)));
+                 *mutex = InnerProverKey::Initialized(key.clone());
+                 Ok(key)
+             }
+@@ -801,3 +813,50 @@ pub type ProvingError = anyhow::Error;
+ /// the public API, although it may be assumed to be [`Debug`]` +
+ /// `[`Display`](std::fmt::Display).
+ pub type VerifyingError = anyhow::Error;
++
++#[cfg(test)]
++mod weak_cache_tests {
++    use super::*;
++
++    #[test]
++    fn weak_cache_reuses_only_the_exact_live_key_and_type() {
++        let mut cache = ProverKeyCache::new(NonZeroUsize::new(PK_CACHE_SIZE).unwrap());
++        let hash = persistent_hash(b"public synthetic key one");
++        let other_hash = persistent_hash(b"public synthetic key two");
++        let key = Arc::new(vec![7u8; 1024]);
++        let erased: Arc<dyn Any + Send + Sync> = key.clone();
++        cache.put(hash, Arc::downgrade(&erased));
++        drop(erased);
++        let reused = cached_prover_key::<Vec<u8>>(&mut cache, &hash).unwrap();
++        assert!(Arc::ptr_eq(&key, &reused));
++        assert!(cached_prover_key::<Vec<u8>>(&mut cache, &other_hash).is_none());
++        assert!(cached_prover_key::<String>(&mut cache, &hash).is_none());
++    }
++
++    #[test]
++    fn weak_cache_does_not_keep_completed_key_alive() {
++        let mut cache = ProverKeyCache::new(NonZeroUsize::new(PK_CACHE_SIZE).unwrap());
++        let hash = persistent_hash(b"public synthetic completed key");
++        let key: Arc<dyn Any + Send + Sync> = Arc::new(vec![9u8; 1024]);
++        let weak = Arc::downgrade(&key);
++        cache.put(hash, weak.clone());
++        assert_eq!(Arc::strong_count(&key), 1);
++        drop(key);
++        assert!(weak.upgrade().is_none());
++        assert!(cached_prover_key::<Vec<u8>>(&mut cache, &hash).is_none());
++    }
++
++    #[test]
++    fn weak_cache_eviction_does_not_invalidate_in_flight_key() {
++        let mut cache = ProverKeyCache::new(NonZeroUsize::new(1).unwrap());
++        let first_hash = persistent_hash(b"public synthetic active key");
++        let next_hash = persistent_hash(b"public synthetic next key");
++        let active: Arc<dyn Any + Send + Sync> = Arc::new(vec![3u8; 1024]);
++        let next: Arc<dyn Any + Send + Sync> = Arc::new(vec![4u8; 1024]);
++        cache.put(first_hash, Arc::downgrade(&active));
++        cache.put(next_hash, Arc::downgrade(&next));
++        assert!(cached_prover_key::<Vec<u8>>(&mut cache, &first_hash).is_none());
++        assert_eq!(active.downcast_ref::<Vec<u8>>().unwrap()[0], 3);
++        assert!(cached_prover_key::<Vec<u8>>(&mut cache, &next_hash).is_some());
++    }
++}

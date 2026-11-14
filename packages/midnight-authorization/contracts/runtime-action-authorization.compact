@@ -1,0 +1,105 @@
+export struct RuntimeActionScopePaths {
+    actions: MerkleTreePath<20, Bytes<32>>;
+    resourceSelectors: MerkleTreePath<20, Bytes<32>>;
+    resources: MerkleTreePath<20, Bytes<32>>;
+    purposes: MerkleTreePath<20, Bytes<32>>;
+    recipientKinds: MerkleTreePath<20, Bytes<32>>;
+    recipients: MerkleTreePath<20, Bytes<32>>;
+    disclosurePolicyIds: MerkleTreePath<20, Bytes<32>>;
+}
+
+struct RuntimeTerminalAuthority {
+    publicKey: JubjubPoint;
+    scopeRoots: RuntimeScopeRoots;
+}
+
+struct RuntimeTerminalSelection {
+    wanted: Uint<8>;
+    offset: Uint<8>;
+    authority: RuntimeTerminalAuthority;
+}
+
+pure circuit runtimeTerminalCandidate(
+    account: RuntimeAccountCredential,
+    capability: RuntimeCapabilityCredential
+): RuntimeTerminalAuthority {
+    return RuntimeTerminalAuthority{publicKey: account.runtimePublicKey, scopeRoots: capability.scopeRoots};
+}
+
+pure circuit runtimeSelectTerminalAuthority(
+    state: RuntimeTerminalSelection,
+    candidate: RuntimeTerminalAuthority
+): RuntimeTerminalSelection {
+    return RuntimeTerminalSelection{
+        wanted: state.wanted, offset: (state.offset + 1) as Uint<8>,
+        authority: state.offset == state.wanted ? candidate : state.authority
+    };
+}
+
+pure circuit assertRuntimeScopeValue(
+    valueHash: Bytes<32>,
+    root: MerkleTreeDigest,
+    path: MerkleTreePath<20, Bytes<32>>
+): [] {
+    assert(
+        path.leaf == runtimeScopeValueCommitment(valueHash) &&
+        merkleTreePathRoot<20, Bytes<32>>(path) == root,
+        "Exact action value is outside its certified capability or signed session scope"
+    );
+}
+
+pure circuit assertRuntimeActionScope(
+    intent: RuntimeActionIntent,
+    roots: RuntimeScopeRoots,
+    paths: RuntimeActionScopePaths
+): [] {
+    assertRuntimeScopeValue(intent.actionIdHash, roots.actionsRoot, paths.actions);
+    assertRuntimeScopeValue(intent.resourceSelectorHash, roots.resourceSelectorsRoot, paths.resourceSelectors);
+    assertRuntimeScopeValue(intent.resourceHash, roots.resourcesRoot, paths.resources);
+    assertRuntimeScopeValue(intent.purposeHash, roots.purposesRoot, paths.purposes);
+    assertRuntimeScopeValue(intent.recipientKindHash, roots.recipientKindsRoot, paths.recipientKinds);
+    assertRuntimeScopeValue(intent.recipientHash, roots.recipientsRoot, paths.recipients);
+    assertRuntimeScopeValue(intent.disclosurePolicyIdHash, roots.disclosurePolicyIdsRoot, paths.disclosurePolicyIds);
+}
+
+// Private authorization predicate only. The ledger entry point must also check
+// allocation, exact active registries/configuration, network/contract binding,
+// block time, nullifier, state ordering and receipt output atomically.
+// Whole-session attenuation is certified by staged issuance of session v2.
+// The expected root must be the actual ledger root, never a caller's synthetic tree.
+export circuit verifyRuntimeActionAuthorization(
+    ancestry: RuntimeActiveAncestry,
+    intent: RuntimeActionIntent,
+    sessionSignature: Schnorr_SchnorrSignature,
+    intentSignature: Schnorr_SchnorrSignature,
+    capabilityPaths: RuntimeActionScopePaths,
+    sessionPaths: RuntimeActionScopePaths,
+    expectedRoot: MerkleTreeDigest,
+    expectedSequence: Uint<64>,
+    now: Uint<64>
+): [] {
+    assertRuntimeActiveAncestry(ancestry, expectedRoot, expectedSequence, now);
+    const session = ancestry.session;
+    assert(
+        intent.intentVersion == 1 && intent.target == session.target &&
+        intent.instanceCommitment == session.instanceCommitment &&
+        intent.contextHash == session.contextHash &&
+        intent.sessionCredentialCommitment == runtimeSessionCredentialCommitment(session),
+        "Action intent substitutes its exact template, instance, context, or session"
+    );
+    assert(
+        intent.issuedAt >= session.notBefore && intent.issuedAt >= session.issuedAt &&
+        intent.issuedAt <= now && intent.nonceHash != default<Bytes<32>>,
+        "Action intent is not yet valid, predates its session, or has an empty nonce"
+    );
+    const terminal = fold(runtimeSelectTerminalAuthority, RuntimeTerminalSelection{
+        wanted: (ancestry.capabilityCount - 1) as Uint<8>, offset: 0,
+        authority: default<RuntimeTerminalAuthority>
+    }, map(runtimeTerminalCandidate, ancestry.accounts, ancestry.capabilities));
+    Schnorr_schnorrVerify<1>(
+        runtimeSessionCredentialMessage(session), sessionSignature, terminal.authority.publicKey
+    );
+    assertRuntimeActionScope(intent, terminal.authority.scopeRoots, capabilityPaths);
+    Schnorr_schnorrVerify<1>(runtimeActionIntentMessage(intent), intentSignature, session.runtimePublicKey);
+    assertRuntimeActionScope(intent, session.scopeRoots, sessionPaths);
+}

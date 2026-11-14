@@ -1,0 +1,6 @@
+# Explicit opt-in. Build and test first; never silently pull an unrelated image.
+services:
+  proof-server:
+    image: permio/proof-server:8.1.0-weak-cache
+    pull_policy: never
+    command: ['exec /usr/local/bin/permio-proof-server']

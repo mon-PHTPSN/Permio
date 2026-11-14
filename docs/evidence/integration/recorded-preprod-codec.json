@@ -1,0 +1,31 @@
+{
+  "tier": "RECORDED_PREPROD_PUBLIC_RECEIPTS_OFFLINE_CODEC_ONLY",
+  "sourceSha256": "c8dd5774ed0ca60a20c3eac444c6612fb42343237cfd914b59addb811bec7a73",
+  "receiptCount": 3,
+  "results": [
+    {
+      "receiptId": "0x3affb22ebf29fe0e3c829399e5cdc7a5c6f48b9cbfc3f5f554d5dcfe7ee3a2cf",
+      "sourceTransactionBytes": 33,
+      "recipientBytes": 32,
+      "wireSha256": "978e42cfd5631f51697ec071e5b0c3b4cd8d0ec3b1c3144f3d1150ea949f7354",
+      "allPublicFieldsPreserved": true
+    },
+    {
+      "receiptId": "0x996cb8c7a141e0c533d73bc30174ac9a1611c9853b1a0cc190a882430c23310f",
+      "sourceTransactionBytes": 33,
+      "recipientBytes": 32,
+      "wireSha256": "4e6e2a6db9341cb78c4e70650100738d40d23010796193d905092e08da1d6fab",
+      "allPublicFieldsPreserved": true
+    },
+    {
+      "receiptId": "0xed3440392a20161c3fa7d5a858f10338abf240511f4890cc382641009d6a0864",
+      "sourceTransactionBytes": 33,
+      "recipientBytes": 32,
+      "wireSha256": "f5a82fbced8d678e9c12bbb5355bec51da0dd22b6f1b61dcc651ad5cab62daf4",
+      "allPublicFieldsPreserved": true
+    }
+  ],
+  "newNativeSubmissions": 0,
+  "newProofRequests": 0,
+  "liveEndToEnd": false
+}

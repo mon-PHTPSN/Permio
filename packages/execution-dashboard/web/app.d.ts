@@ -2,6 +2,10 @@ export function shortHex(value: unknown, start?: number, end?: number): string;
 
 export function formatUnix(value: unknown): string;
 
+export function stateReferenceRows(
+  receipt: Record<string, unknown>,
+): readonly (readonly [string, unknown])[];
+
 export function summarize(readModel: {
   readonly receipts: readonly { readonly registeredBlock?: string | number }[];
   readonly executions: readonly { readonly success?: boolean; readonly blockNumber?: string | number }[];

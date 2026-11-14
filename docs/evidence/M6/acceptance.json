@@ -1,0 +1,691 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M6",
+  "status": "IN_PROGRESS",
+  "milestoneComplete": false,
+  "productionReady": false,
+  "updatedAtUtc": "2026-10-21T00:55:07.979150+00:00",
+  "source": {
+    "commit": "f2d8689f95d9294a92f6b2e2b8718d31121dde81",
+    "uncommittedChanges": true,
+    "contractTag": "permio-authorization-v10",
+    "ordinaryActionProfile": 9,
+    "receiptVersion": 1
+  },
+  "primaryNetwork": "preprod",
+  "infrastructureFaultNetwork": "undeployed-local-dev",
+  "firstStatefulFlow": {
+    "passed": true,
+    "finalizedSubmissions": 62,
+    "approvedCeilingExhausted": true,
+    "evidence": "ordinary-first-flow-preprod-v1.md",
+    "completion": "../../../logs/m6-governance-v10-assets-20261018/ordinary-first-flow-completion-v1.json"
+  },
+  "localRecovery": {
+    "passed": true,
+    "evidence": "local-infrastructure-recovery-verification.json",
+    "contractTag": "permio-authorization-v8",
+    "scope": "targeted infrastructure persistence and cold read-only reconnect; not current v10 authorization acceptance",
+    "newTransactions": 0
+  },
+  "gates": [
+    {
+      "criterion": 1,
+      "status": "PASSED_CONTROLLED_PREPROD_PRIVACY",
+      "resultAndRemaining": "417 final public artifacts were scanned against 183 actual private values with zero findings; 418 downloaded files and the manifest were rechecked. This is controlled-test evidence, not the independent human security/privacy review.",
+      "evidenceTiers": [
+        "remote-private-value-artifact-scan",
+        "offline-public-integrity"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/complete-privacy-scan.json"
+      ]
+    },
+    {
+      "criterion": 2,
+      "status": "PASSED_MIXED_BINDING_CHECKS",
+      "resultAndRemaining": "All Compact admission-envelope fields and semantic-version components are challenged with the original signature; M4/evidence hash substitutions cannot create records. Twenty action substitutions per exercised indexed-state action, generated credential/scope/policy tests, and the additional semantic matrix cover the named fields. Generated evaluation is not a native rejection transaction.",
+      "evidenceTiers": [
+        "preprod-indexed-generated-circuit",
+        "local-generated-circuit",
+        "native-preprod-selected-cases"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/source/public-source-manifest.json",
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v2/client-public.jsonl",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v5/client-public.jsonl",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/runtime-v9/client-public.jsonl"
+      ],
+      "observedIndexedGeneratedMutationRejections": 60,
+      "observedMutationLabelsPerRun": 20,
+      "observedMutationRuntimes": [
+        2,
+        5,
+        9
+      ],
+      "observedMutationEvidence": "Sixty logged generated-circuit mutation rejections cover 20 labels in each of runtime-v2, runtime-v5 and runtime-v9, each after a successful generated baseline; these are not native submissions."
+    },
+    {
+      "criterion": 3,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Native negatives 116 and 150 reject stale authority and credential-status roots. Paired positive controls and fixed-clock, fixed-parameter public-program replays attribute the failure to the changed root; exact bound bytes are verified.",
+      "evidenceTiers": [
+        "native-preprod",
+        "read-only-node-validation",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 4,
+      "status": "PASSED_GENERATED_AND_ADAPTER",
+      "resultAndRemaining": "Generated admission tests reject ineligible keys/roles, original-signature M4/evidence commitment changes and admission nonce replay. Runtime conversion now rejects unsupported signature profiles/protocol identifiers and malformed hashes. Re-signed unsupported envelope/registry versions fail their semantic checks. An eligible activator attests M4; v1 does not independently replay all M4 Ed25519 reviewer checks.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "local-sdk-adapter"
+      ],
+      "evidence": [
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 5,
+      "status": "PASSED_MIXED_LIFECYCLE",
+      "resultAndRemaining": "Actual native lifecycle transitions retain historical records. Two genuine historical binding-program replays reject actual indexed deprecated module rows with row-only positive controls. Four remote generated-circuit checks reject actual final revoked module/template rows with original retained private arguments. Offline verification checks their public provenance; it does not replay the private witnesses.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm",
+        "remote-generated-circuit",
+        "offline-public-provenance"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/deprecated-module-admission-155.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/deprecated-module-admission-158.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/generated-lifecycle-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 6,
+      "status": "PASSED_GENERATED_AND_ADAPTER",
+      "resultAndRemaining": "Both action families reject coherent, correctly signed unsupported module IDs/versions, an unregistered exact implementation, unsupported receipt schemas, policy versions and configuration commitments at their intended predicates. Existing registered-row tests separately reject input/configuration schema, compiler, compatibility and implementation-reference mismatches. Adapter/profile and receipt-format tests remain separately labeled; no fallback is inferred from a signature failure.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "local-sdk-adapter"
+      ],
+      "evidence": [
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 7,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Competing transaction 87 has exact indexed bytes and intended fallible-segment failure. The winner alone advances state/sequence. The saved negative public program passes on its original state and fails on the changed row under each historical parameter set.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 8,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Transaction 148 is an independently proved replay after cold reconnect, with exact saved/indexed bytes and an intended native failure. Projecting only the consumed nullifier into the original prepared state reproduces rejection, separately from consumed preparation.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-public-vm"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/transactions/rejection-148.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json"
+      ]
+    },
+    {
+      "criterion": 9,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "Successful action 147 leaves every runtime-instance record unchanged, inserts the third receipt and consumes its scoped nullifier. Exact historical states and SDK receipt decoding were rechecked locally.",
+      "evidenceTiers": [
+        "native-preprod",
+        "offline-state-and-receipt-decoder"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/historical/state-146.bin",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/historical/state-147.bin",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/receipts/decision-receipts.json"
+      ]
+    },
+    {
+      "criterion": 10,
+      "status": "PASSED_PREPROD_NATIVE",
+      "resultAndRemaining": "The approved run includes deployment, 152 successful confirmations and four genuine native negative outcomes, indexed-state reads, cold reconnect/replay and three verified receipts. All 156 submitted public transaction byte pairs are reconciled. The two local pre-send failures are counted separately in the conservative total of 158.",
+      "evidenceTiers": [
+        "native-preprod",
+        "indexed-read",
+        "offline-exact-bytes"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/summary.json"
+      ]
+    },
+    {
+      "criterion": 11,
+      "status": "PASSED_CONTROLLED_ARTIFACT_SCAN",
+      "resultAndRemaining": "The final chain/indexer/receipt/log/render/restoration package has 417 privacy-scanned artifacts, 183 actual private sentinels and zero findings. The package has 418 integrity-verified files, including the final scan itself. New local test reports contain synthetic fixtures and are outside that frozen remote scan.",
+      "evidenceTiers": [
+        "remote-private-value-artifact-scan",
+        "offline-public-integrity"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/complete-privacy-scan.json",
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/render/final-public-state.html"
+      ]
+    },
+    {
+      "criterion": 12,
+      "status": "PASSED_GENERATED_AUTHORIZATION",
+      "resultAndRemaining": "Every authority-root command field is bound to its original signature; re-signed sub-threshold updates and eligible non-governor roles fail without state mutation. Existing generated status tests enforce exact physical paths, allocated/original issuer eligibility, credential signatures and private-state continuity. Live authorized root/status transitions and stale-root negatives are separate positive/native evidence; no unauthorized-root native transaction is claimed.",
+      "evidenceTiers": [
+        "local-generated-circuit",
+        "native-preprod-authorized-transitions"
+      ],
+      "evidence": [
+        "../../../logs/m6-remaining-preprod-20261019/downloaded-approved172-public-evidence-v1/public-evidence/reports/action-control-causal-audit-approved172-v1.json",
+        "../../../packages/midnight-authorization/test/admission-envelope.test.ts",
+        "../../../packages/midnight-authorization/test/module-semantic-rejection.test.ts",
+        "../../../packages/midnight-authorization/test/ordinary-action.test.ts",
+        "../../../packages/midnight-authorization/test/template-policy.test.ts",
+        "../../../packages/midnight-authorization/test/active-ancestry.test.ts",
+        "../../../packages/midnight-authorization/test/runtime-credentials.test.ts"
+      ]
+    },
+    {
+      "criterion": 13,
+      "status": "PASSED_TARGETED_HISTORICAL_LOCAL_DEV",
+      "resultAndRemaining": "The pinned owned Local Dev node/indexer interruption, persisted contract state and cold reconnect check passed on historical v8. This is infrastructure evidence, not current v10 authorization/proof acceptance and not control of shared Preprod.",
+      "evidenceTiers": [
+        "historical-owned-local-dev-infrastructure"
+      ],
+      "evidence": [
+        "local-infrastructure-recovery-verification.json"
+      ]
+    }
+  ],
+  "requiredIndependentHumanSecurityPrivacyReview": "OPEN; synthetic test approvals do not count as independent human review",
+  "remainingPreprodProposal": {
+    "status": "APPROVED_BY_USER",
+    "document": "remaining-preprod-scope-v1.md",
+    "additionalNativeAttemptsMaximum": 100,
+    "newContractDeploymentsMaximum": 1,
+    "notYetExecuted": false,
+    "approval": "User replied ok after the explanation of one fresh test contract and at most 100 additional native attempts; prior 62 remain historical.",
+    "approvedAtUtc": "2026-10-19T01:17:48.114877+00:00",
+    "newNativeAttempts": 158,
+    "newFinalized": 152,
+    "newContractAddress": "70c139af18859fc0074f015c8c88bd727dd2a4a63afa85dcc427d98e127bbd8c",
+    "executionEvidence": "../../../logs/m6-remaining-preprod-20261019/deployment-verification-v1.json",
+    "sourceSnapshotVersion": 13,
+    "executionStage": "approved172-final-public-evidence-verified",
+    "governanceEvidence": "../../../logs/m6-remaining-preprod-20261019/governance-completion-v1.json",
+    "ordinaryLaunchEvidence": "../../../logs/m6-remaining-preprod-20261019/ordinary-matrix-launch-v7.json",
+    "internalPhaseManifest": "../../../logs/m6-remaining-preprod-20261019/internal-phase-allocation-v4.json",
+    "progressEvidence": "../../../logs/m6-remaining-preprod-20261019/approved172-download-protocol-verification-v1.json",
+    "continuation": {
+      "prepared": true,
+      "staged": true,
+      "applied": true,
+      "launched": true,
+      "sourceSnapshotVersion": 6,
+      "resumeAfterFinalized": 45,
+      "phaseAttemptCeiling": 51,
+      "additionalNativeThisPhaseMaximum": 6,
+      "payloadSha256": "36ce1bcf3b38c663f3ad3c97758a8ba21bc954b6d25bac5507ac0c4d5d558211",
+      "sourceManifestSha256": "a04b02a821f5e8d05aa1d67acd24f9509f8b692a53eec4ad27a9e90666d34468",
+      "evidence": "../../../logs/m6-remaining-preprod-20261019/source-overlay-v6-verification.json",
+      "cleanupRepairEvidence": "../../../logs/m6-remaining-preprod-20261019/pause-cleanup-repair-v1.json",
+      "secondPhaseSnapshot7Applied": false,
+      "secondPhase": {
+        "sourceSnapshot": 7,
+        "prepared": true,
+        "staged": true,
+        "applied": false,
+        "resumeAfterAttempts": 51,
+        "priorConfirmed": 50,
+        "additionalNativeAttemptsMaximum": 49,
+        "payloadSha256": "b7187a299319afc66f162ffc5bd73585af6fd2c17a2d1dbb6b194dbbbc51933f",
+        "evidence": "../../../logs/m6-remaining-preprod-20261019/source-overlay-v7-manifest.json",
+        "validation": "../../../logs/m6-remaining-preprod-20261019/continuation-public-log-privacy-validation-v7.json",
+        "historicalModuleControlsQualified": false,
+        "privateValidityLogRemovedBeforeExecution": true,
+        "subsequentFocusedTestsPassed": 39,
+        "subsequentTypecheckPassed": true,
+        "fullRootPassed": 424,
+        "publicLogPrivacyCorrectionIncluded": true
+      }
+    },
+    "auxiliaryPostrunAudits": {
+      "staged": true,
+      "executed": false,
+      "nativeSubmissions": 0,
+      "proofsRequested": 0,
+      "sourceEvidence": "../../../logs/m6-remaining-preprod-20261019/postrun-audits-source-staging-v2.json",
+      "scope": "Held-clock public-VM causal isolation; fully bound positive controls; exact historical receipt states; final privacy scan",
+      "currentApproved150ReadOnlySourcesPreparedLocally": true,
+      "currentApproved150SourcesStaged": false,
+      "currentApproved150AuditsExecuted": false,
+      "oldStagingRecordIsHistorical": true,
+      "currentLocalRunner": ".tmp/m6-recovery150-postrun-v2.py",
+      "currentLocalFinalizerTypecheck": "../../../logs/m6-remaining-preprod-20261019/source10-separate-finalizers-typecheck-v3.txt",
+      "originalFullMatrixRecordIsHistorical": true,
+      "currentAuthoritativePartial115Finalization": {
+        "executed": true,
+        "nativeSubmissions": 0,
+        "proofsRequested": 0,
+        "sourceVersion": 7,
+        "privacyScanPassed": true,
+        "localProtocolReplayPassed": true,
+        "completeMilestoneAcceptance": false
+      }
+    },
+    "newNativeNegativeOutcomes": 4,
+    "fallibleOutcomeCorrection": {
+      "harnessErrorAcknowledged": true,
+      "contractAndCircuitsChanged": false,
+      "firstFlowVerified": true,
+      "receiptEvidence": "../../../logs/m6-remaining-preprod-20261019/first-receipt-after50-reconciliation-execution-v1.json",
+      "publicDownloadIntegrity": "../../../logs/m6-remaining-preprod-20261019/first50-public-download-integrity-v1.json",
+      "expiredReservation51NeverSubmitted": true,
+      "expanded131ThreeInstancePlan": "SUPERSEDED_BY_LATEST150_APPROVAL",
+      "secondOnlyWithinExisting100": {
+        "prepared": true,
+        "applied": true,
+        "launched": true,
+        "validation": {
+          "fullRootPassed": true,
+          "totalPassed": 428,
+          "nodePassCounts": [
+            121,
+            6,
+            15,
+            14,
+            16,
+            51,
+            199
+          ],
+          "hardhatPassed": 6,
+          "failed": 0,
+          "skipped": 0,
+          "log": "logs/m6-remaining-preprod-20261019/second-only-source8-root-check-v1.txt",
+          "logSha256": "2b9e7c3afa1176feb9ea57614d6946a7c12e90e0f7aae827d72d16986b3de211",
+          "realBalancedTransactionFixtureSha256": "5124cd02bdeeea756bddda4e3f084153db9bbd28655e6e425b89e64cb2a1e310",
+          "nativeSubmissionsByValidation": 0
+        },
+        "payloadSha256": "e65d9a8eefb8258662cc9c417f2ef93c48122faca0b4405073e26aed49250ff3",
+        "verification": {
+          "sourceVerified": true,
+          "sourceSnapshotVersion": 8,
+          "publicSourceFilesVerified": 205,
+          "sourceManifestSha256": "1de07743fd2afd2e9effe704411b704fbe313a2ce43e86decad7067c0100d951",
+          "payloadSha256": "e65d9a8eefb8258662cc9c417f2ef93c48122faca0b4405073e26aed49250ff3",
+          "oldSource6Preserved": true,
+          "alreadyAttempted": 50,
+          "alreadyConfirmed": 50,
+          "explicitlyAbandonedReservation": 51,
+          "approvedNativeCap": 100,
+          "approvedApplicationMaximum": 2,
+          "additionalNativeThisPhaseMaximum": 41,
+          "phaseReservationCeiling": 92,
+          "secondFlowOnly": true,
+          "thirdInstanceNotAuthorized": true,
+          "contractAndCircuitsUnchanged": true
+        },
+        "launch": {
+          "launched": true,
+          "controllerUnit": "permio-m6-remaining-ordinary-matrix-v4-controller.service",
+          "clientUnit": "permio-m6-remaining-ordinary-matrix-v4-client.service",
+          "sourceSnapshotVersion": 8,
+          "alreadyAttempted": 50,
+          "alreadyConfirmed": 50,
+          "approvedNativeCap": 100,
+          "approvedApplicationMaximum": 2,
+          "additionalNativeThisPhaseMaximum": 41,
+          "phaseReservationCeiling": 92,
+          "secondFlowOnly": true,
+          "thirdInstanceNotAuthorized": true,
+          "newContractDeployments": 0,
+          "automaticNativeRetries": false,
+          "sourceManifestSha256": "1de07743fd2afd2e9effe704411b704fbe313a2ce43e86decad7067c0100d951",
+          "verifiedStopDeadlineShanghai": "2026-10-19T18:28:45+08:00"
+        },
+        "actualNativeBefore": 50,
+        "firstAbandonedId": 51,
+        "futureReservationIds": "52..92",
+        "additionalNativeMaximum": 41,
+        "normalFinalsExpected": 38,
+        "nativeNegativeOutcomesExpected": 3,
+        "phaseEndNativeAttempts": 91,
+        "phaseEndNormalFinals": 88,
+        "phaseEndReceipts": 2,
+        "phaseEndPendingPreparations": 3,
+        "phaseEndAuthoritySequence": 2,
+        "phaseEndStatusSequence": 7,
+        "thirdInstanceNotAuthorized": true,
+        "finalRevocationDeferred": true,
+        "sourceHelper": ".tmp/m6-continuation-source-v8.py prepare|stage|apply-after50",
+        "launchHelper": ".tmp/launch-m6-second-only-v8.py",
+        "entry": "scripts/run-live-m6-remaining-resume50.ts --second-after50",
+        "controller": "scripts/cloud-m6-remaining-ordinary-runtime-v4.py",
+        "units": "permio-m6-remaining-ordinary-matrix-v4-controller/client.service",
+        "control": "ROOT/control-ordinary-v4",
+        "runtime": "ROOT/runtime-ordinary-matrix-v4"
+      }
+    },
+    "expanded150FourInstancePlan": "APPROVED",
+    "expanded131ThreeInstancePlan": "SUPERSEDED_BY_LATEST_APPROVAL",
+    "localFailure55Evidence": "../../../logs/m6-remaining-preprod-20261019/failure55-reconciliation-v1.json",
+    "approvedNativeCap": 150,
+    "approvedApplicationMaximum": 4,
+    "partial53PublicEvidence": {
+      "privacyScan": {
+        "passed": true,
+        "artifactCount": 140,
+        "privateValuesChecked": 60,
+        "findings": 0,
+        "chainIndexerReceiptLogAndHtmlCaptured": true
+      },
+      "downloadIntegrity": {
+        "passed": true,
+        "publicArtifactFilesVerified": 141,
+        "archiveSha256": "e72abc06c66e5ccc3fa613432333d9efe53132ab88e3492f431ae7db0b92a424",
+        "nativeAttempts": 54,
+        "confirmed": 53,
+        "receiptCount": 1,
+        "nativeNegativeOutcomes": 0,
+        "privatePayloadOrCredentialsDownloaded": false,
+        "unused55BytesExcluded": true,
+        "milestoneComplete": false,
+        "restorationStillPending": true,
+        "artifactDirectory": "C:\\Users\\GEB\\Documents\\Projects\\Midnight Buildathon\\Permio-m6-m8-midnight-delivery\\logs\\m6-remaining-preprod-20261019\\downloaded-failure55-public-evidence-v1\\public-evidence"
+      },
+      "offlineVerification": {
+        "passed": true,
+        "observedAtUtc": "2026-10-19T09:51:45.151Z",
+        "boundary": "offline-artifact-integrity-and-receipt-decoder-replay",
+        "nativeTransactionBytesVerified": 53,
+        "sourceIndexedBytePairsVerified": 53,
+        "actualReceiptsDecoded": 1,
+        "instanceSequences": [
+          "1",
+          "5"
+        ],
+        "conservativeAttempts": 54,
+        "nativeNegativeOutcomes": 0,
+        "privateValuesScanFindings": 0,
+        "unused55BytesAbsent": true,
+        "newNetworkValidation": false,
+        "newNativeSubmissions": 0,
+        "milestoneComplete": false,
+        "independentHumanReviewStillOpen": true
+      }
+    },
+    "nativeNegativeOutcomes": 2,
+    "approved150Source9": {
+      "validation": {
+        "fullRootPassed": true,
+        "totalPassed": 433,
+        "nodePassCounts": [
+          126,
+          6,
+          15,
+          14,
+          16,
+          51,
+          199
+        ],
+        "hardhatPassed": 6,
+        "failed": 0,
+        "skipped": 0,
+        "log": "logs/m6-remaining-preprod-20261019/approved150-source9-root-check-v2.txt",
+        "logSha256": "966d613e11acf78bc1b99d94d051b42b119dc6ee524920f5a26e451bc90436b2",
+        "focusedSafetyPassed": 8,
+        "nativeSubmissionsByValidation": 0,
+        "subsequentReplayIdentityTypecheckPassed": true,
+        "independentlyProvedFreshReplayCallGuarded": true,
+        "publicIdentifierDiagnostic": {
+          "publicFixtureOnly": true,
+          "noNetwork": true,
+          "noNativeSubmissions": true,
+          "identifiersUnchangedByErasingProofs": true,
+          "contractIntentHashChangesWithShorterUnprovenTtl": true,
+          "oneIdentifierChangesWithShorterTtl": false
+        },
+        "extraProofChangesNativeCount": false
+      },
+      "verification": {
+        "sourceVerified": true,
+        "sourceSnapshotVersion": 9,
+        "publicSourceFilesVerified": 209,
+        "sourceManifestSha256": "d2a26830d839fb9376c3299f5a5f130e076f8cb6365c49a46f636a417ea7b756",
+        "approvedNativeCap": 150,
+        "approvedApplicationMaximum": 4,
+        "source8AndOldApprovalPreserved": true,
+        "alreadyAttempted": 54,
+        "alreadyConfirmed": 53,
+        "failed55NeverReused": true,
+        "newNativeSubmissions": 0,
+        "physicalFreeDiskBytes": 8531673088
+      },
+      "launch": {
+        "launched": true,
+        "controllerUnit": "permio-m6-remaining-ordinary-matrix-v5-controller.service",
+        "clientUnit": "permio-m6-remaining-ordinary-matrix-v5-client.service",
+        "sourceSnapshotVersion": 9,
+        "alreadyAttempted": 54,
+        "alreadyConfirmed": 53,
+        "approvedNativeCap": 150,
+        "approvedApplicationMaximum": 4,
+        "additionalPlannedCalls": 81,
+        "phaseReservationCeiling": 136,
+        "failed55NeverReused": true,
+        "automaticNativeRetries": false,
+        "newContractDeployments": 0,
+        "sourceManifestSha256": "d2a26830d839fb9376c3299f5a5f130e076f8cb6365c49a46f636a417ea7b756",
+        "verifiedStopDeadlineShanghai": "2026-10-19T20:15:11+08:00"
+      }
+    },
+    "originalApprovedNativeCap": 100,
+    "lastObservedAtUtc": "2026-10-20T15:46:47.645985+00:00",
+    "liveCountersAreNotFinalAcceptance": true,
+    "remainingBaselineSubmissionAttempts": 27,
+    "reserveAutomaticallyEnabled": false,
+    "native87OutcomeEvidence": "../../../logs/m6-remaining-preprod-20261019/native87-readonly-inspection-v2.json",
+    "native87WorkerDidNotRecordFinalOutcome": true,
+    "source10Verification": "../../../logs/m6-remaining-preprod-20261019/source-overlay-v10-verification.json",
+    "source10RootValidationPassed": 440,
+    "native87RecoveryVerified": true,
+    "readonlyPrefixQualification": "../../../logs/m6-remaining-preprod-20261019/source10-prefix-preflight-verification-v1.json",
+    "after113Recovery": {
+      "passed": true,
+      "evidence": "../../../logs/m6-remaining-preprod-20261019/after113-readonly-recovery-execution-v1.json",
+      "failure": "harness-millisecond-TTL-roundtrip",
+      "source10AndFailedRuntime6Preserved": true,
+      "nextAuthorityCallsAlreadyAuthorized": 3
+    },
+    "proposed172Scope": {
+      "status": "APPROVED_BY_USER",
+      "document": "after113-split-case-recovery-scope-v1.md",
+      "approvedByExisting150Scope": false,
+      "fifthStarted": true,
+      "approvedAtUtc": "2026-10-20T14:12:13.387417+00:00",
+      "nativeCap": 172,
+      "applicationMaximum": 5,
+      "authorizationEvidence": "../../../logs/m6-remaining-preprod-20261019/approved172-human-authorization-v1.json",
+      "fifthAllocationConfirmed": true,
+      "fifthAllocationReservation": 117,
+      "fifthAllocationLedgerSequence": 3063421
+    },
+    "authority115Partial": {
+      "runtimeExitCode": 0,
+      "nativeAttempts": 115,
+      "successfulFinals": 112,
+      "nativeNegatives": 2,
+      "oldLocalPreSendFailureCounted": 1,
+      "applicationInstances": 4,
+      "receipts": 2,
+      "fifthInstanceNotStarted": true,
+      "publicEvidenceDownloadPending": false,
+      "publicRestorationPending": false,
+      "twoCausalChecksPassedUnderBothParameterSets": true,
+      "evidence": "../../../logs/m6-remaining-preprod-20261019/authority115-postrun-controls-completion-v2.json",
+      "privacyScannedArtifacts": 284,
+      "privateValuesChecked": 143,
+      "privacyFindings": 0,
+      "downloadedFilesVerified": 285,
+      "actualReceiptsDecoded": 2,
+      "publicVmCausalChecksReplayed": 2,
+      "verification": "../../../logs/m6-remaining-preprod-20261019/authority115-download-protocol-verification-v1.json",
+      "downloadIntegrity": "../../../logs/m6-remaining-preprod-20261019/authority115-download-integrity-v1.json",
+      "restorationEvidence": "../../../logs/m6-remaining-preprod-20261019/authority115-public-restore-restore-v4.json",
+      "preliminaryCheckpointPreserved": true,
+      "allPublicContentsAndRecordedMetadataRestored": true,
+      "restoredOffloadedPaths": 16,
+      "restoredDuplicatePairs": 23,
+      "restoredDependencyFiles": 52411,
+      "noAdditionalNativeSubmissionsByFinalization": true,
+      "finalStop": {
+        "verified": true,
+        "deadlineShanghai": "2026-10-20T19:19:52+08:00",
+        "executionId": "exec-984fd6f442af4347af9c",
+        "mode": "StopCharging",
+        "forceStop": false,
+        "automaticDeletionDeadlineEmpty": true,
+        "instanceAndDisksPreserved": true,
+        "ownerFinished": true,
+        "refreshingStopped": true,
+        "evidence": "../../../logs/m6-remaining-preprod-20261019/authority115-final-stop-verification-v1.json"
+      }
+    },
+    "currentApprovedNativeCap": 172,
+    "currentApprovedApplicationMaximum": 5,
+    "approved172Continuation": {
+      "status": "EXECUTED_AND_FINAL_EVIDENCE_VERIFIED",
+      "plannedCalls": 42,
+      "sourceManifestSha256": "483b5d5373b467cd92ca04a95ec24aa6418463f96d1e51023f535999fb23a024",
+      "sourceFiles": 223,
+      "scopeEvidence": "../../../logs/m6-remaining-preprod-20261019/approved172-human-authorization-v1.json",
+      "launchEvidence": "../../../logs/m6-remaining-preprod-20261019/ordinary-matrix-launch-v9.json",
+      "oldPartial115EvidencePreserved": true,
+      "reserveAutomaticallyEnabled": false,
+      "milestoneComplete": false,
+      "sourceSnapshotVersion": 13,
+      "runtimeVersion": 9,
+      "sourceVerification": "../../../logs/m6-remaining-preprod-20261019/source-overlay-v13-verification.json",
+      "dependencyClosureVerified": 98,
+      "failedRuntime8Preserved": true,
+      "runtime8NewNativeSubmissions": 0,
+      "liveNativeAttempts": 158,
+      "liveSuccessfulFinals": 152,
+      "latestLiveEvidence": "../../../logs/m6-remaining-preprod-20261019/approved172-v9-status-latest.json",
+      "generatedLifecycleLocalTestsPassed": 2,
+      "generatedLifecycleActualPreprodRowsNotYetChecked": false,
+      "acceptanceCoverageReview": "acceptance-reconciliation-20261021-v1.json",
+      "nativeAttempts": 158,
+      "successfulFinals": 152,
+      "nativeNegatives": 4,
+      "applicationInstances": 5,
+      "receipts": 3,
+      "reserveUsed": 1,
+      "failed157NeverSubmitted": true,
+      "after157TailExitCode": 0,
+      "publicRestorationVerified": true,
+      "finalDownloadVerified": true,
+      "preliminaryDownloadVerified": true,
+      "preliminaryProtocolVerified": true,
+      "privacyArtifactsChecked": 412,
+      "privateValuesChecked": 183,
+      "privacyFindings": 0,
+      "runtime9ExitCode": 1,
+      "protocolVerification": "../../../logs/m6-remaining-preprod-20261019/approved172-download-protocol-verification-v1.json",
+      "downloadIntegrity": "../../../logs/m6-remaining-preprod-20261019/approved172-download-integrity-v1.json",
+      "remainingGateAssessmentRequired": false,
+      "remainingIndependentHumanReviewRequired": true
+    }
+  },
+  "validation": {
+    "status": "PASSED",
+    "command": "npm run check",
+    "environment": "Native Windows Node24.13.1/npm11.8.0 with normal filesystem access",
+    "completedAtUtc": "2026-10-19T07:01:32.341917+00:00",
+    "nodeTestPassCounts": [
+      117,
+      6,
+      15,
+      14,
+      16,
+      51,
+      199
+    ],
+    "hardhatPassed": 6,
+    "totalPassed": 424,
+    "failed": 0,
+    "skipped": 0,
+    "log": "logs/m6-remaining-preprod-20261019/continuation-public-log-privacy-root-check-v7.txt",
+    "logSha256": "787b5d0ea490cc3ffc27a36efcf59a54d951a4df0096fd433337d6640263fe08",
+    "docsCheck": "passed-after-final-doc-edit",
+    "sourceSnapshot": 7,
+    "sourceSnapshot7NotYetApplied": true,
+    "activeSourceSnapshot": 6,
+    "payloadSha256": "b7187a299319afc66f162ffc5bd73585af6fd2c17a2d1dbb6b194dbbbc51933f",
+    "newNativeCallsByLocalValidation": 0,
+    "contractAndCircuitsUnchanged": true,
+    "independentHumanReviewStillOpen": true,
+    "subsequentPrivacyAndWindowChecks": 39,
+    "supersededByFallibleOutcomeCorrection": true
+  },
+  "committed": false,
+  "pushed": false,
+  "latestContinuationValidation": {
+    "fullRootPassed": true,
+    "command": "npm run check",
+    "completedAtUtc": "2026-10-21T00:55:07.979150+00:00",
+    "totalPassed": 456,
+    "nodePassCounts": [
+      141,
+      6,
+      15,
+      14,
+      16,
+      51,
+      207
+    ],
+    "hardhatPassed": 6,
+    "failed": 0,
+    "skipped": 0,
+    "rootLog": "logs/m6-remaining-preprod-20261019/acceptance-field-matrix-root-check-v1.txt",
+    "rootLogSha256": "beaf5f0393a7215fe4171c286b660bc660b7079387c5d7338fbd29548756b713",
+    "contractAndCompactSourceUnchanged": true,
+    "source13ContractFilesVerified": 4,
+    "newNativeSubmissions": 0
+  },
+  "engineeringEvidenceStatus": "VERIFIED_WITH_EXPLICIT_EVIDENCE_TIERS",
+  "engineeringEvidenceReconciliation": "acceptance-reconciliation-20261021-v1.json",
+  "independentHumanReviewPacket": "acceptance-reconciliation-20261021-v1.md"
+}

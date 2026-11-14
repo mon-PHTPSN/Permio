@@ -38,9 +38,20 @@ export const DASHBOARD_QUERY = `query M8ProductReadModel {
     registeredBlock
     registeredTransaction
     sourceNetwork
+    sourceNetworkName
     sourceContract
     sourceTransaction
     sourceLedgerSequence
+    namespaceHash
+    templateContentHash
+    proofModuleImplementationHash
+    instanceCommitment
+    previousStateCommitment
+    nextStateCommitment
+    transitionSequence
+    contextHash
+    scopedNullifier
+    outputCommitment
     templateIdHash
     templateVersion
     proofModuleId
