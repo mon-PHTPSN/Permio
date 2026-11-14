@@ -1,8 +1,8 @@
 # Permio Deterministic Milestones
 
 Status: implementation record through M5; deterministic execution contract for M6–M12<br>
-Date: 11 October 2026<br>
-Scope: programmable scenario library, context-bound accounts, generated scenario packs, Midnight authorization, and composable execution
+Date: 11 October 2026; NEAR AI scope update: 14 November 2026<br>
+Scope: programmable scenario library, context-bound accounts, generated scenario packs, Midnight authorization, composable execution, and planned NEAR AI private inference
 
 ## 1 How completion is judged
 
@@ -1048,10 +1048,11 @@ Each pack contains a template, policy profile, generator rules, generated
 positive and negative instances, disclosure previews, expected receipts, and
 privacy scans. It contains no hand-authored participant or record fixture.
 
-The delegated-agent pack is a protocol-level authorization profile, not a Qwen
-or AI-runtime integration requirement. The selected sponsor scope introduces
-no external model dependency in M7 through M12; a deterministic client is
-sufficient to exercise this pack.
+The delegated-agent pack remains a protocol-level authorization profile with
+deterministic positive and negative vectors. NEAR AI is the planned inference
+provider for the M11 product workflow across all three scenario families.
+Deterministic M9 clients remain valid protocol tests; they do not replace
+M11/M12 live inference and verification acceptance.
 
 ### Required contents of every pack
 
@@ -1198,7 +1199,8 @@ Local product preparation includes persistent local-account login (explicitly
 approved for this demo on 2026-10-14), account-isolated workspaces, blueprint
 creation, signed M4 review/activation, and M5 instance allocation. This is not
 Dynamic sandbox acceptance, M6 runtime authorization, or M11 completion; all
-required integrations and acceptance criteria below remain unchanged.
+existing Dynamic integration criteria remain required; the planned NEAR AI
+requirements below are additional.
 
 ### Artifacts
 
@@ -1271,12 +1273,31 @@ required integrations and acceptance criteria below remain unchanged.
     mapping are absent from ledgers, Envio, browser-visible diagnostics, and
     application logs.
 
+### NEAR AI product integration — planned
+
+The full product and all three scenario families remain required. NEAR AI is
+the planned private-inference provider, not implemented or live-verified by
+this documentation update. Existing protocol gates and statuses remain.
+M11 adds the authorized inference client, disclosure preview, model/privacy
+tier selection, verification status, and scoped response/proposed-action UI
+defined in [NEAR AI integration](NEAR_AI_INTEGRATION.md).
+
+Before M11 completion, NI-01 through NI-06 must show authorized input selection,
+isolation/minimization, a compatible Confidential TEE model, actual evidence
+verification, independent action authorization, and a real reproducible
+journey. Document the exact recipient/workload binding and plaintext path
+before transmitting sensitive inputs. Expiry, revocation, and failed required
+pre-send verification must prevent inference. AI output cannot activate a
+template, grant capabilities, or bypass ordinary action authorization.
+
 ### Exit gate
 
 M11 fails if product navigation assumes one domain, if a perspective selector
 impersonates other users, if administrator credentials appear in the UI, if a
 single wallet is assumed to represent both Midnight and Monad, or if Dynamic
 identity is treated as authorization or a global public subject identifier.
+It also fails if required NEAR AI acceptance remains unverified, unauthorized
+inputs reach inference, or model output is treated as execution authority.
 
 ## 15 M12 — Local and public-network evidence
 
@@ -1323,8 +1344,13 @@ Envio GraphQL endpoint must display data emitted by the deployed M8 contracts;
 the Mera evidence must show the same supported passkey unlocking the vault in a
 second device or fresh browser profile; and the Dynamic evidence must show
 authentication plus the distinct 1AM Midnight and Monad EVM wallet bindings.
-No Qwen endpoint, model credential, article, or AI-agent runtime is required by
-this scope.
+NEAR AI evidence must additionally satisfy NI-01 through NI-06: record actual
+service calls, model/privacy tier, client/verifier versions, verification
+policy/results, and the authorized product journey. Prompts, responses, API
+keys, credentials, and private linkage stay out of published evidence. Label
+mock inference, recorded replay, hardware evidence, and real authorization/
+execution separately. Earlier M6/M7/M8 evidence does not establish NEAR AI
+acceptance.
 
 ### Mandatory drills
 
@@ -1345,7 +1371,10 @@ this scope.
 - run the Mera wrong-credential/domain/namespace/salt cases and the supported
   cross-device or fresh-profile recovery case;
 - expire a Dynamic session and exercise wrong Midnight wallet, wrong Monad
-  wallet, and wrong-network recovery without cross-binding either wallet; and
+  wallet, and wrong-network recovery without cross-binding either wallet;
+- deny inference for wrong context/recipient/purpose, expiry and revocation;
+  reject prompt-injected proposals exceeding capability scope, and block
+  required-verification failures without privacy downgrade;
 - rerun the full public-artifact scanner over every publishable evidence file.
 
 ### Acceptance
@@ -1371,6 +1400,10 @@ this scope.
    Mera compatibility matrix, and Dynamic SDK/connector/network versions while
    excluding all tokens, PRF output, private keys, wallet secrets, and private
    account mappings.
+
+10. NEAR AI satisfies NI-01 through NI-06 with real service and browser
+    evidence, distinguishing environment/response verification, M6
+    authorization, and M8 execution. AI conclusions are not proven true.
 
 ### Exit gate
 
@@ -1399,8 +1432,8 @@ hide an environmental failure.
 # Permio 确定性里程碑
 
 状态：已记录至 M5 的实际实现；M6–M12 采用确定性执行契约<br>
-日期：2026 年 10 月 11 日<br>
-范围：可编程情境库、上下文账户、生成式情境包、Midnight 授权与可组合执行
+日期：2026 年 10 月 11 日；NEAR AI 范围更新：2026 年 11 月 14 日<br>
+范围：可编程情境库、上下文账户、生成式情境包、Midnight 授权、可组合执行和计划中的 NEAR AI 隐私推理
 
 ## 1 如何判断完成
 
@@ -2109,8 +2142,9 @@ Dynamic session 标识符或 Mera vault 材料。
 每个包包含模板、策略 profile、生成规则、生成的正负实例、披露预览、预期收据和隐私扫描，
 不包含手写参与者或记录测试数据。
 
-委托 Agent 包是协议级授权 profile，不是 Qwen 或 AI 运行时集成要求。当前赞助商范围不会在
-M7 至 M12 引入外部模型依赖；确定性客户端足以执行该情境包。
+委托 Agent 包继续作为协议级授权 profile，包含确定性正向和负向向量。NEAR AI 是 M11
+产品工作流跨全部三个情境族采用的计划推理服务。确定性 M9 客户端仍是有效协议测试，
+不能替代 M11／M12 的实时推理与验证验收。
 
 ### 每个情境包的必需内容
 
@@ -2197,7 +2231,7 @@ Mera adapter 明确用于非账户工作：它重建 passkey PRF 密钥材料，
 状态：`IN_PROGRESS_DEPENDENCY_BLOCKED`；依赖 M4、M5 和 M9。
 本地产品准备已包含用户于 2026-10-14 明确批准的持久化本地账户登录、账户隔离工作区、blueprint
 创建、M4 签名审核／激活，以及 M5 实例分配。这不属于 Dynamic sandbox 验收、M6 运行时授权或
-M11 完成；以下集成要求与验收标准保持不变。
+M11 完成；原有 Dynamic 集成要求与验收标准继续适用，以下 NEAR AI 要求为新增项。
 
 产物包括模板目录与版本视图、治理工作流、槽位分配、能力委托、披露与执行预览、Dynamic SDK
 身份验证与 session 生命周期集成、记录精确 wallet key／connector 版本和受支持网络的 1AM
@@ -2234,8 +2268,21 @@ key／connector 和受支持 Midnight 网络。一个 Dynamic 用户可以具有
 撤回同意和钱包／网络变化只能使受影响产品绑定失效，并给出显式恢复 UI，不能静默改变情境权限。
 Dynamic token、钱包私密材料和私有跨钱包映射不得进入账本、Envio、浏览器诊断或应用日志。
 
+### NEAR AI 产品集成——计划中
+
+完整产品和全部三个情境族仍是必需要求。NEAR AI 是计划中的隐私推理服务；本次文档更新
+不代表已经实现或实时验证。现有协议门槛与状态继续有效。M11 增加获准推理客户端、披露预览、
+模型／隐私等级选择、验证状态及有限范围回答／操作建议界面，具体见
+[NEAR AI 集成](NEAR_AI_INTEGRATION.md)。
+
+M11 完成前，NI-01 至 NI-06 必须证明授权输入选择、隔离／最小化、兼容的 Confidential TEE
+模型、实际证据验证、独立操作授权和真实可复现旅程。传输敏感输入之前，记录精确接收方／
+workload 绑定及明文路径。到期、撤销和必需的发送前验证失败时，必须阻止推理。AI 输出不能
+激活模板、授予 capability 或绕过正常操作授权。
+
 如果产品导航假定一个领域、透视选择器可以冒充用户、管理员凭据出现在界面中、假设单一钱包
 同时代表 Midnight 与 Monad，或把 Dynamic 身份当作授权或全局公开主体标识符，M11 失败。
+必需 NEAR AI 验收未经验证、未授权输入进入推理，或模型输出被当作执行权限时，M11 同样失败。
 
 ## 15 M12——本地与公共网络证据
 
@@ -2265,7 +2312,10 @@ fingerprint，以及 explorer 或索引状态引用。测试币只从官方 fauc
 赞助商证据必须展示实时行为，而非只安装 package。Envio GraphQL endpoint 必须展示已部署 M8
 合约发出的数据；Mera 证据必须展示同一受支持 passkey 在第二台设备或全新浏览器 profile 中解锁
 vault；Dynamic 证据必须展示身份验证以及彼此独立的 1AM Midnight 和 Monad EVM 钱包绑定。
-本范围不要求 Qwen endpoint、模型凭据、文章或 AI Agent 运行时。
+NEAR AI 证据还必须满足 NI-01 至 NI-06：记录实际服务调用、模型／隐私等级、客户端／验证器
+版本、验证策略／结果和获准产品旅程。公开证据不得包含 prompt、响应、API key、credential
+或私有关系关联。模拟推理、历史回放、硬件证据和真实授权／执行分别标注。此前 M6／M7／M8
+证据不能证明 NEAR AI 验收完成。
 
 ### 强制演练
 
@@ -2279,7 +2329,9 @@ vault；Dynamic 证据必须展示身份验证以及彼此独立的 1AM Midnight
 - 停止或隔离 Envio，证明执行权限保持正确而 UI 报告陈旧数据，再恢复／backfill 到相同索引状态；
 - 运行 Mera 错误 credential／域／namespace／salt 用例和受支持的跨设备或新 profile 恢复用例；
 - 让 Dynamic session 到期，并测试错误 Midnight 钱包、错误 Monad 钱包与错误网络恢复，不能交叉
-  绑定两个钱包；以及
+  绑定两个钱包；
+- 对错误上下文／接收方／用途、到期和撤销拒绝推理；拒绝 prompt injection 导致的越权操作建议，
+  在必需验证失败时阻止使用，不得降低隐私等级；
 - 对每个可发布证据文件重新运行完整公开产物扫描器。
 
 验收必须证明：每个必需情境包至少一个生成实例走完授权到执行；公开证据无私有记录和跨上下文
@@ -2293,6 +2345,9 @@ Envio、Mera 和 Dynamic 必须分别驱动 M8、M10 与 M11 规定的功能和�
 SDK、mock 响应、截图或未验证配置代表。可发布证据必须包含 Envio 部署／读模型 revision、Mera
 兼容性矩阵和 Dynamic SDK／connector／网络版本，同时排除 token、PRF 输出、私钥、钱包秘密和
 私有账户映射。
+
+NEAR AI 必须以真实服务和浏览器证据满足 NI-01 至 NI-06，区分环境／响应验证、M6 授权和
+M8 执行。AI 结论不能被声明为已证明真实。
 
 如果公开网络证据模拟任一链、选定赞助商集成只使用 mock 或安装但未驱动功能、私有测试数据公开，
 或失败交易被展示为成功，M12 失败。

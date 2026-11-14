@@ -1,7 +1,7 @@
 # Permio: From Human Need to Programmable Context
 
 Status: human-first product and architecture guide<br>
-Date: 11 October 2026
+Date: 11 October 2026; NEAR AI scope update: 14 November 2026
 
 ## 1 Start with the human problem
 
@@ -228,6 +228,19 @@ the sequence, and consumes the nullifier. This orders privacy-authorization
 state. It does not claim that Monad or another application successfully
 performed the downstream action.
 
+### 7.2 Planned private AI within the full product
+
+NEAR AI Cloud is the planned inference provider for Permio's complete product
+and all three scenario families. Permio authorizes a narrowly defined view;
+AI processes it and returns an answer or proposed action. Proposed actions
+still require ordinary capability, intent, private authorization, and execution
+checks. A model cannot grant itself access or prove its conclusions true.
+
+The product will show what was disclosed, to whom, for what purpose, and which
+inference checks passed. A focused demonstration illustrates this larger
+architecture. Integration remains planned with no live acceptance claimed;
+see [NEAR AI scope and acceptance](NEAR_AI_INTEGRATION.md).
+
 ## 8 What “Contract Authority” means
 
 The smart contract is an automated enforcer, not a human manager. It checks
@@ -304,7 +317,7 @@ privacy, and licensing decision.
 # Permio：从人的需求到可编程情境
 
 状态：面向人的产品与架构指南<br>
-日期：2026 年 10 月 11 日
+日期：2026 年 10 月 11 日；NEAR AI 范围更新：2026 年 11 月 14 日
 
 ## 1 从人的问题开始
 
@@ -480,6 +493,15 @@ Ed25519 审核者签名。
 对于模板声明的状态转换，Midnight 验证当前状态 commitment 和序号，并原子安装下一 commitment、
 增加序号和消费 nullifier。它负责隐私授权状态顺序，但不声称 Monad 或其他应用已经成功执行下游
 操作。
+
+### 7.2 完整产品中的隐私 AI 计划
+
+NEAR AI Cloud 是 Permio 完整产品及全部三个情境族计划采用的推理服务。Permio 授权严格
+限定的视图；AI 处理该视图并返回回答或操作建议。操作建议仍须经过正常 capability、intent、
+私密授权与执行检查。模型不能自行获得访问权限，也不能证明其结论真实。
+
+产品会展示披露内容、接收方、用途和通过的推理检查。聚焦的演示用于说明这套更大的架构。
+集成仍处于计划阶段，不声明完成实时验收；见 [NEAR AI 范围与验收](NEAR_AI_INTEGRATION.md)。
 
 ## 8 “合约治理方”是什么意思
 

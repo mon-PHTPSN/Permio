@@ -9,8 +9,12 @@ and the recipient-bound execution-registry slice. Generic Midnight proof
 enforcement and the later receipt, execution, and encrypted-evidence
 milestones remain incomplete against the authoritative architecture.
 
-This is a clean implementation for Monad Metropolis Track 4: Trust, Identity &
-AI Infrastructure.
+Permio originated as a clean implementation for Monad Metropolis Track 4:
+Trust, Identity & AI Infrastructure. The planned NEAR Hackathon Privacy &
+Private AI entry builds on the full product and all three scenario families,
+with NEAR AI Cloud as the private-inference provider. NEAR AI integration is
+planned, not implemented or live-verified. See the
+[NEAR AI integration plan and acceptance gates](docs/NEAR_AI_INTEGRATION.md).
 
 Start with the human-first
 [`from need to system design guide`](docs/permio-from-need-to-design.html), or
@@ -56,15 +60,18 @@ success or failure. The approved boundary is recorded in the
 concrete implementation and live-chain record is maintained in the
 [`M6 development log`](docs/evidence/M6/development-log.md).
 
-The selected post-M6 sponsor scope is Envio, Mera, and Dynamic; Qwen and other
-external AI-agent runtimes are intentionally out of scope. M7 stays
-provider-neutral, M8 adds an Envio HyperIndex read model that drives the product
-dashboard, M10 uses Mera PRF for non-account custody of recipient evidence keys,
-and M11 uses Dynamic for authentication plus the supported 1AM Midnight-wallet
-connection and a separate Monad EVM-wallet binding. M12 requires live evidence
-for all three integrations. The exact Dynamic wallet key/connector, SDK version,
-and supported Midnight network must be recorded and verified in its sandbox
-before the 1AM integration is claimed complete.
+The product integration scope is Envio, Mera, Dynamic, and planned NEAR AI
+Cloud. M7 stays provider-neutral; M8 uses Envio for the product read model;
+M10 uses Mera PRF for recipient evidence-key custody; and M11 combines Dynamic
+authentication and separate Midnight/Monad wallet bindings with authorized
+NEAR AI inference. Private inference must use a selected Confidential TEE
+model, where a TEE is a hardware-isolated trusted execution environment, and
+verify the evidence required by the application. AI output cannot grant
+capabilities, activate templates, or bypass M5/M6 authorization. M12 requires
+real integration evidence, including NEAR AI, before completion; existing
+milestone gates and incomplete statuses remain in force. The exact Dynamic
+wallet key/connector, SDK version, and supported Midnight network still
+require sandbox verification.
 
 M4 continues to verify Ed25519 reviewer attestations, unique eligible
 reviewers, thresholds, rejection state, and separation of duties. Midnight
@@ -301,7 +308,18 @@ Permio 是一套可编程情境隐私架构：版本化情境模板和上下文�
 再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 已实现 M2 情境模板领域、M3
 确定性生成器、M4 模板治理、M5 上下文账户与有限会话，以及接收方绑定执行注册表切片。
 通用 Midnight 证明强制执行，以及后续收据、执行和加密证据里程碑仍未完成。
-这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
+Permio 最初面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”进行全新实现。
+计划中的 NEAR Hackathon“Privacy & Private AI”参赛作品以完整产品及全部三个情境族为基础，
+采用 NEAR AI Cloud 作为隐私推理服务。NEAR AI 集成处于计划阶段，尚未实现或完成实时验证。
+参见 [NEAR AI 集成计划与验收门槛](docs/NEAR_AI_INTEGRATION.md)。
+
+产品集成范围为 Envio、Mera、Dynamic，以及计划中的 NEAR AI Cloud。M7 保持供应商中立；
+M8 使用 Envio 构建产品读模型；M10 使用 Mera PRF 保管接收方证据密钥；M11 结合 Dynamic
+登录、独立 Midnight／Monad 钱包绑定和经授权的 NEAR AI 推理。隐私推理必须选择
+Confidential TEE 模型，并核验应用要求的证据；TEE 指硬件隔离的可信执行环境。AI 输出不能
+授予 capability、激活模板或绕过 M5／M6 授权。M12 完成前须提供各项集成的真实证据，包括
+NEAR AI；现有里程碑门槛与未完成状态继续有效。Dynamic 的精确 wallet key／connector、
+SDK 版本和受支持 Midnight 网络仍须通过 sandbox 验证。
 
 建议先阅读以人的理解路径为主的
 [`从需求到系统设计指南`](docs/permio-from-need-to-design.html)，或查看其

@@ -1,8 +1,8 @@
 # Permio Programmable Context Architecture
 
 Status: authoritative architecture and implementation contract<br>
-Date: 11 October 2026<br>
-Scope: versioned scenario templates, context-bound accounts, Midnight privacy authorization, and composable execution
+Date: 11 October 2026; NEAR AI scope update: 14 November 2026<br>
+Scope: versioned scenario templates, context-bound accounts, Midnight privacy authorization, composable execution, and planned NEAR AI private inference
 
 ## 1 Decision
 
@@ -540,16 +540,20 @@ change requires a new version and explicit compatibility rules.
 
 ### 7.1 Post-M6 sponsor integration boundaries
 
-The selected sponsor scope is Envio, Mera, and Dynamic. M6 remains unchanged,
-and M7 through M12 do not depend on Qwen or another external AI-agent runtime.
-The delegated-agent scenario remains an application-neutral authorization
-profile and may be exercised by a deterministic client rather than an LLM.
+The product scope includes Envio, Mera, Dynamic, and planned NEAR AI Cloud.
+The 14 November 2026 update retains the full scenario library, all three
+scenario families, and the M0–M12 architecture. NEAR AI supplies private
+inference in M11; M12 adds its real acceptance evidence. This supersedes the
+earlier exclusion of external AI runtimes. Core protocol tests remain
+deterministic and need no model service; they do not establish completion of
+the NEAR AI product integration.
 
 | Integration | First required milestone | Permitted role | Must never become |
 | --- | --- | --- | --- |
 | Envio HyperIndex | M8 | Index the public Monad execution registry and derive a GraphQL read model used by the product | An authorization oracle, a source of private evidence, or an M7 finality/signing dependency |
 | Mera PRF vault | M10 | Reconstruct the key-encryption material that unlocks a recipient's normal, rotatable evidence-encryption private key | A blockchain wallet, transaction signer, public identity, or place to persist PRF output/plaintext keys |
 | Dynamic SDK | M11 | Authenticate the product session and orchestrate the supported 1AM Midnight-wallet connection plus a separate Monad EVM-wallet binding | A global Permio subject identifier, scenario authority, capability issuer, or proof that an action is authorized |
+| NEAR AI Cloud (planned) | M11 product; M12 evidence | Perform private inference over the exact authorized view and return a scoped response or proposed action | A capability issuer, template activator, proof verifier, transaction signer, or source of broader disclosure authority |
 
 M7 publishes a versioned, provider-neutral downstream event contract. Envio
 consumes only the public M8 events produced from that contract. Its
@@ -578,6 +582,38 @@ A Dynamic user/session may associate both bindings privately, but that mapping
 does not replace a context account, capability, ActionIntent, or M6 decision.
 Wallet connection proves control of a wallet, not authorization under a Permio
 scenario.
+
+### 7.2 NEAR AI private-inference boundary — planned
+
+Before disclosure, Permio checks the context, exact recipient, purpose,
+selected inputs, validity, and current authority. NEAR AI processes only the
+permitted view. Resulting actions still require the normal M5 intent, M6
+authorization, and downstream execution checks. All three scenario families
+remain required; a focused demonstration does not redefine product scope.
+
+The inference recipient/workload binding must be explicit and reviewed,
+preserving exact M6 recipient and receipt bytes. A model name or shared
+provider account cannot silently replace the recipient. This update introduces
+no competing receipt format or authorization mechanism.
+
+Select a Confidential TEE model and verify fresh gateway/model evidence,
+connection binding, and response signatures according to the declared policy.
+Gateway-only verification cannot establish model verification. An unsigned or
+unverified response must not be labelled response-verified. Failed required
+pre-send checks block transmission; failed required response checks block use
+of that response. There is no silent privacy downgrade.
+
+AI suggestions confer no authority and do not prove factual correctness.
+Revocation blocks subsequent unauthorized access, not information already
+disclosed. Private inputs/outputs stay outside public receipts, M7 transport,
+M8 events, Envio, and diagnostic logs. The NEAR AI service gateway and the
+public-receipt M7 gateway are distinct. M10 encryption/key-custody rules still
+apply when evidence is used; inference never receives vault/wallet keys or
+proof witnesses.
+
+Status, responsibilities, acceptance NI-01 through NI-06, and official sources
+are recorded in [NEAR AI integration](NEAR_AI_INTEGRATION.md).
+No live NEAR AI acceptance is claimed by this documentation update.
 
 ## 8 Required first scenario profiles
 
@@ -731,8 +767,8 @@ dependency still requires an explicit compatibility decision and tests.
 # Permio 可编程情境架构
 
 状态：权威架构与实施契约<br>
-日期：2026 年 10 月 11 日<br>
-范围：版本化情境模板、上下文账户、Midnight 隐私授权与可组合执行
+日期：2026 年 10 月 11 日；NEAR AI 范围更新：2026 年 11 月 14 日<br>
+范围：版本化情境模板、上下文账户、Midnight 隐私授权、可组合执行和计划中的 NEAR AI 隐私推理
 
 ## 1 架构决策
 
@@ -1178,15 +1214,17 @@ schema；它们不重新解释私有策略，也不静默扩大模块特定输�
 
 ### 7.1 M6 之后的赞助商集成边界
 
-当前选定的赞助商范围只有 Envio、Mera 和 Dynamic。M6 保持不变，M7 至 M12 不依赖 Qwen 或
-其他外部 AI Agent 运行时。现有的委托 Agent 情境仍是应用无关的授权 profile，可以由确定性
-客户端执行，不要求接入 LLM。
+产品范围包括 Envio、Mera、Dynamic，以及计划中的 NEAR AI Cloud。2026 年 11 月 14 日的
+更新保留完整情境库、全部三个情境族及 M0–M12 架构。NEAR AI 在 M11 提供隐私推理，
+M12 增加真实验收证据。本次更新取代此前排除外部 AI 运行时的范围选择。核心协议测试继续
+采用确定性方式，不依赖模型服务；这些测试不能证明 NEAR AI 产品集成完成。
 
 | 集成 | 首个必需里程碑 | 允许承担的职责 | 绝不能成为 |
 | --- | --- | --- | --- |
 | Envio HyperIndex | M8 | 索引公开 Monad 执行注册表，并生成供产品使用的 GraphQL 读模型 | 授权预言机、私有证据来源或 M7 最终性／签名依赖 |
 | Mera PRF 保险库 | M10 | 重建密钥加密材料，以解锁接收方正常、可轮换的证据加密私钥 | 区块链钱包、交易签名器、公开身份或持久化 PRF 输出／明文密钥的位置 |
 | Dynamic SDK | M11 | 验证产品 session，并协调受支持的 1AM Midnight 钱包连接和独立 Monad EVM 钱包绑定 | 全局 Permio 主体标识符、情境权限、capability 签发者或操作已获授权的证明 |
+| NEAR AI Cloud（计划中） | M11 产品；M12 证据 | 对精确获准视图执行隐私推理，返回有限范围的回答或操作建议 | capability 签发者、模板激活者、证明验证器、交易签名器或扩大披露范围的权限来源 |
 
 M7 提供版本化、供应商中立的下游事件契约。Envio 只消费由该契约形成的公开 M8 事件；其
 `config.yaml`、`schema.graphql` 和 handlers 定义收据、执行、adapter、网关密钥 epoch 与时间桶
@@ -1205,6 +1243,27 @@ sandbox 中记录并测试精确的钱包 key 或 connector 版本以及受支�
 使用独立 EVM 钱包绑定；系统不得假设 1AM 密钥或地址能够签署 Monad 操作。一个 Dynamic
 用户／session 可以私下关联两个绑定，但该映射不能替代 context account、capability、
 `ActionIntent` 或 M6 决策。连接钱包只能证明钱包控制权，不能证明 Permio 情境下的授权。
+
+### 7.2 NEAR AI 隐私推理边界——计划中
+
+披露前，Permio 检查上下文、精确接收方、用途、选定输入、有效期与当前权限。NEAR AI 只处理
+获准视图。后续操作仍须经过正常 M5 intent、M6 授权和下游执行检查。全部三个情境族仍是必需
+要求；聚焦的演示不重新定义产品范围。
+
+推理接收方／workload 绑定必须明确并经过审核，保留精确 M6 接收方与收据字节。模型名称或共享
+供应商账户不能静默替代接收方。本次更新不引入另一套收据格式或授权机制。
+
+选择 Confidential TEE 模型，按声明的策略验证新鲜的 gateway／model 证据、连接绑定与响应
+签名。只验证 gateway 不能证明模型已验证。未签名或未验证响应不能标注为响应已验证。必需的
+发送前检查失败时阻止传输；必需的响应检查失败时阻止使用该响应。不得静默降低隐私等级。
+
+AI 建议不授予权限，也不证明事实正确。撤销阻止后续未授权访问，不能抹除已披露信息。私有输入
+和输出不得进入公开收据、M7 传输、M8 事件、Envio 或诊断日志。NEAR AI 服务 gateway 与传输
+公开收据的 M7 gateway 是不同组件。使用证据时 M10 加密／密钥保管规则继续适用；推理服务
+不得获得 vault／钱包密钥或证明 witness。
+
+状态、职责、NI-01 至 NI-06 验收项和官方来源见 [NEAR AI 集成](NEAR_AI_INTEGRATION.md)。
+本次文档更新不代表完成任何 NEAR AI 实时验收。
 
 ## 8 首批必需情境 profile
 
