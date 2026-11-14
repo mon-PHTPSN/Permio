@@ -1,4 +1,25 @@
 :root { --sans: "Aptos", "Avenir Next", "Segoe UI", sans-serif; }
+.created-contexts { margin-bottom:35px; }
+.created-contexts .section-head p { color:var(--muted); font-size:13px; }
+.library-card { display:flex; flex-direction:column; align-items:stretch; text-align:left; min-width:0; cursor:default; }
+.library-card p { min-height:0; margin:0 0 12px; }
+.library-card:hover { transform:none; }
+.library-card .form-actions { margin-top:auto; padding-top:18px; }
+.library-counts { font-size:12px; color:var(--muted); }
+.library-identity { display:grid; gap:5px; font-size:11px; margin:10px 0 20px; }
+.library-identity dt { color:var(--muted); }
+.library-identity dd { margin:0 0 6px; overflow-wrap:anywhere; }
+.template-target, .template-target dd { overflow-wrap:anywhere; }
+.template-start-options { display:grid; gap:15px; margin-top:24px; }
+.definition-editor { font:12px/1.6 Consolas,monospace; white-space:pre-wrap; overflow-wrap:anywhere; tab-size:2; }
+.template-json { padding:15px; border-radius:12px; background:#f6f7fb; font-size:11px; white-space:pre-wrap; overflow-wrap:anywhere; }
+.definition-context { padding:18px; border:1px solid var(--line,#e6e9f1); border-radius:16px; margin:20px 0; }
+.definition-action { padding:0 0 5px; border-top:1px solid #e6e9f1; }
+.definition-action h4 { font-size:15px; }
+.template-definition summary { cursor:pointer; font-weight:600; }
+.instance-contexts { padding-left:20px; font-size:13px; }
+#library-selection-results { margin-top:20px; }
+#library-selection-results .workflow-grid { grid-template-columns:1fr; }
 html { min-width:0; }
 .context-page-title { display:flex; align-items:center; justify-content:space-between; gap:24px; margin:5px 0 29px; }
 .context-page-title h1 { margin:0 0 9px; font-size:39px; font-weight:600; letter-spacing:-.045em; line-height:1.1; }

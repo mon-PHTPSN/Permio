@@ -11,5 +11,8 @@ export function summarizeWorkspace(workspace, now = Math.floor(Date.now() / 1000
 export function filterWorkflows(items, query = "", state = "all") {
   const search = query.trim().toLocaleLowerCase();
   return items.filter((item) => (state === "all" || item.state === state || (state === "draft" && item.state === "validated")) &&
-    (!search || [item.template.displayName, item.template.description, item.template.contexts[0]?.description, item.owner].join(" ").toLocaleLowerCase().includes(search)));
+    (!search || [item.template.displayName, item.template.description, item.owner,
+      ...item.template.contexts.flatMap((context) => [context.id, context.description]),
+      ...(item.template.actions ?? []).flatMap((action) => [action.id, action.description]),
+      item.template.namespace, item.template.version].join(" ").toLocaleLowerCase().includes(search)));
 }

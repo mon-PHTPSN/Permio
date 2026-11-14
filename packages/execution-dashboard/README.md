@@ -1,5 +1,56 @@
 # Permio application
 
+## Programmable context library
+
+The primary **Context library** uses the existing authenticated, account-scoped
+blueprint store. **New context** selects a reusable template from that library;
+the two browser examples no longer limit what can be created. Search includes
+every context and action. Cards show lifecycle state, version, namespace and
+exact content hash.
+
+**New template** offers a guided single-action form or a complete declarative
+JSON editor/import using the existing `ScenarioTemplate` schema. Editing an
+existing draft always uses the complete definition, so multiple participant
+slots, contexts, actions, transitions, disclosure rules and proof references
+are preserved. Server-side domain validation reports a useful error path.
+Imports become new drafts with a server-owned local namespace/identity; they
+never inherit another template's approval. Existing request limits still apply.
+
+Independent signed review and activation remain necessary. Only the assigned
+allocator can create an instance from an active template. The creation request
+binds its exact target, and each new instance stores its full template snapshot
+and target. The context overview and instance view read that saved definition,
+including all contexts/actions, after refresh. Existing instances lacking a
+snapshot remain visible and explicitly indicate that the old snapshot is
+unavailable; they are not rebound to today's template.
+
+This integrates local M4/M5 template authoring and allocation. It does not
+connect the still-unimplemented runtime permission endpoints, assign runtime
+slots/capabilities, generate Midnight proofs, activate proof modules, deliver
+evidence or establish M9/M11 completion. Existing browser examples and consent
+records remain separate and are preserved. No new receipt format or executable
+template language was introduced.
+
+Tests cover full-definition persistence, isolation, validation, exact target
+rejection, signed allocation, snapshot retention, markup escaping, lifecycle
+selection and searches over later contexts/actions. Browser acceptance uses an
+isolated loopback server, a disposable database and synthetic accounts; see
+`docs/evidence/M11/context-library-20261115.md` at the repository root.
+
+### 中文翻译
+
+```text
+主要的 Context library 复用现有经过认证、按账户隔离的 blueprint 存储。New context 从库中选择可复用模板；两个浏览器示例不再限制可创建的内容。搜索覆盖全部 context 和动作，卡片显示生命周期状态、版本、命名空间及精确内容哈希。
+
+New template 提供单动作引导表单和完整声明式 JSON 编辑／导入，沿用现有 ScenarioTemplate 格式。编辑现有草稿始终使用完整定义，保留多个参与者槽位、context、动作、状态转换、披露规则及证明引用。服务器领域验证返回有用的错误路径。导入在服务器分配的本地命名空间／标识下产生新草稿，绝不继承原模板批准，现有请求大小限制继续生效。
+
+仍需独立签名审核及激活。只有指定 allocator 能从 active 模板创建实例。创建请求绑定精确目标，每个新实例保存完整模板快照及目标；总览和实例视图刷新后仍读取该定义，覆盖全部 context／动作。缺少快照的旧实例仍可见，并明确显示旧快照不可用，不会重新绑定当前模板。
+
+本次接通本地 M4/M5 模板编写和分配，不接入尚未实现的运行时权限端点、不分配运行时槽位／能力、不生成 Midnight 证明、不激活证明模块、不交付证据，也不代表 M9／M11 完成。旧浏览器示例及同意记录继续独立保留，没有引入新收据格式或可执行模板语言。
+
+测试覆盖完整定义保存、隔离、验证、精确目标拒绝、签名分配、快照保留、HTML 转义、生命周期选择及后续 context／动作搜索。浏览器验收使用独立回环服务器、可丢弃数据库和合成账户；证据见仓库根目录 docs/evidence/M11/context-library-20261115.md。
+```
+
 ## Context-first frontend demo
 
 On 2026-10-14 the user explicitly approved completing the frontend with
@@ -199,7 +250,7 @@ minimum. Non-loopback binding defaults to the stricter policy; demo mode also
 rejects non-loopback clients. Do not reuse the demo database or credentials for a
 public deployment. Password hashing, session isolation and CSRF checks are unchanged.
 
-Run `npm run dashboard:test` and `npm run dashboard:typecheck`. The 21 consumer
+Run `npm run dashboard:test` and `npm run dashboard:typecheck`. The 51 consumer
 and application tests cover persistence/reopen, separate-account isolation,
 signed M4 approvals and negative cases, M5 allocation/retirement, key changes,
 session expiry/revocation, CSRF/cross-origin denial, HTTP journeys, and scoped
@@ -270,7 +321,7 @@ npm run dashboard:start
 
 服务采用加盐 scrypt 密码哈希、随机会话令牌哈希、HttpOnly/SameSite Cookie、CSRF、同源写入校验、
 持久化尝试限制与请求大小限制。登录轮换会话，改密注销所有设备；不记录密码、令牌、私钥或数据库内容。
-`npm run dashboard:test` 与 `npm run dashboard:typecheck` 检查 21 项账户／消费端和看板行为；HTTP
+`npm run dashboard:test` 与 `npm run dashboard:typecheck` 检查 51 项账户／消费端和看板行为；HTTP
 测试需要本机回环连接权限。
 
 新鲜度状态来自 `_meta.isReady`、`_meta.progressBlock` 与 `_meta.sourceBlock`。索引延迟和端点故障

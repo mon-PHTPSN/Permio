@@ -1,8 +1,8 @@
 import { LocalContextClient } from "./context-client.js";
-import { CONTEXT_PROFILES, policyFor, profileById } from "./context-profiles.js";
+import { policyFor, profileById } from "./context-profiles.js";
+import { escapeText as esc, instanceCards } from "./context-library.js";
 import { formatUnix } from "./app.js";
 
-const esc = (value) => String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 const icon = (name) => {
   const paths = {
     purchase:'<path d="M5 7h14l-1 13H6L5 7Zm4 0V5a3 3 0 0 1 6 0v2"/>',
@@ -24,9 +24,10 @@ const field = (label,name,value,extra="") => `<label>${label}<input name="${name
 const avatar = (name,color="blue") => `<span class="recipient-avatar ${color}" aria-hidden="true">${esc(name.slice(0,1).toUpperCase())}</span>`;
 
 export class ContextInterface {
-  constructor({account,root,openDialog,notify,run,client}) {
+  constructor({account,root,openDialog,notify,run,client,onCreateContext = () => { location.hash = "library"; },getInstances = () => []}) {
     this.account = account; this.root = root; this.dialog = openDialog; this.notify = notify; this.run = run;
     this.client = client ?? new LocalContextClient({accountId:account.id,storage:localStorage});
+    this.onCreateContext = onCreateContext; this.getInstances = getInstances;
     this.permissionFilter = "current"; this.requestFilter = "pending"; this.query = ""; this.page = "overview";
     this.disposed = false; this.renderSequence = 0;
     this.onClick = (event) => {
@@ -92,7 +93,8 @@ export class ContextInterface {
     const requests = this.state.requests.filter((item) => item.status === "pending");
     const current = this.state.permissions.filter((item) => item.status === "consent_recorded");
     this.root.innerHTML = title("Your contexts","Review access and disclosure requests.",'<button type="button" class="button primary" data-ctx="new-context"><span aria-hidden="true">＋</span> New context</button>') +
-      `<div class="context-families">${this.state.cases.map((item) => this.caseCard(item)).join("")}</div>
+      `<section class="created-contexts"><header class="section-head"><div><h2>Created from your library</h2><p>Reusable templates, configured for each context.</p></div><a href="#library" class="subtle-link">Context library</a></header>${instanceCards(this.getInstances())}</section>
+      <div class="context-families">${this.state.cases.map((item) => this.caseCard(item)).join("")}</div>
       <div class="context-overview-grid"><section class="authority-panel"><header class="section-head"><div><h2>Who has permission</h2><p>Authority is limited to the context shown.</p></div><a href="#permissions" class="subtle-link">View all</a></header>${this.permissionTable(current.slice(0,4))}</section>
       <aside class="request-panel"><header class="section-head"><h2>Needs your consent</h2><span class="request-count">${requests.length}</span></header>${requests.slice(0,3).map((item) => this.requestCard(item)).join("") || empty("No requests need your consent.")}</aside></div>
       <section class="context-recent"><header class="section-head"><h2>Recent changes</h2><a href="#verification" class="subtle-link">Verification history</a></header>${this.historyRows(this.state.history.slice(0,4))}</section>`;
@@ -133,14 +135,7 @@ export class ContextInterface {
         return `<article class="verification-item"><span class="verification-icon">${icon("shield")}</span><div><h2>${esc(permission.recipient)}</h2><p>${esc(context.name)}</p><div class="verification-stages"><span><i class="${permission.status === "consent_recorded" ? "recorded" : ""}" aria-hidden="true"></i>${permission.status === "consent_recorded" ? "Consent recorded" : statusText(permission.status)}</span><span><i aria-hidden="true"></i>Proof: ${permission.proofStatus === "pending" ? "Awaiting verification" : permission.proofStatus === "cancelled" ? "Cancelled" : "Not requested"}</span><span><i aria-hidden="true"></i>Delivery: Not sent</span></div></div>${permission.status === "consent_recorded" && permission.proofStatus === "not_requested" ? `<button type="button" class="button secondary" data-ctx="verify" data-id="${permission.id}">Request verification</button>` : pill(permission.proofStatus === "pending" ? "awaiting_verification" : permission.status)}</article>`;
       }).join("") || empty("Record a permission to begin verification.")}</section><section class="context-recent"><header class="section-head"><h2>History</h2></header>${this.historyRows(this.state.history)}</section>`;
   }
-  newContext(profileId) {
-    if (!profileId) {
-      this.dialog("New context",`<div class="context-type-picker">${CONTEXT_PROFILES.map((profile) => `<button type="button" data-ctx="choose-profile" data-id="${profile.id}" class="${profile.color}"><span class="family-icon">${icon(profile.symbol)}</span><h3>${profile.name}</h3><p>${profile.description}</p><span>${profile.contexts.map((context) => context.name).join(" / ")}</span></button>`).join("")}</div>`);
-      return;
-    }
-    const profile = profileById(profileId);
-    this.dialog("New context",`<form id="ctx-new-case" class="product-form"><input type="hidden" name="profileId" value="${profile.id}" />${field("Name","title",profile.defaultTitle,'maxlength="100"')}<div class="selected-contexts">${profile.contexts.map((context) => `<span>${icon("lock")}${context.name}</span>`).join("")}</div><div class="form-actions"><button class="button primary">Create context</button><button type="button" class="button secondary" data-close>Cancel</button></div></form>`);
-  }
+  async newContext() { await this.onCreateContext(); }
   permissionForm(id,previous = null,disclosure = false) {
     const context = this.context(id || this.state.contexts.find((item) => item.policyId === "support").id), policy = policyFor(context);
     this.dialog(disclosure ? "Prepare disclosure" : "Grant permission",`<form id="${disclosure ? "ctx-disclosure" : "ctx-permission"}" class="product-form"><label>Context<select name="contextId" id="${disclosure ? "ctx-disclosure-context" : "ctx-permission-context"}" ${disclosure ? "disabled" : ""}>${this.state.contexts.map((item) => `<option value="${item.id}" ${context.id === item.id ? "selected" : ""}>${esc(this.caseFor(item).title)} / ${esc(item.name)}</option>`).join("")}</select></label>${disclosure ? `<input type="hidden" name="contextId" value="${context.id}" />` : ""}
@@ -169,8 +164,7 @@ export class ContextInterface {
     this.dialog("Permission details",`<div class="permission-person">${avatar(permission.authorizedParty)}<div><h3>${esc(permission.authorizedParty)}</h3><p>${esc(context.name)}</p></div>${pill(permission.status)}</div><dl class="preview-bindings"><div><dt>Authority source</dt><dd>${permission.authoritySource}</dd></div><div><dt>Authorized action</dt><dd>${esc(permission.action)}</dd></div><div><dt>Information recipient</dt><dd>${esc(permission.recipient)}</dd></div><div><dt>Purpose</dt><dd>${esc(permission.purpose)}</dd></div><div><dt>Until</dt><dd>${formatUnix(permission.expiresAt)}</dd></div><div><dt>Delegation</dt><dd>Not permitted</dd></div><div><dt>Proof</dt><dd>${permission.proofStatus === "pending" ? "Awaiting verification" : statusText(permission.proofStatus)}</dd></div></dl><h3 class="detail-heading">Permitted information</h3><ul class="claim-list">${policy.claims.filter((claim) => permission.claims.includes(claim.id)).map((claim) => `<li>${icon("arrow")}${claim.label}</li>`).join("")}</ul>${permission.status === "consent_recorded" ? `<div class="form-actions">${permission.proofStatus === "not_requested" ? `<button type="button" class="button secondary" data-ctx="verify" data-id="${id}">Request verification</button>` : ""}<button type="button" class="button danger" data-ctx="revoke-confirm" data-id="${id}">Revoke consent</button></div>` : ""}`);
   }
   async action(action,id,button) {
-    if (action === "new-context") this.newContext();
-    else if (action === "choose-profile") this.newContext(id);
+    if (action === "new-context") await this.newContext();
     else if (action === "case") location.hash = `context/${id}`;
     else if (action === "grant") this.permissionForm(id);
     else if (action === "compose") this.permissionForm(id,null,true);
@@ -194,11 +188,6 @@ export class ContextInterface {
   closeDialog() { document.getElementById("product-dialog").close(); this.activePreview = null; }
   async submit(form) {
     const data = new FormData(form), input = Object.fromEntries(data);
-    if (form.id === "ctx-new-case") {
-      const item = await this.client.createContext(input); this.state = await this.client.list();
-      const context = this.state.contexts.find((context) => context.caseId === item.id);
-      this.closeDialog(); location.hash = `context/${context.id}`; this.notify("Context created."); return;
-    }
     if (["ctx-permission","ctx-disclosure"].includes(form.id)) {
       input.claims = data.getAll("claims"); this.lastInput = input;
       if (form.id === "ctx-permission") this.previewDialog(await this.client.previewPermission(input));
