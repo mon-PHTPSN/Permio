@@ -6,6 +6,7 @@ import { Bytes32Descriptor, CompactTypeBoolean, CompactTypeUnsignedInteger, Cont
 import { getNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import type { PublicDataProvider } from "@midnight-ntwrk/midnight-js-types";
 import { ledger } from "../contracts/managed/permio-authorization/contract/index.js";
+import { ledger as businessLedger } from "../contracts/managed/permio-authorization-v11/contract/index.js";
 import { runtimeDecisionReceiptAlignedValue, runtimeDecisionReceiptId,
   type DecisionReceiptSourceReader, type RuntimeDecisionReceiptBody } from "./decision-receipt.ts";
 import type { Hex32 } from "./model.ts";
@@ -19,9 +20,20 @@ const cell = (value: AlignedValue) => StateValue.newCell(value).encode();
 
 /** Version-specific public VM reconciliation, not a caller's claimed receipt result. */
 export function assertV9DecisionReceiptInsertion(program: readonly Op<AlignedValue>[], body: RuntimeDecisionReceiptBody): void {
+  assertDecisionReceiptInsertion(program, body, [1n, 13n], "v9");
+}
+
+/** Exact compiler-generated v11 layout; public DecisionReceipt remains v1. */
+export function assertV11DecisionReceiptInsertion(program: readonly Op<AlignedValue>[], body: RuntimeDecisionReceiptBody): void {
+  assertDecisionReceiptInsertion(program, body, [1n, 12n], "v11");
+}
+
+function assertDecisionReceiptInsertion(
+  program: readonly Op<AlignedValue>[], body: RuntimeDecisionReceiptBody,
+  indices: readonly bigint[], version: "v9" | "v11",
+): void {
   const receiptId = Uint8Array.from(Buffer.from(runtimeDecisionReceiptId(body).slice(2), "hex"));
-  // These exact indices are the compiler-generated v9 public ledger layout.
-  const path = [{ tag: "value" as const, value: alignedIndex(1n) }, { tag: "value" as const, value: alignedIndex(13n) }];
+  const path = indices.map(value => ({ tag: "value" as const, value: alignedIndex(value) }));
   const absent: Op<AlignedValue>[] = [
     { dup: { n: 0 } }, { idx: { cached: false, pushPath: false, path } },
     { push: { storage: false, value: cell(alignedId(receiptId)) } }, "member",
@@ -37,7 +49,26 @@ export function assertV9DecisionReceiptInsertion(program: readonly Op<AlignedVal
     isDeepStrictEqual(program.slice(offset, offset + needle.length), needle) ? [offset] : []);
   const reads = matches(absent), writes = matches(insertion);
   assert(reads.length === 1 && writes.length === 1 && reads[0]! < writes[0]!,
-    "Exact v9 action did not prove absence and insert this receipt body");
+    `Exact ${version} action did not prove absence and insert this receipt body`);
+}
+
+interface IndexedDecisionReceiptReaderInput {
+  readonly network: "preprod" | "undeployed";
+  readonly indexerUrl?: string;
+  readonly profile?: PreprodConnectionProfile;
+  readonly publicDataProvider: PublicDataProvider;
+  readonly contract: Hex32;
+  readonly receiptId: Hex32;
+}
+
+interface ReceiptLayout {
+  readonly decodeLedger: (data: ContractState["data"]) => {
+    readonly decisionReceipts: {
+      member(key: Uint8Array): boolean;
+      lookup(key: Uint8Array): RuntimeDecisionReceiptBody;
+    };
+  };
+  readonly assertInsertion: typeof assertV9DecisionReceiptInsertion;
 }
 
 /**
@@ -45,14 +76,16 @@ export function assertV9DecisionReceiptInsertion(program: readonly Op<AlignedVal
  * serialized transaction identity, exact call/state and the receipt insertion.
  * It is not a self-verifying consensus light client and performs no submission.
  */
-export function createIndexedDecisionReceiptReader(input: {
-  readonly network: "preprod" | "undeployed";
-  readonly indexerUrl?: string;
-  readonly profile?: PreprodConnectionProfile;
-  readonly publicDataProvider: PublicDataProvider;
-  readonly contract: Hex32;
-  readonly receiptId: Hex32;
-}): DecisionReceiptSourceReader {
+export function createIndexedDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
+  return createIndexedReceiptReader(input, { decodeLedger: ledger, assertInsertion: assertV9DecisionReceiptInsertion });
+}
+
+/** Explicit v11 source adapter; never guesses a contract version from receipt data. */
+export function createIndexedBusinessDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
+  return createIndexedReceiptReader(input, { decodeLedger: businessLedger, assertInsertion: assertV11DecisionReceiptInsertion });
+}
+
+function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, layout: ReceiptLayout): DecisionReceiptSourceReader {
   const { network, publicDataProvider, contract, receiptId } = input;
   assert(network !== "preprod" || input.profile instanceof PreprodConnectionProfile);
   assert(network !== "preprod" || input.indexerUrl === undefined, "Use the existing authenticated Preprod profile");
@@ -95,7 +128,7 @@ export function createIndexedDecisionReceiptReader(input: {
     const call = calls[0];
     const entry = typeof call.entryPoint === "string" ? call.entryPoint : Buffer.from(call.entryPoint).toString("utf8");
     assert(call.address === contract.slice(2) && entry === "executeRuntimeAction");
-    const view = ledger(ContractState.deserialize(Buffer.from(state, "hex")).data);
+    const view = layout.decodeLedger(ContractState.deserialize(Buffer.from(state, "hex")).data);
     const key = Buffer.from(receiptId.slice(2), "hex");
     assert(view.decisionReceipts.member(key), "Receipt is absent from this exact call state");
     const body = view.decisionReceipts.lookup(key);
@@ -104,7 +137,7 @@ export function createIndexedDecisionReceiptReader(input: {
     stage = "receipt-creation-transcript";
     // Partition boundaries must not be crossed to fabricate an instruction match.
     assert(programs.some(program => {
-      try { assertV9DecisionReceiptInsertion(program!, body); return true; } catch { return false; }
+      try { layout.assertInsertion(program!, body); return true; } catch { return false; }
     }), "Receipt was not created by this exact call transcript");
     return { network, contract, transactionId, ledgerSequence: BigInt(finalized.blockHeight),
       finalized: true, transactionSucceeded: true, receiptIdFromCall: receiptId, bodyAtTransaction: body };

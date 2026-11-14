@@ -1,4 +1,5 @@
 export const SCENARIO_TEMPLATE_SCHEMA_VERSION = 1 as const;
+export const SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION = 2 as const;
 export const SCENARIO_TEMPLATE_HASH_DOMAIN =
   "permio:scenario-template:v1" as const;
 export const SCENARIO_TEMPLATE_HASH_ALGORITHM = "sha256" as const;
@@ -53,10 +54,24 @@ export interface CapabilityRule {
   readonly revocable: boolean;
 }
 
+export type BusinessPredicate =
+  | {
+      readonly kind: "current-record-v1" | "audit-acknowledgment-v1";
+      readonly inputRecordType: string;
+      readonly outputClaimType: string;
+    }
+  | {
+      readonly kind: "bounded-value-v1";
+      readonly inputRecordType: string;
+      readonly ceilingRecordType: string;
+      readonly outputClaimType: string;
+    };
+
 export interface ProofProfile {
   readonly id: string;
   readonly circuitId: string;
   readonly publicOutputSchemaId: string;
+  readonly predicates?: readonly BusinessPredicate[];
 }
 
 export interface ExecutionAdapter {
@@ -71,7 +86,9 @@ export interface PrivacyInvariant {
 }
 
 export interface ScenarioTemplate {
-  readonly schemaVersion: typeof SCENARIO_TEMPLATE_SCHEMA_VERSION;
+  readonly schemaVersion:
+    | typeof SCENARIO_TEMPLATE_SCHEMA_VERSION
+    | typeof SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION;
   readonly namespace: string;
   readonly templateId: string;
   readonly version: string;

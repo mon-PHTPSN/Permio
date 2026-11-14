@@ -17,11 +17,23 @@ interface KeyEntry {
 
 /** Local build integrity, not governance trust or proof verification. No wallet access. */
 export async function verifyPermioAuthorizationAssets(assets: string): Promise<void> {
+  return verifyAuthorizationAssets(assets, ["real-sequential-keys", "real-bounded-keys"]);
+}
+
+/** Integrity for the separately versioned predicate-enforcing authorization build. */
+export async function verifyBusinessAuthorizationAssets(assets: string): Promise<void> {
+  return verifyAuthorizationAssets(assets, ["real-bounded-v11-keys"],
+    ["prepareRuntimeBusinessPredicate", "executeRuntimeAction"]);
+}
+
+async function verifyAuthorizationAssets(
+  assets: string, acceptedModes: readonly string[], requiredProofCircuits: readonly string[] = [],
+): Promise<void> {
   const manifest = JSON.parse(await readFile(path.join(assets, "keys/build-manifest.json"), "utf8")) as {
     manifestVersion: number; compilerVersion: string; runtimeVersion: string; mode: string;
     contractSha256: string; compilerInfoSha256: string; circuits: KeyEntry[];
   };
-  assert(manifest.manifestVersion === 2 && ["real-sequential-keys", "real-bounded-keys"].includes(manifest.mode) &&
+  assert(manifest.manifestVersion === 2 && acceptedModes.includes(manifest.mode) &&
     manifest.compilerVersion === "0.31.1" && manifest.runtimeVersion === "0.16.0",
   "Compact assets require the current real-key build manifest");
   const infoFile = path.join(assets, "compiler/contract-info.json");
@@ -36,6 +48,8 @@ export async function verifyPermioAuthorizationAssets(assets: string): Promise<v
   const expectedNames = info.circuits.filter((circuit) => circuit.proof).map((circuit) => circuit.name).sort();
   assert(expectedNames.length > 0 && expectedNames.every((name) => /^[A-Za-z][A-Za-z0-9_]*$/.test(name)),
     "Invalid compiled circuit inventory");
+  assert(requiredProofCircuits.every(name => expectedNames.includes(name)),
+    "Compact assets require the business authorization proof circuits");
   assert(Array.isArray(manifest.circuits) && manifest.circuits.length === expectedNames.length &&
     JSON.stringify(manifest.circuits.map((entry) => entry.name).sort()) === JSON.stringify(expectedNames),
   "Compact key inventory is incomplete or duplicated");

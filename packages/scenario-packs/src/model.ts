@@ -4,7 +4,7 @@ import type { GeneratedScenario, GeneratorPolicyProfile, ScenarioGeneratorInput 
 import type { NamespacePolicy, TemplateTarget } from "@permio/scenario-governance";
 
 export const SCENARIO_PACK_FORMAT_VERSION = 1 as const;
-export const SCENARIO_PACK_VERSION = "2.0.0" as const;
+export const SCENARIO_PACK_VERSION = "3.0.0" as const;
 export const UPSTREAM_EXPECTATION_FORMAT_VERSION = 1 as const;
 
 export type ScenarioPackId =

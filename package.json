@@ -39,6 +39,7 @@
     "deploy:mainnet": "hardhat ignition deploy ignition/modules/RecipientBoundAttestationRegistry.ts --network monadMainnet",
     "compile:solidity": "hardhat build",
     "compile:compact": "node scripts/compile-compact-sequential.mjs",
+    "compile:compact:business": "node scripts/compile-business-compact.mjs --skip-zk",
     "compile:compact:bounded": "node scripts/run-m6-bounded-key-build.mjs",
     "test:midnight-authorization": "npm test --workspace @permio/midnight-authorization",
     "test:diagnostics": "node --test scripts/test/*.test.ts",

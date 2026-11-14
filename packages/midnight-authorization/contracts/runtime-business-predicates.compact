@@ -1,0 +1,253 @@
+// Reusable private evidence; no domain names, template expressions, or public
+// authorization receipt. The execution boundary must supply ledger-authenticated
+// context and require every configured predicate before committing an outcome.
+export struct RuntimeBusinessRecord {
+    recordVersion: Uint<16>;
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    contextHash: Bytes<32>;
+    subjectAccountCredentialCommitment: Bytes<32>;
+    rootCapabilityCommitment: Bytes<32>;
+    typeHash: Bytes<32>;
+    resourceHash: Bytes<32>;
+    purposeHash: Bytes<32>;
+    recipientHash: Bytes<32>;
+    validAfter: Uint<64>;
+    validBefore: Uint<64>;
+    value: Uint<64>;
+    unitHash: Bytes<32>;
+    referenceCommitment: Bytes<32>;
+    bodyCommitment: Bytes<32>;
+    issuerAuthorityCommitment: Bytes<32>;
+    nonce: Bytes<32>;
+}
+
+export struct RuntimeSignedBusinessRecord {
+    record: RuntimeBusinessRecord;
+    signature: Schnorr_SchnorrSignature;
+    issuer: GovernanceActivatorLeaf;
+    authorityPath: MerkleTreePath<20, Bytes<32>>;
+    issuerPath: MerkleTreePath<20, Bytes<32>>;
+}
+
+export struct RuntimeBusinessPredicate {
+    predicateVersion: Uint<16>;
+    kind: Uint<8>;
+    inputIndex: Uint<8>;
+    ceilingIndex: Uint<8>;
+    outputIndex: Uint<8>;
+    inputTypeHash: Bytes<32>;
+    ceilingTypeHash: Bytes<32>;
+    outputTypeHash: Bytes<32>;
+}
+
+export struct RuntimeBusinessPredicateContext {
+    target: TemplateRegistryTarget;
+    instanceCommitment: Bytes<32>;
+    contextHash: Bytes<32>;
+    subjectAccountCredentialCommitment: Bytes<32>;
+    rootCapabilityCommitment: Bytes<32>;
+    rootIssuerAuthorityCommitment: Bytes<32>;
+    resourceHash: Bytes<32>;
+    purposeHash: Bytes<32>;
+    recipientHash: Bytes<32>;
+    effectiveAt: Uint<64>;
+    validBefore: Uint<64>;
+    intentCommitment: Bytes<32>;
+    selectedInputsCommitment: Bytes<32>;
+    selectedOutputsCommitment: Bytes<32>;
+    inputCount: Uint<8>;
+    outputCount: Uint<8>;
+    authorityRoot: MerkleTreeDigest;
+    issuerRoot: MerkleTreeDigest;
+    issuerCount: Uint<32>;
+    statusRoot: MerkleTreeDigest;
+    governancePolicyHash: Bytes<32>;
+}
+
+struct RuntimeBusinessRecordHashInput {
+    domain: Bytes<32>;
+    record: RuntimeBusinessRecord;
+}
+
+struct RuntimeBusinessPredicateHashInput {
+    domain: Bytes<32>;
+    predicate: RuntimeBusinessPredicate;
+}
+
+export pure circuit runtimeBusinessPredicateCommitment(predicate: RuntimeBusinessPredicate): Bytes<32> {
+    return persistentHash<RuntimeBusinessPredicateHashInput>(RuntimeBusinessPredicateHashInput{
+        domain: pad(32, "permio:business-predicate:v1"), predicate: predicate
+    });
+}
+
+struct RuntimeBusinessClaimHashInput {
+    domain: Bytes<32>;
+    predicate: RuntimeBusinessPredicate;
+    firstRecord: Bytes<32>;
+    secondRecord: Bytes<32>;
+}
+
+struct RuntimeBusinessAuditHashInput {
+    domain: Bytes<32>;
+    intentCommitment: Bytes<32>;
+    selectedInputsCommitment: Bytes<32>;
+}
+
+export pure circuit runtimeBusinessRecordCommitment(record: RuntimeBusinessRecord): Bytes<32> {
+    return persistentHash<RuntimeBusinessRecordHashInput>(RuntimeBusinessRecordHashInput{
+        domain: pad(32, "permio:business-record:v1"), record: record
+    });
+}
+
+pure circuit runtimeBusinessRecordMessage(record: RuntimeBusinessRecord): Vector<1, Field> {
+    return [transientHash<RuntimeBusinessRecordHashInput>(RuntimeBusinessRecordHashInput{
+        domain: pad(32, "permio:business-record:v1"), record: record
+    })];
+}
+
+export pure circuit runtimeBusinessRecordSignatureChallenge(
+    announcement: JubjubPoint, publicKey: JubjubPoint, record: RuntimeBusinessRecord
+): Field {
+    return Schnorr_schnorrChallenge(jubjubPointX(announcement), jubjubPointY(announcement),
+        jubjubPointX(publicKey), jubjubPointY(publicKey), runtimeBusinessRecordMessage(record));
+}
+
+export pure circuit runtimeBusinessClaimCommitment(
+    predicate: RuntimeBusinessPredicate, firstRecord: Bytes<32>, secondRecord: Bytes<32>
+): Bytes<32> {
+    return persistentHash<RuntimeBusinessClaimHashInput>(RuntimeBusinessClaimHashInput{
+        domain: pad(32, "permio:business-claim:v1"), predicate: predicate,
+        firstRecord: firstRecord, secondRecord: secondRecord
+    });
+}
+
+export pure circuit runtimeBusinessAuditReference(
+    intentCommitment: Bytes<32>, selectedInputsCommitment: Bytes<32>
+): Bytes<32> {
+    return persistentHash<RuntimeBusinessAuditHashInput>(RuntimeBusinessAuditHashInput{
+        domain: pad(32, "permio:business-audit:v1"), intentCommitment: intentCommitment,
+        selectedInputsCommitment: selectedInputsCommitment
+    });
+}
+
+struct RuntimeBusinessSelection {
+    count: Uint<8>;
+    index: Uint<8>;
+    offset: Uint<8>;
+    output: Boolean;
+    accumulator: Bytes<32>;
+    selected: RuntimeSelectedActionValue;
+}
+
+pure circuit runtimeBusinessSelectStep(
+    state: RuntimeBusinessSelection, value: RuntimeSelectedActionValue
+): RuntimeBusinessSelection {
+    return RuntimeBusinessSelection{
+        count: state.count, index: state.index, offset: (state.offset + 1) as Uint<8>, output: state.output,
+        accumulator: state.offset < state.count ? runtimeSelectedActionValueStep(
+            state.accumulator, state.offset as Uint<32>, value, state.output) : state.accumulator,
+        selected: state.offset == state.index ? value : state.selected
+    };
+}
+
+pure circuit runtimeBusinessSelect(
+    values: Vector<8, RuntimeSelectedActionValue>, count: Uint<8>, index: Uint<8>,
+    output: Boolean, expected: Bytes<32>, context: RuntimeBusinessPredicateContext,
+    typeHash: Bytes<32>
+): RuntimeSelectedActionValue {
+    assert(count > 0 && count <= 8 && index < count, "Business selection count or index is out of bounds");
+    const result = fold(runtimeBusinessSelectStep, RuntimeBusinessSelection{
+        count: count, index: index, offset: 0, output: output,
+        accumulator: default<Bytes<32>>, selected: default<RuntimeSelectedActionValue>
+    }, values);
+    assert(result.accumulator == expected, "Business selected-value commitment differs from the signed action");
+    const selected = result.selected;
+    assert(selected.valueVersion == 1 && selected.typeHash == typeHash && typeHash != default<Bytes<32>> &&
+        selected.contextHash == context.contextHash && selected.resourceHash == context.resourceHash &&
+        selected.payloadCommitment != default<Bytes<32>> && selected.nonce != default<Bytes<32>>,
+        "Business selected value has an invalid type, scope, version or empty commitment");
+    return selected;
+}
+
+circuit assertRuntimeSignedBusinessRecord(
+    context: RuntimeBusinessPredicateContext, signed: RuntimeSignedBusinessRecord, typeHash: Bytes<32>
+): Bytes<32> {
+    const record = signed.record;
+    assert(record.recordVersion == 1 && record.target == context.target &&
+        record.instanceCommitment == context.instanceCommitment && record.contextHash == context.contextHash &&
+        record.subjectAccountCredentialCommitment == context.subjectAccountCredentialCommitment &&
+        record.rootCapabilityCommitment == context.rootCapabilityCommitment && record.typeHash == typeHash &&
+        record.resourceHash == context.resourceHash && record.purposeHash == context.purposeHash &&
+        record.recipientHash == context.recipientHash && record.bodyCommitment != default<Bytes<32>> &&
+        record.nonce != default<Bytes<32>>, "Business record version, target or private scope differs from the action");
+    assert(record.validAfter <= context.effectiveAt && context.effectiveAt < record.validBefore &&
+        context.validBefore <= record.validBefore, "Business record does not cover the complete action window");
+    const issuer = signed.issuer;
+    const issuerCommitment = governanceActivatorLeafCommitment(issuer);
+    assert(record.issuerAuthorityCommitment == context.rootIssuerAuthorityCommitment &&
+        record.issuerAuthorityCommitment == issuerCommitment && issuer.leafVersion == 1 &&
+        issuer.authorityKind == 6 && issuer.namespaceHash == context.target.namespaceHash &&
+        issuer.governancePolicyHash == context.governancePolicyHash && issuer.validAfter <= context.effectiveAt &&
+        context.validBefore <= issuer.validBefore, "Business record issuer is not the current original root-capability issuer");
+    assert(context.issuerCount > 0 && context.issuerCount <= 1048576 &&
+        runtimeCredentialStatusPathIndex(signed.issuerPath) < context.issuerCount &&
+        signed.authorityPath.leaf == issuerCommitment && signed.issuerPath.leaf == issuerCommitment &&
+        merkleTreePathRoot<20, Bytes<32>>(signed.authorityPath) == context.authorityRoot &&
+        merkleTreePathRoot<20, Bytes<32>>(signed.issuerPath) == context.issuerRoot,
+        "Business record issuer is absent from current namespace or instance eligibility roots");
+    Schnorr_schnorrVerify<1>(runtimeBusinessRecordMessage(record), signed.signature, issuer.publicKey);
+    return runtimeBusinessRecordCommitment(record);
+}
+
+export circuit verifyRuntimeBusinessPredicate(
+    context: RuntimeBusinessPredicateContext, predicate: RuntimeBusinessPredicate,
+    first: RuntimeSignedBusinessRecord, second: RuntimeSignedBusinessRecord,
+    inputs: Vector<8, RuntimeSelectedActionValue>, outputs: Vector<8, RuntimeSelectedActionValue>,
+    rootStatus: RuntimeCredentialStatusLeaf, rootStatusPath: MerkleTreePath<20, Bytes<32>>
+): [] {
+    assert(context.validBefore > context.effectiveAt, "Business action deadline is absent or expired");
+    assert(predicate.predicateVersion == 1 && predicate.kind >= 1 && predicate.kind <= 3 &&
+        predicate.inputTypeHash != default<Bytes<32>> && predicate.outputTypeHash != default<Bytes<32>>,
+        "Business predicate version or kind is unsupported");
+    assert((predicate.kind == 2 && predicate.ceilingIndex != predicate.inputIndex &&
+        predicate.ceilingTypeHash != default<Bytes<32>>) ||
+        (predicate.kind != 2 && predicate.ceilingIndex == 0 && predicate.ceilingTypeHash == default<Bytes<32>>),
+        "Business predicate ceiling discriminant is not canonical");
+    assert(rootStatus.leafVersion == 3 && rootStatus.namespaceHash == context.target.namespaceHash &&
+        rootStatus.credentialKind == 2 && rootStatus.credentialCommitment == context.rootCapabilityCommitment &&
+        rootStatus.revocationAuthorityAccountCredentialCommitment == default<Bytes<32>> && rootStatus.status == 1,
+        "Business root capability status is not the exact active namespace-issued root");
+    assert(rootStatusPath.leaf == runtimeCredentialStatusLeafCommitment(rootStatus) &&
+        runtimeCredentialStatusPathIndex(rootStatusPath) == rootStatus.statusIndex &&
+        merkleTreePathRoot<20, Bytes<32>>(rootStatusPath) == context.statusRoot,
+        "Business root capability is absent from the current status root");
+    const input = runtimeBusinessSelect(inputs, context.inputCount, predicate.inputIndex, false,
+        context.selectedInputsCommitment, context, predicate.inputTypeHash);
+    const output = runtimeBusinessSelect(outputs, context.outputCount, predicate.outputIndex, true,
+        context.selectedOutputsCommitment, context, predicate.outputTypeHash);
+    const firstCommitment = assertRuntimeSignedBusinessRecord(context, first,
+        predicate.kind == 3 ? predicate.outputTypeHash : predicate.inputTypeHash);
+    if (predicate.kind == 3) {
+        assert(first.record.referenceCommitment == runtimeBusinessAuditReference(
+            context.intentCommitment, context.selectedInputsCommitment),
+            "Business audit acknowledgment reference does not bind the exact intent and inputs");
+        assert(output.payloadCommitment == firstCommitment, "Business audit output does not select the signed acknowledgment");
+        return;
+    }
+    assert(input.payloadCommitment == firstCommitment, "Business record commitment is not the selected input");
+    if (predicate.kind == 2) {
+        const ceiling = runtimeBusinessSelect(inputs, context.inputCount, predicate.ceilingIndex, false,
+            context.selectedInputsCommitment, context, predicate.ceilingTypeHash);
+        const secondCommitment = assertRuntimeSignedBusinessRecord(context, second, predicate.ceilingTypeHash);
+        assert(ceiling.payloadCommitment == secondCommitment, "Business ceiling commitment is not the selected input");
+        assert(first.record.unitHash != default<Bytes<32>> && first.record.unitHash == second.record.unitHash,
+            "Business amount and ceiling unit must match and be nonempty");
+        assert(first.record.value <= second.record.value, "Business amount exceeds the signed ceiling");
+        assert(output.payloadCommitment == runtimeBusinessClaimCommitment(predicate, firstCommitment, secondCommitment),
+            "Business output claim does not commit to the proven amount and ceiling");
+    } else {
+        assert(output.payloadCommitment == runtimeBusinessClaimCommitment(predicate, firstCommitment, default<Bytes<32>>),
+            "Business output claim does not commit to the proven current record");
+    }
+}

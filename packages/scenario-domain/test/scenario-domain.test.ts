@@ -110,6 +110,22 @@ function clone<T>(value: T): T {
   return structuredClone(value);
 }
 
+function makePredicateTemplate(): Record<string, any> {
+  const template = makeTemplate();
+  template.schemaVersion = 2;
+  template.version = "2.0.0";
+  template.contexts[0].recordTypes = ["credential", "request", "ceiling", "acknowledgment"];
+  template.contexts[0].claimTypes = ["eligible", "bounded", "acknowledged"];
+  template.actions[0].inputRecordTypes = [...template.contexts[0].recordTypes];
+  template.actions[0].outputClaimTypes = [...template.contexts[0].claimTypes];
+  template.proofProfiles[0].predicates = [
+    { kind: "current-record-v1", inputRecordType: "credential", outputClaimType: "eligible" },
+    { kind: "bounded-value-v1", inputRecordType: "request", ceilingRecordType: "ceiling", outputClaimType: "bounded" },
+    { kind: "audit-acknowledgment-v1", inputRecordType: "acknowledgment", outputClaimType: "acknowledged" },
+  ];
+  return template;
+}
+
 function expectValidationError(
   input: unknown,
   code: ScenarioTemplateValidationError["code"],
@@ -276,6 +292,13 @@ describe("scenario template validation", () => {
 });
 
 describe("canonical scenario template encoding", () => {
+  it("preserves the historical schema-1 representation and hash", () => {
+    const template = makeTemplate();
+    assert.deepEqual(parseScenarioTemplate(template), template);
+    assert.equal(Object.hasOwn(parseScenarioTemplate(template).proofProfiles[0]!, "predicates"), false);
+    assert.equal(hashScenarioTemplate(template).value,
+      "0x446f18f53ca8d5bba16bc96874cc94dcf00fe150e4d49f97ea952afa181bf925");
+  });
   it("is stable across object key order and Unicode composition", () => {
     const base = makeTemplate();
     base.displayName = "Caf\u00e9 Access";
@@ -300,6 +323,133 @@ describe("canonical scenario template encoding", () => {
       hashScenarioTemplate(base).value,
       hashScenarioTemplate(reordered).value,
     );
+  });
+});
+
+describe("schema-2 business predicate declarations", () => {
+  it("retains all three data-only predicate kinds and their declared order", () => {
+    const template = makePredicateTemplate();
+    const parsed = parseScenarioTemplate(template);
+    assert.equal(parsed.schemaVersion, 2);
+    assert.deepEqual(parsed.proofProfiles[0]?.predicates, template.proofProfiles[0].predicates);
+    const reordered = clone(template);
+    reordered.proofProfiles[0].predicates.reverse();
+    assert.notEqual(hashScenarioTemplate(template).value, hashScenarioTemplate(reordered).value);
+    assert.equal(canonicalizeScenarioTemplate(reorderObjectKeys(template, 3)), canonicalizeScenarioTemplate(template));
+  });
+
+  it("rejects predicate fields in schema 1 and unsupported schema versions", () => {
+    const legacy = makePredicateTemplate();
+    legacy.schemaVersion = 1;
+    expectValidationError(legacy, "UNKNOWN_FIELD", "ScenarioTemplate.proofProfiles[0].predicates");
+    const unsupported = makeTemplate();
+    unsupported.schemaVersion = 3;
+    expectValidationError(unsupported, "INVALID_VALUE", "ScenarioTemplate.schemaVersion");
+  });
+
+  it("requires a nonempty list on every schema-2 profile and caps it at eight", () => {
+    for (const value of [undefined, [], Array.from({ length: 9 }, (_, i) => ({
+      kind: "current-record-v1", inputRecordType: "credential", outputClaimType: `claim-${i}`,
+    }))]) {
+      const template = makePredicateTemplate();
+      if (value === undefined) delete template.proofProfiles[0].predicates;
+      else template.proofProfiles[0].predicates = value;
+      expectValidationError(template, value === undefined ? "MISSING_FIELD" : value.length === 0 ? "EMPTY_COLLECTION" : "INVALID_VALUE",
+        "ScenarioTemplate.proofProfiles[0].predicates");
+    }
+  });
+
+  it("rejects unknown kinds, unknown fields, and missing or extraneous ceiling references", () => {
+    const cases = [
+      { change: { kind: "expression-v1" }, code: "INVALID_VALUE", field: "kind" },
+      { change: { expression: "value <= ceiling" }, code: "UNKNOWN_FIELD", field: "expression" },
+      { change: { ceilingRecordType: "ceiling" }, code: "UNKNOWN_FIELD", field: "ceilingRecordType" },
+      { change: { inputRecordType: "Invalid Type" }, code: "INVALID_VALUE", field: "inputRecordType" },
+    ] as const;
+    for (const { change, code, field } of cases) {
+      const template = makePredicateTemplate();
+      Object.assign(template.proofProfiles[0].predicates[0], change);
+      expectValidationError(template, code, `ScenarioTemplate.proofProfiles[0].predicates[0].${field}`);
+    }
+    const missing = makePredicateTemplate();
+    delete missing.proofProfiles[0].predicates[1].ceilingRecordType;
+    expectValidationError(missing, "MISSING_FIELD", "ScenarioTemplate.proofProfiles[0].predicates[1].ceilingRecordType");
+    const audit = makePredicateTemplate();
+    audit.proofProfiles[0].predicates[2].ceilingRecordType = "ceiling";
+    expectValidationError(audit, "UNKNOWN_FIELD", "ScenarioTemplate.proofProfiles[0].predicates[2].ceilingRecordType");
+  });
+
+  it("rejects malformed predicate containers and incomplete predicate declarations", () => {
+    for (const value of [null, {}, "current-record-v1"]) {
+      const template = makePredicateTemplate();
+      template.proofProfiles[0].predicates = value;
+      expectValidationError(template, "INVALID_TYPE", "ScenarioTemplate.proofProfiles[0].predicates");
+    }
+    for (const value of [[undefined], Array(1)]) {
+      const template = makePredicateTemplate();
+      template.proofProfiles[0].predicates = value;
+      expectValidationError(template, "INVALID_TYPE", "ScenarioTemplate.proofProfiles[0].predicates[0]");
+    }
+    for (const field of ["kind", "inputRecordType", "outputClaimType"]) {
+      const template = makePredicateTemplate();
+      delete template.proofProfiles[0].predicates[0][field];
+      expectValidationError(template, "MISSING_FIELD", `ScenarioTemplate.proofProfiles[0].predicates[0].${field}`);
+    }
+  });
+
+  it("requires predicate inputs and outputs in every action selecting the profile", () => {
+    for (const [index, field] of [[0, "inputRecordType"], [1, "ceilingRecordType"], [2, "outputClaimType"]] as const) {
+      const template = makePredicateTemplate();
+      template.proofProfiles[0].predicates[index][field] = "unselected";
+      expectValidationError(template, "INCONSISTENT_REFERENCE", `ScenarioTemplate.proofProfiles[0].predicates[${index}].${field}`);
+    }
+    for (const field of ["inputRecordTypes", "outputClaimTypes"]) {
+      const template = makePredicateTemplate();
+      const other = clone(template.actions[0]);
+      other.id = "authorize-other";
+      other[field] = other[field].slice(1);
+      template.actions.push(other);
+      template.transitions.push({ id: "authorize-other", fromState: "ready", actionId: other.id, toState: "authorized" });
+      template.capabilityRules[0].actionIds.push(other.id);
+      expectValidationError(template, "INCONSISTENT_REFERENCE",
+        `ScenarioTemplate.proofProfiles[0].predicates[0].${field === "inputRecordTypes" ? "inputRecordType" : "outputClaimType"}`);
+    }
+  });
+
+  it("requires distinct predicate outputs and complete action output coverage", () => {
+    const duplicate = makePredicateTemplate();
+    duplicate.proofProfiles[0].predicates.push(clone(duplicate.proofProfiles[0].predicates[0]));
+    expectValidationError(duplicate, "DUPLICATE_ID", "ScenarioTemplate.proofProfiles[0].predicates");
+    const uncovered = makePredicateTemplate();
+    uncovered.proofProfiles[0].predicates.pop();
+    expectValidationError(uncovered, "INCONSISTENT_REFERENCE", "ScenarioTemplate.actions[0].outputClaimTypes");
+  });
+
+  it("requires distinct request and ceiling record types for a bounded-value predicate", () => {
+    const template = makePredicateTemplate();
+    template.proofProfiles[0].predicates[1].ceilingRecordType = "request";
+    expectValidationError(template, "INVALID_VALUE", "ScenarioTemplate.proofProfiles[0].predicates[1].ceilingRecordType");
+  });
+
+  it("accepts eight selected inputs, outputs, and predicates but rejects a ninth", () => {
+    const template = makePredicateTemplate();
+    template.contexts[0].recordTypes = Array.from({ length: 9 }, (_, i) => `record-${i}`);
+    template.contexts[0].claimTypes = Array.from({ length: 9 }, (_, i) => `claim-${i}`);
+    template.actions[0].inputRecordTypes = template.contexts[0].recordTypes.slice(0, 8);
+    template.actions[0].outputClaimTypes = template.contexts[0].claimTypes.slice(0, 8);
+    template.proofProfiles[0].predicates = template.actions[0].outputClaimTypes.map((outputClaimType: string, i: number) => ({
+      kind: "current-record-v1", inputRecordType: `record-${i}`, outputClaimType,
+    }));
+    assert.equal(parseScenarioTemplate(template).proofProfiles[0]?.predicates?.length, 8);
+    for (const field of ["inputRecordTypes", "outputClaimTypes"]) {
+      const oversized = clone(template);
+      oversized.actions[0][field].push(field === "inputRecordTypes" ? "record-8" : "claim-8");
+      expectValidationError(oversized, "INVALID_VALUE", `ScenarioTemplate.actions[0].${field}`);
+    }
+    const legacy = makeTemplate();
+    legacy.contexts[0].recordTypes = template.contexts[0].recordTypes;
+    legacy.actions[0].inputRecordTypes = [...legacy.contexts[0].recordTypes];
+    assert.equal(parseScenarioTemplate(legacy).actions[0]?.inputRecordTypes.length, 9);
   });
 });
 

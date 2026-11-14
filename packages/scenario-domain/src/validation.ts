@@ -1,6 +1,8 @@
 import {
   SCENARIO_TEMPLATE_SCHEMA_VERSION,
+  SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION,
   type ActionDefinition,
+  type BusinessPredicate,
   type CapabilityRule,
   type ContextDefinition,
   type ExecutionAdapter,
@@ -398,9 +400,54 @@ function readCapabilityRule(value: unknown, path: string): CapabilityRule {
   };
 }
 
-function readProofProfile(value: unknown, path: string): ProofProfile {
+function readBusinessPredicate(value: unknown, path: string): BusinessPredicate {
   const object = readObject(value, path);
-  assertExactKeys(object, ["id", "circuitId", "publicOutputSchemaId"], path);
+  if (!Object.hasOwn(object, "kind")) {
+    fail("MISSING_FIELD", `${path}.kind`, "required field is missing");
+  }
+  const kind = readIdentifier(object.kind, `${path}.kind`);
+  if (
+    kind !== "current-record-v1" &&
+    kind !== "bounded-value-v1" &&
+    kind !== "audit-acknowledgment-v1"
+  ) {
+    fail("INVALID_VALUE", `${path}.kind`, "unsupported business predicate kind");
+  }
+  const keys = ["kind", "inputRecordType", "outputClaimType"];
+  if (kind === "bounded-value-v1") keys.push("ceilingRecordType");
+  assertExactKeys(object, keys, path);
+  const inputRecordType = readIdentifier(object.inputRecordType, `${path}.inputRecordType`);
+  const outputClaimType = readIdentifier(object.outputClaimType, `${path}.outputClaimType`);
+  if (kind === "bounded-value-v1") {
+    const ceilingRecordType = readIdentifier(object.ceilingRecordType, `${path}.ceilingRecordType`);
+    if (ceilingRecordType === inputRecordType) {
+      fail("INVALID_VALUE", `${path}.ceilingRecordType`, "request and ceiling must use distinct record types");
+    }
+    return { kind, inputRecordType, outputClaimType, ceilingRecordType };
+  }
+  return { kind, inputRecordType, outputClaimType };
+}
+
+function readProofProfile(
+  value: unknown,
+  path: string,
+  schemaVersion: ScenarioTemplate["schemaVersion"],
+): ProofProfile {
+  const object = readObject(value, path);
+  const keys = ["id", "circuitId", "publicOutputSchemaId"];
+  if (schemaVersion === SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION) keys.push("predicates");
+  assertExactKeys(object, keys, path);
+  let predicates: readonly BusinessPredicate[] | undefined;
+  if (schemaVersion === SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION) {
+    if (Array.isArray(object.predicates) && object.predicates.length > 8) {
+      fail("INVALID_VALUE", `${path}.predicates`, "must contain at most eight predicates");
+    }
+    const predicateInputs = Array.isArray(object.predicates)
+      ? Array.from(object.predicates)
+      : object.predicates;
+    predicates = readObjectArray(predicateInputs, `${path}.predicates`, readBusinessPredicate);
+    assertUniqueStrings(predicates.map(({ outputClaimType }) => outputClaimType), `${path}.predicates`);
+  }
   return {
     id: readIdentifier(object.id, `${path}.id`),
     circuitId: readIdentifier(object.circuitId, `${path}.circuitId`),
@@ -408,6 +455,7 @@ function readProofProfile(value: unknown, path: string): ProofProfile {
       object.publicOutputSchemaId,
       `${path}.publicOutputSchemaId`,
     ),
+    ...(predicates === undefined ? {} : { predicates }),
   };
 }
 
@@ -466,7 +514,7 @@ function validateReferences(template: ScenarioTemplate): void {
   const capabilityRules = new Map(
     template.capabilityRules.map((rule) => [rule.id, rule]),
   );
-  const proofProfiles = new Set(template.proofProfiles.map(({ id }) => id));
+  const proofProfiles = new Map(template.proofProfiles.map((profile, index) => [profile.id, { profile, index }]));
   const executionAdapters = new Set(
     template.executionAdapters.map(({ id }) => id),
   );
@@ -550,11 +598,41 @@ function validateReferences(template: ScenarioTemplate): void {
       "capability rule",
     );
     assertReference(
-      proofProfiles,
+      new Set(proofProfiles.keys()),
       action.proofProfileId,
       `ScenarioTemplate.actions[${index}].proofProfileId`,
       "proof profile",
     );
+    const selectedProfile = proofProfiles.get(action.proofProfileId)!;
+    if (selectedProfile.profile.predicates !== undefined) {
+      for (const field of ["inputRecordTypes", "outputClaimTypes"] as const) {
+        if (action[field].length > 8) {
+          fail("INVALID_VALUE", `ScenarioTemplate.actions[${index}].${field}`,
+            "predicate actions must select at most eight items");
+        }
+      }
+      for (const [predicateIndex, predicate] of selectedProfile.profile.predicates.entries()) {
+        const predicatePath = `ScenarioTemplate.proofProfiles[${selectedProfile.index}].predicates[${predicateIndex}]`;
+        const requiredInputs: [string, string][] = [["inputRecordType", predicate.inputRecordType]];
+        if (predicate.kind === "bounded-value-v1") {
+          requiredInputs.push(["ceilingRecordType", predicate.ceilingRecordType]);
+        }
+        for (const [field, recordType] of requiredInputs) {
+          if (!action.inputRecordTypes.includes(recordType)) {
+            fail("INCONSISTENT_REFERENCE", `${predicatePath}.${field}`,
+              `record type '${recordType}' is not selected by action '${action.id}'`);
+          }
+        }
+        if (!action.outputClaimTypes.includes(predicate.outputClaimType)) {
+          fail("INCONSISTENT_REFERENCE", `${predicatePath}.outputClaimType`,
+            `claim type '${predicate.outputClaimType}' is not selected by action '${action.id}'`);
+        }
+      }
+      if (selectedProfile.profile.predicates.length !== action.outputClaimTypes.length) {
+        fail("INCONSISTENT_REFERENCE", `ScenarioTemplate.actions[${index}].outputClaimTypes`,
+          "every output claim must be covered by exactly one predicate");
+      }
+    }
     if (action.executionAdapterId !== null) {
       assertReference(
         executionAdapters,
@@ -675,13 +753,17 @@ export function parseScenarioTemplate(input: unknown): ScenarioTemplate {
     path,
   );
 
-  if (object.schemaVersion !== SCENARIO_TEMPLATE_SCHEMA_VERSION) {
+  if (
+    object.schemaVersion !== SCENARIO_TEMPLATE_SCHEMA_VERSION &&
+    object.schemaVersion !== SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION
+  ) {
     fail(
       "INVALID_VALUE",
       `${path}.schemaVersion`,
-      `expected ${SCENARIO_TEMPLATE_SCHEMA_VERSION}`,
+      `expected ${SCENARIO_TEMPLATE_SCHEMA_VERSION} or ${SCENARIO_TEMPLATE_PREDICATE_SCHEMA_VERSION}`,
     );
   }
+  const schemaVersion = object.schemaVersion;
 
   const namespace = readString(object.namespace, `${path}.namespace`);
   if (!NAMESPACE_PATTERN.test(namespace)) {
@@ -744,7 +826,7 @@ export function parseScenarioTemplate(input: unknown): ScenarioTemplate {
   const proofProfiles = readObjectArray(
     object.proofProfiles,
     `${path}.proofProfiles`,
-    readProofProfile,
+    (value, profilePath) => readProofProfile(value, profilePath, schemaVersion),
   );
   const executionAdapters = readObjectArray(
     object.executionAdapters,
@@ -768,7 +850,7 @@ export function parseScenarioTemplate(input: unknown): ScenarioTemplate {
   assertUniqueIds(privacyInvariants, `${path}.privacyInvariants`);
 
   const template: ScenarioTemplate = {
-    schemaVersion: SCENARIO_TEMPLATE_SCHEMA_VERSION,
+    schemaVersion,
     namespace,
     templateId,
     version,

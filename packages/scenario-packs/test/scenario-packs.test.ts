@@ -23,25 +23,88 @@ import {
 
 const packIds = Object.keys(SCENARIO_PACKS) as ScenarioPackId[];
 
+const expectedPredicates = {
+  "treatment-referral-proof": [
+    { kind: "current-record-v1", inputRecordType: "referral-record", outputClaimType: "referral-eligibility" },
+  ],
+  "research-consent-proof": [
+    { kind: "current-record-v1", inputRecordType: "consent-record", outputClaimType: "research-consent-active" },
+  ],
+  "emergency-access-proof": [
+    { kind: "current-record-v1", inputRecordType: "emergency-selection-manifest", outputClaimType: "emergency-access-authorized" },
+    { kind: "audit-acknowledgment-v1", inputRecordType: "emergency-selection-manifest", outputClaimType: "audit-required" },
+  ],
+  "current-qualification-proof": [
+    { kind: "current-record-v1", inputRecordType: "qualification-record", outputClaimType: "qualification-current" },
+    { kind: "current-record-v1", inputRecordType: "shift-assignment", outputClaimType: "shift-access-eligible" },
+  ],
+  "delegated-purchase-proof": [
+    { kind: "current-record-v1", inputRecordType: "purchase-mandate", outputClaimType: "purchase-authorized" },
+    { kind: "bounded-value-v1", inputRecordType: "purchase-request", ceilingRecordType: "purchase-mandate", outputClaimType: "amount-within-ceiling" },
+  ],
+};
+
+describe("generated packs' versioned business predicate configuration", () => {
+  for (const packId of packIds) {
+    it(`${packId} declares exact reusable predicates for every disclosed claim`, () => {
+      const pack = getScenarioPack(packId);
+      assert.equal(pack.version, "3.0.0");
+      assert.equal(pack.template.version, pack.version);
+      assert.equal(pack.template.schemaVersion, 2);
+      const parsed = parseScenarioTemplate(pack.template);
+      assert.deepEqual(parsed, pack.template);
+      for (const profile of parsed.proofProfiles) {
+        assert.equal(profile.circuitId, "private-state-transition-predicates-v1");
+        assert.equal(profile.publicOutputSchemaId, "decision-receipt-v1");
+        assert.deepEqual(profile.predicates, expectedPredicates[profile.id as keyof typeof expectedPredicates]);
+        for (const action of parsed.actions.filter(row => row.proofProfileId === profile.id)) {
+          assert.deepEqual(profile.predicates!.map(row => row.outputClaimType), action.outputClaimTypes);
+          for (const predicate of profile.predicates!) {
+            assert.ok(action.inputRecordTypes.includes(predicate.inputRecordType));
+            if (predicate.kind === "bounded-value-v1") {
+              assert.ok(action.inputRecordTypes.includes(predicate.ceilingRecordType));
+            }
+          }
+        }
+      }
+    });
+  }
+});
+
 const legacyProfiles = {
   "clinical-referral-consent": {
     hash: "0x6d09c96c4b594d2353106d664b6732a964c2c627f6cbdb3c3d3d972587b63d40",
+    v2Hash: "0x8ae452ec96dc83d8b54ae081e3f085be4ad85754b7ae89bcec2c1fb26c804c60",
     outputs: ["treatment-referral-output-v1", "research-consent-output-v1", "emergency-access-output-v1"],
   },
   "professional-site-access": {
     hash: "0x520a462caa4ccb48b8857176c752479726880004ffd04fa3fecf81cb6edf9cb9",
+    v2Hash: "0x3bf1a3252d137b5eb54ba38ed8923f41c86e8079a78cebec77d5367771cff20b",
     outputs: ["current-qualification-v1"],
   },
   "delegated-purchasing-agent": {
     hash: "0xf607177a5323742a55fbad07d124d66034bee68a85765434ea9867e9f7610e8a",
+    v2Hash: "0x524dc67ad8282d767a115a0a765bffde31cc8f5d61fb00f35e0c1d544c2d4036",
     outputs: ["bounded-purchase-authorization-v1"],
   },
 };
 
-describe("M9 profiles against the authoritative M6 policy", () => {
+// Preserve the exact schema-1 templates supported by the existing v10 contract.
+// New predicate profiles require their separately governed authorization version.
+function legacyV2Pack(packId: ScenarioPackId) {
+  const pack = getScenarioPack(packId);
+  return { ...pack, template: {
+    ...pack.template, schemaVersion: 1 as const, version: "2.0.0",
+    proofProfiles: pack.template.proofProfiles.map(({ predicates: _predicates, ...profile }) => ({
+      ...profile, circuitId: "private-state-transition-v1",
+    })),
+  } };
+}
+
+describe("historical scenario profiles against authorization contract v10", () => {
   for (const packId of packIds) {
     it(`${packId} uses the common receipt without replacing its application claims`, () => {
-      const pack = getScenarioPack(packId);
+      const pack = legacyV2Pack(packId);
       for (const flow of pack.flows) {
         const action = pack.template.actions.find(row => row.id === flow.actionId)!;
         const profile = pack.template.proofProfiles.find(row => row.id === action.proofProfileId)!;
@@ -54,25 +117,27 @@ describe("M9 profiles against the authoritative M6 policy", () => {
       }
     });
 
-    it(`${packId} versions the receipt correction without rewriting its v1 identity`, () => {
+    it(`${packId} versions predicates without rewriting its schema-1 identities`, () => {
       const pack = getScenarioPack(packId);
-      const legacy = structuredClone(pack.template);
+      const legacy = legacyV2Pack(packId).template;
       const previous = legacyProfiles[packId];
       const oldTemplate = { ...legacy, version: "1.0.0", proofProfiles: legacy.proofProfiles.map((profile, index) => ({
         ...profile, publicOutputSchemaId: previous.outputs[index]!,
         circuitId: packId === "delegated-purchasing-agent" ? "delegated-capability-action-v1" : profile.circuitId,
       })) };
       assert.equal(hashScenarioTemplate(oldTemplate).value, previous.hash);
-      assert.equal(pack.version, "2.0.0");
+      assert.equal(hashScenarioTemplate(legacy).value, previous.v2Hash);
+      assert.equal(pack.version, "3.0.0");
       assert.equal(pack.template.version, pack.version);
       assert.equal(assertTemplateRevision(oldTemplate, pack.template).kind, "major");
+      assert.equal(assertTemplateRevision(legacy, pack.template).kind, "major");
       assert.notEqual(hashScenarioTemplate(pack.template).value, previous.hash);
     });
   }
 
   it("selects a module that permits every declared state transition", () => {
     for (const packId of packIds) {
-      const pack = getScenarioPack(packId);
+      const pack = legacyV2Pack(packId);
       for (const flow of pack.flows) {
         const projection = createRuntimeTemplateActionPolicy(pack.template, flow.actionId);
         const transition = projection.transitionAt(0);
@@ -93,7 +158,7 @@ describe("M9 profiles against the authoritative M6 policy", () => {
 
   it("binds every pack action to its exact M6 configuration and version", () => {
     for (const packId of packIds) {
-      const pack = getScenarioPack(packId);
+      const pack = legacyV2Pack(packId);
       // Synthetic module identities exercise the binding contract, not live activation.
       const manifest = createRuntimePolicyBindingManifest(pack.template, pack.template.actions.map(action => ({
         actionId: action.id, proofProfileId: action.proofProfileId,

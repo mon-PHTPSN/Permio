@@ -82,7 +82,7 @@ const clinicalFlows: readonly ScenarioPackFlow[] = [
 ];
 
 const clinicalTemplate: ScenarioTemplate = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   namespace: "permio.clinical",
   templateId: "permio.clinical/referral-consent",
   version: SCENARIO_PACK_VERSION,
@@ -131,7 +131,23 @@ const clinicalTemplate: ScenarioTemplate = {
     disclosurePolicyId: flow.disclosurePolicyId,
     revocable: true,
   })),
-  proofProfiles: clinicalFlows.map((flow) => ({ id: `${flow.id}-proof`, circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID })),
+  proofProfiles: [
+    {
+      id: "treatment-referral-proof", circuitId: "private-state-transition-predicates-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID,
+      predicates: [{ kind: "current-record-v1", inputRecordType: "referral-record", outputClaimType: "referral-eligibility" }],
+    },
+    {
+      id: "research-consent-proof", circuitId: "private-state-transition-predicates-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID,
+      predicates: [{ kind: "current-record-v1", inputRecordType: "consent-record", outputClaimType: "research-consent-active" }],
+    },
+    {
+      id: "emergency-access-proof", circuitId: "private-state-transition-predicates-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID,
+      predicates: [
+        { kind: "current-record-v1", inputRecordType: "emergency-selection-manifest", outputClaimType: "emergency-access-authorized" },
+        { kind: "audit-acknowledgment-v1", inputRecordType: "emergency-selection-manifest", outputClaimType: "audit-required" },
+      ],
+    },
+  ],
   executionAdapters: [{ id: "clinical-disclosure-adapter-v1", kind: "application", schemaId: "clinical-disclosure-v1" }],
   privacyInvariants: [
     { id: "clinical-purpose-separation", description: "Treatment, research, and emergency authority are never interchangeable." },
@@ -156,7 +172,7 @@ const professionalFlow: ScenarioPackFlow = {
 };
 
 const professionalTemplate: ScenarioTemplate = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   namespace: "permio.professional",
   templateId: "permio.professional/temporary-site-access",
   version: SCENARIO_PACK_VERSION,
@@ -172,7 +188,13 @@ const professionalTemplate: ScenarioTemplate = {
   actions: [{ id: professionalFlow.actionId, description: "Prove a current qualification for one scheduled shift.", contextId: professionalFlow.contextId, actorSlotId: "professional", inputRecordTypes: ["qualification-record", "shift-assignment"], outputClaimTypes: [...professionalFlow.disclosedClaims], purpose: professionalFlow.purpose, recipientKind: professionalFlow.recipientKind, capabilityRuleId: "shift-access-capability", proofProfileId: "current-qualification-proof", executionAdapterId: "temporary-site-access-adapter-v1" }],
   transitions: [{ id: "authorize-shift-access", fromState: "scheduled", actionId: professionalFlow.actionId, toState: "access-authorized" }],
   capabilityRules: [{ id: "shift-access-capability", description: "Expire access at the exact shift boundary.", actionIds: [professionalFlow.actionId], resourceSelector: professionalFlow.resourceSelector, purpose: professionalFlow.purpose, recipientConstraint: professionalFlow.recipientKind, validForSeconds: 28_800, maxDelegationDepth: 1, disclosurePolicyId: professionalFlow.disclosurePolicyId, revocable: true }],
-  proofProfiles: [{ id: "current-qualification-proof", circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID }],
+  proofProfiles: [{
+    id: "current-qualification-proof", circuitId: "private-state-transition-predicates-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID,
+    predicates: [
+      { kind: "current-record-v1", inputRecordType: "qualification-record", outputClaimType: "qualification-current" },
+      { kind: "current-record-v1", inputRecordType: "shift-assignment", outputClaimType: "shift-access-eligible" },
+    ],
+  }],
   executionAdapters: [{ id: "temporary-site-access-adapter-v1", kind: "contract", schemaId: "temporary-site-access-v1" }],
   privacyInvariants: [{ id: "qualification-minimization", description: "No transcript or unrelated history is disclosed." }, { id: "shift-and-site-isolation", description: "Access cannot cross a site or shift boundary." }],
 };
@@ -194,7 +216,7 @@ const agentFlow: ScenarioPackFlow = {
 };
 
 const agentTemplate: ScenarioTemplate = {
-  schemaVersion: 1,
+  schemaVersion: 2,
   namespace: "permio.procurement",
   templateId: "permio.procurement/delegated-purchasing-agent",
   version: SCENARIO_PACK_VERSION,
@@ -211,7 +233,13 @@ const agentTemplate: ScenarioTemplate = {
   actions: [{ id: agentFlow.actionId, description: "Execute one purchase inside the delegated mandate.", contextId: agentFlow.contextId, actorSlotId: "agent", inputRecordTypes: ["purchase-mandate", "purchase-request"], outputClaimTypes: [...agentFlow.disclosedClaims], purpose: agentFlow.purpose, recipientKind: agentFlow.recipientKind, capabilityRuleId: "bounded-purchase-capability", proofProfileId: "delegated-purchase-proof", executionAdapterId: "bounded-purchase-adapter-v1" }],
   transitions: [{ id: "record-bounded-purchase", fromState: "mandate-active", actionId: agentFlow.actionId, toState: "purchase-executed" }],
   capabilityRules: [{ id: "bounded-purchase-capability", description: "Bind counterparty, operation, amount band, purpose, lifetime, and delegation depth.", actionIds: [agentFlow.actionId], resourceSelector: agentFlow.resourceSelector, purpose: agentFlow.purpose, recipientConstraint: agentFlow.recipientKind, validForSeconds: 1_800, maxDelegationDepth: 2, disclosurePolicyId: agentFlow.disclosurePolicyId, revocable: true }],
-  proofProfiles: [{ id: "delegated-purchase-proof", circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID }],
+  proofProfiles: [{
+    id: "delegated-purchase-proof", circuitId: "private-state-transition-predicates-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID,
+    predicates: [
+      { kind: "current-record-v1", inputRecordType: "purchase-mandate", outputClaimType: "purchase-authorized" },
+      { kind: "bounded-value-v1", inputRecordType: "purchase-request", ceilingRecordType: "purchase-mandate", outputClaimType: "amount-within-ceiling" },
+    ],
+  }],
   executionAdapters: [{ id: "bounded-purchase-adapter-v1", kind: "contract", schemaId: "bounded-purchase-execution-v1" }],
   privacyInvariants: [{ id: "agent-attenuation", description: "Agent authority cannot exceed the exact delegated mandate." }, { id: "agent-history-isolation", description: "The Agent cannot read unrelated account or purchase history." }],
 };

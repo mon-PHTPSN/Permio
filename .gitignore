@@ -43,3 +43,4 @@ __pycache__/
 
 # Derived local code-navigation cache
 /.claude/cache/codebase-index/
+/packages/midnight-authorization/contracts/managed/**/.business-build.lock

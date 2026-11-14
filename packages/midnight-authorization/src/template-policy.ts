@@ -110,6 +110,7 @@ export function createRuntimeActionTypeTree(types: readonly string[], kind: "rec
 /** Data projection only: does not validate evidence, review, approve or activate a module. */
 export function createRuntimeTemplateActionPolicy(templateInput: unknown, actionId: string) {
   const template = parseScenarioTemplate(templateInput);
+  if (template.schemaVersion !== 1) throw new TypeError("UNSUPPORTED_PROOF_REQUIREMENT");
   const actionIndex = template.actions.findIndex((action) => action.id === actionId);
   const action = template.actions[actionIndex];
   if (!action) throw new TypeError("runtime policy requires an exact declared template action");
