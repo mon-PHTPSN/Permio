@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M9",
+  "status": "PREPARATION_IMPLEMENTED_LIVE_BLOCKED",
+  "baselineCommit": "c50959c1b71125f6dfda447423e0dbbe047a04cd",
+  "preparedAt": "2026-10-12",
+  "artifacts": [
+    "packages/scenario-packs/package.json",
+    "packages/scenario-packs/README.md",
+    "packages/scenario-packs/src/model.ts",
+    "packages/scenario-packs/src/templates.ts",
+    "packages/scenario-packs/src/fixture.ts",
+    "packages/scenario-packs/src/privacy.ts",
+    "packages/scenario-packs/src/index.ts",
+    "packages/scenario-packs/test/scenario-packs.test.ts"
+  ],
+  "scenarioFamilies": [
+    "clinical-referral-consent",
+    "professional-site-access",
+    "delegated-purchasing-agent"
+  ],
+  "verification": {
+    "typecheck": "passed",
+    "scenarioPackTests": {
+      "result": "passed",
+      "tests": 17
+    },
+    "hardhatContractTests": {
+      "result": "passed",
+      "tests": 6,
+      "network": "Hardhat local EVM"
+    }
+  },
+  "preparedGates": {
+    "threeRequiredFamilies": true,
+    "twoExplicitSeedsPerFamily": true,
+    "stableSchemaAcrossSeeds": true,
+    "separateM4Authorities": true,
+    "generatedDelegatedM5Runtime": true,
+    "allM5DenialReasonsObserved": true,
+    "disclosurePreviewsGenerated": true,
+    "expandedPublicArtifactScanning": true,
+    "coreDomainHasNoPackBranches": true,
+    "upstreamExpectationsVersioned": true,
+    "upstreamExpectationsMarkedNonLive": true
+  },
+  "blockedLiveGates": {
+    "authoritativeM6CodecIntegrated": false,
+    "liveM6TransactionPerPack": false,
+    "durableM7TransportPerPack": false,
+    "deployedM8ExecutionPerPack": false,
+    "m9Complete": false
+  },
+  "declarations": {
+    "fixtureExpectationsAreLiveEvidence": false,
+    "externalAiRuntimeRequired": false,
+    "globalPublicPseudonymIntroduced": false,
+    "productionDataOrSecretsIncluded": false
+  }
+}

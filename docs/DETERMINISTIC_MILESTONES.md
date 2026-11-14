@@ -1,6 +1,6 @@
 # Permio Deterministic Milestones
 
-Status: implementation record through M5; deterministic execution contract for M6–M12<br>
+Status: implementation record through M5 plus dependency-neutral M9 preparation; deterministic execution contract for M6–M12<br>
 Date: 11 October 2026<br>
 Scope: programmable scenario library, context-bound accounts, generated scenario packs, Midnight authorization, and composable execution
 
@@ -1005,7 +1005,17 @@ model.
 
 ## 12 M9 — Cross-domain generated scenario packs
 
-Status: `NOT_STARTED`; depends on M3 through M8
+Status: `PREPARATION_IMPLEMENTED_LIVE_BLOCKED`; depends on M3 through M8<br>
+Preparation evidence: `docs/evidence/M9/preparation.json`<br>
+Development log: `docs/evidence/M9/development-log.md`
+
+The dependency-neutral M9 package now implements the three template families,
+two declared seeds per family, M4 policies, deterministic M5 runtime fixtures,
+all nineteen M5 denial outcomes, disclosure previews, and expanded
+public-artifact scanning. M6 receipt, M7 envelope, and M8 execution
+expectations are explicitly contract fixtures with `liveEvidence: false` and
+pending authoritative codecs. This preparation does not satisfy the live exit
+gate below and does not make M9 complete.
 
 ### Required packs
 
@@ -1367,7 +1377,7 @@ hide an environmental failure.
 
 # Permio 确定性里程碑
 
-状态：已记录至 M5 的实际实现；M6–M12 采用确定性执行契约<br>
+状态：已记录至 M5 的实际实现，并包含与依赖无关的 M9 准备；M6–M12 采用确定性执行契约<br>
 日期：2026 年 10 月 11 日<br>
 范围：可编程情境库、上下文账户、生成式情境包、Midnight 授权与可组合执行
 
@@ -2053,7 +2063,14 @@ Dynamic session 标识符或 Mera vault 材料。
 
 ## 12 M9——跨领域生成式情境包
 
-状态：`NOT_STARTED`；依赖 M3 至 M8
+状态：`PREPARATION_IMPLEMENTED_LIVE_BLOCKED`；依赖 M3 至 M8<br>
+准备证据：`docs/evidence/M9/preparation.json`<br>
+开发日志：`docs/evidence/M9/development-log.md`
+
+与依赖无关的 M9 package 现已实现三个模板系列、每个系列两个声明的 seed、M4 策略、
+确定性 M5 运行 fixture、全部十九种 M5 拒绝结果、披露预览和扩展后的公共产物扫描。
+M6 收据、M7 封装和 M8 执行预期都明确标记为带有 `liveEvidence: false` 的契约 fixture，
+并等待权威 codec。这些准备工作不满足下方的实时退出门槛，也不代表 M9 已完成。
 
 必需情境包为：临床转诊与研究同意、专业资格与临时场地访问、受委托金融或采购 Agent。
 

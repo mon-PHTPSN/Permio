@@ -5,7 +5,8 @@ templates and context-bound capabilities are authorized privately on Midnight,
 then consumed as narrow receipts by Monad or ordinary applications. The current
 checkout implements the M2 scenario-template domain, M3 deterministic
 generator, M4 template governance, M5 context accounts and scoped sessions,
-and the recipient-bound execution-registry slice. Generic Midnight proof
+the dependency-neutral M9 generated scenario-pack preparation, and the
+recipient-bound execution-registry slice. Generic Midnight proof
 enforcement and the later receipt, execution, and encrypted-evidence
 milestones remain incomplete against the authoritative architecture.
 
@@ -87,6 +88,14 @@ The implemented off-chain packages form a concrete dependency chain:
   template versions and hashes; and
 - `@permio/context-accounts` consumes an active allocation, attenuates
   capabilities, issues fresh scoped sessions, and authorizes signed actions.
+- `@permio/scenario-packs` defines the three required M9 families, drives them
+  through the common M2-M5 interfaces, generates every M5 denial vector,
+  renders disclosure previews, and scans the expanded public-artifact set.
+
+M9's M6 receipt, M7 envelope, and M8 execution expectations are explicitly
+fixture-only and carry `liveEvidence: false`. They are not live integration
+evidence. M9 remains blocked from completion until every pack succeeds through
+the authoritative M6-M8 implementations on the required local networks.
 
 M6 has a separate `admit-m4-activation-v1` registry circuit plus the initial
 runtime modules `delegated-capability-action-v1` and
@@ -267,7 +276,8 @@ Apache-2.0. See `LICENSE`.
 Permio 是一套可编程情境隐私架构：版本化情境模板和上下文能力在 Midnight 上完成私有授权，
 再由 Monad 或普通应用以狭窄收据的形式消费。当前 checkout 已实现 M2 情境模板领域、M3
 确定性生成器、M4 模板治理、M5 上下文账户与有限会话，以及接收方绑定执行注册表切片。
-通用 Midnight 证明强制执行，以及后续收据、执行和加密证据里程碑仍未完成。
+当前 checkout 还实现了与依赖无关的 M9 生成式情境包准备。通用 Midnight 证明强制执行，
+以及后续收据、执行和加密证据里程碑仍未完成。
 这是面向 Monad Metropolis Track 4“信任、身份与 AI 基础设施”的全新实现。
 
 建议先阅读以人的理解路径为主的
@@ -309,7 +319,12 @@ Midnight 上重复这些检查。命名空间范围内的 M4 治理／激活权�
 `@permio/scenario-generator` 生成确定性的合成实例，并扫描公开产物中的私有值泄漏；
 `@permio/scenario-governance` 分离五类权限，并治理精确的模板版本与哈希；
 `@permio/context-accounts` 消费已激活的分配，收窄能力范围，签发新鲜的有限会话，并授权
-签名操作。
+签名操作；`@permio/scenario-packs` 定义三个必需的 M9 情境系列，通过公共 M2-M5 接口运行，
+生成全部 M5 拒绝向量，渲染披露预览，并扫描扩展后的公共产物集合。
+
+M9 的 M6 收据、M7 封装和 M8 执行预期明确仅属于 fixture，并携带
+`liveEvidence: false`。它们不是真实集成证据。在每个情境包通过权威 M6-M8 实现和规定的
+本地网络之前，M9 仍不能完成。
 
 M6 使用独立的 `admit-m4-activation-v1` 注册电路，以及首批运行时模块
 `delegated-capability-action-v1` 和 `private-state-transition-v1`。运行时模块统一输出最小

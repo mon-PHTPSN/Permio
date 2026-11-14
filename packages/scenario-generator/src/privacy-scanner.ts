@@ -4,8 +4,12 @@ import { assertClassificationManifest } from "./classification.ts";
 export const PUBLIC_ARTIFACT_KINDS = [
   "receipt",
   "ledger-dump",
+  "indexer-dump",
   "log",
+  "gateway-log",
+  "evm-event",
   "generated-html",
+  "generated-document",
 ] as const;
 
 export type PublicArtifactKind = (typeof PUBLIC_ARTIFACT_KINDS)[number];
@@ -37,6 +41,11 @@ export interface PrivacyFinding {
   readonly privatePath: string;
   readonly encoding: PrivacyEncoding;
   readonly offset: number;
+}
+
+export interface ClassifiedPrivateValue {
+  readonly path: string;
+  readonly value: string;
 }
 
 export class ArtifactPrivacyError extends Error {
@@ -154,6 +163,13 @@ export function scanPublicArtifacts(
       (entry): entry is { readonly path: string; readonly value: string } =>
         typeof entry.value === "string" && entry.value.length >= 4,
     );
+  return scanClassifiedPrivateValues(privateValues, artifacts);
+}
+
+export function scanClassifiedPrivateValues(
+  privateValues: readonly ClassifiedPrivateValue[],
+  artifacts: readonly PublicArtifact[],
+): readonly PrivacyFinding[] {
   const findings: PrivacyFinding[] = [];
   artifacts.forEach((artifact, artifactIndex) => {
     const content = decodeArtifact(artifact.content);
@@ -175,6 +191,14 @@ export function scanPublicArtifacts(
     }
   });
   return findings;
+}
+
+export function assertClassifiedPrivateValuesSafe(
+  privateValues: readonly ClassifiedPrivateValue[],
+  artifacts: readonly PublicArtifact[],
+): void {
+  const findings = scanClassifiedPrivateValues(privateValues, artifacts);
+  if (findings.length > 0) throw new ArtifactPrivacyError(findings);
 }
 
 export function assertPublicArtifactsSafe(

@@ -2,7 +2,7 @@
 <!--
   GENERATED FILE — DO NOT EDIT DIRECTLY.
   Source: docs/DETERMINISTIC_MILESTONES.md
-  Source SHA-256: ed20b8c1af8d3e6b3299e850a24a1a460ac3dc9b42f88b5216ecf8b4e4b2b3b9
+  Source SHA-256: f8d947cca5212d98fada61f2bd0d9b9bca2005d2047ec0019b5f55d7ac0c021b
   Regenerate with: npm run docs:build
 -->
 <html lang="en" data-language="en">
@@ -10,7 +10,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Permio deterministic implementation milestones and binary acceptance gates">
-  <meta name="source-sha256" content="ed20b8c1af8d3e6b3299e850a24a1a460ac3dc9b42f88b5216ecf8b4e4b2b3b9">
+  <meta name="source-sha256" content="f8d947cca5212d98fada61f2bd0d9b9bca2005d2047ec0019b5f55d7ac0c021b">
   <title>Permio Deterministic Milestones</title>
   <script type="application/ld+json">
   {
@@ -189,7 +189,7 @@
           <p>A bilingual execution contract that fixes milestone order, artifacts, privacy invariants, tests, evidence, and binary completion gates for the Permio build.</p>
         </header>
         <article>
-<p>Status: implementation record through M5; deterministic execution contract for M6–M12<br>
+<p>Status: implementation record through M5 plus dependency-neutral M9 preparation; deterministic execution contract for M6–M12<br>
 Date: 11 October 2026<br>
 Scope: programmable scenario library, context-bound accounts, generated scenario packs, Midnight authorization, and composable execution</p>
 <section aria-labelledby="1-how-completion-is-judged">
@@ -1158,7 +1158,16 @@ model.</p>
 <section aria-labelledby="12-m9-cross-domain-generated-scenario-packs">
 <h2 id="12-m9-cross-domain-generated-scenario-packs">12 M9 — Cross-domain generated scenario packs</h2>
 
-<p>Status: <code>NOT_STARTED</code>; depends on M3 through M8</p>
+<p>Status: <code>PREPARATION_IMPLEMENTED_LIVE_BLOCKED</code>; depends on M3 through M8<br>
+Preparation evidence: <code>docs/evidence/M9/preparation.json</code><br>
+Development log: <code>docs/evidence/M9/development-log.md</code></p>
+<p>The dependency-neutral M9 package now implements the three template families,
+two declared seeds per family, M4 policies, deterministic M5 runtime fixtures,
+all nineteen M5 denial outcomes, disclosure previews, and expanded
+public-artifact scanning. M6 receipt, M7 envelope, and M8 execution
+expectations are explicitly contract fixtures with <code>liveEvidence: false</code> and
+pending authoritative codecs. This preparation does not satisfy the live exit
+gate below and does not make M9 complete.</p>
 <h3 id="required-packs">Required packs</h3>
 
 <ol>
@@ -1518,7 +1527,7 @@ hide an environmental failure.</p>
         </article>
         <footer>
           Generated from <code>docs/DETERMINISTIC_MILESTONES.md</code>.
-          Source SHA-256: <code>ed20b8c1af8d3e6b3299e850a24a1a460ac3dc9b42f88b5216ecf8b4e4b2b3b9</code>.
+          Source SHA-256: <code>f8d947cca5212d98fada61f2bd0d9b9bca2005d2047ec0019b5f55d7ac0c021b</code>.
         </footer>
       </div>
       <div data-language-panel="zh-CN" data-document-title="Permio 确定性里程碑" lang="zh-CN">
@@ -1528,7 +1537,7 @@ hide an environmental failure.</p>
           <p>一份完整的双语执行契约，固定 Permio 构建的里程碑顺序、产物、隐私不变量、测试、证据与二元完成门槛。</p>
         </header>
         <article>
-<p>状态：已记录至 M5 的实际实现；M6–M12 采用确定性执行契约<br>
+<p>状态：已记录至 M5 的实际实现，并包含与依赖无关的 M9 准备；M6–M12 采用确定性执行契约<br>
 日期：2026 年 10 月 11 日<br>
 范围：可编程情境库、上下文账户、生成式情境包、Midnight 授权与可组合执行</p>
 <section aria-labelledby="zh-1-如何判断完成">
@@ -2148,7 +2157,13 @@ Dynamic session 标识符或 Mera vault 材料。</p>
 <section aria-labelledby="zh-12-m9-跨领域生成式情境包">
 <h2 id="zh-12-m9-跨领域生成式情境包">12 M9——跨领域生成式情境包</h2>
 
-<p>状态：<code>NOT_STARTED</code>；依赖 M3 至 M8</p>
+<p>状态：<code>PREPARATION_IMPLEMENTED_LIVE_BLOCKED</code>；依赖 M3 至 M8<br>
+准备证据：<code>docs/evidence/M9/preparation.json</code><br>
+开发日志：<code>docs/evidence/M9/development-log.md</code></p>
+<p>与依赖无关的 M9 package 现已实现三个模板系列、每个系列两个声明的 seed、M4 策略、
+确定性 M5 运行 fixture、全部十九种 M5 拒绝结果、披露预览和扩展后的公共产物扫描。
+M6 收据、M7 封装和 M8 执行预期都明确标记为带有 <code>liveEvidence: false</code> 的契约 fixture，
+并等待权威 codec。这些准备工作不满足下方的实时退出门槛，也不代表 M9 已完成。</p>
 <p>必需情境包为：临床转诊与研究同意、专业资格与临时场地访问、受委托金融或采购 Agent。</p>
 <p>每个包包含模板、策略 profile、生成规则、生成的正负实例、披露预览、预期收据和隐私扫描，
 不包含手写参与者或记录测试数据。</p>
@@ -2335,7 +2350,7 @@ npm run compile
         </article>
         <footer>
           由 <code>docs/DETERMINISTIC_MILESTONES.md</code> 自动生成。
-          源文件 SHA-256：<code>ed20b8c1af8d3e6b3299e850a24a1a460ac3dc9b42f88b5216ecf8b4e4b2b3b9</code>。
+          源文件 SHA-256：<code>f8d947cca5212d98fada61f2bd0d9b9bca2005d2047ec0019b5f55d7ac0c021b</code>。
         </footer>
       </div>
     </main>

@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M9",
+  "status": "PREPARATION_INTEGRATED_LIVE_BLOCKED",
+  "integratedAt": "2026-11-14",
+  "targetBranch": "feat/m8-execution-registry",
+  "targetBaseCommit": "5142daf557064e86fd126f2fb5cfa29187cf98cf",
+  "source": {
+    "worktree": "Permio-m9-scenario-packs",
+    "branch": "feat/m9-scenario-packs",
+    "baseCommit": "c50959c1b71125f6dfda447423e0dbbe047a04cd",
+    "changeState": "uncommitted changes snapshotted and imported",
+    "sourceFilesVerifiedUnchanged": true,
+    "artifactSha256": {
+      "README.md": "477c7e7d77f6a58e21329af5933251f61a49fcfff272f4b1d112224ecabee63d",
+      "docs/DETERMINISTIC_MILESTONES.md": "9dbe4bb74a164278487bcc6e4e8757cdb3889a4477ae44596152128872c6d83b",
+      "docs/deterministic-milestones.html": "b4c3dc0b08c0c3a0db3ed67d8b8210c57131bccb7b6edbd35da174316be1c236",
+      "docs/evidence/M9/development-log.md": "2020af8fb0ee626875db9f3cc1ba321b034c336d21f7f947ffd0b13ce768a645",
+      "docs/evidence/M9/preparation.json": "87cd1393d5dd86a16bf27c09ad2c8355e680d40420a704c0851e87a0a91053ad",
+      "package-lock.json": "32a0946fb9edc477392d13ab2c27a2ee25f3161029af0eb854b6d31c94052ad6",
+      "package.json": "1fa67ad694d1394d7c709a9c243f6babbe33cbc3dbb604680de49cabfb1c970e",
+      "packages/scenario-generator/src/privacy-scanner.ts": "92a7044706d20957cadd3dfef5dc76794d9b8c1317e8875abcfb36e389d8e0cb",
+      "packages/scenario-packs/README.md": "d9b5b204728cbd8c7525089660f16be31a797b15ebdd119bd1e5b6f38d787956",
+      "packages/scenario-packs/package.json": "68e5d0cf6d15d0303000d90a0dfd1777d6a43182bef5e7d563dba00338623b8d",
+      "packages/scenario-packs/src/fixture.ts": "f145d6cae6b28728bb1b11bd5bed0146d5d2ea303315c6596329c9f3c74e9431",
+      "packages/scenario-packs/src/index.ts": "c7685bd88bfe1cd1532cbf7dbfc20e647bee8c86165b17cadd30302223847508",
+      "packages/scenario-packs/src/model.ts": "acf86a272a8677df97c584a731217c7aa86f2109856965f9d66cf62eb0395e92",
+      "packages/scenario-packs/src/privacy.ts": "8129bf4ae6d707b28f62539cf891d889b77efa2cf6ae02e341dc8e162e81997b",
+      "packages/scenario-packs/src/templates.ts": "635ad257e90e1f7becff4685845cab70166f7def2a0bfec86b3ac845dffbe869",
+      "packages/scenario-packs/test/scenario-packs.test.ts": "e793b93ec72424f1fe4a0d2cf6c990addc4084c68f03ecd041f6e05cf9071747"
+    }
+  },
+  "reconciliation": [
+    "Preserved M8 package scripts and compile-before-typecheck ordering.",
+    "Added scenario-packs to the full test sequence before contracts and dashboard.",
+    "Added only the M9 workspace entries to the existing M8 lockfile; existing dependency versions preserved.",
+    "Regenerated HTML from combined milestone documentation."
+  ],
+  "environment": {
+    "node": "24.13.1",
+    "npm": "11.8.0",
+    "platform": "Windows"
+  },
+  "verification": [
+    {
+      "command": "npm install --offline --ignore-scripts --no-audit --no-fund",
+      "result": "passed",
+      "packagesAdded": 1
+    },
+    {
+      "command": "npm run check",
+      "result": "passed",
+      "testCounts": {
+        "protocol": 6,
+        "scenarioDomain": 15,
+        "scenarioGenerator": 14,
+        "scenarioGovernance": 16,
+        "contextAccounts": 13,
+        "scenarioPacks": 17,
+        "hardhatLocalEvm": 30,
+        "executionDashboard": 38
+      },
+      "totalTests": 149,
+      "failedTests": 0,
+      "checks": [
+        "documentation freshness",
+        "Solidity build",
+        "TypeScript",
+        "all root test suites"
+      ]
+    },
+    {
+      "command": "in-memory matrix across every declared pack seed and flow",
+      "result": "passed",
+      "scenarioFamilies": 3,
+      "seedFlowCombinations": 10,
+      "negativeAuthorizationVectors": 210,
+      "publicArtifactPrivacyScans": "passed",
+      "privatePayloadsRecorded": false
+    },
+    {
+      "command": "codebase-index update",
+      "result": "passed",
+      "filesUpdated": 17
+    }
+  ],
+  "evidenceBoundary": {
+    "liveEvidence": false,
+    "liveMidnightTransactionsRun": false,
+    "liveM7TransportVerified": false,
+    "liveM8ExecutionPerPackVerified": false,
+    "m9Complete": false,
+    "envioDeploymentRevalidated": false
+  },
+  "scope": "Local source integration and verification only; authoritative upstream integration and live milestone acceptance remain outstanding."
+}
