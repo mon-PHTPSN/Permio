@@ -1117,23 +1117,6 @@ class _RuntimeCredentialStatusLeaf_0 {
 
 const _descriptor_57 = new _RuntimeCredentialStatusLeaf_0();
 
-class _RuntimeActionSession_0 {
-  alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_2.alignment());
-  }
-  fromValue(value_0) {
-    return {
-      progressCommitment: _descriptor_1.fromValue(value_0),
-      expiresAt: _descriptor_2.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_1.toValue(value_0.progressCommitment).concat(_descriptor_2.toValue(value_0.expiresAt));
-  }
-}
-
-const _descriptor_58 = new _RuntimeActionSession_0();
-
 class _RuntimeActionCommand_0 {
   alignment() {
     return _descriptor_0.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_16.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment()))))))))))))))));
@@ -1164,137 +1147,7 @@ class _RuntimeActionCommand_0 {
   }
 }
 
-const _descriptor_59 = new _RuntimeActionCommand_0();
-
-const _descriptor_60 = new __compactRuntime.CompactTypeVector(17, _descriptor_27);
-
-const _descriptor_61 = new __compactRuntime.CompactTypeVector(17, _descriptor_26);
-
-const _descriptor_62 = new __compactRuntime.CompactTypeUnsignedInteger(1048575n, 3);
-
-class _RuntimeStatusMembership_0 {
-  alignment() {
-    return _descriptor_62.alignment().concat(_descriptor_1.alignment());
-  }
-  fromValue(value_0) {
-    return {
-      statusIndex: _descriptor_62.fromValue(value_0),
-      leaf: _descriptor_1.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_62.toValue(value_0.statusIndex).concat(_descriptor_1.toValue(value_0.leaf));
-  }
-}
-
-const _descriptor_63 = new _RuntimeStatusMembership_0();
-
-const _descriptor_64 = new __compactRuntime.CompactTypeVector(35, _descriptor_63);
-
-class _RuntimeStatusProofNode_0 {
-  alignment() {
-    return _descriptor_3.alignment().concat(_descriptor_62.alignment().concat(_descriptor_9.alignment()));
-  }
-  fromValue(value_0) {
-    return {
-      level: _descriptor_3.fromValue(value_0),
-      index: _descriptor_62.fromValue(value_0),
-      digest: _descriptor_9.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_3.toValue(value_0.level).concat(_descriptor_62.toValue(value_0.index).concat(_descriptor_9.toValue(value_0.digest)));
-  }
-}
-
-const _descriptor_65 = new _RuntimeStatusProofNode_0();
-
-class _RuntimeStatusProofStep_0 {
-  alignment() {
-    return _descriptor_3.alignment().concat(_descriptor_16.alignment().concat(_descriptor_16.alignment().concat(_descriptor_65.alignment().concat(_descriptor_65.alignment().concat(_descriptor_62.alignment().concat(_descriptor_5.alignment()))))));
-  }
-  fromValue(value_0) {
-    return {
-      kind: _descriptor_3.fromValue(value_0),
-      leftFromStack: _descriptor_16.fromValue(value_0),
-      rightFromStack: _descriptor_16.fromValue(value_0),
-      left: _descriptor_65.fromValue(value_0),
-      right: _descriptor_65.fromValue(value_0),
-      parentIndex: _descriptor_62.fromValue(value_0),
-      stackTail: _descriptor_5.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_3.toValue(value_0.kind).concat(_descriptor_16.toValue(value_0.leftFromStack).concat(_descriptor_16.toValue(value_0.rightFromStack).concat(_descriptor_65.toValue(value_0.left).concat(_descriptor_65.toValue(value_0.right).concat(_descriptor_62.toValue(value_0.parentIndex).concat(_descriptor_5.toValue(value_0.stackTail)))))));
-  }
-}
-
-const _descriptor_66 = new _RuntimeStatusProofStep_0();
-
-const _descriptor_67 = new __compactRuntime.CompactTypeVector(588, _descriptor_66);
-
-class _RuntimeStatusMultiproof_0 {
-  alignment() {
-    return _descriptor_0.alignment().concat(_descriptor_2.alignment().concat(_descriptor_3.alignment().concat(_descriptor_64.alignment().concat(_descriptor_67.alignment()))));
-  }
-  fromValue(value_0) {
-    return {
-      witnessVersion: _descriptor_0.fromValue(value_0),
-      rootSequence: _descriptor_2.fromValue(value_0),
-      leafCount: _descriptor_3.fromValue(value_0),
-      leaves: _descriptor_64.fromValue(value_0),
-      steps: _descriptor_67.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_0.toValue(value_0.witnessVersion).concat(_descriptor_2.toValue(value_0.rootSequence).concat(_descriptor_3.toValue(value_0.leafCount).concat(_descriptor_64.toValue(value_0.leaves).concat(_descriptor_67.toValue(value_0.steps)))));
-  }
-}
-
-const _descriptor_68 = new _RuntimeStatusMultiproof_0();
-
-class _RuntimeActiveAncestry_0 {
-  alignment() {
-    return _descriptor_0.alignment().concat(_descriptor_3.alignment().concat(_descriptor_60.alignment().concat(_descriptor_61.alignment().concat(_descriptor_30.alignment().concat(_descriptor_68.alignment())))));
-  }
-  fromValue(value_0) {
-    return {
-      witnessVersion: _descriptor_0.fromValue(value_0),
-      capabilityCount: _descriptor_3.fromValue(value_0),
-      capabilities: _descriptor_60.fromValue(value_0),
-      accounts: _descriptor_61.fromValue(value_0),
-      session: _descriptor_30.fromValue(value_0),
-      statusProof: _descriptor_68.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_0.toValue(value_0.witnessVersion).concat(_descriptor_3.toValue(value_0.capabilityCount).concat(_descriptor_60.toValue(value_0.capabilities).concat(_descriptor_61.toValue(value_0.accounts).concat(_descriptor_30.toValue(value_0.session).concat(_descriptor_68.toValue(value_0.statusProof))))));
-  }
-}
-
-const _descriptor_69 = new _RuntimeActiveAncestry_0();
-
-class _RuntimeActionScopePaths_0 {
-  alignment() {
-    return _descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment()))))));
-  }
-  fromValue(value_0) {
-    return {
-      actions: _descriptor_25.fromValue(value_0),
-      resourceSelectors: _descriptor_25.fromValue(value_0),
-      resources: _descriptor_25.fromValue(value_0),
-      purposes: _descriptor_25.fromValue(value_0),
-      recipientKinds: _descriptor_25.fromValue(value_0),
-      recipients: _descriptor_25.fromValue(value_0),
-      disclosurePolicyIds: _descriptor_25.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_25.toValue(value_0.actions).concat(_descriptor_25.toValue(value_0.resourceSelectors).concat(_descriptor_25.toValue(value_0.resources).concat(_descriptor_25.toValue(value_0.purposes).concat(_descriptor_25.toValue(value_0.recipientKinds).concat(_descriptor_25.toValue(value_0.recipients).concat(_descriptor_25.toValue(value_0.disclosurePolicyIds)))))));
-  }
-}
-
-const _descriptor_70 = new _RuntimeActionScopePaths_0();
+const _descriptor_58 = new _RuntimeActionCommand_0();
 
 class _RuntimeTemplateActionPolicy_0 {
   alignment() {
@@ -1338,7 +1191,190 @@ class _RuntimeTemplateActionPolicy_0 {
   }
 }
 
-const _descriptor_71 = new _RuntimeTemplateActionPolicy_0();
+const _descriptor_59 = new _RuntimeTemplateActionPolicy_0();
+
+class _RuntimeEvidenceBridgeOpening_0 {
+  alignment() {
+    return _descriptor_0.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_2.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()))))))))));
+  }
+  fromValue(value_0) {
+    return {
+      bindingVersion: _descriptor_0.fromValue(value_0),
+      sourceContextHash: _descriptor_1.fromValue(value_0),
+      sourceInstanceCommitment: _descriptor_1.fromValue(value_0),
+      destinationContextCommitment: _descriptor_1.fromValue(value_0),
+      destinationCaseCommitment: _descriptor_1.fromValue(value_0),
+      purposeHash: _descriptor_1.fromValue(value_0),
+      permittedUseHash: _descriptor_1.fromValue(value_0),
+      expiresAt: _descriptor_2.fromValue(value_0),
+      nonce: _descriptor_1.fromValue(value_0),
+      recipientKeyFingerprint: _descriptor_1.fromValue(value_0),
+      manifestRoot: _descriptor_1.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_0.toValue(value_0.bindingVersion).concat(_descriptor_1.toValue(value_0.sourceContextHash).concat(_descriptor_1.toValue(value_0.sourceInstanceCommitment).concat(_descriptor_1.toValue(value_0.destinationContextCommitment).concat(_descriptor_1.toValue(value_0.destinationCaseCommitment).concat(_descriptor_1.toValue(value_0.purposeHash).concat(_descriptor_1.toValue(value_0.permittedUseHash).concat(_descriptor_2.toValue(value_0.expiresAt).concat(_descriptor_1.toValue(value_0.nonce).concat(_descriptor_1.toValue(value_0.recipientKeyFingerprint).concat(_descriptor_1.toValue(value_0.manifestRoot)))))))))));
+  }
+}
+
+const _descriptor_60 = new _RuntimeEvidenceBridgeOpening_0();
+
+class _RuntimeSelectedActionValue_0 {
+  alignment() {
+    return _descriptor_0.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment())))));
+  }
+  fromValue(value_0) {
+    return {
+      valueVersion: _descriptor_0.fromValue(value_0),
+      typeHash: _descriptor_1.fromValue(value_0),
+      contextHash: _descriptor_1.fromValue(value_0),
+      resourceHash: _descriptor_1.fromValue(value_0),
+      payloadCommitment: _descriptor_1.fromValue(value_0),
+      nonce: _descriptor_1.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_0.toValue(value_0.valueVersion).concat(_descriptor_1.toValue(value_0.typeHash).concat(_descriptor_1.toValue(value_0.contextHash).concat(_descriptor_1.toValue(value_0.resourceHash).concat(_descriptor_1.toValue(value_0.payloadCommitment).concat(_descriptor_1.toValue(value_0.nonce))))));
+  }
+}
+
+const _descriptor_61 = new _RuntimeSelectedActionValue_0();
+
+const _descriptor_62 = new __compactRuntime.CompactTypeVector(2, _descriptor_3);
+
+const _descriptor_63 = new __compactRuntime.CompactTypeBytes(66);
+
+const _descriptor_64 = new __compactRuntime.CompactTypeUnsignedInteger(15n, 1);
+
+const _descriptor_65 = new __compactRuntime.CompactTypeVector(17, _descriptor_27);
+
+const _descriptor_66 = new __compactRuntime.CompactTypeVector(17, _descriptor_26);
+
+const _descriptor_67 = new __compactRuntime.CompactTypeUnsignedInteger(1048575n, 3);
+
+class _RuntimeStatusMembership_0 {
+  alignment() {
+    return _descriptor_67.alignment().concat(_descriptor_1.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      statusIndex: _descriptor_67.fromValue(value_0),
+      leaf: _descriptor_1.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_67.toValue(value_0.statusIndex).concat(_descriptor_1.toValue(value_0.leaf));
+  }
+}
+
+const _descriptor_68 = new _RuntimeStatusMembership_0();
+
+const _descriptor_69 = new __compactRuntime.CompactTypeVector(35, _descriptor_68);
+
+class _RuntimeStatusProofNode_0 {
+  alignment() {
+    return _descriptor_3.alignment().concat(_descriptor_67.alignment().concat(_descriptor_9.alignment()));
+  }
+  fromValue(value_0) {
+    return {
+      level: _descriptor_3.fromValue(value_0),
+      index: _descriptor_67.fromValue(value_0),
+      digest: _descriptor_9.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_3.toValue(value_0.level).concat(_descriptor_67.toValue(value_0.index).concat(_descriptor_9.toValue(value_0.digest)));
+  }
+}
+
+const _descriptor_70 = new _RuntimeStatusProofNode_0();
+
+class _RuntimeStatusProofStep_0 {
+  alignment() {
+    return _descriptor_3.alignment().concat(_descriptor_16.alignment().concat(_descriptor_16.alignment().concat(_descriptor_70.alignment().concat(_descriptor_70.alignment().concat(_descriptor_67.alignment().concat(_descriptor_5.alignment()))))));
+  }
+  fromValue(value_0) {
+    return {
+      kind: _descriptor_3.fromValue(value_0),
+      leftFromStack: _descriptor_16.fromValue(value_0),
+      rightFromStack: _descriptor_16.fromValue(value_0),
+      left: _descriptor_70.fromValue(value_0),
+      right: _descriptor_70.fromValue(value_0),
+      parentIndex: _descriptor_67.fromValue(value_0),
+      stackTail: _descriptor_5.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_3.toValue(value_0.kind).concat(_descriptor_16.toValue(value_0.leftFromStack).concat(_descriptor_16.toValue(value_0.rightFromStack).concat(_descriptor_70.toValue(value_0.left).concat(_descriptor_70.toValue(value_0.right).concat(_descriptor_67.toValue(value_0.parentIndex).concat(_descriptor_5.toValue(value_0.stackTail)))))));
+  }
+}
+
+const _descriptor_71 = new _RuntimeStatusProofStep_0();
+
+const _descriptor_72 = new __compactRuntime.CompactTypeVector(588, _descriptor_71);
+
+class _RuntimeStatusMultiproof_0 {
+  alignment() {
+    return _descriptor_0.alignment().concat(_descriptor_2.alignment().concat(_descriptor_3.alignment().concat(_descriptor_69.alignment().concat(_descriptor_72.alignment()))));
+  }
+  fromValue(value_0) {
+    return {
+      witnessVersion: _descriptor_0.fromValue(value_0),
+      rootSequence: _descriptor_2.fromValue(value_0),
+      leafCount: _descriptor_3.fromValue(value_0),
+      leaves: _descriptor_69.fromValue(value_0),
+      steps: _descriptor_72.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_0.toValue(value_0.witnessVersion).concat(_descriptor_2.toValue(value_0.rootSequence).concat(_descriptor_3.toValue(value_0.leafCount).concat(_descriptor_69.toValue(value_0.leaves).concat(_descriptor_72.toValue(value_0.steps)))));
+  }
+}
+
+const _descriptor_73 = new _RuntimeStatusMultiproof_0();
+
+class _RuntimeActiveAncestry_0 {
+  alignment() {
+    return _descriptor_0.alignment().concat(_descriptor_3.alignment().concat(_descriptor_65.alignment().concat(_descriptor_66.alignment().concat(_descriptor_30.alignment().concat(_descriptor_73.alignment())))));
+  }
+  fromValue(value_0) {
+    return {
+      witnessVersion: _descriptor_0.fromValue(value_0),
+      capabilityCount: _descriptor_3.fromValue(value_0),
+      capabilities: _descriptor_65.fromValue(value_0),
+      accounts: _descriptor_66.fromValue(value_0),
+      session: _descriptor_30.fromValue(value_0),
+      statusProof: _descriptor_73.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_0.toValue(value_0.witnessVersion).concat(_descriptor_3.toValue(value_0.capabilityCount).concat(_descriptor_65.toValue(value_0.capabilities).concat(_descriptor_66.toValue(value_0.accounts).concat(_descriptor_30.toValue(value_0.session).concat(_descriptor_73.toValue(value_0.statusProof))))));
+  }
+}
+
+const _descriptor_74 = new _RuntimeActiveAncestry_0();
+
+class _RuntimeActionScopePaths_0 {
+  alignment() {
+    return _descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment()))))));
+  }
+  fromValue(value_0) {
+    return {
+      actions: _descriptor_25.fromValue(value_0),
+      resourceSelectors: _descriptor_25.fromValue(value_0),
+      resources: _descriptor_25.fromValue(value_0),
+      purposes: _descriptor_25.fromValue(value_0),
+      recipientKinds: _descriptor_25.fromValue(value_0),
+      recipients: _descriptor_25.fromValue(value_0),
+      disclosurePolicyIds: _descriptor_25.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_25.toValue(value_0.actions).concat(_descriptor_25.toValue(value_0.resourceSelectors).concat(_descriptor_25.toValue(value_0.resources).concat(_descriptor_25.toValue(value_0.purposes).concat(_descriptor_25.toValue(value_0.recipientKinds).concat(_descriptor_25.toValue(value_0.recipients).concat(_descriptor_25.toValue(value_0.disclosurePolicyIds)))))));
+  }
+}
+
+const _descriptor_75 = new _RuntimeActionScopePaths_0();
 
 class _RuntimeSlotProgress_0 {
   alignment() {
@@ -1361,15 +1397,15 @@ class _RuntimeSlotProgress_0 {
   }
 }
 
-const _descriptor_72 = new _RuntimeSlotProgress_0();
+const _descriptor_76 = new _RuntimeSlotProgress_0();
 
 class _RuntimeActionProgress_0 {
   alignment() {
-    return _descriptor_72.alignment().concat(_descriptor_11.alignment().concat(_descriptor_11.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()))));
+    return _descriptor_76.alignment().concat(_descriptor_11.alignment().concat(_descriptor_11.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()))));
   }
   fromValue(value_0) {
     return {
-      slot: _descriptor_72.fromValue(value_0),
+      slot: _descriptor_76.fromValue(value_0),
       nextInputIndex: _descriptor_11.fromValue(value_0),
       nextOutputIndex: _descriptor_11.fromValue(value_0),
       inputsAccumulator: _descriptor_1.fromValue(value_0),
@@ -1377,11 +1413,11 @@ class _RuntimeActionProgress_0 {
     }
   }
   toValue(value_0) {
-    return _descriptor_72.toValue(value_0.slot).concat(_descriptor_11.toValue(value_0.nextInputIndex).concat(_descriptor_11.toValue(value_0.nextOutputIndex).concat(_descriptor_1.toValue(value_0.inputsAccumulator).concat(_descriptor_1.toValue(value_0.outputsAccumulator)))));
+    return _descriptor_76.toValue(value_0.slot).concat(_descriptor_11.toValue(value_0.nextInputIndex).concat(_descriptor_11.toValue(value_0.nextOutputIndex).concat(_descriptor_1.toValue(value_0.inputsAccumulator).concat(_descriptor_1.toValue(value_0.outputsAccumulator)))));
   }
 }
 
-const _descriptor_73 = new _RuntimeActionProgress_0();
+const _descriptor_77 = new _RuntimeActionProgress_0();
 
 class _RuntimeTemplateTransition_0 {
   alignment() {
@@ -1400,7 +1436,24 @@ class _RuntimeTemplateTransition_0 {
   }
 }
 
-const _descriptor_74 = new _RuntimeTemplateTransition_0();
+const _descriptor_78 = new _RuntimeTemplateTransition_0();
+
+class _RuntimeActionSession_0 {
+  alignment() {
+    return _descriptor_1.alignment().concat(_descriptor_2.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      progressCommitment: _descriptor_1.fromValue(value_0),
+      expiresAt: _descriptor_2.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_1.toValue(value_0.progressCommitment).concat(_descriptor_2.toValue(value_0.expiresAt));
+  }
+}
+
+const _descriptor_79 = new _RuntimeActionSession_0();
 
 class _RuntimeSlotAssignment_0 {
   alignment() {
@@ -1430,25 +1483,25 @@ class _RuntimeSlotAssignment_0 {
   }
 }
 
-const _descriptor_75 = new _RuntimeSlotAssignment_0();
+const _descriptor_80 = new _RuntimeSlotAssignment_0();
 
 class _RuntimeSlotRecord_0 {
   alignment() {
-    return _descriptor_75.alignment().concat(_descriptor_3.alignment().concat(_descriptor_2.alignment()));
+    return _descriptor_80.alignment().concat(_descriptor_3.alignment().concat(_descriptor_2.alignment()));
   }
   fromValue(value_0) {
     return {
-      assignment: _descriptor_75.fromValue(value_0),
+      assignment: _descriptor_80.fromValue(value_0),
       status: _descriptor_3.fromValue(value_0),
       revokedAt: _descriptor_2.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_75.toValue(value_0.assignment).concat(_descriptor_3.toValue(value_0.status).concat(_descriptor_2.toValue(value_0.revokedAt)));
+    return _descriptor_80.toValue(value_0.assignment).concat(_descriptor_3.toValue(value_0.status).concat(_descriptor_2.toValue(value_0.revokedAt)));
   }
 }
 
-const _descriptor_76 = new _RuntimeSlotRecord_0();
+const _descriptor_81 = new _RuntimeSlotRecord_0();
 
 class _RuntimePrivateMapNode_0 {
   alignment() {
@@ -1468,65 +1521,44 @@ class _RuntimePrivateMapNode_0 {
   }
 }
 
-const _descriptor_77 = new _RuntimePrivateMapNode_0();
+const _descriptor_82 = new _RuntimePrivateMapNode_0();
 
 class _RuntimePrivateMapWitness_0 {
   alignment() {
-    return _descriptor_77.alignment().concat(_descriptor_25.alignment());
+    return _descriptor_82.alignment().concat(_descriptor_25.alignment());
   }
   fromValue(value_0) {
     return {
-      node: _descriptor_77.fromValue(value_0),
+      node: _descriptor_82.fromValue(value_0),
       path: _descriptor_25.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_77.toValue(value_0.node).concat(_descriptor_25.toValue(value_0.path));
+    return _descriptor_82.toValue(value_0.node).concat(_descriptor_25.toValue(value_0.path));
   }
 }
 
-const _descriptor_78 = new _RuntimePrivateMapWitness_0();
+const _descriptor_83 = new _RuntimePrivateMapWitness_0();
 
 class _RuntimeSlotAncestryStep_0 {
   alignment() {
-    return _descriptor_76.alignment().concat(_descriptor_78.alignment().concat(_descriptor_26.alignment().concat(_descriptor_3.alignment().concat(_descriptor_25.alignment()))));
+    return _descriptor_81.alignment().concat(_descriptor_83.alignment().concat(_descriptor_26.alignment().concat(_descriptor_3.alignment().concat(_descriptor_25.alignment()))));
   }
   fromValue(value_0) {
     return {
-      record: _descriptor_76.fromValue(value_0),
-      opening: _descriptor_78.fromValue(value_0),
+      record: _descriptor_81.fromValue(value_0),
+      opening: _descriptor_83.fromValue(value_0),
       account: _descriptor_26.fromValue(value_0),
       accountStatus: _descriptor_3.fromValue(value_0),
       accountStatusPath: _descriptor_25.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_76.toValue(value_0.record).concat(_descriptor_78.toValue(value_0.opening).concat(_descriptor_26.toValue(value_0.account).concat(_descriptor_3.toValue(value_0.accountStatus).concat(_descriptor_25.toValue(value_0.accountStatusPath)))));
+    return _descriptor_81.toValue(value_0.record).concat(_descriptor_83.toValue(value_0.opening).concat(_descriptor_26.toValue(value_0.account).concat(_descriptor_3.toValue(value_0.accountStatus).concat(_descriptor_25.toValue(value_0.accountStatusPath)))));
   }
 }
 
-const _descriptor_79 = new _RuntimeSlotAncestryStep_0();
-
-class _RuntimeSelectedActionValue_0 {
-  alignment() {
-    return _descriptor_0.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment())))));
-  }
-  fromValue(value_0) {
-    return {
-      valueVersion: _descriptor_0.fromValue(value_0),
-      typeHash: _descriptor_1.fromValue(value_0),
-      contextHash: _descriptor_1.fromValue(value_0),
-      resourceHash: _descriptor_1.fromValue(value_0),
-      payloadCommitment: _descriptor_1.fromValue(value_0),
-      nonce: _descriptor_1.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_0.toValue(value_0.valueVersion).concat(_descriptor_1.toValue(value_0.typeHash).concat(_descriptor_1.toValue(value_0.contextHash).concat(_descriptor_1.toValue(value_0.resourceHash).concat(_descriptor_1.toValue(value_0.payloadCommitment).concat(_descriptor_1.toValue(value_0.nonce))))));
-  }
-}
-
-const _descriptor_80 = new _RuntimeSelectedActionValue_0();
+const _descriptor_84 = new _RuntimeSlotAncestryStep_0();
 
 class _RuntimeSlotCommand_0 {
   alignment() {
@@ -1564,7 +1596,7 @@ class _RuntimeSlotCommand_0 {
   }
 }
 
-const _descriptor_81 = new _RuntimeSlotCommand_0();
+const _descriptor_85 = new _RuntimeSlotCommand_0();
 
 class _RuntimeDecisionReceiptBody_0 {
   alignment() {
@@ -1597,7 +1629,7 @@ class _RuntimeDecisionReceiptBody_0 {
   }
 }
 
-const _descriptor_82 = new _RuntimeDecisionReceiptBody_0();
+const _descriptor_86 = new _RuntimeDecisionReceiptBody_0();
 
 class _RuntimeSlotSession_0 {
   alignment() {
@@ -1615,7 +1647,7 @@ class _RuntimeSlotSession_0 {
   }
 }
 
-const _descriptor_83 = new _RuntimeSlotSession_0();
+const _descriptor_87 = new _RuntimeSlotSession_0();
 
 class _RuntimeParticipantSlotRule_0 {
   alignment() {
@@ -1635,46 +1667,46 @@ class _RuntimeParticipantSlotRule_0 {
   }
 }
 
-const _descriptor_84 = new _RuntimeParticipantSlotRule_0();
+const _descriptor_88 = new _RuntimeParticipantSlotRule_0();
 
 class _RuntimeSlotPolicyWitness_0 {
   alignment() {
-    return _descriptor_71.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_84.alignment().concat(_descriptor_25.alignment()))));
+    return _descriptor_59.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_88.alignment().concat(_descriptor_25.alignment()))));
   }
   fromValue(value_0) {
     return {
-      policy: _descriptor_71.fromValue(value_0),
+      policy: _descriptor_59.fromValue(value_0),
       binding: _descriptor_37.fromValue(value_0),
       bindingPath: _descriptor_25.fromValue(value_0),
-      rule: _descriptor_84.fromValue(value_0),
+      rule: _descriptor_88.fromValue(value_0),
       rulePath: _descriptor_25.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_71.toValue(value_0.policy).concat(_descriptor_37.toValue(value_0.binding).concat(_descriptor_25.toValue(value_0.bindingPath).concat(_descriptor_84.toValue(value_0.rule).concat(_descriptor_25.toValue(value_0.rulePath)))));
+    return _descriptor_59.toValue(value_0.policy).concat(_descriptor_37.toValue(value_0.binding).concat(_descriptor_25.toValue(value_0.bindingPath).concat(_descriptor_88.toValue(value_0.rule).concat(_descriptor_25.toValue(value_0.rulePath)))));
   }
 }
 
-const _descriptor_85 = new _RuntimeSlotPolicyWitness_0();
+const _descriptor_89 = new _RuntimeSlotPolicyWitness_0();
 
 class _RuntimeAllocationPolicyWitness_0 {
   alignment() {
-    return _descriptor_71.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_32.alignment())));
+    return _descriptor_59.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_32.alignment())));
   }
   fromValue(value_0) {
     return {
-      policy: _descriptor_71.fromValue(value_0),
+      policy: _descriptor_59.fromValue(value_0),
       binding: _descriptor_37.fromValue(value_0),
       bindingPath: _descriptor_25.fromValue(value_0),
       initialState: _descriptor_32.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_71.toValue(value_0.policy).concat(_descriptor_37.toValue(value_0.binding).concat(_descriptor_25.toValue(value_0.bindingPath).concat(_descriptor_32.toValue(value_0.initialState))));
+    return _descriptor_59.toValue(value_0.policy).concat(_descriptor_37.toValue(value_0.binding).concat(_descriptor_25.toValue(value_0.bindingPath).concat(_descriptor_32.toValue(value_0.initialState))));
   }
 }
 
-const _descriptor_86 = new _RuntimeAllocationPolicyWitness_0();
+const _descriptor_90 = new _RuntimeAllocationPolicyWitness_0();
 
 class _RuntimePrivateMapEmptyState_0 {
   alignment() {
@@ -1691,7 +1723,7 @@ class _RuntimePrivateMapEmptyState_0 {
   }
 }
 
-const _descriptor_87 = new _RuntimePrivateMapEmptyState_0();
+const _descriptor_91 = new _RuntimePrivateMapEmptyState_0();
 
 class _RuntimePrivateMapOrder_0 {
   alignment() {
@@ -1708,7 +1740,7 @@ class _RuntimePrivateMapOrder_0 {
   }
 }
 
-const _descriptor_88 = new _RuntimePrivateMapOrder_0();
+const _descriptor_92 = new _RuntimePrivateMapOrder_0();
 
 class _RuntimeTerminalAuthority_0 {
   alignment() {
@@ -1725,48 +1757,48 @@ class _RuntimeTerminalAuthority_0 {
   }
 }
 
-const _descriptor_89 = new _RuntimeTerminalAuthority_0();
+const _descriptor_93 = new _RuntimeTerminalAuthority_0();
 
 class _RuntimeTerminalSelection_0 {
   alignment() {
-    return _descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_89.alignment()));
+    return _descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_93.alignment()));
   }
   fromValue(value_0) {
     return {
       wanted: _descriptor_3.fromValue(value_0),
       offset: _descriptor_3.fromValue(value_0),
-      authority: _descriptor_89.fromValue(value_0)
+      authority: _descriptor_93.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_3.toValue(value_0.wanted).concat(_descriptor_3.toValue(value_0.offset).concat(_descriptor_89.toValue(value_0.authority)));
+    return _descriptor_3.toValue(value_0.wanted).concat(_descriptor_3.toValue(value_0.offset).concat(_descriptor_93.toValue(value_0.authority)));
   }
 }
 
-const _descriptor_90 = new _RuntimeTerminalSelection_0();
+const _descriptor_94 = new _RuntimeTerminalSelection_0();
 
 class _RuntimeStatusLeafMatch_0 {
   alignment() {
-    return _descriptor_63.alignment().concat(_descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_16.alignment())));
+    return _descriptor_68.alignment().concat(_descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_16.alignment())));
   }
   fromValue(value_0) {
     return {
-      expected: _descriptor_63.fromValue(value_0),
+      expected: _descriptor_68.fromValue(value_0),
       leafCount: _descriptor_3.fromValue(value_0),
       offset: _descriptor_3.fromValue(value_0),
       found: _descriptor_16.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_63.toValue(value_0.expected).concat(_descriptor_3.toValue(value_0.leafCount).concat(_descriptor_3.toValue(value_0.offset).concat(_descriptor_16.toValue(value_0.found))));
+    return _descriptor_68.toValue(value_0.expected).concat(_descriptor_3.toValue(value_0.leafCount).concat(_descriptor_3.toValue(value_0.offset).concat(_descriptor_16.toValue(value_0.found))));
   }
 }
 
-const _descriptor_91 = new _RuntimeStatusLeafMatch_0();
+const _descriptor_95 = new _RuntimeStatusLeafMatch_0();
 
 class _RuntimeStatusProofState_0 {
   alignment() {
-    return _descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_5.alignment().concat(_descriptor_5.alignment().concat(_descriptor_65.alignment().concat(_descriptor_3.alignment().concat(_descriptor_16.alignment()))))));
+    return _descriptor_3.alignment().concat(_descriptor_3.alignment().concat(_descriptor_5.alignment().concat(_descriptor_5.alignment().concat(_descriptor_70.alignment().concat(_descriptor_3.alignment().concat(_descriptor_16.alignment()))))));
   }
   fromValue(value_0) {
     return {
@@ -1774,17 +1806,17 @@ class _RuntimeStatusProofState_0 {
       nextLeaf: _descriptor_3.fromValue(value_0),
       leafAccumulator: _descriptor_5.fromValue(value_0),
       stackCommitment: _descriptor_5.fromValue(value_0),
-      top: _descriptor_65.fromValue(value_0),
+      top: _descriptor_70.fromValue(value_0),
       stackSize: _descriptor_3.fromValue(value_0),
       finished: _descriptor_16.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_3.toValue(value_0.leafCount).concat(_descriptor_3.toValue(value_0.nextLeaf).concat(_descriptor_5.toValue(value_0.leafAccumulator).concat(_descriptor_5.toValue(value_0.stackCommitment).concat(_descriptor_65.toValue(value_0.top).concat(_descriptor_3.toValue(value_0.stackSize).concat(_descriptor_16.toValue(value_0.finished)))))));
+    return _descriptor_3.toValue(value_0.leafCount).concat(_descriptor_3.toValue(value_0.nextLeaf).concat(_descriptor_5.toValue(value_0.leafAccumulator).concat(_descriptor_5.toValue(value_0.stackCommitment).concat(_descriptor_70.toValue(value_0.top).concat(_descriptor_3.toValue(value_0.stackSize).concat(_descriptor_16.toValue(value_0.finished)))))));
   }
 }
 
-const _descriptor_92 = new _RuntimeStatusProofState_0();
+const _descriptor_96 = new _RuntimeStatusProofState_0();
 
 class _RuntimeStatusLeafAccumulator_0 {
   alignment() {
@@ -1802,82 +1834,47 @@ class _RuntimeStatusLeafAccumulator_0 {
   }
 }
 
-const _descriptor_93 = new _RuntimeStatusLeafAccumulator_0();
+const _descriptor_97 = new _RuntimeStatusLeafAccumulator_0();
 
-const _descriptor_94 = new __compactRuntime.CompactTypeUnsignedInteger(127n, 1);
+const _descriptor_98 = new __compactRuntime.CompactTypeUnsignedInteger(127n, 1);
 
-const _descriptor_95 = new __compactRuntime.CompactTypeUnsignedInteger(452312848583266388373324160190187140051835877600158453279131187530910662655n, 31);
+const _descriptor_99 = new __compactRuntime.CompactTypeUnsignedInteger(452312848583266388373324160190187140051835877600158453279131187530910662655n, 31);
 
 class _tuple_0 {
   alignment() {
-    return _descriptor_94.alignment().concat(_descriptor_95.alignment());
+    return _descriptor_98.alignment().concat(_descriptor_99.alignment());
   }
   fromValue(value_0) {
     return [
-      _descriptor_94.fromValue(value_0),
-      _descriptor_95.fromValue(value_0)
+      _descriptor_98.fromValue(value_0),
+      _descriptor_99.fromValue(value_0)
     ]
   }
   toValue(value_0) {
-    return _descriptor_94.toValue(value_0[0]).concat(_descriptor_95.toValue(value_0[1]));
+    return _descriptor_98.toValue(value_0[0]).concat(_descriptor_99.toValue(value_0[1]));
   }
 }
 
-const _descriptor_96 = new _tuple_0();
+const _descriptor_100 = new _tuple_0();
 
-const _descriptor_97 = new __compactRuntime.CompactTypeBytes(6);
+const _descriptor_101 = new __compactRuntime.CompactTypeBytes(6);
 
 class _LeafPreimage_0 {
   alignment() {
-    return _descriptor_97.alignment().concat(_descriptor_1.alignment());
+    return _descriptor_101.alignment().concat(_descriptor_1.alignment());
   }
   fromValue(value_0) {
     return {
-      domain_sep: _descriptor_97.fromValue(value_0),
+      domain_sep: _descriptor_101.fromValue(value_0),
       data: _descriptor_1.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_97.toValue(value_0.domain_sep).concat(_descriptor_1.toValue(value_0.data));
+    return _descriptor_101.toValue(value_0.domain_sep).concat(_descriptor_1.toValue(value_0.data));
   }
 }
 
-const _descriptor_98 = new _LeafPreimage_0();
-
-class _BindingAccumulatorStep_0 {
-  alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_11.alignment()));
-  }
-  fromValue(value_0) {
-    return {
-      previous: _descriptor_1.fromValue(value_0),
-      bindingCommitment: _descriptor_1.fromValue(value_0),
-      actionIndex: _descriptor_11.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_1.toValue(value_0.previous).concat(_descriptor_1.toValue(value_0.bindingCommitment).concat(_descriptor_11.toValue(value_0.actionIndex)));
-  }
-}
-
-const _descriptor_99 = new _BindingAccumulatorStep_0();
-
-class _AuthorityRootUpdateApprovalKey_0 {
-  alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_1.alignment());
-  }
-  fromValue(value_0) {
-    return {
-      updateCommitment: _descriptor_1.fromValue(value_0),
-      approverAuthorityCommitment: _descriptor_1.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_1.toValue(value_0.updateCommitment).concat(_descriptor_1.toValue(value_0.approverAuthorityCommitment));
-  }
-}
-
-const _descriptor_100 = new _AuthorityRootUpdateApprovalKey_0();
+const _descriptor_102 = new _LeafPreimage_0();
 
 class _AuthorityRootUpdateApprovalStep_0 {
   alignment() {
@@ -1895,24 +1892,25 @@ class _AuthorityRootUpdateApprovalStep_0 {
   }
 }
 
-const _descriptor_101 = new _AuthorityRootUpdateApprovalStep_0();
+const _descriptor_103 = new _AuthorityRootUpdateApprovalStep_0();
 
-class _ProofModuleReviewKey_0 {
+class _BindingAccumulatorStep_0 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_1.alignment());
+    return _descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_11.alignment()));
   }
   fromValue(value_0) {
     return {
-      moduleKey: _descriptor_1.fromValue(value_0),
-      reviewerAuthorityCommitment: _descriptor_1.fromValue(value_0)
+      previous: _descriptor_1.fromValue(value_0),
+      bindingCommitment: _descriptor_1.fromValue(value_0),
+      actionIndex: _descriptor_11.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.moduleKey).concat(_descriptor_1.toValue(value_0.reviewerAuthorityCommitment));
+    return _descriptor_1.toValue(value_0.previous).concat(_descriptor_1.toValue(value_0.bindingCommitment).concat(_descriptor_11.toValue(value_0.actionIndex)));
   }
 }
 
-const _descriptor_102 = new _ProofModuleReviewKey_0();
+const _descriptor_104 = new _BindingAccumulatorStep_0();
 
 class _ProofModuleReviewAccumulatorStep_0 {
   alignment() {
@@ -1930,7 +1928,24 @@ class _ProofModuleReviewAccumulatorStep_0 {
   }
 }
 
-const _descriptor_103 = new _ProofModuleReviewAccumulatorStep_0();
+const _descriptor_105 = new _ProofModuleReviewAccumulatorStep_0();
+
+class _AuthorityRootUpdateApprovalKey_0 {
+  alignment() {
+    return _descriptor_1.alignment().concat(_descriptor_1.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      updateCommitment: _descriptor_1.fromValue(value_0),
+      approverAuthorityCommitment: _descriptor_1.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_1.toValue(value_0.updateCommitment).concat(_descriptor_1.toValue(value_0.approverAuthorityCommitment));
+  }
+}
+
+const _descriptor_106 = new _AuthorityRootUpdateApprovalKey_0();
 
 class _ProofModuleApprovalAccumulatorStep_0 {
   alignment() {
@@ -1948,7 +1963,24 @@ class _ProofModuleApprovalAccumulatorStep_0 {
   }
 }
 
-const _descriptor_104 = new _ProofModuleApprovalAccumulatorStep_0();
+const _descriptor_107 = new _ProofModuleApprovalAccumulatorStep_0();
+
+class _ProofModuleReviewKey_0 {
+  alignment() {
+    return _descriptor_1.alignment().concat(_descriptor_1.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      moduleKey: _descriptor_1.fromValue(value_0),
+      reviewerAuthorityCommitment: _descriptor_1.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_1.toValue(value_0.moduleKey).concat(_descriptor_1.toValue(value_0.reviewerAuthorityCommitment));
+  }
+}
+
+const _descriptor_108 = new _ProofModuleReviewKey_0();
 
 class _ProofModuleApprovalKey_0 {
   alignment() {
@@ -1965,24 +1997,26 @@ class _ProofModuleApprovalKey_0 {
   }
 }
 
-const _descriptor_105 = new _ProofModuleApprovalKey_0();
+const _descriptor_109 = new _ProofModuleApprovalKey_0();
 
 class _LeafPreimage_1 {
   alignment() {
-    return _descriptor_97.alignment().concat(_descriptor_9.alignment());
+    return _descriptor_101.alignment().concat(_descriptor_9.alignment());
   }
   fromValue(value_0) {
     return {
-      domain_sep: _descriptor_97.fromValue(value_0),
+      domain_sep: _descriptor_101.fromValue(value_0),
       data: _descriptor_9.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_97.toValue(value_0.domain_sep).concat(_descriptor_9.toValue(value_0.data));
+    return _descriptor_101.toValue(value_0.domain_sep).concat(_descriptor_9.toValue(value_0.data));
   }
 }
 
-const _descriptor_106 = new _LeafPreimage_1();
+const _descriptor_110 = new _LeafPreimage_1();
+
+const _descriptor_111 = new __compactRuntime.CompactTypeBytes(131);
 
 class _RuntimeActionImplementationReference_0 {
   alignment() {
@@ -2003,43 +2037,64 @@ class _RuntimeActionImplementationReference_0 {
   }
 }
 
-const _descriptor_107 = new _RuntimeActionImplementationReference_0();
+const _descriptor_112 = new _RuntimeActionImplementationReference_0();
+
+const _descriptor_113 = new __compactRuntime.CompactTypeBytes(127);
+
+const _descriptor_114 = new __compactRuntime.CompactTypeBytes(128);
 
 class _RuntimeActionValueStep_0 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_11.alignment().concat(_descriptor_80.alignment())));
+    return _descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_11.alignment().concat(_descriptor_61.alignment())));
   }
   fromValue(value_0) {
     return {
       domain: _descriptor_1.fromValue(value_0),
       previous: _descriptor_1.fromValue(value_0),
       index: _descriptor_11.fromValue(value_0),
-      selected: _descriptor_80.fromValue(value_0)
+      selected: _descriptor_61.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_1.toValue(value_0.previous).concat(_descriptor_11.toValue(value_0.index).concat(_descriptor_80.toValue(value_0.selected))));
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_1.toValue(value_0.previous).concat(_descriptor_11.toValue(value_0.index).concat(_descriptor_61.toValue(value_0.selected))));
   }
 }
 
-const _descriptor_108 = new _RuntimeActionValueStep_0();
+const _descriptor_115 = new _RuntimeActionValueStep_0();
 
-class _RuntimeActionCommandHashInput_0 {
+class _RuntimeEvidenceBridgeBindingInput_0 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_59.alignment());
+    return _descriptor_1.alignment().concat(_descriptor_60.alignment());
   }
   fromValue(value_0) {
     return {
       domain: _descriptor_1.fromValue(value_0),
-      command: _descriptor_59.fromValue(value_0)
+      opening: _descriptor_60.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_59.toValue(value_0.command));
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_60.toValue(value_0.opening));
   }
 }
 
-const _descriptor_109 = new _RuntimeActionCommandHashInput_0();
+const _descriptor_116 = new _RuntimeEvidenceBridgeBindingInput_0();
+
+class _RuntimeActionCommandHashInput_0 {
+  alignment() {
+    return _descriptor_1.alignment().concat(_descriptor_58.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      domain: _descriptor_1.fromValue(value_0),
+      command: _descriptor_58.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_58.toValue(value_0.command));
+  }
+}
+
+const _descriptor_117 = new _RuntimeActionCommandHashInput_0();
 
 class _RuntimeActionNullifierInput_0 {
   alignment() {
@@ -2062,7 +2117,7 @@ class _RuntimeActionNullifierInput_0 {
   }
 }
 
-const _descriptor_110 = new _RuntimeActionNullifierInput_0();
+const _descriptor_118 = new _RuntimeActionNullifierInput_0();
 
 class _RuntimeSlotBindingKey_0 {
   alignment() {
@@ -2081,24 +2136,7 @@ class _RuntimeSlotBindingKey_0 {
   }
 }
 
-const _descriptor_111 = new _RuntimeSlotBindingKey_0();
-
-class _RuntimeAllocationHashInput_0 {
-  alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_31.alignment());
-  }
-  fromValue(value_0) {
-    return {
-      domain: _descriptor_1.fromValue(value_0),
-      allocation: _descriptor_31.fromValue(value_0)
-    }
-  }
-  toValue(value_0) {
-    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_31.toValue(value_0.allocation));
-  }
-}
-
-const _descriptor_112 = new _RuntimeAllocationHashInput_0();
+const _descriptor_119 = new _RuntimeSlotBindingKey_0();
 
 class _RuntimeAllocationReplayInput_0 {
   alignment() {
@@ -2118,43 +2156,41 @@ class _RuntimeAllocationReplayInput_0 {
   }
 }
 
-const _descriptor_113 = new _RuntimeAllocationReplayInput_0();
+const _descriptor_120 = new _RuntimeAllocationReplayInput_0();
 
-class _RuntimeParticipantSlotRuleHashInput_0 {
+class _RuntimeAllocationHashInput_0 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_84.alignment());
+    return _descriptor_1.alignment().concat(_descriptor_31.alignment());
   }
   fromValue(value_0) {
     return {
       domain: _descriptor_1.fromValue(value_0),
-      rule: _descriptor_84.fromValue(value_0)
+      allocation: _descriptor_31.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_84.toValue(value_0.rule));
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_31.toValue(value_0.allocation));
   }
 }
 
-const _descriptor_114 = new _RuntimeParticipantSlotRuleHashInput_0();
+const _descriptor_121 = new _RuntimeAllocationHashInput_0();
 
 class _RuntimeTemplatePolicyHashInput_0 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_71.alignment());
+    return _descriptor_1.alignment().concat(_descriptor_59.alignment());
   }
   fromValue(value_0) {
     return {
       domain: _descriptor_1.fromValue(value_0),
-      policy: _descriptor_71.fromValue(value_0)
+      policy: _descriptor_59.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_71.toValue(value_0.policy));
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_59.toValue(value_0.policy));
   }
 }
 
-const _descriptor_115 = new _RuntimeTemplatePolicyHashInput_0();
-
-const _descriptor_116 = new __compactRuntime.CompactTypeVector(2, _descriptor_5);
+const _descriptor_122 = new _RuntimeTemplatePolicyHashInput_0();
 
 class _SchnorrHashInput_0 {
   alignment() {
@@ -2174,34 +2210,53 @@ class _SchnorrHashInput_0 {
   }
 }
 
-const _descriptor_117 = new _SchnorrHashInput_0();
+const _descriptor_123 = new _SchnorrHashInput_0();
 
-const _descriptor_118 = new __compactRuntime.CompactTypeBytes(23);
+class _RuntimeParticipantSlotRuleHashInput_0 {
+  alignment() {
+    return _descriptor_1.alignment().concat(_descriptor_88.alignment());
+  }
+  fromValue(value_0) {
+    return {
+      domain: _descriptor_1.fromValue(value_0),
+      rule: _descriptor_88.fromValue(value_0)
+    }
+  }
+  toValue(value_0) {
+    return _descriptor_1.toValue(value_0.domain).concat(_descriptor_88.toValue(value_0.rule));
+  }
+}
 
-const _descriptor_119 = new __compactRuntime.CompactTypeBytes(22);
+const _descriptor_124 = new _RuntimeParticipantSlotRuleHashInput_0();
 
-const _descriptor_120 = new __compactRuntime.CompactTypeVector(4, _descriptor_5);
+const _descriptor_125 = new __compactRuntime.CompactTypeVector(2, _descriptor_5);
 
-const _descriptor_121 = new __compactRuntime.CompactTypeVector(5, _descriptor_5);
+const _descriptor_126 = new __compactRuntime.CompactTypeVector(4, _descriptor_5);
 
-const _descriptor_122 = new __compactRuntime.CompactTypeVector(0, _descriptor_23);
+const _descriptor_127 = new __compactRuntime.CompactTypeBytes(23);
+
+const _descriptor_128 = new __compactRuntime.CompactTypeVector(5, _descriptor_5);
+
+const _descriptor_129 = new __compactRuntime.CompactTypeBytes(22);
+
+const _descriptor_130 = new __compactRuntime.CompactTypeVector(0, _descriptor_23);
 
 class _MerkleTreePath_3 {
   alignment() {
-    return _descriptor_1.alignment().concat(_descriptor_122.alignment());
+    return _descriptor_1.alignment().concat(_descriptor_130.alignment());
   }
   fromValue(value_0) {
     return {
       leaf: _descriptor_1.fromValue(value_0),
-      path: _descriptor_122.fromValue(value_0)
+      path: _descriptor_130.fromValue(value_0)
     }
   }
   toValue(value_0) {
-    return _descriptor_1.toValue(value_0.leaf).concat(_descriptor_122.toValue(value_0.path));
+    return _descriptor_1.toValue(value_0.leaf).concat(_descriptor_130.toValue(value_0.path));
   }
 }
 
-const _descriptor_123 = new _MerkleTreePath_3();
+const _descriptor_131 = new _MerkleTreePath_3();
 
 class _Either_0 {
   alignment() {
@@ -2219,9 +2274,9 @@ class _Either_0 {
   }
 }
 
-const _descriptor_124 = new _Either_0();
+const _descriptor_132 = new _Either_0();
 
-const _descriptor_125 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
+const _descriptor_133 = new __compactRuntime.CompactTypeUnsignedInteger(340282366920938463463374607431768211455n, 16);
 
 export class Contract {
   witnesses;
@@ -2340,8 +2395,8 @@ export class Contract {
         const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
         const partialProofData = {
           input: {
-            value: _descriptor_69.toValue(ancestry_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_21.toValue(sessionSignature_0).concat(_descriptor_21.toValue(intentSignature_0).concat(_descriptor_70.toValue(capabilityPaths_0).concat(_descriptor_70.toValue(sessionPaths_0).concat(_descriptor_9.toValue(expectedRoot_0).concat(_descriptor_2.toValue(expectedSequence_0).concat(_descriptor_2.toValue(now_0))))))))),
-            alignment: _descriptor_69.alignment().concat(_descriptor_53.alignment().concat(_descriptor_21.alignment().concat(_descriptor_21.alignment().concat(_descriptor_70.alignment().concat(_descriptor_70.alignment().concat(_descriptor_9.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment()))))))))
+            value: _descriptor_74.toValue(ancestry_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_21.toValue(sessionSignature_0).concat(_descriptor_21.toValue(intentSignature_0).concat(_descriptor_75.toValue(capabilityPaths_0).concat(_descriptor_75.toValue(sessionPaths_0).concat(_descriptor_9.toValue(expectedRoot_0).concat(_descriptor_2.toValue(expectedSequence_0).concat(_descriptor_2.toValue(now_0))))))))),
+            alignment: _descriptor_74.alignment().concat(_descriptor_53.alignment().concat(_descriptor_21.alignment().concat(_descriptor_21.alignment().concat(_descriptor_75.alignment().concat(_descriptor_75.alignment().concat(_descriptor_9.alignment().concat(_descriptor_2.alignment().concat(_descriptor_2.alignment()))))))))
           },
           output: undefined,
           publicTranscript: [],
@@ -2358,7 +2413,7 @@ export class Contract {
                                                                   expectedRoot_0,
                                                                   expectedSequence_0,
                                                                   now_0);
-        partialProofData.output = { value: _descriptor_122.toValue(result_0), alignment: _descriptor_122.alignment() };
+        partialProofData.output = { value: _descriptor_130.toValue(result_0), alignment: _descriptor_130.alignment() };
         return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
       },
       runtimeParticipantSlotRuleCommitment(context, ...args_1) {
@@ -2482,8 +2537,8 @@ export class Contract {
         const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
         const partialProofData = {
           input: {
-            value: _descriptor_31.toValue(allocation_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_22.toValue(allocator_0).concat(_descriptor_25.toValue(allocatorPath_0).concat(_descriptor_86.toValue(policyWitness_0))))),
-            alignment: _descriptor_31.alignment().concat(_descriptor_21.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_86.alignment()))))
+            value: _descriptor_31.toValue(allocation_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_22.toValue(allocator_0).concat(_descriptor_25.toValue(allocatorPath_0).concat(_descriptor_90.toValue(policyWitness_0))))),
+            alignment: _descriptor_31.alignment().concat(_descriptor_21.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_90.alignment()))))
           },
           output: undefined,
           publicTranscript: [],
@@ -2709,8 +2764,8 @@ export class Contract {
         const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
         const partialProofData = {
           input: {
-            value: _descriptor_3.toValue(operation_0).concat(_descriptor_81.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_1.toValue(nextStateNonce_0).concat(_descriptor_85.toValue(policyOpening_0).concat(_descriptor_22.toValue(namespaceAuthority_0).concat(_descriptor_25.toValue(namespaceAuthorityPath_0).concat(_descriptor_26.toValue(accountAuthority_0).concat(_descriptor_25.toValue(accountAuthorityStatusPath_0).concat(_descriptor_26.toValue(subjectAccount_0).concat(_descriptor_25.toValue(subjectAccountStatusPath_0).concat(_descriptor_72.toValue(progress_0).concat(_descriptor_79.toValue(step_0).concat(_descriptor_76.toValue(targetRecord_0).concat(_descriptor_78.toValue(assignmentOpening_0).concat(_descriptor_25.toValue(assignmentAppendPath_0).concat(_descriptor_78.toValue(bindingOpening_0).concat(_descriptor_25.toValue(bindingAppendPath_0).concat(_descriptor_78.toValue(previousBindingOpening_0))))))))))))))))))))),
-            alignment: _descriptor_3.alignment().concat(_descriptor_81.alignment().concat(_descriptor_21.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_1.alignment().concat(_descriptor_85.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_26.alignment().concat(_descriptor_25.alignment().concat(_descriptor_26.alignment().concat(_descriptor_25.alignment().concat(_descriptor_72.alignment().concat(_descriptor_79.alignment().concat(_descriptor_76.alignment().concat(_descriptor_78.alignment().concat(_descriptor_25.alignment().concat(_descriptor_78.alignment().concat(_descriptor_25.alignment().concat(_descriptor_78.alignment()))))))))))))))))))))
+            value: _descriptor_3.toValue(operation_0).concat(_descriptor_85.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_1.toValue(nextStateNonce_0).concat(_descriptor_89.toValue(policyOpening_0).concat(_descriptor_22.toValue(namespaceAuthority_0).concat(_descriptor_25.toValue(namespaceAuthorityPath_0).concat(_descriptor_26.toValue(accountAuthority_0).concat(_descriptor_25.toValue(accountAuthorityStatusPath_0).concat(_descriptor_26.toValue(subjectAccount_0).concat(_descriptor_25.toValue(subjectAccountStatusPath_0).concat(_descriptor_76.toValue(progress_0).concat(_descriptor_84.toValue(step_0).concat(_descriptor_81.toValue(targetRecord_0).concat(_descriptor_83.toValue(assignmentOpening_0).concat(_descriptor_25.toValue(assignmentAppendPath_0).concat(_descriptor_83.toValue(bindingOpening_0).concat(_descriptor_25.toValue(bindingAppendPath_0).concat(_descriptor_83.toValue(previousBindingOpening_0))))))))))))))))))))),
+            alignment: _descriptor_3.alignment().concat(_descriptor_85.alignment().concat(_descriptor_21.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_1.alignment().concat(_descriptor_89.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_26.alignment().concat(_descriptor_25.alignment().concat(_descriptor_26.alignment().concat(_descriptor_25.alignment().concat(_descriptor_76.alignment().concat(_descriptor_84.alignment().concat(_descriptor_81.alignment().concat(_descriptor_83.alignment().concat(_descriptor_25.alignment().concat(_descriptor_83.alignment().concat(_descriptor_25.alignment().concat(_descriptor_83.alignment()))))))))))))))))))))
           },
           output: undefined,
           publicTranscript: [],
@@ -2815,113 +2870,113 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 1 (as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(operation_0) === 'bigint' && operation_0 >= 0n && operation_0 <= 255n)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'Uint<0..256>',
                                      operation_0)
         }
         if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.intentCommitment.buffer instanceof ArrayBuffer && command_0.intentCommitment.BYTES_PER_ELEMENT === 1 && command_0.intentCommitment.length === 32 && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.stateCommitment.buffer instanceof ArrayBuffer && command_0.stateCommitment.BYTES_PER_ELEMENT === 1 && command_0.stateCommitment.length === 32 && typeof(command_0.stateSequence) === 'bigint' && command_0.stateSequence >= 0n && command_0.stateSequence <= 18446744073709551615n && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.statusRootSequence) === 'bigint' && command_0.statusRootSequence >= 0n && command_0.statusRootSequence <= 18446744073709551615n && command_0.policyCommitment.buffer instanceof ArrayBuffer && command_0.policyCommitment.BYTES_PER_ELEMENT === 1 && command_0.policyCommitment.length === 32 && command_0.bindingCommitment.buffer instanceof ArrayBuffer && command_0.bindingCommitment.BYTES_PER_ELEMENT === 1 && command_0.bindingCommitment.length === 32 && command_0.slotAssignmentIdHash.buffer instanceof ArrayBuffer && command_0.slotAssignmentIdHash.BYTES_PER_ELEMENT === 1 && command_0.slotAssignmentIdHash.length === 32 && command_0.selectedInputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedInputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedInputsCommitment.length === 32 && command_0.selectedOutputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedOutputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedOutputsCommitment.length === 32 && command_0.nextStateCommitment.buffer instanceof ArrayBuffer && command_0.nextStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextStateCommitment.length === 32 && typeof(command_0.transitioning) === 'boolean' && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.validBefore) === 'bigint' && command_0.validBefore >= 0n && command_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeActionCommand<commandVersion: Uint<0..65536>, intentCommitment: Bytes<32>, allocationCommitment: Bytes<32>, stateCommitment: Bytes<32>, stateSequence: Uint<0..18446744073709551616>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, statusRootSequence: Uint<0..18446744073709551616>, policyCommitment: Bytes<32>, bindingCommitment: Bytes<32>, slotAssignmentIdHash: Bytes<32>, selectedInputsCommitment: Bytes<32>, selectedOutputsCommitment: Bytes<32>, nextStateCommitment: Bytes<32>, transitioning: Boolean, effectiveAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      command_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                      intent_0)
         }
         if (!(typeof(session_0) === 'object' && typeof(session_0.credentialVersion) === 'bigint' && session_0.credentialVersion >= 0n && session_0.credentialVersion <= 65535n && typeof(session_0.target) === 'object' && session_0.target.namespaceHash.buffer instanceof ArrayBuffer && session_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && session_0.target.namespaceHash.length === 32 && session_0.target.templateIdHash.buffer instanceof ArrayBuffer && session_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && session_0.target.templateIdHash.length === 32 && typeof(session_0.target.semanticVersion) === 'object' && typeof(session_0.target.semanticVersion.major) === 'bigint' && session_0.target.semanticVersion.major >= 0n && session_0.target.semanticVersion.major <= 18446744073709551615n && typeof(session_0.target.semanticVersion.minor) === 'bigint' && session_0.target.semanticVersion.minor >= 0n && session_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(session_0.target.semanticVersion.patch) === 'bigint' && session_0.target.semanticVersion.patch >= 0n && session_0.target.semanticVersion.patch <= 18446744073709551615n && session_0.target.templateContentHash.buffer instanceof ArrayBuffer && session_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && session_0.target.templateContentHash.length === 32 && session_0.instanceCommitment.buffer instanceof ArrayBuffer && session_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && session_0.instanceCommitment.length === 32 && session_0.contextHash.buffer instanceof ArrayBuffer && session_0.contextHash.BYTES_PER_ELEMENT === 1 && session_0.contextHash.length === 32 && session_0.sessionIdHash.buffer instanceof ArrayBuffer && session_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && session_0.sessionIdHash.length === 32 && session_0.m5SessionCommitment.buffer instanceof ArrayBuffer && session_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && session_0.m5SessionCommitment.length === 32 && session_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && session_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && session_0.subjectAccountCredentialCommitment.length === 32 && session_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && session_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && session_0.capabilityCredentialCommitment.length === 32 && typeof(session_0.scopeRoots) === 'object' && typeof(session_0.scopeRoots.actionsRoot) === 'object' && typeof(session_0.scopeRoots.actionsRoot.field) === 'bigint' && session_0.scopeRoots.actionsRoot.field >= 0 && session_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(session_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && session_0.scopeRoots.resourceSelectorsRoot.field >= 0 && session_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.resourcesRoot) === 'object' && typeof(session_0.scopeRoots.resourcesRoot.field) === 'bigint' && session_0.scopeRoots.resourcesRoot.field >= 0 && session_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.purposesRoot) === 'object' && typeof(session_0.scopeRoots.purposesRoot.field) === 'bigint' && session_0.scopeRoots.purposesRoot.field >= 0 && session_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(session_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && session_0.scopeRoots.recipientKindsRoot.field >= 0 && session_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.recipientsRoot) === 'object' && typeof(session_0.scopeRoots.recipientsRoot.field) === 'bigint' && session_0.scopeRoots.recipientsRoot.field >= 0 && session_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(session_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && session_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && session_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeCounts) === 'object' && typeof(session_0.scopeCounts.actionsCount) === 'bigint' && session_0.scopeCounts.actionsCount >= 0n && session_0.scopeCounts.actionsCount <= 4294967295n && typeof(session_0.scopeCounts.resourceSelectorsCount) === 'bigint' && session_0.scopeCounts.resourceSelectorsCount >= 0n && session_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(session_0.scopeCounts.resourcesCount) === 'bigint' && session_0.scopeCounts.resourcesCount >= 0n && session_0.scopeCounts.resourcesCount <= 4294967295n && typeof(session_0.scopeCounts.purposesCount) === 'bigint' && session_0.scopeCounts.purposesCount >= 0n && session_0.scopeCounts.purposesCount <= 4294967295n && typeof(session_0.scopeCounts.recipientKindsCount) === 'bigint' && session_0.scopeCounts.recipientKindsCount >= 0n && session_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(session_0.scopeCounts.recipientsCount) === 'bigint' && session_0.scopeCounts.recipientsCount >= 0n && session_0.scopeCounts.recipientsCount <= 4294967295n && typeof(session_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && session_0.scopeCounts.disclosurePolicyIdsCount >= 0n && session_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(session_0.notBefore) === 'bigint' && session_0.notBefore >= 0n && session_0.notBefore <= 18446744073709551615n && typeof(session_0.expiresAt) === 'bigint' && session_0.expiresAt >= 0n && session_0.expiresAt <= 18446744073709551615n && typeof(session_0.statusIndex) === 'bigint' && session_0.statusIndex >= 0n && session_0.statusIndex <= 18446744073709551615n && typeof(session_0.issuedAt) === 'bigint' && session_0.issuedAt >= 0n && session_0.issuedAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 5 (argument 6 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                      session_0)
         }
         if (!(typeof(allocation_0) === 'object' && typeof(allocation_0.allocationVersion) === 'bigint' && allocation_0.allocationVersion >= 0n && allocation_0.allocationVersion <= 65535n && typeof(allocation_0.target) === 'object' && allocation_0.target.namespaceHash.buffer instanceof ArrayBuffer && allocation_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.namespaceHash.length === 32 && allocation_0.target.templateIdHash.buffer instanceof ArrayBuffer && allocation_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateIdHash.length === 32 && typeof(allocation_0.target.semanticVersion) === 'object' && typeof(allocation_0.target.semanticVersion.major) === 'bigint' && allocation_0.target.semanticVersion.major >= 0n && allocation_0.target.semanticVersion.major <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.minor) === 'bigint' && allocation_0.target.semanticVersion.minor >= 0n && allocation_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.patch) === 'bigint' && allocation_0.target.semanticVersion.patch >= 0n && allocation_0.target.semanticVersion.patch <= 18446744073709551615n && allocation_0.target.templateContentHash.buffer instanceof ArrayBuffer && allocation_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateContentHash.length === 32 && allocation_0.instanceCommitment.buffer instanceof ArrayBuffer && allocation_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.instanceCommitment.length === 32 && allocation_0.instanceIdHash.buffer instanceof ArrayBuffer && allocation_0.instanceIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.instanceIdHash.length === 32 && allocation_0.allocationRequestIdHash.buffer instanceof ArrayBuffer && allocation_0.allocationRequestIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.allocationRequestIdHash.length === 32 && allocation_0.m4AuthorizationCommitment.buffer instanceof ArrayBuffer && allocation_0.m4AuthorizationCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.m4AuthorizationCommitment.length === 32 && allocation_0.allocatorAuthorityCommitment.buffer instanceof ArrayBuffer && allocation_0.allocatorAuthorityCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.allocatorAuthorityCommitment.length === 32 && typeof(allocation_0.capabilityIssuersRoot) === 'object' && typeof(allocation_0.capabilityIssuersRoot.field) === 'bigint' && allocation_0.capabilityIssuersRoot.field >= 0 && allocation_0.capabilityIssuersRoot.field <= __compactRuntime.MAX_FIELD && typeof(allocation_0.capabilityIssuerCount) === 'bigint' && allocation_0.capabilityIssuerCount >= 0n && allocation_0.capabilityIssuerCount <= 4294967295n && allocation_0.initialStateCommitment.buffer instanceof ArrayBuffer && allocation_0.initialStateCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.initialStateCommitment.length === 32 && allocation_0.governancePolicyHash.buffer instanceof ArrayBuffer && allocation_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && allocation_0.governancePolicyHash.length === 32 && typeof(allocation_0.authorityRootVersion) === 'bigint' && allocation_0.authorityRootVersion >= 0n && allocation_0.authorityRootVersion <= 18446744073709551615n && typeof(allocation_0.authorityRootSequence) === 'bigint' && allocation_0.authorityRootSequence >= 0n && allocation_0.authorityRootSequence <= 18446744073709551615n && allocation_0.targetNetworkHash.buffer instanceof ArrayBuffer && allocation_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && allocation_0.targetNetworkHash.length === 32 && allocation_0.targetContractIdentity.buffer instanceof ArrayBuffer && allocation_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && allocation_0.targetContractIdentity.length === 32 && typeof(allocation_0.authorizedAt) === 'bigint' && allocation_0.authorizedAt >= 0n && allocation_0.authorizedAt <= 18446744073709551615n && typeof(allocation_0.createdAt) === 'bigint' && allocation_0.createdAt >= 0n && allocation_0.createdAt <= 18446744073709551615n && typeof(allocation_0.expiresAt) === 'bigint' && allocation_0.expiresAt >= 0n && allocation_0.expiresAt <= 18446744073709551615n && typeof(allocation_0.allocationValidBefore) === 'bigint' && allocation_0.allocationValidBefore >= 0n && allocation_0.allocationValidBefore <= 18446744073709551615n && allocation_0.allocationNonce.buffer instanceof ArrayBuffer && allocation_0.allocationNonce.BYTES_PER_ELEMENT === 1 && allocation_0.allocationNonce.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 6 (argument 7 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeInstanceAllocation<allocationVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, instanceIdHash: Bytes<32>, allocationRequestIdHash: Bytes<32>, m4AuthorizationCommitment: Bytes<32>, allocatorAuthorityCommitment: Bytes<32>, capabilityIssuersRoot: struct MerkleTreeDigest<field: Field>, capabilityIssuerCount: Uint<0..4294967296>, initialStateCommitment: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, authorizedAt: Uint<0..18446744073709551616>, createdAt: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, allocationValidBefore: Uint<0..18446744073709551616>, allocationNonce: Bytes<32>>',
                                      allocation_0)
         }
         if (!(typeof(state_0) === 'object' && typeof(state_0.stateVersion) === 'bigint' && state_0.stateVersion >= 0n && state_0.stateVersion <= 65535n && state_0.instanceCommitment.buffer instanceof ArrayBuffer && state_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && state_0.instanceCommitment.length === 32 && state_0.stateIdHash.buffer instanceof ArrayBuffer && state_0.stateIdHash.BYTES_PER_ELEMENT === 1 && state_0.stateIdHash.length === 32 && typeof(state_0.lastMutationAt) === 'bigint' && state_0.lastMutationAt >= 0n && state_0.lastMutationAt <= 18446744073709551615n && typeof(state_0.slotAssignmentsRoot) === 'object' && typeof(state_0.slotAssignmentsRoot.field) === 'bigint' && state_0.slotAssignmentsRoot.field >= 0 && state_0.slotAssignmentsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotAssignmentCount) === 'bigint' && state_0.slotAssignmentCount >= 0n && state_0.slotAssignmentCount <= 4294967295n && typeof(state_0.slotBindingsRoot) === 'object' && typeof(state_0.slotBindingsRoot.field) === 'bigint' && state_0.slotBindingsRoot.field >= 0 && state_0.slotBindingsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotBindingCount) === 'bigint' && state_0.slotBindingCount >= 0n && state_0.slotBindingCount <= 4294967295n && state_0.nonce.buffer instanceof ArrayBuffer && state_0.nonce.BYTES_PER_ELEMENT === 1 && state_0.nonce.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 7 (argument 8 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeStateOpening<stateVersion: Uint<0..65536>, instanceCommitment: Bytes<32>, stateIdHash: Bytes<32>, lastMutationAt: Uint<0..18446744073709551616>, slotAssignmentsRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentCount: Uint<0..4294967296>, slotBindingsRoot: struct MerkleTreeDigest<field: Field>, slotBindingCount: Uint<0..4294967296>, nonce: Bytes<32>>',
                                      state_0)
         }
         if (!(typeof(policy_0) === 'object' && typeof(policy_0.policyVersion) === 'bigint' && policy_0.policyVersion >= 0n && policy_0.policyVersion <= 65535n && typeof(policy_0.target) === 'object' && policy_0.target.namespaceHash.buffer instanceof ArrayBuffer && policy_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && policy_0.target.namespaceHash.length === 32 && policy_0.target.templateIdHash.buffer instanceof ArrayBuffer && policy_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateIdHash.length === 32 && typeof(policy_0.target.semanticVersion) === 'object' && typeof(policy_0.target.semanticVersion.major) === 'bigint' && policy_0.target.semanticVersion.major >= 0n && policy_0.target.semanticVersion.major <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.minor) === 'bigint' && policy_0.target.semanticVersion.minor >= 0n && policy_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.patch) === 'bigint' && policy_0.target.semanticVersion.patch >= 0n && policy_0.target.semanticVersion.patch <= 18446744073709551615n && policy_0.target.templateContentHash.buffer instanceof ArrayBuffer && policy_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateContentHash.length === 32 && typeof(policy_0.actionIndex) === 'bigint' && policy_0.actionIndex >= 0n && policy_0.actionIndex <= 4294967295n && policy_0.bindingActionIdHash.buffer instanceof ArrayBuffer && policy_0.bindingActionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.bindingActionIdHash.length === 32 && policy_0.actionIdHash.buffer instanceof ArrayBuffer && policy_0.actionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actionIdHash.length === 32 && policy_0.proofProfileIdHash.buffer instanceof ArrayBuffer && policy_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && policy_0.proofProfileIdHash.length === 32 && policy_0.proofFamilyHash.buffer instanceof ArrayBuffer && policy_0.proofFamilyHash.BYTES_PER_ELEMENT === 1 && policy_0.proofFamilyHash.length === 32 && policy_0.contextHash.buffer instanceof ArrayBuffer && policy_0.contextHash.BYTES_PER_ELEMENT === 1 && policy_0.contextHash.length === 32 && policy_0.actorSlotIdHash.buffer instanceof ArrayBuffer && policy_0.actorSlotIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actorSlotIdHash.length === 32 && typeof(policy_0.slotAssignmentRulesRoot) === 'object' && typeof(policy_0.slotAssignmentRulesRoot.field) === 'bigint' && policy_0.slotAssignmentRulesRoot.field >= 0 && policy_0.slotAssignmentRulesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.slotAssignmentRuleCount) === 'bigint' && policy_0.slotAssignmentRuleCount >= 0n && policy_0.slotAssignmentRuleCount <= 4294967295n && policy_0.initialStateIdHash.buffer instanceof ArrayBuffer && policy_0.initialStateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.initialStateIdHash.length === 32 && policy_0.resourceSelectorHash.buffer instanceof ArrayBuffer && policy_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && policy_0.resourceSelectorHash.length === 32 && policy_0.purposeHash.buffer instanceof ArrayBuffer && policy_0.purposeHash.BYTES_PER_ELEMENT === 1 && policy_0.purposeHash.length === 32 && policy_0.recipientKindHash.buffer instanceof ArrayBuffer && policy_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && policy_0.recipientKindHash.length === 32 && policy_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && policy_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && policy_0.disclosurePolicyIdHash.length === 32 && policy_0.capabilityRuleIdHash.buffer instanceof ArrayBuffer && policy_0.capabilityRuleIdHash.BYTES_PER_ELEMENT === 1 && policy_0.capabilityRuleIdHash.length === 32 && typeof(policy_0.maxCapabilityDuration) === 'bigint' && policy_0.maxCapabilityDuration >= 0n && policy_0.maxCapabilityDuration <= 18446744073709551615n && typeof(policy_0.maxDelegationDepth) === 'bigint' && policy_0.maxDelegationDepth >= 0n && policy_0.maxDelegationDepth <= 255n && typeof(policy_0.revocable) === 'boolean' && policy_0.inputRecordTypesHash.buffer instanceof ArrayBuffer && policy_0.inputRecordTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.inputRecordTypesHash.length === 32 && policy_0.outputClaimTypesHash.buffer instanceof ArrayBuffer && policy_0.outputClaimTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.outputClaimTypesHash.length === 32 && typeof(policy_0.inputRecordTypesRoot) === 'object' && typeof(policy_0.inputRecordTypesRoot.field) === 'bigint' && policy_0.inputRecordTypesRoot.field >= 0 && policy_0.inputRecordTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.inputRecordTypeCount) === 'bigint' && policy_0.inputRecordTypeCount >= 0n && policy_0.inputRecordTypeCount <= 4294967295n && typeof(policy_0.outputClaimTypesRoot) === 'object' && typeof(policy_0.outputClaimTypesRoot.field) === 'bigint' && policy_0.outputClaimTypesRoot.field >= 0 && policy_0.outputClaimTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.outputClaimTypeCount) === 'bigint' && policy_0.outputClaimTypeCount >= 0n && policy_0.outputClaimTypeCount <= 4294967295n && policy_0.executionAdapterHash.buffer instanceof ArrayBuffer && policy_0.executionAdapterHash.BYTES_PER_ELEMENT === 1 && policy_0.executionAdapterHash.length === 32 && typeof(policy_0.transitionRoot) === 'object' && typeof(policy_0.transitionRoot.field) === 'bigint' && policy_0.transitionRoot.field >= 0 && policy_0.transitionRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.transitionCount) === 'bigint' && policy_0.transitionCount >= 0n && policy_0.transitionCount <= 4294967295n)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 8 (argument 9 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeTemplateActionPolicy<policyVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, actionIndex: Uint<0..4294967296>, bindingActionIdHash: Bytes<32>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, proofFamilyHash: Bytes<32>, contextHash: Bytes<32>, actorSlotIdHash: Bytes<32>, slotAssignmentRulesRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentRuleCount: Uint<0..4294967296>, initialStateIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, capabilityRuleIdHash: Bytes<32>, maxCapabilityDuration: Uint<0..18446744073709551616>, maxDelegationDepth: Uint<0..256>, revocable: Boolean, inputRecordTypesHash: Bytes<32>, outputClaimTypesHash: Bytes<32>, inputRecordTypesRoot: struct MerkleTreeDigest<field: Field>, inputRecordTypeCount: Uint<0..4294967296>, outputClaimTypesRoot: struct MerkleTreeDigest<field: Field>, outputClaimTypeCount: Uint<0..4294967296>, executionAdapterHash: Bytes<32>, transitionRoot: struct MerkleTreeDigest<field: Field>, transitionCount: Uint<0..4294967296>>',
                                      policy_0)
         }
         if (!(typeof(binding_0) === 'object' && typeof(binding_0.bindingVersion) === 'bigint' && binding_0.bindingVersion >= 0n && binding_0.bindingVersion <= 65535n && typeof(binding_0.actionIndex) === 'bigint' && binding_0.actionIndex >= 0n && binding_0.actionIndex <= 4294967295n && binding_0.actionIdHash.buffer instanceof ArrayBuffer && binding_0.actionIdHash.BYTES_PER_ELEMENT === 1 && binding_0.actionIdHash.length === 32 && binding_0.proofProfileIdHash.buffer instanceof ArrayBuffer && binding_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && binding_0.proofProfileIdHash.length === 32 && binding_0.moduleIdHash.buffer instanceof ArrayBuffer && binding_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && binding_0.moduleIdHash.length === 32 && typeof(binding_0.moduleVersion) === 'object' && typeof(binding_0.moduleVersion.major) === 'bigint' && binding_0.moduleVersion.major >= 0n && binding_0.moduleVersion.major <= 18446744073709551615n && typeof(binding_0.moduleVersion.minor) === 'bigint' && binding_0.moduleVersion.minor >= 0n && binding_0.moduleVersion.minor <= 18446744073709551615n && typeof(binding_0.moduleVersion.patch) === 'bigint' && binding_0.moduleVersion.patch >= 0n && binding_0.moduleVersion.patch <= 18446744073709551615n && binding_0.implementationHash.buffer instanceof ArrayBuffer && binding_0.implementationHash.BYTES_PER_ELEMENT === 1 && binding_0.implementationHash.length === 32 && binding_0.configurationHash.buffer instanceof ArrayBuffer && binding_0.configurationHash.BYTES_PER_ELEMENT === 1 && binding_0.configurationHash.length === 32 && binding_0.receiptSchemaHash.buffer instanceof ArrayBuffer && binding_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && binding_0.receiptSchemaHash.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 9 (argument 10 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct ProofModuleBinding<bindingVersion: Uint<0..65536>, actionIndex: Uint<0..4294967296>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>, configurationHash: Bytes<32>, receiptSchemaHash: Bytes<32>>',
                                      binding_0)
         }
         if (!(typeof(bindingPath_0) === 'object' && bindingPath_0.leaf.buffer instanceof ArrayBuffer && bindingPath_0.leaf.BYTES_PER_ELEMENT === 1 && bindingPath_0.leaf.length === 32 && Array.isArray(bindingPath_0.path) && bindingPath_0.path.length === 20 && bindingPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 10 (argument 11 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      bindingPath_0)
         }
         if (!(typeof(progress_0) === 'object' && typeof(progress_0.slot) === 'object' && typeof(progress_0.slot.phase) === 'bigint' && progress_0.slot.phase >= 0n && progress_0.slot.phase <= 255n && progress_0.slot.nextAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.nextAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.nextAssignmentIdHash.length === 32 && progress_0.slot.expectedAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.expectedAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.expectedAccountCommitment.length === 32 && typeof(progress_0.slot.childIssuedSequence) === 'bigint' && progress_0.slot.childIssuedSequence >= 0n && progress_0.slot.childIssuedSequence <= 18446744073709551615n && progress_0.slot.previousBindingAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAssignmentIdHash.length === 32 && progress_0.slot.previousBindingAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAccountCommitment.length === 32 && typeof(progress_0.slot.inactive) === 'boolean' && typeof(progress_0.slot.steps) === 'bigint' && progress_0.slot.steps >= 0n && progress_0.slot.steps <= 4294967295n && typeof(progress_0.nextInputIndex) === 'bigint' && progress_0.nextInputIndex >= 0n && progress_0.nextInputIndex <= 4294967295n && typeof(progress_0.nextOutputIndex) === 'bigint' && progress_0.nextOutputIndex >= 0n && progress_0.nextOutputIndex <= 4294967295n && progress_0.inputsAccumulator.buffer instanceof ArrayBuffer && progress_0.inputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.inputsAccumulator.length === 32 && progress_0.outputsAccumulator.buffer instanceof ArrayBuffer && progress_0.outputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.outputsAccumulator.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 11 (argument 12 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeActionProgress<slot: struct RuntimeSlotProgress<phase: Uint<0..256>, nextAssignmentIdHash: Bytes<32>, expectedAccountCommitment: Bytes<32>, childIssuedSequence: Uint<0..18446744073709551616>, previousBindingAssignmentIdHash: Bytes<32>, previousBindingAccountCommitment: Bytes<32>, inactive: Boolean, steps: Uint<0..4294967296>>, nextInputIndex: Uint<0..4294967296>, nextOutputIndex: Uint<0..4294967296>, inputsAccumulator: Bytes<32>, outputsAccumulator: Bytes<32>>',
                                      progress_0)
         }
         if (!(typeof(slotStep_0) === 'object' && typeof(slotStep_0.record) === 'object' && typeof(slotStep_0.record.assignment) === 'object' && typeof(slotStep_0.record.assignment.assignmentVersion) === 'bigint' && slotStep_0.record.assignment.assignmentVersion >= 0n && slotStep_0.record.assignment.assignmentVersion <= 65535n && typeof(slotStep_0.record.assignment.target) === 'object' && slotStep_0.record.assignment.target.namespaceHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.target.namespaceHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.target.namespaceHash.length === 32 && slotStep_0.record.assignment.target.templateIdHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.target.templateIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.target.templateIdHash.length === 32 && typeof(slotStep_0.record.assignment.target.semanticVersion) === 'object' && typeof(slotStep_0.record.assignment.target.semanticVersion.major) === 'bigint' && slotStep_0.record.assignment.target.semanticVersion.major >= 0n && slotStep_0.record.assignment.target.semanticVersion.major <= 18446744073709551615n && typeof(slotStep_0.record.assignment.target.semanticVersion.minor) === 'bigint' && slotStep_0.record.assignment.target.semanticVersion.minor >= 0n && slotStep_0.record.assignment.target.semanticVersion.minor <= 18446744073709551615n && typeof(slotStep_0.record.assignment.target.semanticVersion.patch) === 'bigint' && slotStep_0.record.assignment.target.semanticVersion.patch >= 0n && slotStep_0.record.assignment.target.semanticVersion.patch <= 18446744073709551615n && slotStep_0.record.assignment.target.templateContentHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.target.templateContentHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.target.templateContentHash.length === 32 && slotStep_0.record.assignment.instanceCommitment.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.instanceCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.instanceCommitment.length === 32 && slotStep_0.record.assignment.contextHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.contextHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.contextHash.length === 32 && slotStep_0.record.assignment.slotIdHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.slotIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.slotIdHash.length === 32 && slotStep_0.record.assignment.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.subjectAccountCredentialCommitment.length === 32 && slotStep_0.record.assignment.subjectAccountIdHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.subjectAccountIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.subjectAccountIdHash.length === 32 && slotStep_0.record.assignment.assignmentIdHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.assignmentIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.assignmentIdHash.length === 32 && slotStep_0.record.assignment.parentAssignmentIdHash.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.parentAssignmentIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.parentAssignmentIdHash.length === 32 && slotStep_0.record.assignment.assignerAccountCredentialCommitment.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.assignerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.assignerAccountCredentialCommitment.length === 32 && typeof(slotStep_0.record.assignment.authorityKind) === 'bigint' && slotStep_0.record.assignment.authorityKind >= 0n && slotStep_0.record.assignment.authorityKind <= 255n && slotStep_0.record.assignment.namespaceAuthorityCommitment.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.namespaceAuthorityCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.namespaceAuthorityCommitment.length === 32 && slotStep_0.record.assignment.m5AssignmentCommitment.buffer instanceof ArrayBuffer && slotStep_0.record.assignment.m5AssignmentCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.record.assignment.m5AssignmentCommitment.length === 32 && typeof(slotStep_0.record.assignment.assignedAt) === 'bigint' && slotStep_0.record.assignment.assignedAt >= 0n && slotStep_0.record.assignment.assignedAt <= 18446744073709551615n && typeof(slotStep_0.record.assignment.issuedSequence) === 'bigint' && slotStep_0.record.assignment.issuedSequence >= 0n && slotStep_0.record.assignment.issuedSequence <= 18446744073709551615n && typeof(slotStep_0.record.status) === 'bigint' && slotStep_0.record.status >= 0n && slotStep_0.record.status <= 255n && typeof(slotStep_0.record.revokedAt) === 'bigint' && slotStep_0.record.revokedAt >= 0n && slotStep_0.record.revokedAt <= 18446744073709551615n && typeof(slotStep_0.opening) === 'object' && typeof(slotStep_0.opening.node) === 'object' && typeof(slotStep_0.opening.node.nodeVersion) === 'bigint' && slotStep_0.opening.node.nodeVersion >= 0n && slotStep_0.opening.node.nodeVersion <= 65535n && slotStep_0.opening.node.key.buffer instanceof ArrayBuffer && slotStep_0.opening.node.key.BYTES_PER_ELEMENT === 1 && slotStep_0.opening.node.key.length === 32 && slotStep_0.opening.node.value.buffer instanceof ArrayBuffer && slotStep_0.opening.node.value.BYTES_PER_ELEMENT === 1 && slotStep_0.opening.node.value.length === 32 && slotStep_0.opening.node.nextKey.buffer instanceof ArrayBuffer && slotStep_0.opening.node.nextKey.BYTES_PER_ELEMENT === 1 && slotStep_0.opening.node.nextKey.length === 32 && typeof(slotStep_0.opening.node.nextIndex) === 'bigint' && slotStep_0.opening.node.nextIndex >= 0n && slotStep_0.opening.node.nextIndex <= 4294967295n && typeof(slotStep_0.opening.path) === 'object' && slotStep_0.opening.path.leaf.buffer instanceof ArrayBuffer && slotStep_0.opening.path.leaf.BYTES_PER_ELEMENT === 1 && slotStep_0.opening.path.leaf.length === 32 && Array.isArray(slotStep_0.opening.path.path) && slotStep_0.opening.path.path.length === 20 && slotStep_0.opening.path.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(slotStep_0.account) === 'object' && typeof(slotStep_0.account.credentialVersion) === 'bigint' && slotStep_0.account.credentialVersion >= 0n && slotStep_0.account.credentialVersion <= 65535n && typeof(slotStep_0.account.target) === 'object' && slotStep_0.account.target.namespaceHash.buffer instanceof ArrayBuffer && slotStep_0.account.target.namespaceHash.BYTES_PER_ELEMENT === 1 && slotStep_0.account.target.namespaceHash.length === 32 && slotStep_0.account.target.templateIdHash.buffer instanceof ArrayBuffer && slotStep_0.account.target.templateIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.account.target.templateIdHash.length === 32 && typeof(slotStep_0.account.target.semanticVersion) === 'object' && typeof(slotStep_0.account.target.semanticVersion.major) === 'bigint' && slotStep_0.account.target.semanticVersion.major >= 0n && slotStep_0.account.target.semanticVersion.major <= 18446744073709551615n && typeof(slotStep_0.account.target.semanticVersion.minor) === 'bigint' && slotStep_0.account.target.semanticVersion.minor >= 0n && slotStep_0.account.target.semanticVersion.minor <= 18446744073709551615n && typeof(slotStep_0.account.target.semanticVersion.patch) === 'bigint' && slotStep_0.account.target.semanticVersion.patch >= 0n && slotStep_0.account.target.semanticVersion.patch <= 18446744073709551615n && slotStep_0.account.target.templateContentHash.buffer instanceof ArrayBuffer && slotStep_0.account.target.templateContentHash.BYTES_PER_ELEMENT === 1 && slotStep_0.account.target.templateContentHash.length === 32 && slotStep_0.account.instanceCommitment.buffer instanceof ArrayBuffer && slotStep_0.account.instanceCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.account.instanceCommitment.length === 32 && slotStep_0.account.contextHash.buffer instanceof ArrayBuffer && slotStep_0.account.contextHash.BYTES_PER_ELEMENT === 1 && slotStep_0.account.contextHash.length === 32 && slotStep_0.account.accountIdHash.buffer instanceof ArrayBuffer && slotStep_0.account.accountIdHash.BYTES_PER_ELEMENT === 1 && slotStep_0.account.accountIdHash.length === 32 && typeof(slotStep_0.account.principalKind) === 'bigint' && slotStep_0.account.principalKind >= 0n && slotStep_0.account.principalKind <= 65535n && slotStep_0.account.m5AccountCommitment.buffer instanceof ArrayBuffer && slotStep_0.account.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && slotStep_0.account.m5AccountCommitment.length === 32 && true && typeof(slotStep_0.account.statusIndex) === 'bigint' && slotStep_0.account.statusIndex >= 0n && slotStep_0.account.statusIndex <= 18446744073709551615n && typeof(slotStep_0.account.issuedAt) === 'bigint' && slotStep_0.account.issuedAt >= 0n && slotStep_0.account.issuedAt <= 18446744073709551615n && typeof(slotStep_0.account.validBefore) === 'bigint' && slotStep_0.account.validBefore >= 0n && slotStep_0.account.validBefore <= 18446744073709551615n && typeof(slotStep_0.accountStatus) === 'bigint' && slotStep_0.accountStatus >= 0n && slotStep_0.accountStatus <= 255n && typeof(slotStep_0.accountStatusPath) === 'object' && slotStep_0.accountStatusPath.leaf.buffer instanceof ArrayBuffer && slotStep_0.accountStatusPath.leaf.BYTES_PER_ELEMENT === 1 && slotStep_0.accountStatusPath.leaf.length === 32 && Array.isArray(slotStep_0.accountStatusPath.path) && slotStep_0.accountStatusPath.path.length === 20 && slotStep_0.accountStatusPath.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 12 (argument 13 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeSlotAncestryStep<record: struct RuntimeSlotRecord<assignment: struct RuntimeSlotAssignment<assignmentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, slotIdHash: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, subjectAccountIdHash: Bytes<32>, assignmentIdHash: Bytes<32>, parentAssignmentIdHash: Bytes<32>, assignerAccountCredentialCommitment: Bytes<32>, authorityKind: Uint<0..256>, namespaceAuthorityCommitment: Bytes<32>, m5AssignmentCommitment: Bytes<32>, assignedAt: Uint<0..18446744073709551616>, issuedSequence: Uint<0..18446744073709551616>>, status: Uint<0..256>, revokedAt: Uint<0..18446744073709551616>>, opening: struct RuntimePrivateMapWitness<node: struct RuntimePrivateMapNode<nodeVersion: Uint<0..65536>, key: Bytes<32>, value: Bytes<32>, nextKey: Bytes<32>, nextIndex: Uint<0..4294967296>>, path: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>, account: struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>, accountStatus: Uint<0..256>, accountStatusPath: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
                                      slotStep_0)
         }
         if (!(typeof(selected_0) === 'object' && typeof(selected_0.valueVersion) === 'bigint' && selected_0.valueVersion >= 0n && selected_0.valueVersion <= 65535n && selected_0.typeHash.buffer instanceof ArrayBuffer && selected_0.typeHash.BYTES_PER_ELEMENT === 1 && selected_0.typeHash.length === 32 && selected_0.contextHash.buffer instanceof ArrayBuffer && selected_0.contextHash.BYTES_PER_ELEMENT === 1 && selected_0.contextHash.length === 32 && selected_0.resourceHash.buffer instanceof ArrayBuffer && selected_0.resourceHash.BYTES_PER_ELEMENT === 1 && selected_0.resourceHash.length === 32 && selected_0.payloadCommitment.buffer instanceof ArrayBuffer && selected_0.payloadCommitment.BYTES_PER_ELEMENT === 1 && selected_0.payloadCommitment.length === 32 && selected_0.nonce.buffer instanceof ArrayBuffer && selected_0.nonce.BYTES_PER_ELEMENT === 1 && selected_0.nonce.length === 32)) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 13 (argument 14 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct RuntimeSelectedActionValue<valueVersion: Uint<0..65536>, typeHash: Bytes<32>, contextHash: Bytes<32>, resourceHash: Bytes<32>, payloadCommitment: Bytes<32>, nonce: Bytes<32>>',
                                      selected_0)
         }
         if (!(typeof(typePath_0) === 'object' && typePath_0.leaf.buffer instanceof ArrayBuffer && typePath_0.leaf.BYTES_PER_ELEMENT === 1 && typePath_0.leaf.length === 32 && Array.isArray(typePath_0.path) && typePath_0.path.length === 20 && typePath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('prepareRuntimeAction',
                                      'argument 14 (argument 15 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 249 char 1',
+                                     'runtime-action-execution.compact line 255 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      typePath_0)
         }
         const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
         const partialProofData = {
           input: {
-            value: _descriptor_3.toValue(operation_0).concat(_descriptor_59.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_30.toValue(session_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_71.toValue(policy_0).concat(_descriptor_37.toValue(binding_0).concat(_descriptor_25.toValue(bindingPath_0).concat(_descriptor_73.toValue(progress_0).concat(_descriptor_79.toValue(slotStep_0).concat(_descriptor_80.toValue(selected_0).concat(_descriptor_25.toValue(typePath_0)))))))))))))),
-            alignment: _descriptor_3.alignment().concat(_descriptor_59.alignment().concat(_descriptor_21.alignment().concat(_descriptor_53.alignment().concat(_descriptor_30.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_71.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_73.alignment().concat(_descriptor_79.alignment().concat(_descriptor_80.alignment().concat(_descriptor_25.alignment())))))))))))))
+            value: _descriptor_3.toValue(operation_0).concat(_descriptor_58.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_30.toValue(session_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_59.toValue(policy_0).concat(_descriptor_37.toValue(binding_0).concat(_descriptor_25.toValue(bindingPath_0).concat(_descriptor_77.toValue(progress_0).concat(_descriptor_84.toValue(slotStep_0).concat(_descriptor_61.toValue(selected_0).concat(_descriptor_25.toValue(typePath_0)))))))))))))),
+            alignment: _descriptor_3.alignment().concat(_descriptor_58.alignment().concat(_descriptor_21.alignment().concat(_descriptor_53.alignment().concat(_descriptor_30.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_59.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_77.alignment().concat(_descriptor_84.alignment().concat(_descriptor_61.alignment().concat(_descriptor_25.alignment())))))))))))))
           },
           output: undefined,
           publicTranscript: [],
@@ -2943,7 +2998,7 @@ export class Contract {
                                                       slotStep_0,
                                                       selected_0,
                                                       typePath_0);
-        partialProofData.output = { value: _descriptor_122.toValue(result_0), alignment: _descriptor_122.alignment() };
+        partialProofData.output = { value: _descriptor_130.toValue(result_0), alignment: _descriptor_130.alignment() };
         return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
       },
       executeRuntimeAction: (...args_1) => {
@@ -2975,162 +3030,162 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 1 (as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.intentCommitment.buffer instanceof ArrayBuffer && command_0.intentCommitment.BYTES_PER_ELEMENT === 1 && command_0.intentCommitment.length === 32 && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.stateCommitment.buffer instanceof ArrayBuffer && command_0.stateCommitment.BYTES_PER_ELEMENT === 1 && command_0.stateCommitment.length === 32 && typeof(command_0.stateSequence) === 'bigint' && command_0.stateSequence >= 0n && command_0.stateSequence <= 18446744073709551615n && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.statusRootSequence) === 'bigint' && command_0.statusRootSequence >= 0n && command_0.statusRootSequence <= 18446744073709551615n && command_0.policyCommitment.buffer instanceof ArrayBuffer && command_0.policyCommitment.BYTES_PER_ELEMENT === 1 && command_0.policyCommitment.length === 32 && command_0.bindingCommitment.buffer instanceof ArrayBuffer && command_0.bindingCommitment.BYTES_PER_ELEMENT === 1 && command_0.bindingCommitment.length === 32 && command_0.slotAssignmentIdHash.buffer instanceof ArrayBuffer && command_0.slotAssignmentIdHash.BYTES_PER_ELEMENT === 1 && command_0.slotAssignmentIdHash.length === 32 && command_0.selectedInputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedInputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedInputsCommitment.length === 32 && command_0.selectedOutputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedOutputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedOutputsCommitment.length === 32 && command_0.nextStateCommitment.buffer instanceof ArrayBuffer && command_0.nextStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextStateCommitment.length === 32 && typeof(command_0.transitioning) === 'boolean' && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.validBefore) === 'bigint' && command_0.validBefore >= 0n && command_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActionCommand<commandVersion: Uint<0..65536>, intentCommitment: Bytes<32>, allocationCommitment: Bytes<32>, stateCommitment: Bytes<32>, stateSequence: Uint<0..18446744073709551616>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, statusRootSequence: Uint<0..18446744073709551616>, policyCommitment: Bytes<32>, bindingCommitment: Bytes<32>, slotAssignmentIdHash: Bytes<32>, selectedInputsCommitment: Bytes<32>, selectedOutputsCommitment: Bytes<32>, nextStateCommitment: Bytes<32>, transitioning: Boolean, effectiveAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      command_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                      intent_0)
         }
         if (!(typeof(ancestry_0) === 'object' && typeof(ancestry_0.witnessVersion) === 'bigint' && ancestry_0.witnessVersion >= 0n && ancestry_0.witnessVersion <= 65535n && typeof(ancestry_0.capabilityCount) === 'bigint' && ancestry_0.capabilityCount >= 0n && ancestry_0.capabilityCount <= 255n && Array.isArray(ancestry_0.capabilities) && ancestry_0.capabilities.length === 17 && ancestry_0.capabilities.every((t) => typeof(t) === 'object' && typeof(t.credentialVersion) === 'bigint' && t.credentialVersion >= 0n && t.credentialVersion <= 65535n && typeof(t.target) === 'object' && t.target.namespaceHash.buffer instanceof ArrayBuffer && t.target.namespaceHash.BYTES_PER_ELEMENT === 1 && t.target.namespaceHash.length === 32 && t.target.templateIdHash.buffer instanceof ArrayBuffer && t.target.templateIdHash.BYTES_PER_ELEMENT === 1 && t.target.templateIdHash.length === 32 && typeof(t.target.semanticVersion) === 'object' && typeof(t.target.semanticVersion.major) === 'bigint' && t.target.semanticVersion.major >= 0n && t.target.semanticVersion.major <= 18446744073709551615n && typeof(t.target.semanticVersion.minor) === 'bigint' && t.target.semanticVersion.minor >= 0n && t.target.semanticVersion.minor <= 18446744073709551615n && typeof(t.target.semanticVersion.patch) === 'bigint' && t.target.semanticVersion.patch >= 0n && t.target.semanticVersion.patch <= 18446744073709551615n && t.target.templateContentHash.buffer instanceof ArrayBuffer && t.target.templateContentHash.BYTES_PER_ELEMENT === 1 && t.target.templateContentHash.length === 32 && t.instanceCommitment.buffer instanceof ArrayBuffer && t.instanceCommitment.BYTES_PER_ELEMENT === 1 && t.instanceCommitment.length === 32 && t.contextHash.buffer instanceof ArrayBuffer && t.contextHash.BYTES_PER_ELEMENT === 1 && t.contextHash.length === 32 && t.grantIdHash.buffer instanceof ArrayBuffer && t.grantIdHash.BYTES_PER_ELEMENT === 1 && t.grantIdHash.length === 32 && t.m5GrantCommitment.buffer instanceof ArrayBuffer && t.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && t.m5GrantCommitment.length === 32 && t.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && t.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.subjectAccountCredentialCommitment.length === 32 && t.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && t.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.parentCapabilityCredentialCommitment.length === 32 && t.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && t.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.issuerAccountCredentialCommitment.length === 32 && t.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && t.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && t.namespaceIssuerAuthorityCommitment.length === 32 && typeof(t.scopeRoots) === 'object' && typeof(t.scopeRoots.actionsRoot) === 'object' && typeof(t.scopeRoots.actionsRoot.field) === 'bigint' && t.scopeRoots.actionsRoot.field >= 0 && t.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(t.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && t.scopeRoots.resourceSelectorsRoot.field >= 0 && t.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.resourcesRoot) === 'object' && typeof(t.scopeRoots.resourcesRoot.field) === 'bigint' && t.scopeRoots.resourcesRoot.field >= 0 && t.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.purposesRoot) === 'object' && typeof(t.scopeRoots.purposesRoot.field) === 'bigint' && t.scopeRoots.purposesRoot.field >= 0 && t.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.recipientKindsRoot) === 'object' && typeof(t.scopeRoots.recipientKindsRoot.field) === 'bigint' && t.scopeRoots.recipientKindsRoot.field >= 0 && t.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.recipientsRoot) === 'object' && typeof(t.scopeRoots.recipientsRoot.field) === 'bigint' && t.scopeRoots.recipientsRoot.field >= 0 && t.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(t.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && t.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && t.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeCounts) === 'object' && typeof(t.scopeCounts.actionsCount) === 'bigint' && t.scopeCounts.actionsCount >= 0n && t.scopeCounts.actionsCount <= 4294967295n && typeof(t.scopeCounts.resourceSelectorsCount) === 'bigint' && t.scopeCounts.resourceSelectorsCount >= 0n && t.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(t.scopeCounts.resourcesCount) === 'bigint' && t.scopeCounts.resourcesCount >= 0n && t.scopeCounts.resourcesCount <= 4294967295n && typeof(t.scopeCounts.purposesCount) === 'bigint' && t.scopeCounts.purposesCount >= 0n && t.scopeCounts.purposesCount <= 4294967295n && typeof(t.scopeCounts.recipientKindsCount) === 'bigint' && t.scopeCounts.recipientKindsCount >= 0n && t.scopeCounts.recipientKindsCount <= 4294967295n && typeof(t.scopeCounts.recipientsCount) === 'bigint' && t.scopeCounts.recipientsCount >= 0n && t.scopeCounts.recipientsCount <= 4294967295n && typeof(t.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && t.scopeCounts.disclosurePolicyIdsCount >= 0n && t.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(t.notBefore) === 'bigint' && t.notBefore >= 0n && t.notBefore <= 18446744073709551615n && typeof(t.expiresAt) === 'bigint' && t.expiresAt >= 0n && t.expiresAt <= 18446744073709551615n && typeof(t.delegationDepth) === 'bigint' && t.delegationDepth >= 0n && t.delegationDepth <= 65535n && typeof(t.maxDelegationDepth) === 'bigint' && t.maxDelegationDepth >= 0n && t.maxDelegationDepth <= 65535n && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 18446744073709551615n && typeof(t.issuedAt) === 'bigint' && t.issuedAt >= 0n && t.issuedAt <= 18446744073709551615n) && Array.isArray(ancestry_0.accounts) && ancestry_0.accounts.length === 17 && ancestry_0.accounts.every((t) => typeof(t) === 'object' && typeof(t.credentialVersion) === 'bigint' && t.credentialVersion >= 0n && t.credentialVersion <= 65535n && typeof(t.target) === 'object' && t.target.namespaceHash.buffer instanceof ArrayBuffer && t.target.namespaceHash.BYTES_PER_ELEMENT === 1 && t.target.namespaceHash.length === 32 && t.target.templateIdHash.buffer instanceof ArrayBuffer && t.target.templateIdHash.BYTES_PER_ELEMENT === 1 && t.target.templateIdHash.length === 32 && typeof(t.target.semanticVersion) === 'object' && typeof(t.target.semanticVersion.major) === 'bigint' && t.target.semanticVersion.major >= 0n && t.target.semanticVersion.major <= 18446744073709551615n && typeof(t.target.semanticVersion.minor) === 'bigint' && t.target.semanticVersion.minor >= 0n && t.target.semanticVersion.minor <= 18446744073709551615n && typeof(t.target.semanticVersion.patch) === 'bigint' && t.target.semanticVersion.patch >= 0n && t.target.semanticVersion.patch <= 18446744073709551615n && t.target.templateContentHash.buffer instanceof ArrayBuffer && t.target.templateContentHash.BYTES_PER_ELEMENT === 1 && t.target.templateContentHash.length === 32 && t.instanceCommitment.buffer instanceof ArrayBuffer && t.instanceCommitment.BYTES_PER_ELEMENT === 1 && t.instanceCommitment.length === 32 && t.contextHash.buffer instanceof ArrayBuffer && t.contextHash.BYTES_PER_ELEMENT === 1 && t.contextHash.length === 32 && t.accountIdHash.buffer instanceof ArrayBuffer && t.accountIdHash.BYTES_PER_ELEMENT === 1 && t.accountIdHash.length === 32 && typeof(t.principalKind) === 'bigint' && t.principalKind >= 0n && t.principalKind <= 65535n && t.m5AccountCommitment.buffer instanceof ArrayBuffer && t.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && t.m5AccountCommitment.length === 32 && true && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 18446744073709551615n && typeof(t.issuedAt) === 'bigint' && t.issuedAt >= 0n && t.issuedAt <= 18446744073709551615n && typeof(t.validBefore) === 'bigint' && t.validBefore >= 0n && t.validBefore <= 18446744073709551615n) && typeof(ancestry_0.session) === 'object' && typeof(ancestry_0.session.credentialVersion) === 'bigint' && ancestry_0.session.credentialVersion >= 0n && ancestry_0.session.credentialVersion <= 65535n && typeof(ancestry_0.session.target) === 'object' && ancestry_0.session.target.namespaceHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.namespaceHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.namespaceHash.length === 32 && ancestry_0.session.target.templateIdHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.templateIdHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.templateIdHash.length === 32 && typeof(ancestry_0.session.target.semanticVersion) === 'object' && typeof(ancestry_0.session.target.semanticVersion.major) === 'bigint' && ancestry_0.session.target.semanticVersion.major >= 0n && ancestry_0.session.target.semanticVersion.major <= 18446744073709551615n && typeof(ancestry_0.session.target.semanticVersion.minor) === 'bigint' && ancestry_0.session.target.semanticVersion.minor >= 0n && ancestry_0.session.target.semanticVersion.minor <= 18446744073709551615n && typeof(ancestry_0.session.target.semanticVersion.patch) === 'bigint' && ancestry_0.session.target.semanticVersion.patch >= 0n && ancestry_0.session.target.semanticVersion.patch <= 18446744073709551615n && ancestry_0.session.target.templateContentHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.templateContentHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.templateContentHash.length === 32 && ancestry_0.session.instanceCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.instanceCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.instanceCommitment.length === 32 && ancestry_0.session.contextHash.buffer instanceof ArrayBuffer && ancestry_0.session.contextHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.contextHash.length === 32 && ancestry_0.session.sessionIdHash.buffer instanceof ArrayBuffer && ancestry_0.session.sessionIdHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.sessionIdHash.length === 32 && ancestry_0.session.m5SessionCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.m5SessionCommitment.length === 32 && ancestry_0.session.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.subjectAccountCredentialCommitment.length === 32 && ancestry_0.session.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.capabilityCredentialCommitment.length === 32 && typeof(ancestry_0.session.scopeRoots) === 'object' && typeof(ancestry_0.session.scopeRoots.actionsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.actionsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.actionsRoot.field >= 0 && ancestry_0.session.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.resourceSelectorsRoot.field >= 0 && ancestry_0.session.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.resourcesRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.resourcesRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.resourcesRoot.field >= 0 && ancestry_0.session.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.purposesRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.purposesRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.purposesRoot.field >= 0 && ancestry_0.session.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.recipientKindsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.recipientKindsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.recipientKindsRoot.field >= 0 && ancestry_0.session.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.recipientsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.recipientsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.recipientsRoot.field >= 0 && ancestry_0.session.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeCounts) === 'object' && typeof(ancestry_0.session.scopeCounts.actionsCount) === 'bigint' && ancestry_0.session.scopeCounts.actionsCount >= 0n && ancestry_0.session.scopeCounts.actionsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.resourceSelectorsCount) === 'bigint' && ancestry_0.session.scopeCounts.resourceSelectorsCount >= 0n && ancestry_0.session.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.resourcesCount) === 'bigint' && ancestry_0.session.scopeCounts.resourcesCount >= 0n && ancestry_0.session.scopeCounts.resourcesCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.purposesCount) === 'bigint' && ancestry_0.session.scopeCounts.purposesCount >= 0n && ancestry_0.session.scopeCounts.purposesCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.recipientKindsCount) === 'bigint' && ancestry_0.session.scopeCounts.recipientKindsCount >= 0n && ancestry_0.session.scopeCounts.recipientKindsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.recipientsCount) === 'bigint' && ancestry_0.session.scopeCounts.recipientsCount >= 0n && ancestry_0.session.scopeCounts.recipientsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && ancestry_0.session.scopeCounts.disclosurePolicyIdsCount >= 0n && ancestry_0.session.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(ancestry_0.session.notBefore) === 'bigint' && ancestry_0.session.notBefore >= 0n && ancestry_0.session.notBefore <= 18446744073709551615n && typeof(ancestry_0.session.expiresAt) === 'bigint' && ancestry_0.session.expiresAt >= 0n && ancestry_0.session.expiresAt <= 18446744073709551615n && typeof(ancestry_0.session.statusIndex) === 'bigint' && ancestry_0.session.statusIndex >= 0n && ancestry_0.session.statusIndex <= 18446744073709551615n && typeof(ancestry_0.session.issuedAt) === 'bigint' && ancestry_0.session.issuedAt >= 0n && ancestry_0.session.issuedAt <= 18446744073709551615n && typeof(ancestry_0.statusProof) === 'object' && typeof(ancestry_0.statusProof.witnessVersion) === 'bigint' && ancestry_0.statusProof.witnessVersion >= 0n && ancestry_0.statusProof.witnessVersion <= 65535n && typeof(ancestry_0.statusProof.rootSequence) === 'bigint' && ancestry_0.statusProof.rootSequence >= 0n && ancestry_0.statusProof.rootSequence <= 18446744073709551615n && typeof(ancestry_0.statusProof.leafCount) === 'bigint' && ancestry_0.statusProof.leafCount >= 0n && ancestry_0.statusProof.leafCount <= 255n && Array.isArray(ancestry_0.statusProof.leaves) && ancestry_0.statusProof.leaves.length === 35 && ancestry_0.statusProof.leaves.every((t) => typeof(t) === 'object' && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 1048575n && t.leaf.buffer instanceof ArrayBuffer && t.leaf.BYTES_PER_ELEMENT === 1 && t.leaf.length === 32) && Array.isArray(ancestry_0.statusProof.steps) && ancestry_0.statusProof.steps.length === 588 && ancestry_0.statusProof.steps.every((t) => typeof(t) === 'object' && typeof(t.kind) === 'bigint' && t.kind >= 0n && t.kind <= 255n && typeof(t.leftFromStack) === 'boolean' && typeof(t.rightFromStack) === 'boolean' && typeof(t.left) === 'object' && typeof(t.left.level) === 'bigint' && t.left.level >= 0n && t.left.level <= 255n && typeof(t.left.index) === 'bigint' && t.left.index >= 0n && t.left.index <= 1048575n && typeof(t.left.digest) === 'object' && typeof(t.left.digest.field) === 'bigint' && t.left.digest.field >= 0 && t.left.digest.field <= __compactRuntime.MAX_FIELD && typeof(t.right) === 'object' && typeof(t.right.level) === 'bigint' && t.right.level >= 0n && t.right.level <= 255n && typeof(t.right.index) === 'bigint' && t.right.index >= 0n && t.right.index <= 1048575n && typeof(t.right.digest) === 'object' && typeof(t.right.digest.field) === 'bigint' && t.right.digest.field >= 0 && t.right.digest.field <= __compactRuntime.MAX_FIELD && typeof(t.parentIndex) === 'bigint' && t.parentIndex >= 0n && t.parentIndex <= 1048575n && typeof(t.stackTail) === 'bigint' && t.stackTail >= 0 && t.stackTail <= __compactRuntime.MAX_FIELD))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActiveAncestry<witnessVersion: Uint<0..65536>, capabilityCount: Uint<0..256>, capabilities: Vector<17, struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>>, accounts: Vector<17, struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>>, session: struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>, statusProof: struct RuntimeStatusMultiproof<witnessVersion: Uint<0..65536>, rootSequence: Uint<0..18446744073709551616>, leafCount: Uint<0..256>, leaves: Vector<35, struct RuntimeStatusMembership<statusIndex: Uint<0..1048576>, leaf: Bytes<32>>>, steps: Vector<588, struct RuntimeStatusProofStep<kind: Uint<0..256>, leftFromStack: Boolean, rightFromStack: Boolean, left: struct RuntimeStatusProofNode<level: Uint<0..256>, index: Uint<0..1048576>, digest: struct MerkleTreeDigest<field: Field>>, right: struct RuntimeStatusProofNode<level: Uint<0..256>, index: Uint<0..1048576>, digest: struct MerkleTreeDigest<field: Field>>, parentIndex: Uint<0..1048576>, stackTail: Field>>>>',
                                      ancestry_0)
         }
         if (!(typeof(sessionSignature_0) === 'object' && true && typeof(sessionSignature_0.response) === 'bigint' && sessionSignature_0.response >= 0 && sessionSignature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 5 (argument 6 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      sessionSignature_0)
         }
         if (!(typeof(intentSignature_0) === 'object' && true && typeof(intentSignature_0.response) === 'bigint' && intentSignature_0.response >= 0 && intentSignature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 6 (argument 7 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      intentSignature_0)
         }
         if (!(typeof(capabilityPaths_0) === 'object' && typeof(capabilityPaths_0.actions) === 'object' && capabilityPaths_0.actions.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.actions.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.actions.leaf.length === 32 && Array.isArray(capabilityPaths_0.actions.path) && capabilityPaths_0.actions.path.length === 20 && capabilityPaths_0.actions.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.resourceSelectors) === 'object' && capabilityPaths_0.resourceSelectors.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.resourceSelectors.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.resourceSelectors.leaf.length === 32 && Array.isArray(capabilityPaths_0.resourceSelectors.path) && capabilityPaths_0.resourceSelectors.path.length === 20 && capabilityPaths_0.resourceSelectors.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.resources) === 'object' && capabilityPaths_0.resources.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.resources.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.resources.leaf.length === 32 && Array.isArray(capabilityPaths_0.resources.path) && capabilityPaths_0.resources.path.length === 20 && capabilityPaths_0.resources.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.purposes) === 'object' && capabilityPaths_0.purposes.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.purposes.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.purposes.leaf.length === 32 && Array.isArray(capabilityPaths_0.purposes.path) && capabilityPaths_0.purposes.path.length === 20 && capabilityPaths_0.purposes.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.recipientKinds) === 'object' && capabilityPaths_0.recipientKinds.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.recipientKinds.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.recipientKinds.leaf.length === 32 && Array.isArray(capabilityPaths_0.recipientKinds.path) && capabilityPaths_0.recipientKinds.path.length === 20 && capabilityPaths_0.recipientKinds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.recipients) === 'object' && capabilityPaths_0.recipients.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.recipients.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.recipients.leaf.length === 32 && Array.isArray(capabilityPaths_0.recipients.path) && capabilityPaths_0.recipients.path.length === 20 && capabilityPaths_0.recipients.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.disclosurePolicyIds) === 'object' && capabilityPaths_0.disclosurePolicyIds.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.disclosurePolicyIds.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.disclosurePolicyIds.leaf.length === 32 && Array.isArray(capabilityPaths_0.disclosurePolicyIds.path) && capabilityPaths_0.disclosurePolicyIds.path.length === 20 && capabilityPaths_0.disclosurePolicyIds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 7 (argument 8 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActionScopePaths<actions: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resourceSelectors: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resources: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, purposes: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipientKinds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipients: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, disclosurePolicyIds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
                                      capabilityPaths_0)
         }
         if (!(typeof(sessionPaths_0) === 'object' && typeof(sessionPaths_0.actions) === 'object' && sessionPaths_0.actions.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.actions.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.actions.leaf.length === 32 && Array.isArray(sessionPaths_0.actions.path) && sessionPaths_0.actions.path.length === 20 && sessionPaths_0.actions.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.resourceSelectors) === 'object' && sessionPaths_0.resourceSelectors.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.resourceSelectors.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.resourceSelectors.leaf.length === 32 && Array.isArray(sessionPaths_0.resourceSelectors.path) && sessionPaths_0.resourceSelectors.path.length === 20 && sessionPaths_0.resourceSelectors.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.resources) === 'object' && sessionPaths_0.resources.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.resources.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.resources.leaf.length === 32 && Array.isArray(sessionPaths_0.resources.path) && sessionPaths_0.resources.path.length === 20 && sessionPaths_0.resources.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.purposes) === 'object' && sessionPaths_0.purposes.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.purposes.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.purposes.leaf.length === 32 && Array.isArray(sessionPaths_0.purposes.path) && sessionPaths_0.purposes.path.length === 20 && sessionPaths_0.purposes.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.recipientKinds) === 'object' && sessionPaths_0.recipientKinds.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.recipientKinds.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.recipientKinds.leaf.length === 32 && Array.isArray(sessionPaths_0.recipientKinds.path) && sessionPaths_0.recipientKinds.path.length === 20 && sessionPaths_0.recipientKinds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.recipients) === 'object' && sessionPaths_0.recipients.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.recipients.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.recipients.leaf.length === 32 && Array.isArray(sessionPaths_0.recipients.path) && sessionPaths_0.recipients.path.length === 20 && sessionPaths_0.recipients.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.disclosurePolicyIds) === 'object' && sessionPaths_0.disclosurePolicyIds.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.disclosurePolicyIds.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.disclosurePolicyIds.leaf.length === 32 && Array.isArray(sessionPaths_0.disclosurePolicyIds.path) && sessionPaths_0.disclosurePolicyIds.path.length === 20 && sessionPaths_0.disclosurePolicyIds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 8 (argument 9 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActionScopePaths<actions: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resourceSelectors: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resources: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, purposes: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipientKinds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipients: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, disclosurePolicyIds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
                                      sessionPaths_0)
         }
         if (!(typeof(allocation_0) === 'object' && typeof(allocation_0.allocationVersion) === 'bigint' && allocation_0.allocationVersion >= 0n && allocation_0.allocationVersion <= 65535n && typeof(allocation_0.target) === 'object' && allocation_0.target.namespaceHash.buffer instanceof ArrayBuffer && allocation_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.namespaceHash.length === 32 && allocation_0.target.templateIdHash.buffer instanceof ArrayBuffer && allocation_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateIdHash.length === 32 && typeof(allocation_0.target.semanticVersion) === 'object' && typeof(allocation_0.target.semanticVersion.major) === 'bigint' && allocation_0.target.semanticVersion.major >= 0n && allocation_0.target.semanticVersion.major <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.minor) === 'bigint' && allocation_0.target.semanticVersion.minor >= 0n && allocation_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.patch) === 'bigint' && allocation_0.target.semanticVersion.patch >= 0n && allocation_0.target.semanticVersion.patch <= 18446744073709551615n && allocation_0.target.templateContentHash.buffer instanceof ArrayBuffer && allocation_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateContentHash.length === 32 && allocation_0.instanceCommitment.buffer instanceof ArrayBuffer && allocation_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.instanceCommitment.length === 32 && allocation_0.instanceIdHash.buffer instanceof ArrayBuffer && allocation_0.instanceIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.instanceIdHash.length === 32 && allocation_0.allocationRequestIdHash.buffer instanceof ArrayBuffer && allocation_0.allocationRequestIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.allocationRequestIdHash.length === 32 && allocation_0.m4AuthorizationCommitment.buffer instanceof ArrayBuffer && allocation_0.m4AuthorizationCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.m4AuthorizationCommitment.length === 32 && allocation_0.allocatorAuthorityCommitment.buffer instanceof ArrayBuffer && allocation_0.allocatorAuthorityCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.allocatorAuthorityCommitment.length === 32 && typeof(allocation_0.capabilityIssuersRoot) === 'object' && typeof(allocation_0.capabilityIssuersRoot.field) === 'bigint' && allocation_0.capabilityIssuersRoot.field >= 0 && allocation_0.capabilityIssuersRoot.field <= __compactRuntime.MAX_FIELD && typeof(allocation_0.capabilityIssuerCount) === 'bigint' && allocation_0.capabilityIssuerCount >= 0n && allocation_0.capabilityIssuerCount <= 4294967295n && allocation_0.initialStateCommitment.buffer instanceof ArrayBuffer && allocation_0.initialStateCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.initialStateCommitment.length === 32 && allocation_0.governancePolicyHash.buffer instanceof ArrayBuffer && allocation_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && allocation_0.governancePolicyHash.length === 32 && typeof(allocation_0.authorityRootVersion) === 'bigint' && allocation_0.authorityRootVersion >= 0n && allocation_0.authorityRootVersion <= 18446744073709551615n && typeof(allocation_0.authorityRootSequence) === 'bigint' && allocation_0.authorityRootSequence >= 0n && allocation_0.authorityRootSequence <= 18446744073709551615n && allocation_0.targetNetworkHash.buffer instanceof ArrayBuffer && allocation_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && allocation_0.targetNetworkHash.length === 32 && allocation_0.targetContractIdentity.buffer instanceof ArrayBuffer && allocation_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && allocation_0.targetContractIdentity.length === 32 && typeof(allocation_0.authorizedAt) === 'bigint' && allocation_0.authorizedAt >= 0n && allocation_0.authorizedAt <= 18446744073709551615n && typeof(allocation_0.createdAt) === 'bigint' && allocation_0.createdAt >= 0n && allocation_0.createdAt <= 18446744073709551615n && typeof(allocation_0.expiresAt) === 'bigint' && allocation_0.expiresAt >= 0n && allocation_0.expiresAt <= 18446744073709551615n && typeof(allocation_0.allocationValidBefore) === 'bigint' && allocation_0.allocationValidBefore >= 0n && allocation_0.allocationValidBefore <= 18446744073709551615n && allocation_0.allocationNonce.buffer instanceof ArrayBuffer && allocation_0.allocationNonce.BYTES_PER_ELEMENT === 1 && allocation_0.allocationNonce.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 9 (argument 10 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeInstanceAllocation<allocationVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, instanceIdHash: Bytes<32>, allocationRequestIdHash: Bytes<32>, m4AuthorizationCommitment: Bytes<32>, allocatorAuthorityCommitment: Bytes<32>, capabilityIssuersRoot: struct MerkleTreeDigest<field: Field>, capabilityIssuerCount: Uint<0..4294967296>, initialStateCommitment: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, authorizedAt: Uint<0..18446744073709551616>, createdAt: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, allocationValidBefore: Uint<0..18446744073709551616>, allocationNonce: Bytes<32>>',
                                      allocation_0)
         }
         if (!(typeof(state_0) === 'object' && typeof(state_0.stateVersion) === 'bigint' && state_0.stateVersion >= 0n && state_0.stateVersion <= 65535n && state_0.instanceCommitment.buffer instanceof ArrayBuffer && state_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && state_0.instanceCommitment.length === 32 && state_0.stateIdHash.buffer instanceof ArrayBuffer && state_0.stateIdHash.BYTES_PER_ELEMENT === 1 && state_0.stateIdHash.length === 32 && typeof(state_0.lastMutationAt) === 'bigint' && state_0.lastMutationAt >= 0n && state_0.lastMutationAt <= 18446744073709551615n && typeof(state_0.slotAssignmentsRoot) === 'object' && typeof(state_0.slotAssignmentsRoot.field) === 'bigint' && state_0.slotAssignmentsRoot.field >= 0 && state_0.slotAssignmentsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotAssignmentCount) === 'bigint' && state_0.slotAssignmentCount >= 0n && state_0.slotAssignmentCount <= 4294967295n && typeof(state_0.slotBindingsRoot) === 'object' && typeof(state_0.slotBindingsRoot.field) === 'bigint' && state_0.slotBindingsRoot.field >= 0 && state_0.slotBindingsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotBindingCount) === 'bigint' && state_0.slotBindingCount >= 0n && state_0.slotBindingCount <= 4294967295n && state_0.nonce.buffer instanceof ArrayBuffer && state_0.nonce.BYTES_PER_ELEMENT === 1 && state_0.nonce.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 10 (argument 11 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeStateOpening<stateVersion: Uint<0..65536>, instanceCommitment: Bytes<32>, stateIdHash: Bytes<32>, lastMutationAt: Uint<0..18446744073709551616>, slotAssignmentsRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentCount: Uint<0..4294967296>, slotBindingsRoot: struct MerkleTreeDigest<field: Field>, slotBindingCount: Uint<0..4294967296>, nonce: Bytes<32>>',
                                      state_0)
         }
         if (!(typeof(policy_0) === 'object' && typeof(policy_0.policyVersion) === 'bigint' && policy_0.policyVersion >= 0n && policy_0.policyVersion <= 65535n && typeof(policy_0.target) === 'object' && policy_0.target.namespaceHash.buffer instanceof ArrayBuffer && policy_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && policy_0.target.namespaceHash.length === 32 && policy_0.target.templateIdHash.buffer instanceof ArrayBuffer && policy_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateIdHash.length === 32 && typeof(policy_0.target.semanticVersion) === 'object' && typeof(policy_0.target.semanticVersion.major) === 'bigint' && policy_0.target.semanticVersion.major >= 0n && policy_0.target.semanticVersion.major <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.minor) === 'bigint' && policy_0.target.semanticVersion.minor >= 0n && policy_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.patch) === 'bigint' && policy_0.target.semanticVersion.patch >= 0n && policy_0.target.semanticVersion.patch <= 18446744073709551615n && policy_0.target.templateContentHash.buffer instanceof ArrayBuffer && policy_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateContentHash.length === 32 && typeof(policy_0.actionIndex) === 'bigint' && policy_0.actionIndex >= 0n && policy_0.actionIndex <= 4294967295n && policy_0.bindingActionIdHash.buffer instanceof ArrayBuffer && policy_0.bindingActionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.bindingActionIdHash.length === 32 && policy_0.actionIdHash.buffer instanceof ArrayBuffer && policy_0.actionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actionIdHash.length === 32 && policy_0.proofProfileIdHash.buffer instanceof ArrayBuffer && policy_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && policy_0.proofProfileIdHash.length === 32 && policy_0.proofFamilyHash.buffer instanceof ArrayBuffer && policy_0.proofFamilyHash.BYTES_PER_ELEMENT === 1 && policy_0.proofFamilyHash.length === 32 && policy_0.contextHash.buffer instanceof ArrayBuffer && policy_0.contextHash.BYTES_PER_ELEMENT === 1 && policy_0.contextHash.length === 32 && policy_0.actorSlotIdHash.buffer instanceof ArrayBuffer && policy_0.actorSlotIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actorSlotIdHash.length === 32 && typeof(policy_0.slotAssignmentRulesRoot) === 'object' && typeof(policy_0.slotAssignmentRulesRoot.field) === 'bigint' && policy_0.slotAssignmentRulesRoot.field >= 0 && policy_0.slotAssignmentRulesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.slotAssignmentRuleCount) === 'bigint' && policy_0.slotAssignmentRuleCount >= 0n && policy_0.slotAssignmentRuleCount <= 4294967295n && policy_0.initialStateIdHash.buffer instanceof ArrayBuffer && policy_0.initialStateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.initialStateIdHash.length === 32 && policy_0.resourceSelectorHash.buffer instanceof ArrayBuffer && policy_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && policy_0.resourceSelectorHash.length === 32 && policy_0.purposeHash.buffer instanceof ArrayBuffer && policy_0.purposeHash.BYTES_PER_ELEMENT === 1 && policy_0.purposeHash.length === 32 && policy_0.recipientKindHash.buffer instanceof ArrayBuffer && policy_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && policy_0.recipientKindHash.length === 32 && policy_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && policy_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && policy_0.disclosurePolicyIdHash.length === 32 && policy_0.capabilityRuleIdHash.buffer instanceof ArrayBuffer && policy_0.capabilityRuleIdHash.BYTES_PER_ELEMENT === 1 && policy_0.capabilityRuleIdHash.length === 32 && typeof(policy_0.maxCapabilityDuration) === 'bigint' && policy_0.maxCapabilityDuration >= 0n && policy_0.maxCapabilityDuration <= 18446744073709551615n && typeof(policy_0.maxDelegationDepth) === 'bigint' && policy_0.maxDelegationDepth >= 0n && policy_0.maxDelegationDepth <= 255n && typeof(policy_0.revocable) === 'boolean' && policy_0.inputRecordTypesHash.buffer instanceof ArrayBuffer && policy_0.inputRecordTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.inputRecordTypesHash.length === 32 && policy_0.outputClaimTypesHash.buffer instanceof ArrayBuffer && policy_0.outputClaimTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.outputClaimTypesHash.length === 32 && typeof(policy_0.inputRecordTypesRoot) === 'object' && typeof(policy_0.inputRecordTypesRoot.field) === 'bigint' && policy_0.inputRecordTypesRoot.field >= 0 && policy_0.inputRecordTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.inputRecordTypeCount) === 'bigint' && policy_0.inputRecordTypeCount >= 0n && policy_0.inputRecordTypeCount <= 4294967295n && typeof(policy_0.outputClaimTypesRoot) === 'object' && typeof(policy_0.outputClaimTypesRoot.field) === 'bigint' && policy_0.outputClaimTypesRoot.field >= 0 && policy_0.outputClaimTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.outputClaimTypeCount) === 'bigint' && policy_0.outputClaimTypeCount >= 0n && policy_0.outputClaimTypeCount <= 4294967295n && policy_0.executionAdapterHash.buffer instanceof ArrayBuffer && policy_0.executionAdapterHash.BYTES_PER_ELEMENT === 1 && policy_0.executionAdapterHash.length === 32 && typeof(policy_0.transitionRoot) === 'object' && typeof(policy_0.transitionRoot.field) === 'bigint' && policy_0.transitionRoot.field >= 0 && policy_0.transitionRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.transitionCount) === 'bigint' && policy_0.transitionCount >= 0n && policy_0.transitionCount <= 4294967295n)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 11 (argument 12 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeTemplateActionPolicy<policyVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, actionIndex: Uint<0..4294967296>, bindingActionIdHash: Bytes<32>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, proofFamilyHash: Bytes<32>, contextHash: Bytes<32>, actorSlotIdHash: Bytes<32>, slotAssignmentRulesRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentRuleCount: Uint<0..4294967296>, initialStateIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, capabilityRuleIdHash: Bytes<32>, maxCapabilityDuration: Uint<0..18446744073709551616>, maxDelegationDepth: Uint<0..256>, revocable: Boolean, inputRecordTypesHash: Bytes<32>, outputClaimTypesHash: Bytes<32>, inputRecordTypesRoot: struct MerkleTreeDigest<field: Field>, inputRecordTypeCount: Uint<0..4294967296>, outputClaimTypesRoot: struct MerkleTreeDigest<field: Field>, outputClaimTypeCount: Uint<0..4294967296>, executionAdapterHash: Bytes<32>, transitionRoot: struct MerkleTreeDigest<field: Field>, transitionCount: Uint<0..4294967296>>',
                                      policy_0)
         }
         if (!(typeof(binding_0) === 'object' && typeof(binding_0.bindingVersion) === 'bigint' && binding_0.bindingVersion >= 0n && binding_0.bindingVersion <= 65535n && typeof(binding_0.actionIndex) === 'bigint' && binding_0.actionIndex >= 0n && binding_0.actionIndex <= 4294967295n && binding_0.actionIdHash.buffer instanceof ArrayBuffer && binding_0.actionIdHash.BYTES_PER_ELEMENT === 1 && binding_0.actionIdHash.length === 32 && binding_0.proofProfileIdHash.buffer instanceof ArrayBuffer && binding_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && binding_0.proofProfileIdHash.length === 32 && binding_0.moduleIdHash.buffer instanceof ArrayBuffer && binding_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && binding_0.moduleIdHash.length === 32 && typeof(binding_0.moduleVersion) === 'object' && typeof(binding_0.moduleVersion.major) === 'bigint' && binding_0.moduleVersion.major >= 0n && binding_0.moduleVersion.major <= 18446744073709551615n && typeof(binding_0.moduleVersion.minor) === 'bigint' && binding_0.moduleVersion.minor >= 0n && binding_0.moduleVersion.minor <= 18446744073709551615n && typeof(binding_0.moduleVersion.patch) === 'bigint' && binding_0.moduleVersion.patch >= 0n && binding_0.moduleVersion.patch <= 18446744073709551615n && binding_0.implementationHash.buffer instanceof ArrayBuffer && binding_0.implementationHash.BYTES_PER_ELEMENT === 1 && binding_0.implementationHash.length === 32 && binding_0.configurationHash.buffer instanceof ArrayBuffer && binding_0.configurationHash.BYTES_PER_ELEMENT === 1 && binding_0.configurationHash.length === 32 && binding_0.receiptSchemaHash.buffer instanceof ArrayBuffer && binding_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && binding_0.receiptSchemaHash.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 12 (argument 13 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct ProofModuleBinding<bindingVersion: Uint<0..65536>, actionIndex: Uint<0..4294967296>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>, configurationHash: Bytes<32>, receiptSchemaHash: Bytes<32>>',
                                      binding_0)
         }
         if (!(typeof(bindingPath_0) === 'object' && bindingPath_0.leaf.buffer instanceof ArrayBuffer && bindingPath_0.leaf.BYTES_PER_ELEMENT === 1 && bindingPath_0.leaf.length === 32 && Array.isArray(bindingPath_0.path) && bindingPath_0.path.length === 20 && bindingPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 13 (argument 14 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      bindingPath_0)
         }
         if (!(typeof(progress_0) === 'object' && typeof(progress_0.slot) === 'object' && typeof(progress_0.slot.phase) === 'bigint' && progress_0.slot.phase >= 0n && progress_0.slot.phase <= 255n && progress_0.slot.nextAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.nextAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.nextAssignmentIdHash.length === 32 && progress_0.slot.expectedAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.expectedAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.expectedAccountCommitment.length === 32 && typeof(progress_0.slot.childIssuedSequence) === 'bigint' && progress_0.slot.childIssuedSequence >= 0n && progress_0.slot.childIssuedSequence <= 18446744073709551615n && progress_0.slot.previousBindingAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAssignmentIdHash.length === 32 && progress_0.slot.previousBindingAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAccountCommitment.length === 32 && typeof(progress_0.slot.inactive) === 'boolean' && typeof(progress_0.slot.steps) === 'bigint' && progress_0.slot.steps >= 0n && progress_0.slot.steps <= 4294967295n && typeof(progress_0.nextInputIndex) === 'bigint' && progress_0.nextInputIndex >= 0n && progress_0.nextInputIndex <= 4294967295n && typeof(progress_0.nextOutputIndex) === 'bigint' && progress_0.nextOutputIndex >= 0n && progress_0.nextOutputIndex <= 4294967295n && progress_0.inputsAccumulator.buffer instanceof ArrayBuffer && progress_0.inputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.inputsAccumulator.length === 32 && progress_0.outputsAccumulator.buffer instanceof ArrayBuffer && progress_0.outputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.outputsAccumulator.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 14 (argument 15 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeActionProgress<slot: struct RuntimeSlotProgress<phase: Uint<0..256>, nextAssignmentIdHash: Bytes<32>, expectedAccountCommitment: Bytes<32>, childIssuedSequence: Uint<0..18446744073709551616>, previousBindingAssignmentIdHash: Bytes<32>, previousBindingAccountCommitment: Bytes<32>, inactive: Boolean, steps: Uint<0..4294967296>>, nextInputIndex: Uint<0..4294967296>, nextOutputIndex: Uint<0..4294967296>, inputsAccumulator: Bytes<32>, outputsAccumulator: Bytes<32>>',
                                      progress_0)
         }
         if (!(typeof(issuer_0) === 'object' && typeof(issuer_0.leafVersion) === 'bigint' && issuer_0.leafVersion >= 0n && issuer_0.leafVersion <= 65535n && issuer_0.namespaceHash.buffer instanceof ArrayBuffer && issuer_0.namespaceHash.BYTES_PER_ELEMENT === 1 && issuer_0.namespaceHash.length === 32 && issuer_0.governancePolicyHash.buffer instanceof ArrayBuffer && issuer_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && issuer_0.governancePolicyHash.length === 32 && typeof(issuer_0.authorityKind) === 'bigint' && issuer_0.authorityKind >= 0n && issuer_0.authorityKind <= 65535n && true && typeof(issuer_0.validAfter) === 'bigint' && issuer_0.validAfter >= 0n && issuer_0.validAfter <= 18446744073709551615n && typeof(issuer_0.validBefore) === 'bigint' && issuer_0.validBefore >= 0n && issuer_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 15 (argument 16 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      issuer_0)
         }
         if (!(typeof(instanceIssuerPath_0) === 'object' && instanceIssuerPath_0.leaf.buffer instanceof ArrayBuffer && instanceIssuerPath_0.leaf.BYTES_PER_ELEMENT === 1 && instanceIssuerPath_0.leaf.length === 32 && Array.isArray(instanceIssuerPath_0.path) && instanceIssuerPath_0.path.length === 20 && instanceIssuerPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 16 (argument 17 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      instanceIssuerPath_0)
         }
         if (!(typeof(namespaceIssuerPath_0) === 'object' && namespaceIssuerPath_0.leaf.buffer instanceof ArrayBuffer && namespaceIssuerPath_0.leaf.BYTES_PER_ELEMENT === 1 && namespaceIssuerPath_0.leaf.length === 32 && Array.isArray(namespaceIssuerPath_0.path) && namespaceIssuerPath_0.path.length === 20 && namespaceIssuerPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 17 (argument 18 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      namespaceIssuerPath_0)
         }
         if (!(typeof(transition_0) === 'object' && typeof(transition_0.transitionVersion) === 'bigint' && transition_0.transitionVersion >= 0n && transition_0.transitionVersion <= 65535n && transition_0.actionIdHash.buffer instanceof ArrayBuffer && transition_0.actionIdHash.BYTES_PER_ELEMENT === 1 && transition_0.actionIdHash.length === 32 && transition_0.fromStateIdHash.buffer instanceof ArrayBuffer && transition_0.fromStateIdHash.BYTES_PER_ELEMENT === 1 && transition_0.fromStateIdHash.length === 32 && transition_0.toStateIdHash.buffer instanceof ArrayBuffer && transition_0.toStateIdHash.BYTES_PER_ELEMENT === 1 && transition_0.toStateIdHash.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 18 (argument 19 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct RuntimeTemplateTransition<transitionVersion: Uint<0..65536>, actionIdHash: Bytes<32>, fromStateIdHash: Bytes<32>, toStateIdHash: Bytes<32>>',
                                      transition_0)
         }
         if (!(typeof(transitionPath_0) === 'object' && transitionPath_0.leaf.buffer instanceof ArrayBuffer && transitionPath_0.leaf.BYTES_PER_ELEMENT === 1 && transitionPath_0.leaf.length === 32 && Array.isArray(transitionPath_0.path) && transitionPath_0.path.length === 20 && transitionPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 19 (argument 20 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      transitionPath_0)
         }
         if (!(nextStateIdHash_0.buffer instanceof ArrayBuffer && nextStateIdHash_0.BYTES_PER_ELEMENT === 1 && nextStateIdHash_0.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 20 (argument 21 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'Bytes<32>',
                                      nextStateIdHash_0)
         }
         if (!(nextNonce_0.buffer instanceof ArrayBuffer && nextNonce_0.BYTES_PER_ELEMENT === 1 && nextNonce_0.length === 32)) {
           __compactRuntime.typeError('executeRuntimeAction',
                                      'argument 21 (argument 22 as invoked from Typescript)',
-                                     'runtime-action-execution.compact line 326 char 1',
+                                     'runtime-action-execution.compact line 334 char 1',
                                      'Bytes<32>',
                                      nextNonce_0)
         }
         const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
         const partialProofData = {
           input: {
-            value: _descriptor_59.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_69.toValue(ancestry_0).concat(_descriptor_21.toValue(sessionSignature_0).concat(_descriptor_21.toValue(intentSignature_0).concat(_descriptor_70.toValue(capabilityPaths_0).concat(_descriptor_70.toValue(sessionPaths_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_71.toValue(policy_0).concat(_descriptor_37.toValue(binding_0).concat(_descriptor_25.toValue(bindingPath_0).concat(_descriptor_73.toValue(progress_0).concat(_descriptor_22.toValue(issuer_0).concat(_descriptor_25.toValue(instanceIssuerPath_0).concat(_descriptor_25.toValue(namespaceIssuerPath_0).concat(_descriptor_74.toValue(transition_0).concat(_descriptor_25.toValue(transitionPath_0).concat(_descriptor_1.toValue(nextStateIdHash_0).concat(_descriptor_1.toValue(nextNonce_0))))))))))))))))))))),
-            alignment: _descriptor_59.alignment().concat(_descriptor_21.alignment().concat(_descriptor_53.alignment().concat(_descriptor_69.alignment().concat(_descriptor_21.alignment().concat(_descriptor_21.alignment().concat(_descriptor_70.alignment().concat(_descriptor_70.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_71.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_73.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_74.alignment().concat(_descriptor_25.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()))))))))))))))))))))
+            value: _descriptor_58.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_74.toValue(ancestry_0).concat(_descriptor_21.toValue(sessionSignature_0).concat(_descriptor_21.toValue(intentSignature_0).concat(_descriptor_75.toValue(capabilityPaths_0).concat(_descriptor_75.toValue(sessionPaths_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_59.toValue(policy_0).concat(_descriptor_37.toValue(binding_0).concat(_descriptor_25.toValue(bindingPath_0).concat(_descriptor_77.toValue(progress_0).concat(_descriptor_22.toValue(issuer_0).concat(_descriptor_25.toValue(instanceIssuerPath_0).concat(_descriptor_25.toValue(namespaceIssuerPath_0).concat(_descriptor_78.toValue(transition_0).concat(_descriptor_25.toValue(transitionPath_0).concat(_descriptor_1.toValue(nextStateIdHash_0).concat(_descriptor_1.toValue(nextNonce_0))))))))))))))))))))),
+            alignment: _descriptor_58.alignment().concat(_descriptor_21.alignment().concat(_descriptor_53.alignment().concat(_descriptor_74.alignment().concat(_descriptor_21.alignment().concat(_descriptor_21.alignment().concat(_descriptor_75.alignment().concat(_descriptor_75.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_59.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_77.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_78.alignment().concat(_descriptor_25.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment()))))))))))))))))))))
           },
           output: undefined,
           publicTranscript: [],
@@ -3161,6 +3216,267 @@ export class Contract {
                                                       nextNonce_0);
         partialProofData.output = { value: _descriptor_1.toValue(result_0), alignment: _descriptor_1.alignment() };
         return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+      },
+      executeRuntimeEvidenceBridge: (...args_1) => {
+        if (args_1.length !== 24) {
+          throw new __compactRuntime.CompactError(`executeRuntimeEvidenceBridge: expected 24 arguments (as invoked from Typescript), received ${args_1.length}`);
+        }
+        const contextOrig_0 = args_1[0];
+        const command_0 = args_1[1];
+        const signature_0 = args_1[2];
+        const intent_0 = args_1[3];
+        const ancestry_0 = args_1[4];
+        const sessionSignature_0 = args_1[5];
+        const intentSignature_0 = args_1[6];
+        const capabilityPaths_0 = args_1[7];
+        const sessionPaths_0 = args_1[8];
+        const allocation_0 = args_1[9];
+        const state_0 = args_1[10];
+        const policy_0 = args_1[11];
+        const binding_0 = args_1[12];
+        const bindingPath_0 = args_1[13];
+        const progress_0 = args_1[14];
+        const issuer_0 = args_1[15];
+        const instanceIssuerPath_0 = args_1[16];
+        const namespaceIssuerPath_0 = args_1[17];
+        const transition_0 = args_1[18];
+        const transitionPath_0 = args_1[19];
+        const nextStateIdHash_0 = args_1[20];
+        const nextNonce_0 = args_1[21];
+        const opening_0 = args_1[22];
+        const outputTypeHash_0 = args_1[23];
+        if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 1 (as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'CircuitContext',
+                                     contextOrig_0)
+        }
+        if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.intentCommitment.buffer instanceof ArrayBuffer && command_0.intentCommitment.BYTES_PER_ELEMENT === 1 && command_0.intentCommitment.length === 32 && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.stateCommitment.buffer instanceof ArrayBuffer && command_0.stateCommitment.BYTES_PER_ELEMENT === 1 && command_0.stateCommitment.length === 32 && typeof(command_0.stateSequence) === 'bigint' && command_0.stateSequence >= 0n && command_0.stateSequence <= 18446744073709551615n && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.statusRootSequence) === 'bigint' && command_0.statusRootSequence >= 0n && command_0.statusRootSequence <= 18446744073709551615n && command_0.policyCommitment.buffer instanceof ArrayBuffer && command_0.policyCommitment.BYTES_PER_ELEMENT === 1 && command_0.policyCommitment.length === 32 && command_0.bindingCommitment.buffer instanceof ArrayBuffer && command_0.bindingCommitment.BYTES_PER_ELEMENT === 1 && command_0.bindingCommitment.length === 32 && command_0.slotAssignmentIdHash.buffer instanceof ArrayBuffer && command_0.slotAssignmentIdHash.BYTES_PER_ELEMENT === 1 && command_0.slotAssignmentIdHash.length === 32 && command_0.selectedInputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedInputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedInputsCommitment.length === 32 && command_0.selectedOutputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedOutputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedOutputsCommitment.length === 32 && command_0.nextStateCommitment.buffer instanceof ArrayBuffer && command_0.nextStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextStateCommitment.length === 32 && typeof(command_0.transitioning) === 'boolean' && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.validBefore) === 'bigint' && command_0.validBefore >= 0n && command_0.validBefore <= 18446744073709551615n)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 1 (argument 2 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActionCommand<commandVersion: Uint<0..65536>, intentCommitment: Bytes<32>, allocationCommitment: Bytes<32>, stateCommitment: Bytes<32>, stateSequence: Uint<0..18446744073709551616>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, statusRootSequence: Uint<0..18446744073709551616>, policyCommitment: Bytes<32>, bindingCommitment: Bytes<32>, slotAssignmentIdHash: Bytes<32>, selectedInputsCommitment: Bytes<32>, selectedOutputsCommitment: Bytes<32>, nextStateCommitment: Bytes<32>, transitioning: Boolean, effectiveAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
+                                     command_0)
+        }
+        if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 2 (argument 3 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
+                                     signature_0)
+        }
+        if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 3 (argument 4 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
+                                     intent_0)
+        }
+        if (!(typeof(ancestry_0) === 'object' && typeof(ancestry_0.witnessVersion) === 'bigint' && ancestry_0.witnessVersion >= 0n && ancestry_0.witnessVersion <= 65535n && typeof(ancestry_0.capabilityCount) === 'bigint' && ancestry_0.capabilityCount >= 0n && ancestry_0.capabilityCount <= 255n && Array.isArray(ancestry_0.capabilities) && ancestry_0.capabilities.length === 17 && ancestry_0.capabilities.every((t) => typeof(t) === 'object' && typeof(t.credentialVersion) === 'bigint' && t.credentialVersion >= 0n && t.credentialVersion <= 65535n && typeof(t.target) === 'object' && t.target.namespaceHash.buffer instanceof ArrayBuffer && t.target.namespaceHash.BYTES_PER_ELEMENT === 1 && t.target.namespaceHash.length === 32 && t.target.templateIdHash.buffer instanceof ArrayBuffer && t.target.templateIdHash.BYTES_PER_ELEMENT === 1 && t.target.templateIdHash.length === 32 && typeof(t.target.semanticVersion) === 'object' && typeof(t.target.semanticVersion.major) === 'bigint' && t.target.semanticVersion.major >= 0n && t.target.semanticVersion.major <= 18446744073709551615n && typeof(t.target.semanticVersion.minor) === 'bigint' && t.target.semanticVersion.minor >= 0n && t.target.semanticVersion.minor <= 18446744073709551615n && typeof(t.target.semanticVersion.patch) === 'bigint' && t.target.semanticVersion.patch >= 0n && t.target.semanticVersion.patch <= 18446744073709551615n && t.target.templateContentHash.buffer instanceof ArrayBuffer && t.target.templateContentHash.BYTES_PER_ELEMENT === 1 && t.target.templateContentHash.length === 32 && t.instanceCommitment.buffer instanceof ArrayBuffer && t.instanceCommitment.BYTES_PER_ELEMENT === 1 && t.instanceCommitment.length === 32 && t.contextHash.buffer instanceof ArrayBuffer && t.contextHash.BYTES_PER_ELEMENT === 1 && t.contextHash.length === 32 && t.grantIdHash.buffer instanceof ArrayBuffer && t.grantIdHash.BYTES_PER_ELEMENT === 1 && t.grantIdHash.length === 32 && t.m5GrantCommitment.buffer instanceof ArrayBuffer && t.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && t.m5GrantCommitment.length === 32 && t.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && t.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.subjectAccountCredentialCommitment.length === 32 && t.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && t.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.parentCapabilityCredentialCommitment.length === 32 && t.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && t.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && t.issuerAccountCredentialCommitment.length === 32 && t.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && t.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && t.namespaceIssuerAuthorityCommitment.length === 32 && typeof(t.scopeRoots) === 'object' && typeof(t.scopeRoots.actionsRoot) === 'object' && typeof(t.scopeRoots.actionsRoot.field) === 'bigint' && t.scopeRoots.actionsRoot.field >= 0 && t.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(t.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && t.scopeRoots.resourceSelectorsRoot.field >= 0 && t.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.resourcesRoot) === 'object' && typeof(t.scopeRoots.resourcesRoot.field) === 'bigint' && t.scopeRoots.resourcesRoot.field >= 0 && t.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.purposesRoot) === 'object' && typeof(t.scopeRoots.purposesRoot.field) === 'bigint' && t.scopeRoots.purposesRoot.field >= 0 && t.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.recipientKindsRoot) === 'object' && typeof(t.scopeRoots.recipientKindsRoot.field) === 'bigint' && t.scopeRoots.recipientKindsRoot.field >= 0 && t.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.recipientsRoot) === 'object' && typeof(t.scopeRoots.recipientsRoot.field) === 'bigint' && t.scopeRoots.recipientsRoot.field >= 0 && t.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(t.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && t.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && t.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(t.scopeCounts) === 'object' && typeof(t.scopeCounts.actionsCount) === 'bigint' && t.scopeCounts.actionsCount >= 0n && t.scopeCounts.actionsCount <= 4294967295n && typeof(t.scopeCounts.resourceSelectorsCount) === 'bigint' && t.scopeCounts.resourceSelectorsCount >= 0n && t.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(t.scopeCounts.resourcesCount) === 'bigint' && t.scopeCounts.resourcesCount >= 0n && t.scopeCounts.resourcesCount <= 4294967295n && typeof(t.scopeCounts.purposesCount) === 'bigint' && t.scopeCounts.purposesCount >= 0n && t.scopeCounts.purposesCount <= 4294967295n && typeof(t.scopeCounts.recipientKindsCount) === 'bigint' && t.scopeCounts.recipientKindsCount >= 0n && t.scopeCounts.recipientKindsCount <= 4294967295n && typeof(t.scopeCounts.recipientsCount) === 'bigint' && t.scopeCounts.recipientsCount >= 0n && t.scopeCounts.recipientsCount <= 4294967295n && typeof(t.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && t.scopeCounts.disclosurePolicyIdsCount >= 0n && t.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(t.notBefore) === 'bigint' && t.notBefore >= 0n && t.notBefore <= 18446744073709551615n && typeof(t.expiresAt) === 'bigint' && t.expiresAt >= 0n && t.expiresAt <= 18446744073709551615n && typeof(t.delegationDepth) === 'bigint' && t.delegationDepth >= 0n && t.delegationDepth <= 65535n && typeof(t.maxDelegationDepth) === 'bigint' && t.maxDelegationDepth >= 0n && t.maxDelegationDepth <= 65535n && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 18446744073709551615n && typeof(t.issuedAt) === 'bigint' && t.issuedAt >= 0n && t.issuedAt <= 18446744073709551615n) && Array.isArray(ancestry_0.accounts) && ancestry_0.accounts.length === 17 && ancestry_0.accounts.every((t) => typeof(t) === 'object' && typeof(t.credentialVersion) === 'bigint' && t.credentialVersion >= 0n && t.credentialVersion <= 65535n && typeof(t.target) === 'object' && t.target.namespaceHash.buffer instanceof ArrayBuffer && t.target.namespaceHash.BYTES_PER_ELEMENT === 1 && t.target.namespaceHash.length === 32 && t.target.templateIdHash.buffer instanceof ArrayBuffer && t.target.templateIdHash.BYTES_PER_ELEMENT === 1 && t.target.templateIdHash.length === 32 && typeof(t.target.semanticVersion) === 'object' && typeof(t.target.semanticVersion.major) === 'bigint' && t.target.semanticVersion.major >= 0n && t.target.semanticVersion.major <= 18446744073709551615n && typeof(t.target.semanticVersion.minor) === 'bigint' && t.target.semanticVersion.minor >= 0n && t.target.semanticVersion.minor <= 18446744073709551615n && typeof(t.target.semanticVersion.patch) === 'bigint' && t.target.semanticVersion.patch >= 0n && t.target.semanticVersion.patch <= 18446744073709551615n && t.target.templateContentHash.buffer instanceof ArrayBuffer && t.target.templateContentHash.BYTES_PER_ELEMENT === 1 && t.target.templateContentHash.length === 32 && t.instanceCommitment.buffer instanceof ArrayBuffer && t.instanceCommitment.BYTES_PER_ELEMENT === 1 && t.instanceCommitment.length === 32 && t.contextHash.buffer instanceof ArrayBuffer && t.contextHash.BYTES_PER_ELEMENT === 1 && t.contextHash.length === 32 && t.accountIdHash.buffer instanceof ArrayBuffer && t.accountIdHash.BYTES_PER_ELEMENT === 1 && t.accountIdHash.length === 32 && typeof(t.principalKind) === 'bigint' && t.principalKind >= 0n && t.principalKind <= 65535n && t.m5AccountCommitment.buffer instanceof ArrayBuffer && t.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && t.m5AccountCommitment.length === 32 && true && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 18446744073709551615n && typeof(t.issuedAt) === 'bigint' && t.issuedAt >= 0n && t.issuedAt <= 18446744073709551615n && typeof(t.validBefore) === 'bigint' && t.validBefore >= 0n && t.validBefore <= 18446744073709551615n) && typeof(ancestry_0.session) === 'object' && typeof(ancestry_0.session.credentialVersion) === 'bigint' && ancestry_0.session.credentialVersion >= 0n && ancestry_0.session.credentialVersion <= 65535n && typeof(ancestry_0.session.target) === 'object' && ancestry_0.session.target.namespaceHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.namespaceHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.namespaceHash.length === 32 && ancestry_0.session.target.templateIdHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.templateIdHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.templateIdHash.length === 32 && typeof(ancestry_0.session.target.semanticVersion) === 'object' && typeof(ancestry_0.session.target.semanticVersion.major) === 'bigint' && ancestry_0.session.target.semanticVersion.major >= 0n && ancestry_0.session.target.semanticVersion.major <= 18446744073709551615n && typeof(ancestry_0.session.target.semanticVersion.minor) === 'bigint' && ancestry_0.session.target.semanticVersion.minor >= 0n && ancestry_0.session.target.semanticVersion.minor <= 18446744073709551615n && typeof(ancestry_0.session.target.semanticVersion.patch) === 'bigint' && ancestry_0.session.target.semanticVersion.patch >= 0n && ancestry_0.session.target.semanticVersion.patch <= 18446744073709551615n && ancestry_0.session.target.templateContentHash.buffer instanceof ArrayBuffer && ancestry_0.session.target.templateContentHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.target.templateContentHash.length === 32 && ancestry_0.session.instanceCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.instanceCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.instanceCommitment.length === 32 && ancestry_0.session.contextHash.buffer instanceof ArrayBuffer && ancestry_0.session.contextHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.contextHash.length === 32 && ancestry_0.session.sessionIdHash.buffer instanceof ArrayBuffer && ancestry_0.session.sessionIdHash.BYTES_PER_ELEMENT === 1 && ancestry_0.session.sessionIdHash.length === 32 && ancestry_0.session.m5SessionCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.m5SessionCommitment.length === 32 && ancestry_0.session.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.subjectAccountCredentialCommitment.length === 32 && ancestry_0.session.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && ancestry_0.session.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && ancestry_0.session.capabilityCredentialCommitment.length === 32 && typeof(ancestry_0.session.scopeRoots) === 'object' && typeof(ancestry_0.session.scopeRoots.actionsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.actionsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.actionsRoot.field >= 0 && ancestry_0.session.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.resourceSelectorsRoot.field >= 0 && ancestry_0.session.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.resourcesRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.resourcesRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.resourcesRoot.field >= 0 && ancestry_0.session.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.purposesRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.purposesRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.purposesRoot.field >= 0 && ancestry_0.session.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.recipientKindsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.recipientKindsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.recipientKindsRoot.field >= 0 && ancestry_0.session.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.recipientsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.recipientsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.recipientsRoot.field >= 0 && ancestry_0.session.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && ancestry_0.session.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(ancestry_0.session.scopeCounts) === 'object' && typeof(ancestry_0.session.scopeCounts.actionsCount) === 'bigint' && ancestry_0.session.scopeCounts.actionsCount >= 0n && ancestry_0.session.scopeCounts.actionsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.resourceSelectorsCount) === 'bigint' && ancestry_0.session.scopeCounts.resourceSelectorsCount >= 0n && ancestry_0.session.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.resourcesCount) === 'bigint' && ancestry_0.session.scopeCounts.resourcesCount >= 0n && ancestry_0.session.scopeCounts.resourcesCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.purposesCount) === 'bigint' && ancestry_0.session.scopeCounts.purposesCount >= 0n && ancestry_0.session.scopeCounts.purposesCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.recipientKindsCount) === 'bigint' && ancestry_0.session.scopeCounts.recipientKindsCount >= 0n && ancestry_0.session.scopeCounts.recipientKindsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.recipientsCount) === 'bigint' && ancestry_0.session.scopeCounts.recipientsCount >= 0n && ancestry_0.session.scopeCounts.recipientsCount <= 4294967295n && typeof(ancestry_0.session.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && ancestry_0.session.scopeCounts.disclosurePolicyIdsCount >= 0n && ancestry_0.session.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(ancestry_0.session.notBefore) === 'bigint' && ancestry_0.session.notBefore >= 0n && ancestry_0.session.notBefore <= 18446744073709551615n && typeof(ancestry_0.session.expiresAt) === 'bigint' && ancestry_0.session.expiresAt >= 0n && ancestry_0.session.expiresAt <= 18446744073709551615n && typeof(ancestry_0.session.statusIndex) === 'bigint' && ancestry_0.session.statusIndex >= 0n && ancestry_0.session.statusIndex <= 18446744073709551615n && typeof(ancestry_0.session.issuedAt) === 'bigint' && ancestry_0.session.issuedAt >= 0n && ancestry_0.session.issuedAt <= 18446744073709551615n && typeof(ancestry_0.statusProof) === 'object' && typeof(ancestry_0.statusProof.witnessVersion) === 'bigint' && ancestry_0.statusProof.witnessVersion >= 0n && ancestry_0.statusProof.witnessVersion <= 65535n && typeof(ancestry_0.statusProof.rootSequence) === 'bigint' && ancestry_0.statusProof.rootSequence >= 0n && ancestry_0.statusProof.rootSequence <= 18446744073709551615n && typeof(ancestry_0.statusProof.leafCount) === 'bigint' && ancestry_0.statusProof.leafCount >= 0n && ancestry_0.statusProof.leafCount <= 255n && Array.isArray(ancestry_0.statusProof.leaves) && ancestry_0.statusProof.leaves.length === 35 && ancestry_0.statusProof.leaves.every((t) => typeof(t) === 'object' && typeof(t.statusIndex) === 'bigint' && t.statusIndex >= 0n && t.statusIndex <= 1048575n && t.leaf.buffer instanceof ArrayBuffer && t.leaf.BYTES_PER_ELEMENT === 1 && t.leaf.length === 32) && Array.isArray(ancestry_0.statusProof.steps) && ancestry_0.statusProof.steps.length === 588 && ancestry_0.statusProof.steps.every((t) => typeof(t) === 'object' && typeof(t.kind) === 'bigint' && t.kind >= 0n && t.kind <= 255n && typeof(t.leftFromStack) === 'boolean' && typeof(t.rightFromStack) === 'boolean' && typeof(t.left) === 'object' && typeof(t.left.level) === 'bigint' && t.left.level >= 0n && t.left.level <= 255n && typeof(t.left.index) === 'bigint' && t.left.index >= 0n && t.left.index <= 1048575n && typeof(t.left.digest) === 'object' && typeof(t.left.digest.field) === 'bigint' && t.left.digest.field >= 0 && t.left.digest.field <= __compactRuntime.MAX_FIELD && typeof(t.right) === 'object' && typeof(t.right.level) === 'bigint' && t.right.level >= 0n && t.right.level <= 255n && typeof(t.right.index) === 'bigint' && t.right.index >= 0n && t.right.index <= 1048575n && typeof(t.right.digest) === 'object' && typeof(t.right.digest.field) === 'bigint' && t.right.digest.field >= 0 && t.right.digest.field <= __compactRuntime.MAX_FIELD && typeof(t.parentIndex) === 'bigint' && t.parentIndex >= 0n && t.parentIndex <= 1048575n && typeof(t.stackTail) === 'bigint' && t.stackTail >= 0 && t.stackTail <= __compactRuntime.MAX_FIELD))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 4 (argument 5 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActiveAncestry<witnessVersion: Uint<0..65536>, capabilityCount: Uint<0..256>, capabilities: Vector<17, struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>>, accounts: Vector<17, struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>>, session: struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>, statusProof: struct RuntimeStatusMultiproof<witnessVersion: Uint<0..65536>, rootSequence: Uint<0..18446744073709551616>, leafCount: Uint<0..256>, leaves: Vector<35, struct RuntimeStatusMembership<statusIndex: Uint<0..1048576>, leaf: Bytes<32>>>, steps: Vector<588, struct RuntimeStatusProofStep<kind: Uint<0..256>, leftFromStack: Boolean, rightFromStack: Boolean, left: struct RuntimeStatusProofNode<level: Uint<0..256>, index: Uint<0..1048576>, digest: struct MerkleTreeDigest<field: Field>>, right: struct RuntimeStatusProofNode<level: Uint<0..256>, index: Uint<0..1048576>, digest: struct MerkleTreeDigest<field: Field>>, parentIndex: Uint<0..1048576>, stackTail: Field>>>>',
+                                     ancestry_0)
+        }
+        if (!(typeof(sessionSignature_0) === 'object' && true && typeof(sessionSignature_0.response) === 'bigint' && sessionSignature_0.response >= 0 && sessionSignature_0.response <= __compactRuntime.MAX_FIELD)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 5 (argument 6 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
+                                     sessionSignature_0)
+        }
+        if (!(typeof(intentSignature_0) === 'object' && true && typeof(intentSignature_0.response) === 'bigint' && intentSignature_0.response >= 0 && intentSignature_0.response <= __compactRuntime.MAX_FIELD)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 6 (argument 7 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
+                                     intentSignature_0)
+        }
+        if (!(typeof(capabilityPaths_0) === 'object' && typeof(capabilityPaths_0.actions) === 'object' && capabilityPaths_0.actions.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.actions.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.actions.leaf.length === 32 && Array.isArray(capabilityPaths_0.actions.path) && capabilityPaths_0.actions.path.length === 20 && capabilityPaths_0.actions.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.resourceSelectors) === 'object' && capabilityPaths_0.resourceSelectors.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.resourceSelectors.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.resourceSelectors.leaf.length === 32 && Array.isArray(capabilityPaths_0.resourceSelectors.path) && capabilityPaths_0.resourceSelectors.path.length === 20 && capabilityPaths_0.resourceSelectors.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.resources) === 'object' && capabilityPaths_0.resources.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.resources.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.resources.leaf.length === 32 && Array.isArray(capabilityPaths_0.resources.path) && capabilityPaths_0.resources.path.length === 20 && capabilityPaths_0.resources.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.purposes) === 'object' && capabilityPaths_0.purposes.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.purposes.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.purposes.leaf.length === 32 && Array.isArray(capabilityPaths_0.purposes.path) && capabilityPaths_0.purposes.path.length === 20 && capabilityPaths_0.purposes.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.recipientKinds) === 'object' && capabilityPaths_0.recipientKinds.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.recipientKinds.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.recipientKinds.leaf.length === 32 && Array.isArray(capabilityPaths_0.recipientKinds.path) && capabilityPaths_0.recipientKinds.path.length === 20 && capabilityPaths_0.recipientKinds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.recipients) === 'object' && capabilityPaths_0.recipients.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.recipients.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.recipients.leaf.length === 32 && Array.isArray(capabilityPaths_0.recipients.path) && capabilityPaths_0.recipients.path.length === 20 && capabilityPaths_0.recipients.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(capabilityPaths_0.disclosurePolicyIds) === 'object' && capabilityPaths_0.disclosurePolicyIds.leaf.buffer instanceof ArrayBuffer && capabilityPaths_0.disclosurePolicyIds.leaf.BYTES_PER_ELEMENT === 1 && capabilityPaths_0.disclosurePolicyIds.leaf.length === 32 && Array.isArray(capabilityPaths_0.disclosurePolicyIds.path) && capabilityPaths_0.disclosurePolicyIds.path.length === 20 && capabilityPaths_0.disclosurePolicyIds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 7 (argument 8 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActionScopePaths<actions: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resourceSelectors: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resources: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, purposes: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipientKinds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipients: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, disclosurePolicyIds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
+                                     capabilityPaths_0)
+        }
+        if (!(typeof(sessionPaths_0) === 'object' && typeof(sessionPaths_0.actions) === 'object' && sessionPaths_0.actions.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.actions.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.actions.leaf.length === 32 && Array.isArray(sessionPaths_0.actions.path) && sessionPaths_0.actions.path.length === 20 && sessionPaths_0.actions.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.resourceSelectors) === 'object' && sessionPaths_0.resourceSelectors.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.resourceSelectors.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.resourceSelectors.leaf.length === 32 && Array.isArray(sessionPaths_0.resourceSelectors.path) && sessionPaths_0.resourceSelectors.path.length === 20 && sessionPaths_0.resourceSelectors.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.resources) === 'object' && sessionPaths_0.resources.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.resources.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.resources.leaf.length === 32 && Array.isArray(sessionPaths_0.resources.path) && sessionPaths_0.resources.path.length === 20 && sessionPaths_0.resources.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.purposes) === 'object' && sessionPaths_0.purposes.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.purposes.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.purposes.leaf.length === 32 && Array.isArray(sessionPaths_0.purposes.path) && sessionPaths_0.purposes.path.length === 20 && sessionPaths_0.purposes.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.recipientKinds) === 'object' && sessionPaths_0.recipientKinds.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.recipientKinds.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.recipientKinds.leaf.length === 32 && Array.isArray(sessionPaths_0.recipientKinds.path) && sessionPaths_0.recipientKinds.path.length === 20 && sessionPaths_0.recipientKinds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.recipients) === 'object' && sessionPaths_0.recipients.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.recipients.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.recipients.leaf.length === 32 && Array.isArray(sessionPaths_0.recipients.path) && sessionPaths_0.recipients.path.length === 20 && sessionPaths_0.recipients.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(sessionPaths_0.disclosurePolicyIds) === 'object' && sessionPaths_0.disclosurePolicyIds.leaf.buffer instanceof ArrayBuffer && sessionPaths_0.disclosurePolicyIds.leaf.BYTES_PER_ELEMENT === 1 && sessionPaths_0.disclosurePolicyIds.leaf.length === 32 && Array.isArray(sessionPaths_0.disclosurePolicyIds.path) && sessionPaths_0.disclosurePolicyIds.path.length === 20 && sessionPaths_0.disclosurePolicyIds.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 8 (argument 9 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActionScopePaths<actions: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resourceSelectors: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, resources: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, purposes: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipientKinds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, recipients: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, disclosurePolicyIds: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
+                                     sessionPaths_0)
+        }
+        if (!(typeof(allocation_0) === 'object' && typeof(allocation_0.allocationVersion) === 'bigint' && allocation_0.allocationVersion >= 0n && allocation_0.allocationVersion <= 65535n && typeof(allocation_0.target) === 'object' && allocation_0.target.namespaceHash.buffer instanceof ArrayBuffer && allocation_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.namespaceHash.length === 32 && allocation_0.target.templateIdHash.buffer instanceof ArrayBuffer && allocation_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateIdHash.length === 32 && typeof(allocation_0.target.semanticVersion) === 'object' && typeof(allocation_0.target.semanticVersion.major) === 'bigint' && allocation_0.target.semanticVersion.major >= 0n && allocation_0.target.semanticVersion.major <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.minor) === 'bigint' && allocation_0.target.semanticVersion.minor >= 0n && allocation_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(allocation_0.target.semanticVersion.patch) === 'bigint' && allocation_0.target.semanticVersion.patch >= 0n && allocation_0.target.semanticVersion.patch <= 18446744073709551615n && allocation_0.target.templateContentHash.buffer instanceof ArrayBuffer && allocation_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && allocation_0.target.templateContentHash.length === 32 && allocation_0.instanceCommitment.buffer instanceof ArrayBuffer && allocation_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.instanceCommitment.length === 32 && allocation_0.instanceIdHash.buffer instanceof ArrayBuffer && allocation_0.instanceIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.instanceIdHash.length === 32 && allocation_0.allocationRequestIdHash.buffer instanceof ArrayBuffer && allocation_0.allocationRequestIdHash.BYTES_PER_ELEMENT === 1 && allocation_0.allocationRequestIdHash.length === 32 && allocation_0.m4AuthorizationCommitment.buffer instanceof ArrayBuffer && allocation_0.m4AuthorizationCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.m4AuthorizationCommitment.length === 32 && allocation_0.allocatorAuthorityCommitment.buffer instanceof ArrayBuffer && allocation_0.allocatorAuthorityCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.allocatorAuthorityCommitment.length === 32 && typeof(allocation_0.capabilityIssuersRoot) === 'object' && typeof(allocation_0.capabilityIssuersRoot.field) === 'bigint' && allocation_0.capabilityIssuersRoot.field >= 0 && allocation_0.capabilityIssuersRoot.field <= __compactRuntime.MAX_FIELD && typeof(allocation_0.capabilityIssuerCount) === 'bigint' && allocation_0.capabilityIssuerCount >= 0n && allocation_0.capabilityIssuerCount <= 4294967295n && allocation_0.initialStateCommitment.buffer instanceof ArrayBuffer && allocation_0.initialStateCommitment.BYTES_PER_ELEMENT === 1 && allocation_0.initialStateCommitment.length === 32 && allocation_0.governancePolicyHash.buffer instanceof ArrayBuffer && allocation_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && allocation_0.governancePolicyHash.length === 32 && typeof(allocation_0.authorityRootVersion) === 'bigint' && allocation_0.authorityRootVersion >= 0n && allocation_0.authorityRootVersion <= 18446744073709551615n && typeof(allocation_0.authorityRootSequence) === 'bigint' && allocation_0.authorityRootSequence >= 0n && allocation_0.authorityRootSequence <= 18446744073709551615n && allocation_0.targetNetworkHash.buffer instanceof ArrayBuffer && allocation_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && allocation_0.targetNetworkHash.length === 32 && allocation_0.targetContractIdentity.buffer instanceof ArrayBuffer && allocation_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && allocation_0.targetContractIdentity.length === 32 && typeof(allocation_0.authorizedAt) === 'bigint' && allocation_0.authorizedAt >= 0n && allocation_0.authorizedAt <= 18446744073709551615n && typeof(allocation_0.createdAt) === 'bigint' && allocation_0.createdAt >= 0n && allocation_0.createdAt <= 18446744073709551615n && typeof(allocation_0.expiresAt) === 'bigint' && allocation_0.expiresAt >= 0n && allocation_0.expiresAt <= 18446744073709551615n && typeof(allocation_0.allocationValidBefore) === 'bigint' && allocation_0.allocationValidBefore >= 0n && allocation_0.allocationValidBefore <= 18446744073709551615n && allocation_0.allocationNonce.buffer instanceof ArrayBuffer && allocation_0.allocationNonce.BYTES_PER_ELEMENT === 1 && allocation_0.allocationNonce.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 9 (argument 10 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeInstanceAllocation<allocationVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, instanceIdHash: Bytes<32>, allocationRequestIdHash: Bytes<32>, m4AuthorizationCommitment: Bytes<32>, allocatorAuthorityCommitment: Bytes<32>, capabilityIssuersRoot: struct MerkleTreeDigest<field: Field>, capabilityIssuerCount: Uint<0..4294967296>, initialStateCommitment: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, authorizedAt: Uint<0..18446744073709551616>, createdAt: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, allocationValidBefore: Uint<0..18446744073709551616>, allocationNonce: Bytes<32>>',
+                                     allocation_0)
+        }
+        if (!(typeof(state_0) === 'object' && typeof(state_0.stateVersion) === 'bigint' && state_0.stateVersion >= 0n && state_0.stateVersion <= 65535n && state_0.instanceCommitment.buffer instanceof ArrayBuffer && state_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && state_0.instanceCommitment.length === 32 && state_0.stateIdHash.buffer instanceof ArrayBuffer && state_0.stateIdHash.BYTES_PER_ELEMENT === 1 && state_0.stateIdHash.length === 32 && typeof(state_0.lastMutationAt) === 'bigint' && state_0.lastMutationAt >= 0n && state_0.lastMutationAt <= 18446744073709551615n && typeof(state_0.slotAssignmentsRoot) === 'object' && typeof(state_0.slotAssignmentsRoot.field) === 'bigint' && state_0.slotAssignmentsRoot.field >= 0 && state_0.slotAssignmentsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotAssignmentCount) === 'bigint' && state_0.slotAssignmentCount >= 0n && state_0.slotAssignmentCount <= 4294967295n && typeof(state_0.slotBindingsRoot) === 'object' && typeof(state_0.slotBindingsRoot.field) === 'bigint' && state_0.slotBindingsRoot.field >= 0 && state_0.slotBindingsRoot.field <= __compactRuntime.MAX_FIELD && typeof(state_0.slotBindingCount) === 'bigint' && state_0.slotBindingCount >= 0n && state_0.slotBindingCount <= 4294967295n && state_0.nonce.buffer instanceof ArrayBuffer && state_0.nonce.BYTES_PER_ELEMENT === 1 && state_0.nonce.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 10 (argument 11 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeStateOpening<stateVersion: Uint<0..65536>, instanceCommitment: Bytes<32>, stateIdHash: Bytes<32>, lastMutationAt: Uint<0..18446744073709551616>, slotAssignmentsRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentCount: Uint<0..4294967296>, slotBindingsRoot: struct MerkleTreeDigest<field: Field>, slotBindingCount: Uint<0..4294967296>, nonce: Bytes<32>>',
+                                     state_0)
+        }
+        if (!(typeof(policy_0) === 'object' && typeof(policy_0.policyVersion) === 'bigint' && policy_0.policyVersion >= 0n && policy_0.policyVersion <= 65535n && typeof(policy_0.target) === 'object' && policy_0.target.namespaceHash.buffer instanceof ArrayBuffer && policy_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && policy_0.target.namespaceHash.length === 32 && policy_0.target.templateIdHash.buffer instanceof ArrayBuffer && policy_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateIdHash.length === 32 && typeof(policy_0.target.semanticVersion) === 'object' && typeof(policy_0.target.semanticVersion.major) === 'bigint' && policy_0.target.semanticVersion.major >= 0n && policy_0.target.semanticVersion.major <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.minor) === 'bigint' && policy_0.target.semanticVersion.minor >= 0n && policy_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(policy_0.target.semanticVersion.patch) === 'bigint' && policy_0.target.semanticVersion.patch >= 0n && policy_0.target.semanticVersion.patch <= 18446744073709551615n && policy_0.target.templateContentHash.buffer instanceof ArrayBuffer && policy_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && policy_0.target.templateContentHash.length === 32 && typeof(policy_0.actionIndex) === 'bigint' && policy_0.actionIndex >= 0n && policy_0.actionIndex <= 4294967295n && policy_0.bindingActionIdHash.buffer instanceof ArrayBuffer && policy_0.bindingActionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.bindingActionIdHash.length === 32 && policy_0.actionIdHash.buffer instanceof ArrayBuffer && policy_0.actionIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actionIdHash.length === 32 && policy_0.proofProfileIdHash.buffer instanceof ArrayBuffer && policy_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && policy_0.proofProfileIdHash.length === 32 && policy_0.proofFamilyHash.buffer instanceof ArrayBuffer && policy_0.proofFamilyHash.BYTES_PER_ELEMENT === 1 && policy_0.proofFamilyHash.length === 32 && policy_0.contextHash.buffer instanceof ArrayBuffer && policy_0.contextHash.BYTES_PER_ELEMENT === 1 && policy_0.contextHash.length === 32 && policy_0.actorSlotIdHash.buffer instanceof ArrayBuffer && policy_0.actorSlotIdHash.BYTES_PER_ELEMENT === 1 && policy_0.actorSlotIdHash.length === 32 && typeof(policy_0.slotAssignmentRulesRoot) === 'object' && typeof(policy_0.slotAssignmentRulesRoot.field) === 'bigint' && policy_0.slotAssignmentRulesRoot.field >= 0 && policy_0.slotAssignmentRulesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.slotAssignmentRuleCount) === 'bigint' && policy_0.slotAssignmentRuleCount >= 0n && policy_0.slotAssignmentRuleCount <= 4294967295n && policy_0.initialStateIdHash.buffer instanceof ArrayBuffer && policy_0.initialStateIdHash.BYTES_PER_ELEMENT === 1 && policy_0.initialStateIdHash.length === 32 && policy_0.resourceSelectorHash.buffer instanceof ArrayBuffer && policy_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && policy_0.resourceSelectorHash.length === 32 && policy_0.purposeHash.buffer instanceof ArrayBuffer && policy_0.purposeHash.BYTES_PER_ELEMENT === 1 && policy_0.purposeHash.length === 32 && policy_0.recipientKindHash.buffer instanceof ArrayBuffer && policy_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && policy_0.recipientKindHash.length === 32 && policy_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && policy_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && policy_0.disclosurePolicyIdHash.length === 32 && policy_0.capabilityRuleIdHash.buffer instanceof ArrayBuffer && policy_0.capabilityRuleIdHash.BYTES_PER_ELEMENT === 1 && policy_0.capabilityRuleIdHash.length === 32 && typeof(policy_0.maxCapabilityDuration) === 'bigint' && policy_0.maxCapabilityDuration >= 0n && policy_0.maxCapabilityDuration <= 18446744073709551615n && typeof(policy_0.maxDelegationDepth) === 'bigint' && policy_0.maxDelegationDepth >= 0n && policy_0.maxDelegationDepth <= 255n && typeof(policy_0.revocable) === 'boolean' && policy_0.inputRecordTypesHash.buffer instanceof ArrayBuffer && policy_0.inputRecordTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.inputRecordTypesHash.length === 32 && policy_0.outputClaimTypesHash.buffer instanceof ArrayBuffer && policy_0.outputClaimTypesHash.BYTES_PER_ELEMENT === 1 && policy_0.outputClaimTypesHash.length === 32 && typeof(policy_0.inputRecordTypesRoot) === 'object' && typeof(policy_0.inputRecordTypesRoot.field) === 'bigint' && policy_0.inputRecordTypesRoot.field >= 0 && policy_0.inputRecordTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.inputRecordTypeCount) === 'bigint' && policy_0.inputRecordTypeCount >= 0n && policy_0.inputRecordTypeCount <= 4294967295n && typeof(policy_0.outputClaimTypesRoot) === 'object' && typeof(policy_0.outputClaimTypesRoot.field) === 'bigint' && policy_0.outputClaimTypesRoot.field >= 0 && policy_0.outputClaimTypesRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.outputClaimTypeCount) === 'bigint' && policy_0.outputClaimTypeCount >= 0n && policy_0.outputClaimTypeCount <= 4294967295n && policy_0.executionAdapterHash.buffer instanceof ArrayBuffer && policy_0.executionAdapterHash.BYTES_PER_ELEMENT === 1 && policy_0.executionAdapterHash.length === 32 && typeof(policy_0.transitionRoot) === 'object' && typeof(policy_0.transitionRoot.field) === 'bigint' && policy_0.transitionRoot.field >= 0 && policy_0.transitionRoot.field <= __compactRuntime.MAX_FIELD && typeof(policy_0.transitionCount) === 'bigint' && policy_0.transitionCount >= 0n && policy_0.transitionCount <= 4294967295n)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 11 (argument 12 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeTemplateActionPolicy<policyVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, actionIndex: Uint<0..4294967296>, bindingActionIdHash: Bytes<32>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, proofFamilyHash: Bytes<32>, contextHash: Bytes<32>, actorSlotIdHash: Bytes<32>, slotAssignmentRulesRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentRuleCount: Uint<0..4294967296>, initialStateIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, capabilityRuleIdHash: Bytes<32>, maxCapabilityDuration: Uint<0..18446744073709551616>, maxDelegationDepth: Uint<0..256>, revocable: Boolean, inputRecordTypesHash: Bytes<32>, outputClaimTypesHash: Bytes<32>, inputRecordTypesRoot: struct MerkleTreeDigest<field: Field>, inputRecordTypeCount: Uint<0..4294967296>, outputClaimTypesRoot: struct MerkleTreeDigest<field: Field>, outputClaimTypeCount: Uint<0..4294967296>, executionAdapterHash: Bytes<32>, transitionRoot: struct MerkleTreeDigest<field: Field>, transitionCount: Uint<0..4294967296>>',
+                                     policy_0)
+        }
+        if (!(typeof(binding_0) === 'object' && typeof(binding_0.bindingVersion) === 'bigint' && binding_0.bindingVersion >= 0n && binding_0.bindingVersion <= 65535n && typeof(binding_0.actionIndex) === 'bigint' && binding_0.actionIndex >= 0n && binding_0.actionIndex <= 4294967295n && binding_0.actionIdHash.buffer instanceof ArrayBuffer && binding_0.actionIdHash.BYTES_PER_ELEMENT === 1 && binding_0.actionIdHash.length === 32 && binding_0.proofProfileIdHash.buffer instanceof ArrayBuffer && binding_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && binding_0.proofProfileIdHash.length === 32 && binding_0.moduleIdHash.buffer instanceof ArrayBuffer && binding_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && binding_0.moduleIdHash.length === 32 && typeof(binding_0.moduleVersion) === 'object' && typeof(binding_0.moduleVersion.major) === 'bigint' && binding_0.moduleVersion.major >= 0n && binding_0.moduleVersion.major <= 18446744073709551615n && typeof(binding_0.moduleVersion.minor) === 'bigint' && binding_0.moduleVersion.minor >= 0n && binding_0.moduleVersion.minor <= 18446744073709551615n && typeof(binding_0.moduleVersion.patch) === 'bigint' && binding_0.moduleVersion.patch >= 0n && binding_0.moduleVersion.patch <= 18446744073709551615n && binding_0.implementationHash.buffer instanceof ArrayBuffer && binding_0.implementationHash.BYTES_PER_ELEMENT === 1 && binding_0.implementationHash.length === 32 && binding_0.configurationHash.buffer instanceof ArrayBuffer && binding_0.configurationHash.BYTES_PER_ELEMENT === 1 && binding_0.configurationHash.length === 32 && binding_0.receiptSchemaHash.buffer instanceof ArrayBuffer && binding_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && binding_0.receiptSchemaHash.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 12 (argument 13 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct ProofModuleBinding<bindingVersion: Uint<0..65536>, actionIndex: Uint<0..4294967296>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>, configurationHash: Bytes<32>, receiptSchemaHash: Bytes<32>>',
+                                     binding_0)
+        }
+        if (!(typeof(bindingPath_0) === 'object' && bindingPath_0.leaf.buffer instanceof ArrayBuffer && bindingPath_0.leaf.BYTES_PER_ELEMENT === 1 && bindingPath_0.leaf.length === 32 && Array.isArray(bindingPath_0.path) && bindingPath_0.path.length === 20 && bindingPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 13 (argument 14 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
+                                     bindingPath_0)
+        }
+        if (!(typeof(progress_0) === 'object' && typeof(progress_0.slot) === 'object' && typeof(progress_0.slot.phase) === 'bigint' && progress_0.slot.phase >= 0n && progress_0.slot.phase <= 255n && progress_0.slot.nextAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.nextAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.nextAssignmentIdHash.length === 32 && progress_0.slot.expectedAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.expectedAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.expectedAccountCommitment.length === 32 && typeof(progress_0.slot.childIssuedSequence) === 'bigint' && progress_0.slot.childIssuedSequence >= 0n && progress_0.slot.childIssuedSequence <= 18446744073709551615n && progress_0.slot.previousBindingAssignmentIdHash.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAssignmentIdHash.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAssignmentIdHash.length === 32 && progress_0.slot.previousBindingAccountCommitment.buffer instanceof ArrayBuffer && progress_0.slot.previousBindingAccountCommitment.BYTES_PER_ELEMENT === 1 && progress_0.slot.previousBindingAccountCommitment.length === 32 && typeof(progress_0.slot.inactive) === 'boolean' && typeof(progress_0.slot.steps) === 'bigint' && progress_0.slot.steps >= 0n && progress_0.slot.steps <= 4294967295n && typeof(progress_0.nextInputIndex) === 'bigint' && progress_0.nextInputIndex >= 0n && progress_0.nextInputIndex <= 4294967295n && typeof(progress_0.nextOutputIndex) === 'bigint' && progress_0.nextOutputIndex >= 0n && progress_0.nextOutputIndex <= 4294967295n && progress_0.inputsAccumulator.buffer instanceof ArrayBuffer && progress_0.inputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.inputsAccumulator.length === 32 && progress_0.outputsAccumulator.buffer instanceof ArrayBuffer && progress_0.outputsAccumulator.BYTES_PER_ELEMENT === 1 && progress_0.outputsAccumulator.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 14 (argument 15 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeActionProgress<slot: struct RuntimeSlotProgress<phase: Uint<0..256>, nextAssignmentIdHash: Bytes<32>, expectedAccountCommitment: Bytes<32>, childIssuedSequence: Uint<0..18446744073709551616>, previousBindingAssignmentIdHash: Bytes<32>, previousBindingAccountCommitment: Bytes<32>, inactive: Boolean, steps: Uint<0..4294967296>>, nextInputIndex: Uint<0..4294967296>, nextOutputIndex: Uint<0..4294967296>, inputsAccumulator: Bytes<32>, outputsAccumulator: Bytes<32>>',
+                                     progress_0)
+        }
+        if (!(typeof(issuer_0) === 'object' && typeof(issuer_0.leafVersion) === 'bigint' && issuer_0.leafVersion >= 0n && issuer_0.leafVersion <= 65535n && issuer_0.namespaceHash.buffer instanceof ArrayBuffer && issuer_0.namespaceHash.BYTES_PER_ELEMENT === 1 && issuer_0.namespaceHash.length === 32 && issuer_0.governancePolicyHash.buffer instanceof ArrayBuffer && issuer_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && issuer_0.governancePolicyHash.length === 32 && typeof(issuer_0.authorityKind) === 'bigint' && issuer_0.authorityKind >= 0n && issuer_0.authorityKind <= 65535n && true && typeof(issuer_0.validAfter) === 'bigint' && issuer_0.validAfter >= 0n && issuer_0.validAfter <= 18446744073709551615n && typeof(issuer_0.validBefore) === 'bigint' && issuer_0.validBefore >= 0n && issuer_0.validBefore <= 18446744073709551615n)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 15 (argument 16 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
+                                     issuer_0)
+        }
+        if (!(typeof(instanceIssuerPath_0) === 'object' && instanceIssuerPath_0.leaf.buffer instanceof ArrayBuffer && instanceIssuerPath_0.leaf.BYTES_PER_ELEMENT === 1 && instanceIssuerPath_0.leaf.length === 32 && Array.isArray(instanceIssuerPath_0.path) && instanceIssuerPath_0.path.length === 20 && instanceIssuerPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 16 (argument 17 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
+                                     instanceIssuerPath_0)
+        }
+        if (!(typeof(namespaceIssuerPath_0) === 'object' && namespaceIssuerPath_0.leaf.buffer instanceof ArrayBuffer && namespaceIssuerPath_0.leaf.BYTES_PER_ELEMENT === 1 && namespaceIssuerPath_0.leaf.length === 32 && Array.isArray(namespaceIssuerPath_0.path) && namespaceIssuerPath_0.path.length === 20 && namespaceIssuerPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 17 (argument 18 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
+                                     namespaceIssuerPath_0)
+        }
+        if (!(typeof(transition_0) === 'object' && typeof(transition_0.transitionVersion) === 'bigint' && transition_0.transitionVersion >= 0n && transition_0.transitionVersion <= 65535n && transition_0.actionIdHash.buffer instanceof ArrayBuffer && transition_0.actionIdHash.BYTES_PER_ELEMENT === 1 && transition_0.actionIdHash.length === 32 && transition_0.fromStateIdHash.buffer instanceof ArrayBuffer && transition_0.fromStateIdHash.BYTES_PER_ELEMENT === 1 && transition_0.fromStateIdHash.length === 32 && transition_0.toStateIdHash.buffer instanceof ArrayBuffer && transition_0.toStateIdHash.BYTES_PER_ELEMENT === 1 && transition_0.toStateIdHash.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 18 (argument 19 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeTemplateTransition<transitionVersion: Uint<0..65536>, actionIdHash: Bytes<32>, fromStateIdHash: Bytes<32>, toStateIdHash: Bytes<32>>',
+                                     transition_0)
+        }
+        if (!(typeof(transitionPath_0) === 'object' && transitionPath_0.leaf.buffer instanceof ArrayBuffer && transitionPath_0.leaf.BYTES_PER_ELEMENT === 1 && transitionPath_0.leaf.length === 32 && Array.isArray(transitionPath_0.path) && transitionPath_0.path.length === 20 && transitionPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 19 (argument 20 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
+                                     transitionPath_0)
+        }
+        if (!(nextStateIdHash_0.buffer instanceof ArrayBuffer && nextStateIdHash_0.BYTES_PER_ELEMENT === 1 && nextStateIdHash_0.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 20 (argument 21 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'Bytes<32>',
+                                     nextStateIdHash_0)
+        }
+        if (!(nextNonce_0.buffer instanceof ArrayBuffer && nextNonce_0.BYTES_PER_ELEMENT === 1 && nextNonce_0.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 21 (argument 22 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'Bytes<32>',
+                                     nextNonce_0)
+        }
+        if (!(typeof(opening_0) === 'object' && typeof(opening_0.bindingVersion) === 'bigint' && opening_0.bindingVersion >= 0n && opening_0.bindingVersion <= 65535n && opening_0.sourceContextHash.buffer instanceof ArrayBuffer && opening_0.sourceContextHash.BYTES_PER_ELEMENT === 1 && opening_0.sourceContextHash.length === 32 && opening_0.sourceInstanceCommitment.buffer instanceof ArrayBuffer && opening_0.sourceInstanceCommitment.BYTES_PER_ELEMENT === 1 && opening_0.sourceInstanceCommitment.length === 32 && opening_0.destinationContextCommitment.buffer instanceof ArrayBuffer && opening_0.destinationContextCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationContextCommitment.length === 32 && opening_0.destinationCaseCommitment.buffer instanceof ArrayBuffer && opening_0.destinationCaseCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationCaseCommitment.length === 32 && opening_0.purposeHash.buffer instanceof ArrayBuffer && opening_0.purposeHash.BYTES_PER_ELEMENT === 1 && opening_0.purposeHash.length === 32 && opening_0.permittedUseHash.buffer instanceof ArrayBuffer && opening_0.permittedUseHash.BYTES_PER_ELEMENT === 1 && opening_0.permittedUseHash.length === 32 && typeof(opening_0.expiresAt) === 'bigint' && opening_0.expiresAt >= 0n && opening_0.expiresAt <= 18446744073709551615n && opening_0.nonce.buffer instanceof ArrayBuffer && opening_0.nonce.BYTES_PER_ELEMENT === 1 && opening_0.nonce.length === 32 && opening_0.recipientKeyFingerprint.buffer instanceof ArrayBuffer && opening_0.recipientKeyFingerprint.BYTES_PER_ELEMENT === 1 && opening_0.recipientKeyFingerprint.length === 32 && opening_0.manifestRoot.buffer instanceof ArrayBuffer && opening_0.manifestRoot.BYTES_PER_ELEMENT === 1 && opening_0.manifestRoot.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 22 (argument 23 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'struct RuntimeEvidenceBridgeOpening<bindingVersion: Uint<0..65536>, sourceContextHash: Bytes<32>, sourceInstanceCommitment: Bytes<32>, destinationContextCommitment: Bytes<32>, destinationCaseCommitment: Bytes<32>, purposeHash: Bytes<32>, permittedUseHash: Bytes<32>, expiresAt: Uint<0..18446744073709551616>, nonce: Bytes<32>, recipientKeyFingerprint: Bytes<32>, manifestRoot: Bytes<32>>',
+                                     opening_0)
+        }
+        if (!(outputTypeHash_0.buffer instanceof ArrayBuffer && outputTypeHash_0.BYTES_PER_ELEMENT === 1 && outputTypeHash_0.length === 32)) {
+          __compactRuntime.typeError('executeRuntimeEvidenceBridge',
+                                     'argument 23 (argument 24 as invoked from Typescript)',
+                                     'runtime-action-execution.compact line 354 char 1',
+                                     'Bytes<32>',
+                                     outputTypeHash_0)
+        }
+        const context = { ...contextOrig_0, gasCost: __compactRuntime.emptyRunningCost() };
+        const partialProofData = {
+          input: {
+            value: _descriptor_58.toValue(command_0).concat(_descriptor_21.toValue(signature_0).concat(_descriptor_53.toValue(intent_0).concat(_descriptor_74.toValue(ancestry_0).concat(_descriptor_21.toValue(sessionSignature_0).concat(_descriptor_21.toValue(intentSignature_0).concat(_descriptor_75.toValue(capabilityPaths_0).concat(_descriptor_75.toValue(sessionPaths_0).concat(_descriptor_31.toValue(allocation_0).concat(_descriptor_32.toValue(state_0).concat(_descriptor_59.toValue(policy_0).concat(_descriptor_37.toValue(binding_0).concat(_descriptor_25.toValue(bindingPath_0).concat(_descriptor_77.toValue(progress_0).concat(_descriptor_22.toValue(issuer_0).concat(_descriptor_25.toValue(instanceIssuerPath_0).concat(_descriptor_25.toValue(namespaceIssuerPath_0).concat(_descriptor_78.toValue(transition_0).concat(_descriptor_25.toValue(transitionPath_0).concat(_descriptor_1.toValue(nextStateIdHash_0).concat(_descriptor_1.toValue(nextNonce_0).concat(_descriptor_60.toValue(opening_0).concat(_descriptor_1.toValue(outputTypeHash_0))))))))))))))))))))))),
+            alignment: _descriptor_58.alignment().concat(_descriptor_21.alignment().concat(_descriptor_53.alignment().concat(_descriptor_74.alignment().concat(_descriptor_21.alignment().concat(_descriptor_21.alignment().concat(_descriptor_75.alignment().concat(_descriptor_75.alignment().concat(_descriptor_31.alignment().concat(_descriptor_32.alignment().concat(_descriptor_59.alignment().concat(_descriptor_37.alignment().concat(_descriptor_25.alignment().concat(_descriptor_77.alignment().concat(_descriptor_22.alignment().concat(_descriptor_25.alignment().concat(_descriptor_25.alignment().concat(_descriptor_78.alignment().concat(_descriptor_25.alignment().concat(_descriptor_1.alignment().concat(_descriptor_1.alignment().concat(_descriptor_60.alignment().concat(_descriptor_1.alignment()))))))))))))))))))))))
+          },
+          output: undefined,
+          publicTranscript: [],
+          privateTranscriptOutputs: []
+        };
+        const result_0 = this._executeRuntimeEvidenceBridge_0(context,
+                                                              partialProofData,
+                                                              command_0,
+                                                              signature_0,
+                                                              intent_0,
+                                                              ancestry_0,
+                                                              sessionSignature_0,
+                                                              intentSignature_0,
+                                                              capabilityPaths_0,
+                                                              sessionPaths_0,
+                                                              allocation_0,
+                                                              state_0,
+                                                              policy_0,
+                                                              binding_0,
+                                                              bindingPath_0,
+                                                              progress_0,
+                                                              issuer_0,
+                                                              instanceIssuerPath_0,
+                                                              namespaceIssuerPath_0,
+                                                              transition_0,
+                                                              transitionPath_0,
+                                                              nextStateIdHash_0,
+                                                              nextNonce_0,
+                                                              opening_0,
+                                                              outputTypeHash_0);
+        partialProofData.output = { value: _descriptor_1.toValue(result_0), alignment: _descriptor_1.alignment() };
+        return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
+      },
+      runtimeEvidenceBridgeBinding(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeBinding(...args_1), context };
+      },
+      runtimeEvidenceBridgeResourceHash(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeResourceHash(...args_1), context };
+      },
+      runtimeEvidenceBridgeRecipientHash(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeRecipientHash(...args_1), context };
+      },
+      runtimeEvidenceBridgeNonceHash(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeNonceHash(...args_1), context };
+      },
+      runtimeEvidenceBridgeSelectedOutput(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeSelectedOutput(...args_1), context };
+      },
+      runtimeEvidenceBridgeOutputCommitment(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeOutputCommitment(...args_1), context };
+      },
+      runtimeEvidenceBridgeModuleId(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeModuleId(...args_1), context };
+      },
+      runtimeEvidenceBridgeInputSchemaHash(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeInputSchemaHash(...args_1), context };
+      },
+      runtimeEvidenceBridgeImplementationReference(context, ...args_1) {
+        return { result: pureCircuits.runtimeEvidenceBridgeImplementationReference(...args_1), context };
       },
       activationAdmissionMessage(context, ...args_1) {
         return { result: pureCircuits.activationAdmissionMessage(...args_1), context };
@@ -3299,21 +3615,21 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('verifyGovernanceActivationSignature',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 911 char 1',
+                                     'permio-authorization.compact line 912 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('verifyGovernanceActivationSignature',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 911 char 1',
+                                     'permio-authorization.compact line 912 char 1',
                                      'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                      envelope_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('verifyGovernanceActivationSignature',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 911 char 1',
+                                     'permio-authorization.compact line 912 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
@@ -3332,7 +3648,7 @@ export class Contract {
                                                                      envelope_0,
                                                                      signature_0,
                                                                      publicKey_0);
-        partialProofData.output = { value: _descriptor_122.toValue(result_0), alignment: _descriptor_122.alignment() };
+        partialProofData.output = { value: _descriptor_130.toValue(result_0), alignment: _descriptor_130.alignment() };
         return { result: result_0, context: context, proofData: partialProofData, gasCost: context.gasCost };
       },
       proofModuleRegistryKeyFromIdentity(context, ...args_1) {
@@ -3350,14 +3666,14 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('governAuthorization',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 1724 char 1',
+                                     'permio-authorization.compact line 1725 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(input_0) === 'object' && typeof(input_0.operation) === 'bigint' && input_0.operation >= 0n && input_0.operation <= 255n && typeof(input_0.rootUpdate) === 'object' && typeof(input_0.rootUpdate.commandVersion) === 'bigint' && input_0.rootUpdate.commandVersion >= 0n && input_0.rootUpdate.commandVersion <= 65535n && input_0.rootUpdate.namespaceHash.buffer instanceof ArrayBuffer && input_0.rootUpdate.namespaceHash.BYTES_PER_ELEMENT === 1 && input_0.rootUpdate.namespaceHash.length === 32 && input_0.rootUpdate.currentGovernancePolicyHash.buffer instanceof ArrayBuffer && input_0.rootUpdate.currentGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.rootUpdate.currentGovernancePolicyHash.length === 32 && typeof(input_0.rootUpdate.currentRoot) === 'object' && typeof(input_0.rootUpdate.currentRoot.field) === 'bigint' && input_0.rootUpdate.currentRoot.field >= 0 && input_0.rootUpdate.currentRoot.field <= __compactRuntime.MAX_FIELD && typeof(input_0.rootUpdate.currentRootVersion) === 'bigint' && input_0.rootUpdate.currentRootVersion >= 0n && input_0.rootUpdate.currentRootVersion <= 18446744073709551615n && typeof(input_0.rootUpdate.currentRootSequence) === 'bigint' && input_0.rootUpdate.currentRootSequence >= 0n && input_0.rootUpdate.currentRootSequence <= 18446744073709551615n && input_0.rootUpdate.nextGovernancePolicyHash.buffer instanceof ArrayBuffer && input_0.rootUpdate.nextGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.rootUpdate.nextGovernancePolicyHash.length === 32 && typeof(input_0.rootUpdate.nextRoot) === 'object' && typeof(input_0.rootUpdate.nextRoot.field) === 'bigint' && input_0.rootUpdate.nextRoot.field >= 0 && input_0.rootUpdate.nextRoot.field <= __compactRuntime.MAX_FIELD && typeof(input_0.rootUpdate.nextRootVersion) === 'bigint' && input_0.rootUpdate.nextRootVersion >= 0n && input_0.rootUpdate.nextRootVersion <= 18446744073709551615n && typeof(input_0.rootUpdate.nextRootSequence) === 'bigint' && input_0.rootUpdate.nextRootSequence >= 0n && input_0.rootUpdate.nextRootSequence <= 18446744073709551615n && typeof(input_0.rootUpdate.nextModuleReviewThreshold) === 'bigint' && input_0.rootUpdate.nextModuleReviewThreshold >= 0n && input_0.rootUpdate.nextModuleReviewThreshold <= 65535n && typeof(input_0.rootUpdate.nextModuleApprovalThreshold) === 'bigint' && input_0.rootUpdate.nextModuleApprovalThreshold >= 0n && input_0.rootUpdate.nextModuleApprovalThreshold <= 65535n && typeof(input_0.rootUpdate.nextAuthorityRootUpdateThreshold) === 'bigint' && input_0.rootUpdate.nextAuthorityRootUpdateThreshold >= 0n && input_0.rootUpdate.nextAuthorityRootUpdateThreshold <= 65535n && typeof(input_0.rootUpdate.effectiveAt) === 'bigint' && input_0.rootUpdate.effectiveAt >= 0n && input_0.rootUpdate.effectiveAt <= 18446744073709551615n && input_0.rootUpdate.updateNonce.buffer instanceof ArrayBuffer && input_0.rootUpdate.updateNonce.BYTES_PER_ELEMENT === 1 && input_0.rootUpdate.updateNonce.length === 32 && typeof(input_0.proposal) === 'object' && typeof(input_0.proposal.proposalVersion) === 'bigint' && input_0.proposal.proposalVersion >= 0n && input_0.proposal.proposalVersion <= 65535n && typeof(input_0.proposal.identity) === 'object' && input_0.proposal.identity.moduleIdHash.buffer instanceof ArrayBuffer && input_0.proposal.identity.moduleIdHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.identity.moduleIdHash.length === 32 && typeof(input_0.proposal.identity.moduleVersion) === 'object' && typeof(input_0.proposal.identity.moduleVersion.major) === 'bigint' && input_0.proposal.identity.moduleVersion.major >= 0n && input_0.proposal.identity.moduleVersion.major <= 18446744073709551615n && typeof(input_0.proposal.identity.moduleVersion.minor) === 'bigint' && input_0.proposal.identity.moduleVersion.minor >= 0n && input_0.proposal.identity.moduleVersion.minor <= 18446744073709551615n && typeof(input_0.proposal.identity.moduleVersion.patch) === 'bigint' && input_0.proposal.identity.moduleVersion.patch >= 0n && input_0.proposal.identity.moduleVersion.patch <= 18446744073709551615n && input_0.proposal.identity.implementationHash.buffer instanceof ArrayBuffer && input_0.proposal.identity.implementationHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.identity.implementationHash.length === 32 && input_0.proposal.governanceNamespaceHash.buffer instanceof ArrayBuffer && input_0.proposal.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.governanceNamespaceHash.length === 32 && input_0.proposal.governancePolicyHash.buffer instanceof ArrayBuffer && input_0.proposal.governancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.governancePolicyHash.length === 32 && typeof(input_0.proposal.authorityRootVersion) === 'bigint' && input_0.proposal.authorityRootVersion >= 0n && input_0.proposal.authorityRootVersion <= 18446744073709551615n && typeof(input_0.proposal.authorityRootSequence) === 'bigint' && input_0.proposal.authorityRootSequence >= 0n && input_0.proposal.authorityRootSequence <= 18446744073709551615n && input_0.proposal.implementationReferenceHash.buffer instanceof ArrayBuffer && input_0.proposal.implementationReferenceHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.implementationReferenceHash.length === 32 && input_0.proposal.sourceHash.buffer instanceof ArrayBuffer && input_0.proposal.sourceHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.sourceHash.length === 32 && input_0.proposal.inputSchemaHash.buffer instanceof ArrayBuffer && input_0.proposal.inputSchemaHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.inputSchemaHash.length === 32 && input_0.proposal.configurationSchemaHash.buffer instanceof ArrayBuffer && input_0.proposal.configurationSchemaHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.configurationSchemaHash.length === 32 && input_0.proposal.receiptSchemaHash.buffer instanceof ArrayBuffer && input_0.proposal.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.receiptSchemaHash.length === 32 && input_0.proposal.compilerVersionHash.buffer instanceof ArrayBuffer && input_0.proposal.compilerVersionHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.compilerVersionHash.length === 32 && input_0.proposal.compatibilityPolicyHash.buffer instanceof ArrayBuffer && input_0.proposal.compatibilityPolicyHash.BYTES_PER_ELEMENT === 1 && input_0.proposal.compatibilityPolicyHash.length === 32 && typeof(input_0.proposal.proposedAt) === 'bigint' && input_0.proposal.proposedAt >= 0n && input_0.proposal.proposedAt <= 18446744073709551615n && typeof(input_0.review) === 'object' && typeof(input_0.review.reviewVersion) === 'bigint' && input_0.review.reviewVersion >= 0n && input_0.review.reviewVersion <= 65535n && input_0.review.moduleKey.buffer instanceof ArrayBuffer && input_0.review.moduleKey.BYTES_PER_ELEMENT === 1 && input_0.review.moduleKey.length === 32 && input_0.review.proposalCommitment.buffer instanceof ArrayBuffer && input_0.review.proposalCommitment.BYTES_PER_ELEMENT === 1 && input_0.review.proposalCommitment.length === 32 && input_0.review.governanceNamespaceHash.buffer instanceof ArrayBuffer && input_0.review.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && input_0.review.governanceNamespaceHash.length === 32 && input_0.review.governancePolicyHash.buffer instanceof ArrayBuffer && input_0.review.governancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.review.governancePolicyHash.length === 32 && typeof(input_0.review.authorityRootVersion) === 'bigint' && input_0.review.authorityRootVersion >= 0n && input_0.review.authorityRootVersion <= 18446744073709551615n && typeof(input_0.review.authorityRootSequence) === 'bigint' && input_0.review.authorityRootSequence >= 0n && input_0.review.authorityRootSequence <= 18446744073709551615n && typeof(input_0.review.reviewedAt) === 'bigint' && input_0.review.reviewedAt >= 0n && input_0.review.reviewedAt <= 18446744073709551615n && input_0.review.reviewNonce.buffer instanceof ArrayBuffer && input_0.review.reviewNonce.BYTES_PER_ELEMENT === 1 && input_0.review.reviewNonce.length === 32 && typeof(input_0.lifecycle) === 'object' && typeof(input_0.lifecycle.commandVersion) === 'bigint' && input_0.lifecycle.commandVersion >= 0n && input_0.lifecycle.commandVersion <= 65535n && input_0.lifecycle.moduleKey.buffer instanceof ArrayBuffer && input_0.lifecycle.moduleKey.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.moduleKey.length === 32 && input_0.lifecycle.recordCommitment.buffer instanceof ArrayBuffer && input_0.lifecycle.recordCommitment.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.recordCommitment.length === 32 && input_0.lifecycle.governanceNamespaceHash.buffer instanceof ArrayBuffer && input_0.lifecycle.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.governanceNamespaceHash.length === 32 && input_0.lifecycle.governancePolicyHash.buffer instanceof ArrayBuffer && input_0.lifecycle.governancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.governancePolicyHash.length === 32 && typeof(input_0.lifecycle.authorityRootVersion) === 'bigint' && input_0.lifecycle.authorityRootVersion >= 0n && input_0.lifecycle.authorityRootVersion <= 18446744073709551615n && typeof(input_0.lifecycle.authorityRootSequence) === 'bigint' && input_0.lifecycle.authorityRootSequence >= 0n && input_0.lifecycle.authorityRootSequence <= 18446744073709551615n && typeof(input_0.lifecycle.expectedLifecycleStatus) === 'bigint' && input_0.lifecycle.expectedLifecycleStatus >= 0n && input_0.lifecycle.expectedLifecycleStatus <= 255n && typeof(input_0.lifecycle.nextLifecycleStatus) === 'bigint' && input_0.lifecycle.nextLifecycleStatus >= 0n && input_0.lifecycle.nextLifecycleStatus <= 255n && typeof(input_0.lifecycle.effectiveAt) === 'bigint' && input_0.lifecycle.effectiveAt >= 0n && input_0.lifecycle.effectiveAt <= 18446744073709551615n && input_0.lifecycle.reasonHash.buffer instanceof ArrayBuffer && input_0.lifecycle.reasonHash.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.reasonHash.length === 32 && input_0.lifecycle.commandNonce.buffer instanceof ArrayBuffer && input_0.lifecycle.commandNonce.BYTES_PER_ELEMENT === 1 && input_0.lifecycle.commandNonce.length === 32 && typeof(input_0.signature) === 'object' && true && typeof(input_0.signature.response) === 'bigint' && input_0.signature.response >= 0 && input_0.signature.response <= __compactRuntime.MAX_FIELD && typeof(input_0.authority) === 'object' && typeof(input_0.authority.leafVersion) === 'bigint' && input_0.authority.leafVersion >= 0n && input_0.authority.leafVersion <= 65535n && input_0.authority.namespaceHash.buffer instanceof ArrayBuffer && input_0.authority.namespaceHash.BYTES_PER_ELEMENT === 1 && input_0.authority.namespaceHash.length === 32 && input_0.authority.governancePolicyHash.buffer instanceof ArrayBuffer && input_0.authority.governancePolicyHash.BYTES_PER_ELEMENT === 1 && input_0.authority.governancePolicyHash.length === 32 && typeof(input_0.authority.authorityKind) === 'bigint' && input_0.authority.authorityKind >= 0n && input_0.authority.authorityKind <= 65535n && true && typeof(input_0.authority.validAfter) === 'bigint' && input_0.authority.validAfter >= 0n && input_0.authority.validAfter <= 18446744073709551615n && typeof(input_0.authority.validBefore) === 'bigint' && input_0.authority.validBefore >= 0n && input_0.authority.validBefore <= 18446744073709551615n && typeof(input_0.authorityPath) === 'object' && input_0.authorityPath.leaf.buffer instanceof ArrayBuffer && input_0.authorityPath.leaf.BYTES_PER_ELEMENT === 1 && input_0.authorityPath.leaf.length === 32 && Array.isArray(input_0.authorityPath.path) && input_0.authorityPath.path.length === 20 && input_0.authorityPath.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('governAuthorization',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1724 char 1',
+                                     'permio-authorization.compact line 1725 char 1',
                                      'struct GovernanceDispatchInput<operation: Uint<0..256>, rootUpdate: struct AuthorityRootUpdateCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, currentGovernancePolicyHash: Bytes<32>, currentRoot: struct MerkleTreeDigest<field: Field>, currentRootVersion: Uint<0..18446744073709551616>, currentRootSequence: Uint<0..18446744073709551616>, nextGovernancePolicyHash: Bytes<32>, nextRoot: struct MerkleTreeDigest<field: Field>, nextRootVersion: Uint<0..18446744073709551616>, nextRootSequence: Uint<0..18446744073709551616>, nextModuleReviewThreshold: Uint<0..65536>, nextModuleApprovalThreshold: Uint<0..65536>, nextAuthorityRootUpdateThreshold: Uint<0..65536>, effectiveAt: Uint<0..18446744073709551616>, updateNonce: Bytes<32>>, proposal: struct ProofModuleProposal<proposalVersion: Uint<0..65536>, identity: struct ProofModuleIdentity<moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, implementationReferenceHash: Bytes<32>, sourceHash: Bytes<32>, inputSchemaHash: Bytes<32>, configurationSchemaHash: Bytes<32>, receiptSchemaHash: Bytes<32>, compilerVersionHash: Bytes<32>, compatibilityPolicyHash: Bytes<32>, proposedAt: Uint<0..18446744073709551616>>, review: struct ProofModuleReview<reviewVersion: Uint<0..65536>, moduleKey: Bytes<32>, proposalCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, reviewedAt: Uint<0..18446744073709551616>, reviewNonce: Bytes<32>>, lifecycle: struct ProofModuleLifecycleCommand<commandVersion: Uint<0..65536>, moduleKey: Bytes<32>, recordCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>, signature: struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>, authority: struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>, authorityPath: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>>',
                                      input_0)
         }
@@ -3389,35 +3705,35 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('terminateTemplate',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 1851 char 1',
+                                     'permio-authorization.compact line 1852 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.registryKey.buffer instanceof ArrayBuffer && command_0.registryKey.BYTES_PER_ELEMENT === 1 && command_0.registryKey.length === 32 && command_0.recordCommitment.buffer instanceof ArrayBuffer && command_0.recordCommitment.BYTES_PER_ELEMENT === 1 && command_0.recordCommitment.length === 32 && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.expectedLifecycleStatus) === 'bigint' && command_0.expectedLifecycleStatus >= 0n && command_0.expectedLifecycleStatus <= 255n && typeof(command_0.nextLifecycleStatus) === 'bigint' && command_0.nextLifecycleStatus >= 0n && command_0.nextLifecycleStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.effectiveSequence) === 'bigint' && command_0.effectiveSequence >= 0n && command_0.effectiveSequence <= 18446744073709551615n && command_0.reasonHash.buffer instanceof ArrayBuffer && command_0.reasonHash.BYTES_PER_ELEMENT === 1 && command_0.reasonHash.length === 32 && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
           __compactRuntime.typeError('terminateTemplate',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1851 char 1',
+                                     'permio-authorization.compact line 1852 char 1',
                                      'struct TemplateLifecycleCommand<commandVersion: Uint<0..65536>, registryKey: Bytes<32>, recordCommitment: Bytes<32>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, effectiveSequence: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>',
                                      command_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('terminateTemplate',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1851 char 1',
+                                     'permio-authorization.compact line 1852 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(authority_0) === 'object' && typeof(authority_0.leafVersion) === 'bigint' && authority_0.leafVersion >= 0n && authority_0.leafVersion <= 65535n && authority_0.namespaceHash.buffer instanceof ArrayBuffer && authority_0.namespaceHash.BYTES_PER_ELEMENT === 1 && authority_0.namespaceHash.length === 32 && authority_0.governancePolicyHash.buffer instanceof ArrayBuffer && authority_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && authority_0.governancePolicyHash.length === 32 && typeof(authority_0.authorityKind) === 'bigint' && authority_0.authorityKind >= 0n && authority_0.authorityKind <= 65535n && true && typeof(authority_0.validAfter) === 'bigint' && authority_0.validAfter >= 0n && authority_0.validAfter <= 18446744073709551615n && typeof(authority_0.validBefore) === 'bigint' && authority_0.validBefore >= 0n && authority_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('terminateTemplate',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1851 char 1',
+                                     'permio-authorization.compact line 1852 char 1',
                                      'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      authority_0)
         }
         if (!(typeof(authorityPath_0) === 'object' && authorityPath_0.leaf.buffer instanceof ArrayBuffer && authorityPath_0.leaf.BYTES_PER_ELEMENT === 1 && authorityPath_0.leaf.length === 32 && Array.isArray(authorityPath_0.path) && authorityPath_0.path.length === 20 && authorityPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('terminateTemplate',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1851 char 1',
+                                     'permio-authorization.compact line 1852 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      authorityPath_0)
         }
@@ -3452,35 +3768,35 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('beginM4Activation',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 1932 char 1',
+                                     'permio-authorization.compact line 1933 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('beginM4Activation',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1932 char 1',
+                                     'permio-authorization.compact line 1933 char 1',
                                      'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                      envelope_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('beginM4Activation',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1932 char 1',
+                                     'permio-authorization.compact line 1933 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(activator_0) === 'object' && typeof(activator_0.leafVersion) === 'bigint' && activator_0.leafVersion >= 0n && activator_0.leafVersion <= 65535n && activator_0.namespaceHash.buffer instanceof ArrayBuffer && activator_0.namespaceHash.BYTES_PER_ELEMENT === 1 && activator_0.namespaceHash.length === 32 && activator_0.governancePolicyHash.buffer instanceof ArrayBuffer && activator_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && activator_0.governancePolicyHash.length === 32 && typeof(activator_0.authorityKind) === 'bigint' && activator_0.authorityKind >= 0n && activator_0.authorityKind <= 65535n && true && typeof(activator_0.validAfter) === 'bigint' && activator_0.validAfter >= 0n && activator_0.validAfter <= 18446744073709551615n && typeof(activator_0.validBefore) === 'bigint' && activator_0.validBefore >= 0n && activator_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('beginM4Activation',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1932 char 1',
+                                     'permio-authorization.compact line 1933 char 1',
                                      'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      activator_0)
         }
         if (!(typeof(authorityPath_0) === 'object' && authorityPath_0.leaf.buffer instanceof ArrayBuffer && authorityPath_0.leaf.BYTES_PER_ELEMENT === 1 && authorityPath_0.leaf.length === 32 && Array.isArray(authorityPath_0.path) && authorityPath_0.path.length === 20 && authorityPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('beginM4Activation',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1932 char 1',
+                                     'permio-authorization.compact line 1933 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      authorityPath_0)
         }
@@ -3514,28 +3830,28 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('stageM4ActivationBinding',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 1993 char 1',
+                                     'permio-authorization.compact line 1994 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(registryKey_0.buffer instanceof ArrayBuffer && registryKey_0.BYTES_PER_ELEMENT === 1 && registryKey_0.length === 32)) {
           __compactRuntime.typeError('stageM4ActivationBinding',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1993 char 1',
+                                     'permio-authorization.compact line 1994 char 1',
                                      'Bytes<32>',
                                      registryKey_0)
         }
         if (!(typeof(binding_0) === 'object' && typeof(binding_0.bindingVersion) === 'bigint' && binding_0.bindingVersion >= 0n && binding_0.bindingVersion <= 65535n && typeof(binding_0.actionIndex) === 'bigint' && binding_0.actionIndex >= 0n && binding_0.actionIndex <= 4294967295n && binding_0.actionIdHash.buffer instanceof ArrayBuffer && binding_0.actionIdHash.BYTES_PER_ELEMENT === 1 && binding_0.actionIdHash.length === 32 && binding_0.proofProfileIdHash.buffer instanceof ArrayBuffer && binding_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && binding_0.proofProfileIdHash.length === 32 && binding_0.moduleIdHash.buffer instanceof ArrayBuffer && binding_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && binding_0.moduleIdHash.length === 32 && typeof(binding_0.moduleVersion) === 'object' && typeof(binding_0.moduleVersion.major) === 'bigint' && binding_0.moduleVersion.major >= 0n && binding_0.moduleVersion.major <= 18446744073709551615n && typeof(binding_0.moduleVersion.minor) === 'bigint' && binding_0.moduleVersion.minor >= 0n && binding_0.moduleVersion.minor <= 18446744073709551615n && typeof(binding_0.moduleVersion.patch) === 'bigint' && binding_0.moduleVersion.patch >= 0n && binding_0.moduleVersion.patch <= 18446744073709551615n && binding_0.implementationHash.buffer instanceof ArrayBuffer && binding_0.implementationHash.BYTES_PER_ELEMENT === 1 && binding_0.implementationHash.length === 32 && binding_0.configurationHash.buffer instanceof ArrayBuffer && binding_0.configurationHash.BYTES_PER_ELEMENT === 1 && binding_0.configurationHash.length === 32 && binding_0.receiptSchemaHash.buffer instanceof ArrayBuffer && binding_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && binding_0.receiptSchemaHash.length === 32)) {
           __compactRuntime.typeError('stageM4ActivationBinding',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1993 char 1',
+                                     'permio-authorization.compact line 1994 char 1',
                                      'struct ProofModuleBinding<bindingVersion: Uint<0..65536>, actionIndex: Uint<0..4294967296>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>, configurationHash: Bytes<32>, receiptSchemaHash: Bytes<32>>',
                                      binding_0)
         }
         if (!(typeof(bindingPath_0) === 'object' && bindingPath_0.leaf.buffer instanceof ArrayBuffer && bindingPath_0.leaf.BYTES_PER_ELEMENT === 1 && bindingPath_0.leaf.length === 32 && Array.isArray(bindingPath_0.path) && bindingPath_0.path.length === 20 && bindingPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('stageM4ActivationBinding',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'permio-authorization.compact line 1993 char 1',
+                                     'permio-authorization.compact line 1994 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      bindingPath_0)
         }
@@ -3569,35 +3885,35 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('finalizeM4Activation',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 2067 char 1',
+                                     'permio-authorization.compact line 2068 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('finalizeM4Activation',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2067 char 1',
+                                     'permio-authorization.compact line 2068 char 1',
                                      'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                      envelope_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('finalizeM4Activation',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2067 char 1',
+                                     'permio-authorization.compact line 2068 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(activator_0) === 'object' && typeof(activator_0.leafVersion) === 'bigint' && activator_0.leafVersion >= 0n && activator_0.leafVersion <= 65535n && activator_0.namespaceHash.buffer instanceof ArrayBuffer && activator_0.namespaceHash.BYTES_PER_ELEMENT === 1 && activator_0.namespaceHash.length === 32 && activator_0.governancePolicyHash.buffer instanceof ArrayBuffer && activator_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && activator_0.governancePolicyHash.length === 32 && typeof(activator_0.authorityKind) === 'bigint' && activator_0.authorityKind >= 0n && activator_0.authorityKind <= 65535n && true && typeof(activator_0.validAfter) === 'bigint' && activator_0.validAfter >= 0n && activator_0.validAfter <= 18446744073709551615n && typeof(activator_0.validBefore) === 'bigint' && activator_0.validBefore >= 0n && activator_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('finalizeM4Activation',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2067 char 1',
+                                     'permio-authorization.compact line 2068 char 1',
                                      'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      activator_0)
         }
         if (!(typeof(authorityPath_0) === 'object' && authorityPath_0.leaf.buffer instanceof ArrayBuffer && authorityPath_0.leaf.BYTES_PER_ELEMENT === 1 && authorityPath_0.leaf.length === 32 && Array.isArray(authorityPath_0.path) && authorityPath_0.path.length === 20 && authorityPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('finalizeM4Activation',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2067 char 1',
+                                     'permio-authorization.compact line 2068 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      authorityPath_0)
         }
@@ -3646,133 +3962,133 @@ export class Contract {
         if (!(typeof(contextOrig_0) === 'object' && contextOrig_0.currentQueryContext != undefined)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 1 (as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'CircuitContext',
                                      contextOrig_0)
         }
         if (!(typeof(operation_0) === 'bigint' && operation_0 >= 0n && operation_0 <= 255n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 1 (argument 2 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'Uint<0..256>',
                                      operation_0)
         }
         if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.credentialStatusRootSequence) === 'bigint' && command_0.credentialStatusRootSequence >= 0n && command_0.credentialStatusRootSequence <= 18446744073709551615n && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.instanceStateCommitment.buffer instanceof ArrayBuffer && command_0.instanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.instanceStateCommitment.length === 32 && typeof(command_0.instanceStateSequence) === 'bigint' && command_0.instanceStateSequence >= 0n && command_0.instanceStateSequence <= 18446744073709551615n && command_0.nextInstanceStateCommitment.buffer instanceof ArrayBuffer && command_0.nextInstanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextInstanceStateCommitment.length === 32 && typeof(command_0.credentialKind) === 'bigint' && command_0.credentialKind >= 0n && command_0.credentialKind <= 65535n && command_0.credentialCommitment.buffer instanceof ArrayBuffer && command_0.credentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.credentialCommitment.length === 32 && command_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.subjectAccountCredentialCommitment.length === 32 && command_0.revocationAuthorityAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.revocationAuthorityAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.revocationAuthorityAccountCredentialCommitment.length === 32 && typeof(command_0.statusIndex) === 'bigint' && command_0.statusIndex >= 0n && command_0.statusIndex <= 18446744073709551615n && typeof(command_0.expectedStatus) === 'bigint' && command_0.expectedStatus >= 0n && command_0.expectedStatus <= 255n && typeof(command_0.nextStatus) === 'bigint' && command_0.nextStatus >= 0n && command_0.nextStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.stagingExpiresAt) === 'bigint' && command_0.stagingExpiresAt >= 0n && command_0.stagingExpiresAt <= 18446744073709551615n && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 2 (argument 3 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeCredentialStatusCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, credentialStatusRootSequence: Uint<0..18446744073709551616>, allocationCommitment: Bytes<32>, instanceStateCommitment: Bytes<32>, instanceStateSequence: Uint<0..18446744073709551616>, nextInstanceStateCommitment: Bytes<32>, credentialKind: Uint<0..65536>, credentialCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, revocationAuthorityAccountCredentialCommitment: Bytes<32>, statusIndex: Uint<0..18446744073709551616>, expectedStatus: Uint<0..256>, nextStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>, commandNonce: Bytes<32>>',
                                      command_0)
         }
         if (!(typeof(signature_0) === 'object' && true && typeof(signature_0.response) === 'bigint' && signature_0.response >= 0 && signature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 3 (argument 4 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      signature_0)
         }
         if (!(typeof(namespaceAuthority_0) === 'object' && typeof(namespaceAuthority_0.leafVersion) === 'bigint' && namespaceAuthority_0.leafVersion >= 0n && namespaceAuthority_0.leafVersion <= 65535n && namespaceAuthority_0.namespaceHash.buffer instanceof ArrayBuffer && namespaceAuthority_0.namespaceHash.BYTES_PER_ELEMENT === 1 && namespaceAuthority_0.namespaceHash.length === 32 && namespaceAuthority_0.governancePolicyHash.buffer instanceof ArrayBuffer && namespaceAuthority_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && namespaceAuthority_0.governancePolicyHash.length === 32 && typeof(namespaceAuthority_0.authorityKind) === 'bigint' && namespaceAuthority_0.authorityKind >= 0n && namespaceAuthority_0.authorityKind <= 65535n && true && typeof(namespaceAuthority_0.validAfter) === 'bigint' && namespaceAuthority_0.validAfter >= 0n && namespaceAuthority_0.validAfter <= 18446744073709551615n && typeof(namespaceAuthority_0.validBefore) === 'bigint' && namespaceAuthority_0.validBefore >= 0n && namespaceAuthority_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 4 (argument 5 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      namespaceAuthority_0)
         }
         if (!(typeof(namespaceAuthorityPath_0) === 'object' && namespaceAuthorityPath_0.leaf.buffer instanceof ArrayBuffer && namespaceAuthorityPath_0.leaf.BYTES_PER_ELEMENT === 1 && namespaceAuthorityPath_0.leaf.length === 32 && Array.isArray(namespaceAuthorityPath_0.path) && namespaceAuthorityPath_0.path.length === 20 && namespaceAuthorityPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 5 (argument 6 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      namespaceAuthorityPath_0)
         }
         if (!(typeof(accountAuthority_0) === 'object' && typeof(accountAuthority_0.credentialVersion) === 'bigint' && accountAuthority_0.credentialVersion >= 0n && accountAuthority_0.credentialVersion <= 65535n && typeof(accountAuthority_0.target) === 'object' && accountAuthority_0.target.namespaceHash.buffer instanceof ArrayBuffer && accountAuthority_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && accountAuthority_0.target.namespaceHash.length === 32 && accountAuthority_0.target.templateIdHash.buffer instanceof ArrayBuffer && accountAuthority_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && accountAuthority_0.target.templateIdHash.length === 32 && typeof(accountAuthority_0.target.semanticVersion) === 'object' && typeof(accountAuthority_0.target.semanticVersion.major) === 'bigint' && accountAuthority_0.target.semanticVersion.major >= 0n && accountAuthority_0.target.semanticVersion.major <= 18446744073709551615n && typeof(accountAuthority_0.target.semanticVersion.minor) === 'bigint' && accountAuthority_0.target.semanticVersion.minor >= 0n && accountAuthority_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(accountAuthority_0.target.semanticVersion.patch) === 'bigint' && accountAuthority_0.target.semanticVersion.patch >= 0n && accountAuthority_0.target.semanticVersion.patch <= 18446744073709551615n && accountAuthority_0.target.templateContentHash.buffer instanceof ArrayBuffer && accountAuthority_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && accountAuthority_0.target.templateContentHash.length === 32 && accountAuthority_0.instanceCommitment.buffer instanceof ArrayBuffer && accountAuthority_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && accountAuthority_0.instanceCommitment.length === 32 && accountAuthority_0.contextHash.buffer instanceof ArrayBuffer && accountAuthority_0.contextHash.BYTES_PER_ELEMENT === 1 && accountAuthority_0.contextHash.length === 32 && accountAuthority_0.accountIdHash.buffer instanceof ArrayBuffer && accountAuthority_0.accountIdHash.BYTES_PER_ELEMENT === 1 && accountAuthority_0.accountIdHash.length === 32 && typeof(accountAuthority_0.principalKind) === 'bigint' && accountAuthority_0.principalKind >= 0n && accountAuthority_0.principalKind <= 65535n && accountAuthority_0.m5AccountCommitment.buffer instanceof ArrayBuffer && accountAuthority_0.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && accountAuthority_0.m5AccountCommitment.length === 32 && true && typeof(accountAuthority_0.statusIndex) === 'bigint' && accountAuthority_0.statusIndex >= 0n && accountAuthority_0.statusIndex <= 18446744073709551615n && typeof(accountAuthority_0.issuedAt) === 'bigint' && accountAuthority_0.issuedAt >= 0n && accountAuthority_0.issuedAt <= 18446744073709551615n && typeof(accountAuthority_0.validBefore) === 'bigint' && accountAuthority_0.validBefore >= 0n && accountAuthority_0.validBefore <= 18446744073709551615n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 6 (argument 7 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                      accountAuthority_0)
         }
         if (!(typeof(accountAuthorityStatusPath_0) === 'object' && accountAuthorityStatusPath_0.leaf.buffer instanceof ArrayBuffer && accountAuthorityStatusPath_0.leaf.BYTES_PER_ELEMENT === 1 && accountAuthorityStatusPath_0.leaf.length === 32 && Array.isArray(accountAuthorityStatusPath_0.path) && accountAuthorityStatusPath_0.path.length === 20 && accountAuthorityStatusPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 7 (argument 8 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      accountAuthorityStatusPath_0)
         }
         if (!(typeof(currentStatusPath_0) === 'object' && currentStatusPath_0.leaf.buffer instanceof ArrayBuffer && currentStatusPath_0.leaf.BYTES_PER_ELEMENT === 1 && currentStatusPath_0.leaf.length === 32 && Array.isArray(currentStatusPath_0.path) && currentStatusPath_0.path.length === 20 && currentStatusPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 8 (argument 9 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      currentStatusPath_0)
         }
         if (!(typeof(capability_0) === 'object' && typeof(capability_0.credentialVersion) === 'bigint' && capability_0.credentialVersion >= 0n && capability_0.credentialVersion <= 65535n && typeof(capability_0.target) === 'object' && capability_0.target.namespaceHash.buffer instanceof ArrayBuffer && capability_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && capability_0.target.namespaceHash.length === 32 && capability_0.target.templateIdHash.buffer instanceof ArrayBuffer && capability_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && capability_0.target.templateIdHash.length === 32 && typeof(capability_0.target.semanticVersion) === 'object' && typeof(capability_0.target.semanticVersion.major) === 'bigint' && capability_0.target.semanticVersion.major >= 0n && capability_0.target.semanticVersion.major <= 18446744073709551615n && typeof(capability_0.target.semanticVersion.minor) === 'bigint' && capability_0.target.semanticVersion.minor >= 0n && capability_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(capability_0.target.semanticVersion.patch) === 'bigint' && capability_0.target.semanticVersion.patch >= 0n && capability_0.target.semanticVersion.patch <= 18446744073709551615n && capability_0.target.templateContentHash.buffer instanceof ArrayBuffer && capability_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && capability_0.target.templateContentHash.length === 32 && capability_0.instanceCommitment.buffer instanceof ArrayBuffer && capability_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && capability_0.instanceCommitment.length === 32 && capability_0.contextHash.buffer instanceof ArrayBuffer && capability_0.contextHash.BYTES_PER_ELEMENT === 1 && capability_0.contextHash.length === 32 && capability_0.grantIdHash.buffer instanceof ArrayBuffer && capability_0.grantIdHash.BYTES_PER_ELEMENT === 1 && capability_0.grantIdHash.length === 32 && capability_0.m5GrantCommitment.buffer instanceof ArrayBuffer && capability_0.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && capability_0.m5GrantCommitment.length === 32 && capability_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && capability_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && capability_0.subjectAccountCredentialCommitment.length === 32 && capability_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && capability_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && capability_0.parentCapabilityCredentialCommitment.length === 32 && capability_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && capability_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && capability_0.issuerAccountCredentialCommitment.length === 32 && capability_0.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && capability_0.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && capability_0.namespaceIssuerAuthorityCommitment.length === 32 && typeof(capability_0.scopeRoots) === 'object' && typeof(capability_0.scopeRoots.actionsRoot) === 'object' && typeof(capability_0.scopeRoots.actionsRoot.field) === 'bigint' && capability_0.scopeRoots.actionsRoot.field >= 0 && capability_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(capability_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && capability_0.scopeRoots.resourceSelectorsRoot.field >= 0 && capability_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.resourcesRoot) === 'object' && typeof(capability_0.scopeRoots.resourcesRoot.field) === 'bigint' && capability_0.scopeRoots.resourcesRoot.field >= 0 && capability_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.purposesRoot) === 'object' && typeof(capability_0.scopeRoots.purposesRoot.field) === 'bigint' && capability_0.scopeRoots.purposesRoot.field >= 0 && capability_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(capability_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && capability_0.scopeRoots.recipientKindsRoot.field >= 0 && capability_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.recipientsRoot) === 'object' && typeof(capability_0.scopeRoots.recipientsRoot.field) === 'bigint' && capability_0.scopeRoots.recipientsRoot.field >= 0 && capability_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(capability_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && capability_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && capability_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(capability_0.scopeCounts) === 'object' && typeof(capability_0.scopeCounts.actionsCount) === 'bigint' && capability_0.scopeCounts.actionsCount >= 0n && capability_0.scopeCounts.actionsCount <= 4294967295n && typeof(capability_0.scopeCounts.resourceSelectorsCount) === 'bigint' && capability_0.scopeCounts.resourceSelectorsCount >= 0n && capability_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(capability_0.scopeCounts.resourcesCount) === 'bigint' && capability_0.scopeCounts.resourcesCount >= 0n && capability_0.scopeCounts.resourcesCount <= 4294967295n && typeof(capability_0.scopeCounts.purposesCount) === 'bigint' && capability_0.scopeCounts.purposesCount >= 0n && capability_0.scopeCounts.purposesCount <= 4294967295n && typeof(capability_0.scopeCounts.recipientKindsCount) === 'bigint' && capability_0.scopeCounts.recipientKindsCount >= 0n && capability_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(capability_0.scopeCounts.recipientsCount) === 'bigint' && capability_0.scopeCounts.recipientsCount >= 0n && capability_0.scopeCounts.recipientsCount <= 4294967295n && typeof(capability_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && capability_0.scopeCounts.disclosurePolicyIdsCount >= 0n && capability_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(capability_0.notBefore) === 'bigint' && capability_0.notBefore >= 0n && capability_0.notBefore <= 18446744073709551615n && typeof(capability_0.expiresAt) === 'bigint' && capability_0.expiresAt >= 0n && capability_0.expiresAt <= 18446744073709551615n && typeof(capability_0.delegationDepth) === 'bigint' && capability_0.delegationDepth >= 0n && capability_0.delegationDepth <= 65535n && typeof(capability_0.maxDelegationDepth) === 'bigint' && capability_0.maxDelegationDepth >= 0n && capability_0.maxDelegationDepth <= 65535n && typeof(capability_0.statusIndex) === 'bigint' && capability_0.statusIndex >= 0n && capability_0.statusIndex <= 18446744073709551615n && typeof(capability_0.issuedAt) === 'bigint' && capability_0.issuedAt >= 0n && capability_0.issuedAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 9 (argument 10 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                      capability_0)
         }
         if (!(typeof(capabilitySignature_0) === 'object' && true && typeof(capabilitySignature_0.response) === 'bigint' && capabilitySignature_0.response >= 0 && capabilitySignature_0.response <= __compactRuntime.MAX_FIELD)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 10 (argument 11 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct SchnorrSignature<announcement: Opaque<"JubjubPoint">, response: Field>',
                                      capabilitySignature_0)
         }
         if (!(typeof(parentCapability_0) === 'object' && typeof(parentCapability_0.credentialVersion) === 'bigint' && parentCapability_0.credentialVersion >= 0n && parentCapability_0.credentialVersion <= 65535n && typeof(parentCapability_0.target) === 'object' && parentCapability_0.target.namespaceHash.buffer instanceof ArrayBuffer && parentCapability_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && parentCapability_0.target.namespaceHash.length === 32 && parentCapability_0.target.templateIdHash.buffer instanceof ArrayBuffer && parentCapability_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && parentCapability_0.target.templateIdHash.length === 32 && typeof(parentCapability_0.target.semanticVersion) === 'object' && typeof(parentCapability_0.target.semanticVersion.major) === 'bigint' && parentCapability_0.target.semanticVersion.major >= 0n && parentCapability_0.target.semanticVersion.major <= 18446744073709551615n && typeof(parentCapability_0.target.semanticVersion.minor) === 'bigint' && parentCapability_0.target.semanticVersion.minor >= 0n && parentCapability_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(parentCapability_0.target.semanticVersion.patch) === 'bigint' && parentCapability_0.target.semanticVersion.patch >= 0n && parentCapability_0.target.semanticVersion.patch <= 18446744073709551615n && parentCapability_0.target.templateContentHash.buffer instanceof ArrayBuffer && parentCapability_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && parentCapability_0.target.templateContentHash.length === 32 && parentCapability_0.instanceCommitment.buffer instanceof ArrayBuffer && parentCapability_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.instanceCommitment.length === 32 && parentCapability_0.contextHash.buffer instanceof ArrayBuffer && parentCapability_0.contextHash.BYTES_PER_ELEMENT === 1 && parentCapability_0.contextHash.length === 32 && parentCapability_0.grantIdHash.buffer instanceof ArrayBuffer && parentCapability_0.grantIdHash.BYTES_PER_ELEMENT === 1 && parentCapability_0.grantIdHash.length === 32 && parentCapability_0.m5GrantCommitment.buffer instanceof ArrayBuffer && parentCapability_0.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.m5GrantCommitment.length === 32 && parentCapability_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && parentCapability_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.subjectAccountCredentialCommitment.length === 32 && parentCapability_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && parentCapability_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.parentCapabilityCredentialCommitment.length === 32 && parentCapability_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && parentCapability_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.issuerAccountCredentialCommitment.length === 32 && parentCapability_0.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && parentCapability_0.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && parentCapability_0.namespaceIssuerAuthorityCommitment.length === 32 && typeof(parentCapability_0.scopeRoots) === 'object' && typeof(parentCapability_0.scopeRoots.actionsRoot) === 'object' && typeof(parentCapability_0.scopeRoots.actionsRoot.field) === 'bigint' && parentCapability_0.scopeRoots.actionsRoot.field >= 0 && parentCapability_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(parentCapability_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && parentCapability_0.scopeRoots.resourceSelectorsRoot.field >= 0 && parentCapability_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.resourcesRoot) === 'object' && typeof(parentCapability_0.scopeRoots.resourcesRoot.field) === 'bigint' && parentCapability_0.scopeRoots.resourcesRoot.field >= 0 && parentCapability_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.purposesRoot) === 'object' && typeof(parentCapability_0.scopeRoots.purposesRoot.field) === 'bigint' && parentCapability_0.scopeRoots.purposesRoot.field >= 0 && parentCapability_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(parentCapability_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && parentCapability_0.scopeRoots.recipientKindsRoot.field >= 0 && parentCapability_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.recipientsRoot) === 'object' && typeof(parentCapability_0.scopeRoots.recipientsRoot.field) === 'bigint' && parentCapability_0.scopeRoots.recipientsRoot.field >= 0 && parentCapability_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(parentCapability_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && parentCapability_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && parentCapability_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(parentCapability_0.scopeCounts) === 'object' && typeof(parentCapability_0.scopeCounts.actionsCount) === 'bigint' && parentCapability_0.scopeCounts.actionsCount >= 0n && parentCapability_0.scopeCounts.actionsCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.resourceSelectorsCount) === 'bigint' && parentCapability_0.scopeCounts.resourceSelectorsCount >= 0n && parentCapability_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.resourcesCount) === 'bigint' && parentCapability_0.scopeCounts.resourcesCount >= 0n && parentCapability_0.scopeCounts.resourcesCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.purposesCount) === 'bigint' && parentCapability_0.scopeCounts.purposesCount >= 0n && parentCapability_0.scopeCounts.purposesCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.recipientKindsCount) === 'bigint' && parentCapability_0.scopeCounts.recipientKindsCount >= 0n && parentCapability_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.recipientsCount) === 'bigint' && parentCapability_0.scopeCounts.recipientsCount >= 0n && parentCapability_0.scopeCounts.recipientsCount <= 4294967295n && typeof(parentCapability_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && parentCapability_0.scopeCounts.disclosurePolicyIdsCount >= 0n && parentCapability_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(parentCapability_0.notBefore) === 'bigint' && parentCapability_0.notBefore >= 0n && parentCapability_0.notBefore <= 18446744073709551615n && typeof(parentCapability_0.expiresAt) === 'bigint' && parentCapability_0.expiresAt >= 0n && parentCapability_0.expiresAt <= 18446744073709551615n && typeof(parentCapability_0.delegationDepth) === 'bigint' && parentCapability_0.delegationDepth >= 0n && parentCapability_0.delegationDepth <= 65535n && typeof(parentCapability_0.maxDelegationDepth) === 'bigint' && parentCapability_0.maxDelegationDepth >= 0n && parentCapability_0.maxDelegationDepth <= 65535n && typeof(parentCapability_0.statusIndex) === 'bigint' && parentCapability_0.statusIndex >= 0n && parentCapability_0.statusIndex <= 18446744073709551615n && typeof(parentCapability_0.issuedAt) === 'bigint' && parentCapability_0.issuedAt >= 0n && parentCapability_0.issuedAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 11 (argument 12 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                      parentCapability_0)
         }
         if (!(typeof(parentCapabilityStatusPath_0) === 'object' && parentCapabilityStatusPath_0.leaf.buffer instanceof ArrayBuffer && parentCapabilityStatusPath_0.leaf.BYTES_PER_ELEMENT === 1 && parentCapabilityStatusPath_0.leaf.length === 32 && Array.isArray(parentCapabilityStatusPath_0.path) && parentCapabilityStatusPath_0.path.length === 20 && parentCapabilityStatusPath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 12 (argument 13 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      parentCapabilityStatusPath_0)
         }
         if (!(typeof(scopeProgress_0) === 'object' && typeof(scopeProgress_0.roots) === 'object' && typeof(scopeProgress_0.roots.actionsRoot) === 'object' && typeof(scopeProgress_0.roots.actionsRoot.field) === 'bigint' && scopeProgress_0.roots.actionsRoot.field >= 0 && scopeProgress_0.roots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.resourceSelectorsRoot) === 'object' && typeof(scopeProgress_0.roots.resourceSelectorsRoot.field) === 'bigint' && scopeProgress_0.roots.resourceSelectorsRoot.field >= 0 && scopeProgress_0.roots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.resourcesRoot) === 'object' && typeof(scopeProgress_0.roots.resourcesRoot.field) === 'bigint' && scopeProgress_0.roots.resourcesRoot.field >= 0 && scopeProgress_0.roots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.purposesRoot) === 'object' && typeof(scopeProgress_0.roots.purposesRoot.field) === 'bigint' && scopeProgress_0.roots.purposesRoot.field >= 0 && scopeProgress_0.roots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.recipientKindsRoot) === 'object' && typeof(scopeProgress_0.roots.recipientKindsRoot.field) === 'bigint' && scopeProgress_0.roots.recipientKindsRoot.field >= 0 && scopeProgress_0.roots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.recipientsRoot) === 'object' && typeof(scopeProgress_0.roots.recipientsRoot.field) === 'bigint' && scopeProgress_0.roots.recipientsRoot.field >= 0 && scopeProgress_0.roots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.roots.disclosurePolicyIdsRoot) === 'object' && typeof(scopeProgress_0.roots.disclosurePolicyIdsRoot.field) === 'bigint' && scopeProgress_0.roots.disclosurePolicyIdsRoot.field >= 0 && scopeProgress_0.roots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(scopeProgress_0.counts) === 'object' && typeof(scopeProgress_0.counts.actionsCount) === 'bigint' && scopeProgress_0.counts.actionsCount >= 0n && scopeProgress_0.counts.actionsCount <= 4294967295n && typeof(scopeProgress_0.counts.resourceSelectorsCount) === 'bigint' && scopeProgress_0.counts.resourceSelectorsCount >= 0n && scopeProgress_0.counts.resourceSelectorsCount <= 4294967295n && typeof(scopeProgress_0.counts.resourcesCount) === 'bigint' && scopeProgress_0.counts.resourcesCount >= 0n && scopeProgress_0.counts.resourcesCount <= 4294967295n && typeof(scopeProgress_0.counts.purposesCount) === 'bigint' && scopeProgress_0.counts.purposesCount >= 0n && scopeProgress_0.counts.purposesCount <= 4294967295n && typeof(scopeProgress_0.counts.recipientKindsCount) === 'bigint' && scopeProgress_0.counts.recipientKindsCount >= 0n && scopeProgress_0.counts.recipientKindsCount <= 4294967295n && typeof(scopeProgress_0.counts.recipientsCount) === 'bigint' && scopeProgress_0.counts.recipientsCount >= 0n && scopeProgress_0.counts.recipientsCount <= 4294967295n && typeof(scopeProgress_0.counts.disclosurePolicyIdsCount) === 'bigint' && scopeProgress_0.counts.disclosurePolicyIdsCount >= 0n && scopeProgress_0.counts.disclosurePolicyIdsCount <= 4294967295n && typeof(scopeProgress_0.lastDimension) === 'bigint' && scopeProgress_0.lastDimension >= 0n && scopeProgress_0.lastDimension <= 255n && scopeProgress_0.lastOrderKey.buffer instanceof ArrayBuffer && scopeProgress_0.lastOrderKey.BYTES_PER_ELEMENT === 1 && scopeProgress_0.lastOrderKey.length === 32)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 13 (argument 14 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeScopeProgress<roots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, counts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, lastDimension: Uint<0..256>, lastOrderKey: Bytes<32>>',
                                      scopeProgress_0)
         }
         if (!(typeof(scopeElement_0) === 'object' && typeof(scopeElement_0.elementVersion) === 'bigint' && scopeElement_0.elementVersion >= 0n && scopeElement_0.elementVersion <= 65535n && typeof(scopeElement_0.dimension) === 'bigint' && scopeElement_0.dimension >= 0n && scopeElement_0.dimension <= 255n && scopeElement_0.valueHash.buffer instanceof ArrayBuffer && scopeElement_0.valueHash.BYTES_PER_ELEMENT === 1 && scopeElement_0.valueHash.length === 32)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 14 (argument 15 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeScopeElement<elementVersion: Uint<0..65536>, dimension: Uint<0..256>, valueHash: Bytes<32>>',
                                      scopeElement_0)
         }
         if (!(typeof(childScopePath_0) === 'object' && childScopePath_0.leaf.buffer instanceof ArrayBuffer && childScopePath_0.leaf.BYTES_PER_ELEMENT === 1 && childScopePath_0.leaf.length === 32 && Array.isArray(childScopePath_0.path) && childScopePath_0.path.length === 20 && childScopePath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 15 (argument 16 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      childScopePath_0)
         }
         if (!(typeof(parentScopePath_0) === 'object' && parentScopePath_0.leaf.buffer instanceof ArrayBuffer && parentScopePath_0.leaf.BYTES_PER_ELEMENT === 1 && parentScopePath_0.leaf.length === 32 && Array.isArray(parentScopePath_0.path) && parentScopePath_0.path.length === 20 && parentScopePath_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 16 (argument 17 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                      parentScopePath_0)
         }
         if (!(typeof(sessionCredential_0) === 'object' && typeof(sessionCredential_0.credentialVersion) === 'bigint' && sessionCredential_0.credentialVersion >= 0n && sessionCredential_0.credentialVersion <= 65535n && typeof(sessionCredential_0.target) === 'object' && sessionCredential_0.target.namespaceHash.buffer instanceof ArrayBuffer && sessionCredential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && sessionCredential_0.target.namespaceHash.length === 32 && sessionCredential_0.target.templateIdHash.buffer instanceof ArrayBuffer && sessionCredential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && sessionCredential_0.target.templateIdHash.length === 32 && typeof(sessionCredential_0.target.semanticVersion) === 'object' && typeof(sessionCredential_0.target.semanticVersion.major) === 'bigint' && sessionCredential_0.target.semanticVersion.major >= 0n && sessionCredential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(sessionCredential_0.target.semanticVersion.minor) === 'bigint' && sessionCredential_0.target.semanticVersion.minor >= 0n && sessionCredential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(sessionCredential_0.target.semanticVersion.patch) === 'bigint' && sessionCredential_0.target.semanticVersion.patch >= 0n && sessionCredential_0.target.semanticVersion.patch <= 18446744073709551615n && sessionCredential_0.target.templateContentHash.buffer instanceof ArrayBuffer && sessionCredential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && sessionCredential_0.target.templateContentHash.length === 32 && sessionCredential_0.instanceCommitment.buffer instanceof ArrayBuffer && sessionCredential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && sessionCredential_0.instanceCommitment.length === 32 && sessionCredential_0.contextHash.buffer instanceof ArrayBuffer && sessionCredential_0.contextHash.BYTES_PER_ELEMENT === 1 && sessionCredential_0.contextHash.length === 32 && sessionCredential_0.sessionIdHash.buffer instanceof ArrayBuffer && sessionCredential_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && sessionCredential_0.sessionIdHash.length === 32 && sessionCredential_0.m5SessionCommitment.buffer instanceof ArrayBuffer && sessionCredential_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && sessionCredential_0.m5SessionCommitment.length === 32 && sessionCredential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && sessionCredential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && sessionCredential_0.subjectAccountCredentialCommitment.length === 32 && sessionCredential_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && sessionCredential_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && sessionCredential_0.capabilityCredentialCommitment.length === 32 && typeof(sessionCredential_0.scopeRoots) === 'object' && typeof(sessionCredential_0.scopeRoots.actionsRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.actionsRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.actionsRoot.field >= 0 && sessionCredential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && sessionCredential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.resourcesRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.resourcesRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.resourcesRoot.field >= 0 && sessionCredential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.purposesRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.purposesRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.purposesRoot.field >= 0 && sessionCredential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.recipientKindsRoot.field >= 0 && sessionCredential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.recipientsRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.recipientsRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.recipientsRoot.field >= 0 && sessionCredential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(sessionCredential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && sessionCredential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && sessionCredential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(sessionCredential_0.scopeCounts) === 'object' && typeof(sessionCredential_0.scopeCounts.actionsCount) === 'bigint' && sessionCredential_0.scopeCounts.actionsCount >= 0n && sessionCredential_0.scopeCounts.actionsCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && sessionCredential_0.scopeCounts.resourceSelectorsCount >= 0n && sessionCredential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.resourcesCount) === 'bigint' && sessionCredential_0.scopeCounts.resourcesCount >= 0n && sessionCredential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.purposesCount) === 'bigint' && sessionCredential_0.scopeCounts.purposesCount >= 0n && sessionCredential_0.scopeCounts.purposesCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.recipientKindsCount) === 'bigint' && sessionCredential_0.scopeCounts.recipientKindsCount >= 0n && sessionCredential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.recipientsCount) === 'bigint' && sessionCredential_0.scopeCounts.recipientsCount >= 0n && sessionCredential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(sessionCredential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && sessionCredential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && sessionCredential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(sessionCredential_0.notBefore) === 'bigint' && sessionCredential_0.notBefore >= 0n && sessionCredential_0.notBefore <= 18446744073709551615n && typeof(sessionCredential_0.expiresAt) === 'bigint' && sessionCredential_0.expiresAt >= 0n && sessionCredential_0.expiresAt <= 18446744073709551615n && typeof(sessionCredential_0.statusIndex) === 'bigint' && sessionCredential_0.statusIndex >= 0n && sessionCredential_0.statusIndex <= 18446744073709551615n && typeof(sessionCredential_0.issuedAt) === 'bigint' && sessionCredential_0.issuedAt >= 0n && sessionCredential_0.issuedAt <= 18446744073709551615n)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 17 (argument 18 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                      sessionCredential_0)
         }
         if (!(typeof(instanceBinding_0) === 'object' && typeof(instanceBinding_0.allocation) === 'object' && typeof(instanceBinding_0.allocation.allocationVersion) === 'bigint' && instanceBinding_0.allocation.allocationVersion >= 0n && instanceBinding_0.allocation.allocationVersion <= 65535n && typeof(instanceBinding_0.allocation.target) === 'object' && instanceBinding_0.allocation.target.namespaceHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.target.namespaceHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.target.namespaceHash.length === 32 && instanceBinding_0.allocation.target.templateIdHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.target.templateIdHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.target.templateIdHash.length === 32 && typeof(instanceBinding_0.allocation.target.semanticVersion) === 'object' && typeof(instanceBinding_0.allocation.target.semanticVersion.major) === 'bigint' && instanceBinding_0.allocation.target.semanticVersion.major >= 0n && instanceBinding_0.allocation.target.semanticVersion.major <= 18446744073709551615n && typeof(instanceBinding_0.allocation.target.semanticVersion.minor) === 'bigint' && instanceBinding_0.allocation.target.semanticVersion.minor >= 0n && instanceBinding_0.allocation.target.semanticVersion.minor <= 18446744073709551615n && typeof(instanceBinding_0.allocation.target.semanticVersion.patch) === 'bigint' && instanceBinding_0.allocation.target.semanticVersion.patch >= 0n && instanceBinding_0.allocation.target.semanticVersion.patch <= 18446744073709551615n && instanceBinding_0.allocation.target.templateContentHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.target.templateContentHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.target.templateContentHash.length === 32 && instanceBinding_0.allocation.instanceCommitment.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.instanceCommitment.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.instanceCommitment.length === 32 && instanceBinding_0.allocation.instanceIdHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.instanceIdHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.instanceIdHash.length === 32 && instanceBinding_0.allocation.allocationRequestIdHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.allocationRequestIdHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.allocationRequestIdHash.length === 32 && instanceBinding_0.allocation.m4AuthorizationCommitment.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.m4AuthorizationCommitment.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.m4AuthorizationCommitment.length === 32 && instanceBinding_0.allocation.allocatorAuthorityCommitment.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.allocatorAuthorityCommitment.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.allocatorAuthorityCommitment.length === 32 && typeof(instanceBinding_0.allocation.capabilityIssuersRoot) === 'object' && typeof(instanceBinding_0.allocation.capabilityIssuersRoot.field) === 'bigint' && instanceBinding_0.allocation.capabilityIssuersRoot.field >= 0 && instanceBinding_0.allocation.capabilityIssuersRoot.field <= __compactRuntime.MAX_FIELD && typeof(instanceBinding_0.allocation.capabilityIssuerCount) === 'bigint' && instanceBinding_0.allocation.capabilityIssuerCount >= 0n && instanceBinding_0.allocation.capabilityIssuerCount <= 4294967295n && instanceBinding_0.allocation.initialStateCommitment.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.initialStateCommitment.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.initialStateCommitment.length === 32 && instanceBinding_0.allocation.governancePolicyHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.governancePolicyHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.governancePolicyHash.length === 32 && typeof(instanceBinding_0.allocation.authorityRootVersion) === 'bigint' && instanceBinding_0.allocation.authorityRootVersion >= 0n && instanceBinding_0.allocation.authorityRootVersion <= 18446744073709551615n && typeof(instanceBinding_0.allocation.authorityRootSequence) === 'bigint' && instanceBinding_0.allocation.authorityRootSequence >= 0n && instanceBinding_0.allocation.authorityRootSequence <= 18446744073709551615n && instanceBinding_0.allocation.targetNetworkHash.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.targetNetworkHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.targetNetworkHash.length === 32 && instanceBinding_0.allocation.targetContractIdentity.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.targetContractIdentity.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.targetContractIdentity.length === 32 && typeof(instanceBinding_0.allocation.authorizedAt) === 'bigint' && instanceBinding_0.allocation.authorizedAt >= 0n && instanceBinding_0.allocation.authorizedAt <= 18446744073709551615n && typeof(instanceBinding_0.allocation.createdAt) === 'bigint' && instanceBinding_0.allocation.createdAt >= 0n && instanceBinding_0.allocation.createdAt <= 18446744073709551615n && typeof(instanceBinding_0.allocation.expiresAt) === 'bigint' && instanceBinding_0.allocation.expiresAt >= 0n && instanceBinding_0.allocation.expiresAt <= 18446744073709551615n && typeof(instanceBinding_0.allocation.allocationValidBefore) === 'bigint' && instanceBinding_0.allocation.allocationValidBefore >= 0n && instanceBinding_0.allocation.allocationValidBefore <= 18446744073709551615n && instanceBinding_0.allocation.allocationNonce.buffer instanceof ArrayBuffer && instanceBinding_0.allocation.allocationNonce.BYTES_PER_ELEMENT === 1 && instanceBinding_0.allocation.allocationNonce.length === 32 && typeof(instanceBinding_0.issuerPath) === 'object' && instanceBinding_0.issuerPath.leaf.buffer instanceof ArrayBuffer && instanceBinding_0.issuerPath.leaf.BYTES_PER_ELEMENT === 1 && instanceBinding_0.issuerPath.leaf.length === 32 && Array.isArray(instanceBinding_0.issuerPath.path) && instanceBinding_0.issuerPath.path.length === 20 && instanceBinding_0.issuerPath.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean') && typeof(instanceBinding_0.validBefore) === 'bigint' && instanceBinding_0.validBefore >= 0n && instanceBinding_0.validBefore <= 18446744073709551615n && typeof(instanceBinding_0.state) === 'object' && typeof(instanceBinding_0.state.stateVersion) === 'bigint' && instanceBinding_0.state.stateVersion >= 0n && instanceBinding_0.state.stateVersion <= 65535n && instanceBinding_0.state.instanceCommitment.buffer instanceof ArrayBuffer && instanceBinding_0.state.instanceCommitment.BYTES_PER_ELEMENT === 1 && instanceBinding_0.state.instanceCommitment.length === 32 && instanceBinding_0.state.stateIdHash.buffer instanceof ArrayBuffer && instanceBinding_0.state.stateIdHash.BYTES_PER_ELEMENT === 1 && instanceBinding_0.state.stateIdHash.length === 32 && typeof(instanceBinding_0.state.lastMutationAt) === 'bigint' && instanceBinding_0.state.lastMutationAt >= 0n && instanceBinding_0.state.lastMutationAt <= 18446744073709551615n && typeof(instanceBinding_0.state.slotAssignmentsRoot) === 'object' && typeof(instanceBinding_0.state.slotAssignmentsRoot.field) === 'bigint' && instanceBinding_0.state.slotAssignmentsRoot.field >= 0 && instanceBinding_0.state.slotAssignmentsRoot.field <= __compactRuntime.MAX_FIELD && typeof(instanceBinding_0.state.slotAssignmentCount) === 'bigint' && instanceBinding_0.state.slotAssignmentCount >= 0n && instanceBinding_0.state.slotAssignmentCount <= 4294967295n && typeof(instanceBinding_0.state.slotBindingsRoot) === 'object' && typeof(instanceBinding_0.state.slotBindingsRoot.field) === 'bigint' && instanceBinding_0.state.slotBindingsRoot.field >= 0 && instanceBinding_0.state.slotBindingsRoot.field <= __compactRuntime.MAX_FIELD && typeof(instanceBinding_0.state.slotBindingCount) === 'bigint' && instanceBinding_0.state.slotBindingCount >= 0n && instanceBinding_0.state.slotBindingCount <= 4294967295n && instanceBinding_0.state.nonce.buffer instanceof ArrayBuffer && instanceBinding_0.state.nonce.BYTES_PER_ELEMENT === 1 && instanceBinding_0.state.nonce.length === 32 && typeof(instanceBinding_0.stateSequence) === 'bigint' && instanceBinding_0.stateSequence >= 0n && instanceBinding_0.stateSequence <= 18446744073709551615n && instanceBinding_0.nextStateNonce.buffer instanceof ArrayBuffer && instanceBinding_0.nextStateNonce.BYTES_PER_ELEMENT === 1 && instanceBinding_0.nextStateNonce.length === 32)) {
           __compactRuntime.typeError('updateRuntimeCredentialStatus',
                                      'argument 18 (argument 19 as invoked from Typescript)',
-                                     'permio-authorization.compact line 2354 char 1',
+                                     'permio-authorization.compact line 2355 char 1',
                                      'struct RuntimeCredentialInstanceBinding<allocation: struct RuntimeInstanceAllocation<allocationVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, instanceIdHash: Bytes<32>, allocationRequestIdHash: Bytes<32>, m4AuthorizationCommitment: Bytes<32>, allocatorAuthorityCommitment: Bytes<32>, capabilityIssuersRoot: struct MerkleTreeDigest<field: Field>, capabilityIssuerCount: Uint<0..4294967296>, initialStateCommitment: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, authorizedAt: Uint<0..18446744073709551616>, createdAt: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, allocationValidBefore: Uint<0..18446744073709551616>, allocationNonce: Bytes<32>>, issuerPath: struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>, validBefore: Uint<0..18446744073709551616>, state: struct RuntimeStateOpening<stateVersion: Uint<0..65536>, instanceCommitment: Bytes<32>, stateIdHash: Bytes<32>, lastMutationAt: Uint<0..18446744073709551616>, slotAssignmentsRoot: struct MerkleTreeDigest<field: Field>, slotAssignmentCount: Uint<0..4294967296>, slotBindingsRoot: struct MerkleTreeDigest<field: Field>, slotBindingCount: Uint<0..4294967296>, nonce: Bytes<32>>, stateSequence: Uint<0..18446744073709551616>, nextStateNonce: Bytes<32>>',
                                      instanceBinding_0)
         }
@@ -3816,6 +4132,7 @@ export class Contract {
       manageRuntimeParticipantSlots: this.circuits.manageRuntimeParticipantSlots,
       prepareRuntimeAction: this.circuits.prepareRuntimeAction,
       executeRuntimeAction: this.circuits.executeRuntimeAction,
+      executeRuntimeEvidenceBridge: this.circuits.executeRuntimeEvidenceBridge,
       verifyGovernanceActivationSignature: this.circuits.verifyGovernanceActivationSignature,
       governAuthorization: this.circuits.governAuthorization,
       terminateTemplate: this.circuits.terminateTemplate,
@@ -3829,6 +4146,7 @@ export class Contract {
       manageRuntimeParticipantSlots: this.circuits.manageRuntimeParticipantSlots,
       prepareRuntimeAction: this.circuits.prepareRuntimeAction,
       executeRuntimeAction: this.circuits.executeRuntimeAction,
+      executeRuntimeEvidenceBridge: this.circuits.executeRuntimeEvidenceBridge,
       governAuthorization: this.circuits.governAuthorization,
       terminateTemplate: this.circuits.terminateTemplate,
       beginM4Activation: this.circuits.beginM4Activation,
@@ -3867,70 +4185,70 @@ export class Contract {
     if (!(networkHash_0.buffer instanceof ArrayBuffer && networkHash_0.BYTES_PER_ELEMENT === 1 && networkHash_0.length === 32)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 1 (argument 2 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Bytes<32>',
                                  networkHash_0)
     }
     if (!(initialNamespaceHash_0.buffer instanceof ArrayBuffer && initialNamespaceHash_0.BYTES_PER_ELEMENT === 1 && initialNamespaceHash_0.length === 32)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 2 (argument 3 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Bytes<32>',
                                  initialNamespaceHash_0)
     }
     if (!(initialGovernancePolicyHash_0.buffer instanceof ArrayBuffer && initialGovernancePolicyHash_0.BYTES_PER_ELEMENT === 1 && initialGovernancePolicyHash_0.length === 32)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 3 (argument 4 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Bytes<32>',
                                  initialGovernancePolicyHash_0)
     }
     if (!(typeof(initialAuthorityRoot_0) === 'object' && typeof(initialAuthorityRoot_0.field) === 'bigint' && initialAuthorityRoot_0.field >= 0 && initialAuthorityRoot_0.field <= __compactRuntime.MAX_FIELD)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 4 (argument 5 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'struct MerkleTreeDigest<field: Field>',
                                  initialAuthorityRoot_0)
     }
     if (!(typeof(initialRootVersion_0) === 'bigint' && initialRootVersion_0 >= 0n && initialRootVersion_0 <= 18446744073709551615n)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 5 (argument 6 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Uint<0..18446744073709551616>',
                                  initialRootVersion_0)
     }
     if (!(typeof(initialRootSequence_0) === 'bigint' && initialRootSequence_0 >= 0n && initialRootSequence_0 <= 18446744073709551615n)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 6 (argument 7 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Uint<0..18446744073709551616>',
                                  initialRootSequence_0)
     }
     if (!(typeof(initialCredentialStatusRoot_0) === 'object' && typeof(initialCredentialStatusRoot_0.field) === 'bigint' && initialCredentialStatusRoot_0.field >= 0 && initialCredentialStatusRoot_0.field <= __compactRuntime.MAX_FIELD)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 7 (argument 8 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'struct MerkleTreeDigest<field: Field>',
                                  initialCredentialStatusRoot_0)
     }
     if (!(typeof(moduleReviewThreshold_0) === 'bigint' && moduleReviewThreshold_0 >= 0n && moduleReviewThreshold_0 <= 65535n)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 8 (argument 9 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Uint<0..65536>',
                                  moduleReviewThreshold_0)
     }
     if (!(typeof(moduleApprovalThreshold_0) === 'bigint' && moduleApprovalThreshold_0 >= 0n && moduleApprovalThreshold_0 <= 65535n)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 9 (argument 10 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Uint<0..65536>',
                                  moduleApprovalThreshold_0)
     }
     if (!(typeof(authorityRootUpdateThreshold_0) === 'bigint' && authorityRootUpdateThreshold_0 >= 0n && authorityRootUpdateThreshold_0 <= 65535n)) {
       __compactRuntime.typeError('Contract state constructor',
                                  'argument 10 (argument 11 as invoked from Typescript)',
-                                 'permio-authorization.compact line 512 char 1',
+                                 'permio-authorization.compact line 513 char 1',
                                  'Uint<0..65536>',
                                  authorityRootUpdateThreshold_0)
     }
@@ -3972,6 +4290,7 @@ export class Contract {
     state_0.setOperation('manageRuntimeParticipantSlots', new __compactRuntime.ContractOperation());
     state_0.setOperation('prepareRuntimeAction', new __compactRuntime.ContractOperation());
     state_0.setOperation('executeRuntimeAction', new __compactRuntime.ContractOperation());
+    state_0.setOperation('executeRuntimeEvidenceBridge', new __compactRuntime.ContractOperation());
     state_0.setOperation('governAuthorization', new __compactRuntime.ContractOperation());
     state_0.setOperation('terminateTemplate', new __compactRuntime.ContractOperation());
     state_0.setOperation('beginM4Activation', new __compactRuntime.ContractOperation());
@@ -4549,7 +4868,7 @@ export class Contract {
     return { field:
                this._folder_0((...args_0) =>
                                 this._merkleTreePathEntryRoot_0(...args_0),
-                              this._degradeToTransient_0(this._persistentHash_46({ domain_sep:
+                              this._degradeToTransient_0(this._persistentHash_50({ domain_sep:
                                                                                      new Uint8Array([109, 100, 110, 58, 108, 104]),
                                                                                    data:
                                                                                      path_0.leaf })),
@@ -4559,7 +4878,7 @@ export class Contract {
     return { field:
                this._folder_1((...args_0) =>
                                 this._merkleTreePathEntryRoot_0(...args_0),
-                              this._degradeToTransient_0(this._persistentHash_46({ domain_sep:
+                              this._degradeToTransient_0(this._persistentHash_50({ domain_sep:
                                                                                      new Uint8Array([109, 100, 110, 58, 108, 104]),
                                                                                    data:
                                                                                      path_0.leaf })),
@@ -4569,7 +4888,7 @@ export class Contract {
     return { field:
                this._folder_2((...args_0) =>
                                 this._merkleTreePathEntryRoot_0(...args_0),
-                              this._degradeToTransient_0(this._persistentHash_23({ domain_sep:
+                              this._degradeToTransient_0(this._persistentHash_27({ domain_sep:
                                                                                      new Uint8Array([109, 100, 110, 58, 108, 104]),
                                                                                    data:
                                                                                      path_0.leaf })),
@@ -4579,7 +4898,7 @@ export class Contract {
     return { field:
                this._folder_3((...args_0) =>
                                 this._merkleTreePathEntryRoot_0(...args_0),
-                              this._degradeToTransient_0(this._persistentHash_46({ domain_sep:
+                              this._degradeToTransient_0(this._persistentHash_50({ domain_sep:
                                                                                      new Uint8Array([109, 100, 110, 58, 108, 104]),
                                                                                    data:
                                                                                      path_0.leaf })),
@@ -4614,31 +4933,31 @@ export class Contract {
     return !this._blockTimeLt_0(context, partialProofData, time_0);
   }
   _transientHash_0(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_121, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_128, value_0);
     return result_0;
   }
   _transientHash_1(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_119, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_129, value_0);
     return result_0;
   }
   _transientHash_2(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_120, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_126, value_0);
     return result_0;
   }
   _transientHash_3(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_118, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_127, value_0);
     return result_0;
   }
   _transientHash_4(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_112, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_121, value_0);
     return result_0;
   }
   _transientHash_5(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_81, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_85, value_0);
     return result_0;
   }
   _transientHash_6(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_109, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_117, value_0);
     return result_0;
   }
   _transientHash_7(value_0) {
@@ -4682,35 +5001,35 @@ export class Contract {
     return result_0;
   }
   _transientHash_17(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_116, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_125, value_0);
     return result_0;
   }
   _transientHash_18(value_0) {
-    const result_0 = __compactRuntime.transientHash(_descriptor_117, value_0);
+    const result_0 = __compactRuntime.transientHash(_descriptor_123, value_0);
     return result_0;
   }
   _persistentHash_0(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_114, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_124, value_0);
     return result_0;
   }
   _persistentHash_1(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_115, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_122, value_0);
     return result_0;
   }
   _persistentHash_2(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_74, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_78, value_0);
     return result_0;
   }
   _persistentHash_3(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_77, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_82, value_0);
     return result_0;
   }
   _persistentHash_4(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_112, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_121, value_0);
     return result_0;
   }
   _persistentHash_5(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_113, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_120, value_0);
     return result_0;
   }
   _persistentHash_6(value_0) {
@@ -4718,163 +5037,179 @@ export class Contract {
     return result_0;
   }
   _persistentHash_7(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_111, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_119, value_0);
     return result_0;
   }
   _persistentHash_8(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_81, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_85, value_0);
     return result_0;
   }
   _persistentHash_9(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_76, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_81, value_0);
     return result_0;
   }
   _persistentHash_10(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_72, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_76, value_0);
     return result_0;
   }
   _persistentHash_11(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_110, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_118, value_0);
     return result_0;
   }
   _persistentHash_12(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_82, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_86, value_0);
     return result_0;
   }
   _persistentHash_13(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_109, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_117, value_0);
     return result_0;
   }
   _persistentHash_14(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_73, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_77, value_0);
     return result_0;
   }
   _persistentHash_15(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_108, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_115, value_0);
     return result_0;
   }
   _persistentHash_16(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_107, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_116, value_0);
     return result_0;
   }
   _persistentHash_17(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_39, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_113, value_0);
     return result_0;
   }
   _persistentHash_18(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_22, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_114, value_0);
     return result_0;
   }
   _persistentHash_19(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_42, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_111, value_0);
     return result_0;
   }
   _persistentHash_20(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_26, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_112, value_0);
     return result_0;
   }
   _persistentHash_21(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_1, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_39, value_0);
     return result_0;
   }
   _persistentHash_22(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_57, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_22, value_0);
     return result_0;
   }
   _persistentHash_23(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_106, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_42, value_0);
     return result_0;
   }
   _persistentHash_24(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_4, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_26, value_0);
     return result_0;
   }
   _persistentHash_25(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_28, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_1, value_0);
     return result_0;
   }
   _persistentHash_26(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_29, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_57, value_0);
     return result_0;
   }
   _persistentHash_27(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_14, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_110, value_0);
     return result_0;
   }
   _persistentHash_28(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_27, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_4, value_0);
     return result_0;
   }
   _persistentHash_29(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_30, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_28, value_0);
     return result_0;
   }
   _persistentHash_30(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_53, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_29, value_0);
     return result_0;
   }
   _persistentHash_31(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_38, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_14, value_0);
     return result_0;
   }
   _persistentHash_32(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_37, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_27, value_0);
     return result_0;
   }
   _persistentHash_33(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_43, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_30, value_0);
     return result_0;
   }
   _persistentHash_34(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_44, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_53, value_0);
     return result_0;
   }
   _persistentHash_35(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_35, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_38, value_0);
     return result_0;
   }
   _persistentHash_36(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_36, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_37, value_0);
     return result_0;
   }
   _persistentHash_37(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_105, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_43, value_0);
     return result_0;
   }
   _persistentHash_38(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_45, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_44, value_0);
     return result_0;
   }
   _persistentHash_39(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_104, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_35, value_0);
     return result_0;
   }
   _persistentHash_40(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_102, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_36, value_0);
     return result_0;
   }
   _persistentHash_41(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_103, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_109, value_0);
     return result_0;
   }
   _persistentHash_42(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_100, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_45, value_0);
     return result_0;
   }
   _persistentHash_43(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_101, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_107, value_0);
     return result_0;
   }
   _persistentHash_44(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_99, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_108, value_0);
     return result_0;
   }
   _persistentHash_45(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_8, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_105, value_0);
     return result_0;
   }
   _persistentHash_46(value_0) {
-    const result_0 = __compactRuntime.persistentHash(_descriptor_98, value_0);
+    const result_0 = __compactRuntime.persistentHash(_descriptor_106, value_0);
+    return result_0;
+  }
+  _persistentHash_47(value_0) {
+    const result_0 = __compactRuntime.persistentHash(_descriptor_103, value_0);
+    return result_0;
+  }
+  _persistentHash_48(value_0) {
+    const result_0 = __compactRuntime.persistentHash(_descriptor_104, value_0);
+    return result_0;
+  }
+  _persistentHash_49(value_0) {
+    const result_0 = __compactRuntime.persistentHash(_descriptor_8, value_0);
+    return result_0;
+  }
+  _persistentHash_50(value_0) {
+    const result_0 = __compactRuntime.persistentHash(_descriptor_102, value_0);
     return result_0;
   }
   _degradeToTransient_0(x_0) {
@@ -4914,8 +5249,8 @@ export class Contract {
                                  result_0)
     }
     partialProofData.privateTranscriptOutputs.push({
-      value: _descriptor_96.toValue(result_0),
-      alignment: _descriptor_96.alignment()
+      value: _descriptor_100.toValue(result_0),
+      alignment: _descriptor_100.alignment()
     });
     return result_0;
   }
@@ -6291,7 +6626,7 @@ export class Contract {
                             this._equal_130(allocation_0.authorityRootSequence,
                                             authority_0.rootSequence),
                             'Instance allocation authority root is stale or mismatched');
-    const templateKey_0 = this._persistentHash_45(allocation_0.target);
+    const templateKey_0 = this._persistentHash_49(allocation_0.target);
     __compactRuntime.assert(_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
                                                                                        [
@@ -6994,7 +7329,7 @@ export class Contract {
     {
       let tmp_1;
       const previousSession_0 = (tmp_1 = command_0.commandNonce,
-                                 _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+                                 _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                             partialProofData,
                                                                                             [
                                                                                              { dup: { n: 0 } },
@@ -7334,7 +7669,7 @@ export class Contract {
                                                                                                                  result: undefined } }]).value)),
                                          'Slot verification session does not exist'),
                  (session_0 = (tmp_11 = command_0.commandNonce,
-                               _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+                               _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                           partialProofData,
                                                                                           [
                                                                                            { dup: { n: 0 } },
@@ -7389,15 +7724,15 @@ export class Contract {
                                                                     value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(tmp_12),
                                                                                                                  alignment: _descriptor_1.alignment() }).encode() } },
                                                           { push: { storage: true,
-                                                                    value: __compactRuntime.StateValue.newCell({ value: _descriptor_83.toValue(tmp_10),
-                                                                                                                 alignment: _descriptor_83.alignment() }).encode() } },
+                                                                    value: __compactRuntime.StateValue.newCell({ value: _descriptor_87.toValue(tmp_10),
+                                                                                                                 alignment: _descriptor_87.alignment() }).encode() } },
                                                           { ins: { cached: false,
                                                                    n: 1 } },
                                                           { ins: { cached: true,
                                                                    n: 2 } }]))),
                      0n))));
         } else {
-          const templateKey_0 = this._persistentHash_45(command_0.target);
+          const templateKey_0 = this._persistentHash_49(command_0.target);
           __compactRuntime.assert(_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                              partialProofData,
                                                                                              [
@@ -7690,8 +8025,8 @@ export class Contract {
                                                                     value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(tmp_14),
                                                                                                                  alignment: _descriptor_1.alignment() }).encode() } },
                                                           { push: { storage: true,
-                                                                    value: __compactRuntime.StateValue.newCell({ value: _descriptor_83.toValue(tmp_15),
-                                                                                                                 alignment: _descriptor_83.alignment() }).encode() } },
+                                                                    value: __compactRuntime.StateValue.newCell({ value: _descriptor_87.toValue(tmp_15),
+                                                                                                                 alignment: _descriptor_87.alignment() }).encode() } },
                                                           { ins: { cached: false,
                                                                    n: 1 } },
                                                           { ins: { cached: true,
@@ -7722,7 +8057,7 @@ export class Contract {
                                     'Slot verification session does not exist');
             let tmp_18;
             const session_1 = (tmp_18 = command_0.commandNonce,
-                               _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+                               _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                           partialProofData,
                                                                                           [
                                                                                            { dup: { n: 0 } },
@@ -8204,7 +8539,7 @@ export class Contract {
                                                                                                                result: undefined } }]).value)),
                                        'Slot verification session does not exist'),
                (session_2 = (tmp_31 = command_0.commandNonce,
-                             _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+                             _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                         partialProofData,
                                                                                         [
                                                                                          { dup: { n: 0 } },
@@ -8259,15 +8594,15 @@ export class Contract {
                                                                   value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(tmp_32),
                                                                                                                alignment: _descriptor_1.alignment() }).encode() } },
                                                         { push: { storage: true,
-                                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_83.toValue(tmp_30),
-                                                                                                               alignment: _descriptor_83.alignment() }).encode() } },
+                                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_87.toValue(tmp_30),
+                                                                                                               alignment: _descriptor_87.alignment() }).encode() } },
                                                         { ins: { cached: false,
                                                                  n: 1 } },
                                                         { ins: { cached: true,
                                                                  n: 2 } }]))),
                    0n))));
       } else {
-        const templateKey_1 = this._persistentHash_45(command_0.target);
+        const templateKey_1 = this._persistentHash_49(command_0.target);
         __compactRuntime.assert(_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                            partialProofData,
                                                                                            [
@@ -8559,8 +8894,8 @@ export class Contract {
                                                                   value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(tmp_34),
                                                                                                                alignment: _descriptor_1.alignment() }).encode() } },
                                                         { push: { storage: true,
-                                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_83.toValue(tmp_35),
-                                                                                                               alignment: _descriptor_83.alignment() }).encode() } },
+                                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_87.toValue(tmp_35),
+                                                                                                               alignment: _descriptor_87.alignment() }).encode() } },
                                                         { ins: { cached: false,
                                                                  n: 1 } },
                                                         { ins: { cached: true,
@@ -8591,7 +8926,7 @@ export class Contract {
                                   'Slot verification session does not exist');
           let tmp_38;
           const session_3 = (tmp_38 = command_0.commandNonce,
-                             _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+                             _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                         partialProofData,
                                                                                         [
                                                                                          { dup: { n: 0 } },
@@ -9132,8 +9467,8 @@ export class Contract {
                                                  value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(receiptId_0),
                                                                                               alignment: _descriptor_1.alignment() }).encode() } },
                                        { push: { storage: true,
-                                                 value: __compactRuntime.StateValue.newCell({ value: _descriptor_82.toValue(receipt_0),
-                                                                                              alignment: _descriptor_82.alignment() }).encode() } },
+                                                 value: __compactRuntime.StateValue.newCell({ value: _descriptor_86.toValue(receipt_0),
+                                                                                              alignment: _descriptor_86.alignment() }).encode() } },
                                        { ins: { cached: false, n: 1 } },
                                        { ins: { cached: true, n: 2 } }]);
     return receiptId_0;
@@ -9175,7 +9510,7 @@ export class Contract {
                                           deployment_0,
                                           moduleIdHash_0)
   {
-    return this._persistentHash_16({ domain:
+    return this._persistentHash_20({ domain:
                                        new Uint8Array([112, 101, 114, 109, 105, 111, 58, 105, 109, 112, 108, 101, 109, 101, 110, 116, 97, 116, 105, 111, 110, 58, 118, 49, 0, 0, 0, 0, 0, 0, 0, 0]),
                                      network: network_0,
                                      deployment: deployment_0,
@@ -9290,16 +9625,16 @@ export class Contract {
                            Number);
   }
   _runtimeActionInputSchemaHash_0() {
-    return this._persistentHash_21(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 97, 99, 116, 105, 111, 110, 45, 105, 110, 112, 117, 116, 58, 118, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
+    return this._persistentHash_25(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 97, 99, 116, 105, 111, 110, 45, 105, 110, 112, 117, 116, 58, 118, 49, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]));
   }
   _runtimeActionConfigurationSchemaHash_0() {
-    return this._persistentHash_21(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 114, 117, 110, 116, 105, 109, 101, 45, 112, 111, 108, 105, 99, 121, 58, 118, 51, 0, 0, 0, 0, 0, 0, 0, 0]));
+    return this._persistentHash_25(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 114, 117, 110, 116, 105, 109, 101, 45, 112, 111, 108, 105, 99, 121, 58, 118, 51, 0, 0, 0, 0, 0, 0, 0, 0]));
   }
   _runtimeActionCompilerProfileHash_0() {
-    return this._persistentHash_21(new Uint8Array([99, 111, 109, 112, 97, 99, 116, 58, 48, 46, 51, 49, 46, 49, 47, 114, 117, 110, 116, 105, 109, 101, 58, 48, 46, 49, 54, 46, 48, 0, 0, 0]));
+    return this._persistentHash_25(new Uint8Array([99, 111, 109, 112, 97, 99, 116, 58, 48, 46, 51, 49, 46, 49, 47, 114, 117, 110, 116, 105, 109, 101, 58, 48, 46, 49, 54, 46, 48, 0, 0, 0]));
   }
   _runtimeActionCompatibilityPolicyHash_0() {
-    return this._persistentHash_21(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 97, 99, 116, 105, 118, 101, 45, 109, 111, 100, 117, 108, 101, 45, 111, 110, 108, 121, 58, 118, 49, 0, 0, 0, 0]));
+    return this._persistentHash_25(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 97, 99, 116, 105, 118, 101, 45, 109, 111, 100, 117, 108, 101, 45, 111, 110, 108, 121, 58, 118, 49, 0, 0, 0, 0]));
   }
   _runtimeActionSlotContext_0(intent_0, command_0) {
     return { commandVersion: 1n,
@@ -9339,7 +9674,7 @@ export class Contract {
                  childIssuedSequence:
                    ((t1) => {
                      if (t1 > 18446744073709551615n) {
-                       throw new __compactRuntime.CompactError('runtime-action-execution.compact line 160 char 34: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                       throw new __compactRuntime.CompactError('runtime-action-execution.compact line 163 char 34: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                      }
                      return t1;
                    })(command_0.stateSequence + 1n),
@@ -9632,7 +9967,7 @@ export class Contract {
                             this._equal_415(status_0.rootSequence,
                                             command_0.statusRootSequence),
                             'Action authority or credential-status root is stale');
-    const templateKey_0 = this._persistentHash_45(intent_0.target);
+    const templateKey_0 = this._persistentHash_49(intent_0.target);
     __compactRuntime.assert(_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
                                                                                        [
@@ -9738,61 +10073,74 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value);
-    const implementationReference_0 = this._runtimeActionImplementationReference_0(_descriptor_1.fromValue(__compactRuntime.queryLedgerState(context,
-                                                                                                                                             partialProofData,
-                                                                                                                                             [
-                                                                                                                                              { dup: { n: 0 } },
-                                                                                                                                              { idx: { cached: false,
-                                                                                                                                                       pushPath: false,
-                                                                                                                                                       path: [
-                                                                                                                                                              { tag: 'value',
-                                                                                                                                                                value: { value: _descriptor_3.toValue(0n),
-                                                                                                                                                                         alignment: _descriptor_3.alignment() } },
-                                                                                                                                                              { tag: 'value',
-                                                                                                                                                                value: { value: _descriptor_3.toValue(0n),
-                                                                                                                                                                         alignment: _descriptor_3.alignment() } }] } },
-                                                                                                                                              { popeq: { cached: false,
-                                                                                                                                                         result: undefined } }]).value),
+    const network_0 = _descriptor_1.fromValue(__compactRuntime.queryLedgerState(context,
+                                                                                partialProofData,
+                                                                                [
+                                                                                 { dup: { n: 0 } },
+                                                                                 { idx: { cached: false,
+                                                                                          pushPath: false,
+                                                                                          path: [
+                                                                                                 { tag: 'value',
+                                                                                                   value: { value: _descriptor_3.toValue(0n),
+                                                                                                            alignment: _descriptor_3.alignment() } },
+                                                                                                 { tag: 'value',
+                                                                                                   value: { value: _descriptor_3.toValue(0n),
+                                                                                                            alignment: _descriptor_3.alignment() } }] } },
+                                                                                 { popeq: { cached: false,
+                                                                                            result: undefined } }]).value);
+    const bridge_0 = this._equal_418(binding_0.moduleIdHash,
+                                     this._runtimeEvidenceBridgeModuleId_0());
+    const implementationReference_0 = bridge_0 ?
+                                      this._runtimeEvidenceBridgeImplementationReference_0(network_0,
+                                                                                           allocation_0.targetContractIdentity,
+                                                                                           binding_0.moduleIdHash)
+                                      :
+                                      this._runtimeActionImplementationReference_0(network_0,
                                                                                    allocation_0.targetContractIdentity,
                                                                                    binding_0.moduleIdHash);
-    __compactRuntime.assert(this._equal_418(moduleRecord_0.lifecycleStatus, 4n)
+    __compactRuntime.assert(this._equal_419(moduleRecord_0.lifecycleStatus, 4n)
                             &&
-                            this._equal_419(binding_0.moduleVersion.major, 1n)
+                            this._equal_420(binding_0.moduleVersion.major, 1n)
                             &&
-                            this._equal_420(binding_0.moduleVersion.minor, 0n)
+                            this._equal_421(binding_0.moduleVersion.minor, 0n)
                             &&
-                            this._equal_421(binding_0.moduleVersion.patch, 0n)
+                            this._equal_422(binding_0.moduleVersion.patch, 0n)
                             &&
-                            this._equal_422(moduleRecord_0.receiptSchemaHash,
+                            this._equal_423(moduleRecord_0.receiptSchemaHash,
                                             binding_0.receiptSchemaHash)
                             &&
-                            this._equal_423(binding_0.receiptSchemaHash,
+                            this._equal_424(binding_0.receiptSchemaHash,
                                             this._runtimeActionReceiptSchemaHash_0())
                             &&
-                            this._equal_424(moduleRecord_0.inputSchemaHash,
+                            this._equal_425(moduleRecord_0.inputSchemaHash,
+                                            bridge_0 ?
+                                            this._runtimeEvidenceBridgeInputSchemaHash_0()
+                                            :
                                             this._runtimeActionInputSchemaHash_0())
                             &&
-                            this._equal_425(moduleRecord_0.configurationSchemaHash,
+                            this._equal_426(moduleRecord_0.configurationSchemaHash,
                                             this._runtimeActionConfigurationSchemaHash_0())
                             &&
-                            this._equal_426(moduleRecord_0.compilerVersionHash,
+                            this._equal_427(moduleRecord_0.compilerVersionHash,
                                             this._runtimeActionCompilerProfileHash_0())
                             &&
-                            this._equal_427(moduleRecord_0.compatibilityPolicyHash,
+                            this._equal_428(moduleRecord_0.compatibilityPolicyHash,
                                             this._runtimeActionCompatibilityPolicyHash_0())
                             &&
-                            this._equal_428(moduleRecord_0.implementationReferenceHash,
+                            this._equal_429(moduleRecord_0.implementationReferenceHash,
                                             implementationReference_0),
                             'Action module implementation, lifecycle, version or receipt schema is unsupported');
     __compactRuntime.assert(command_0.transitioning
                             &&
-                            this._equal_429(binding_0.moduleIdHash,
+                            this._equal_430(binding_0.moduleIdHash,
                                             this._runtimeStateTransitionModuleId_0())
                             ||
                             !command_0.transitioning
                             &&
-                            this._equal_430(binding_0.moduleIdHash,
-                                            this._runtimeDelegatedActionModuleId_0()),
+                            (this._equal_431(binding_0.moduleIdHash,
+                                             this._runtimeDelegatedActionModuleId_0())
+                             ||
+                             bridge_0),
                             'UNSUPPORTED_PROOF_REQUIREMENT');
     this._schnorrVerify_0(context,
                           partialProofData,
@@ -9865,7 +10213,7 @@ export class Contract {
                                                                     { popeq: { cached: true,
                                                                                result: undefined } }]).value))
     {
-      const old_0 = _descriptor_58.fromValue(__compactRuntime.queryLedgerState(context,
+      const old_0 = _descriptor_79.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                partialProofData,
                                                                                [
                                                                                 { dup: { n: 0 } },
@@ -9906,7 +10254,7 @@ export class Contract {
                                            { ins: { cached: true, n: 2 } }]);
         return [];
       } else {
-        __compactRuntime.assert(!this._equal_431(op_0, 4n),
+        __compactRuntime.assert(!this._equal_432(op_0, 4n),
                                 'Only an expired action session can be cleaned');
         this._assertRuntimeActionContext_0(context,
                                            partialProofData,
@@ -9919,7 +10267,7 @@ export class Contract {
                                            policy_0,
                                            binding_0,
                                            bindingPath_0);
-        if (this._equal_432(op_0, 1n)) {
+        if (this._equal_433(op_0, 1n)) {
           __compactRuntime.assert(!_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                               partialProofData,
                                                                                               [
@@ -9961,8 +10309,8 @@ export class Contract {
                                                        value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                     alignment: _descriptor_1.alignment() }).encode() } },
                                              { push: { storage: true,
-                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_0),
-                                                                                                    alignment: _descriptor_58.alignment() }).encode() } },
+                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_0),
+                                                                                                    alignment: _descriptor_79.alignment() }).encode() } },
                                              { ins: { cached: false, n: 1 } },
                                              { ins: { cached: true, n: 2 } }]);
           return [];
@@ -9987,7 +10335,7 @@ export class Contract {
                                                                                               { popeq: { cached: true,
                                                                                                          result: undefined } }]).value),
                                   'Action preparation is absent');
-          const pending_0 = _descriptor_58.fromValue(__compactRuntime.queryLedgerState(context,
+          const pending_0 = _descriptor_79.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                        partialProofData,
                                                                                        [
                                                                                         { dup: { n: 0 } },
@@ -10008,21 +10356,21 @@ export class Contract {
                                                                                                                    alignment: _descriptor_1.alignment() } }] } },
                                                                                         { popeq: { cached: false,
                                                                                                    result: undefined } }]).value);
-          __compactRuntime.assert(this._equal_433(pending_0.expiresAt,
+          __compactRuntime.assert(this._equal_434(pending_0.expiresAt,
                                                   command_0.validBefore)
                                   &&
-                                  this._equal_434(pending_0.progressCommitment,
+                                  this._equal_435(pending_0.progressCommitment,
                                                   this._runtimeActionProgressCommitment_0(progress_0)),
                                   'Action preparation progress is altered or stale');
-          if (this._equal_435(op_0, 2n)) {
-            if (this._equal_436(progress_0.slot.steps, 0n)) {
-              __compactRuntime.assert(this._equal_437(slotStep_0.record.assignment.slotIdHash,
+          if (this._equal_436(op_0, 2n)) {
+            if (this._equal_437(progress_0.slot.steps, 0n)) {
+              __compactRuntime.assert(this._equal_438(slotStep_0.record.assignment.slotIdHash,
                                                       policy_0.actorSlotIdHash)
                                       &&
-                                      this._equal_438(slotStep_0.record.assignment.assignmentIdHash,
+                                      this._equal_439(slotStep_0.record.assignment.assignmentIdHash,
                                                       command_0.slotAssignmentIdHash)
                                       &&
-                                      this._equal_439(slotStep_0.record.assignment.subjectAccountCredentialCommitment,
+                                      this._equal_440(slotStep_0.record.assignment.subjectAccountCredentialCommitment,
                                                       session_0.subjectAccountCredentialCommitment),
                                       'Action subject does not occupy its exact required slot');
             }
@@ -10083,31 +10431,31 @@ export class Contract {
                                                          value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                       alignment: _descriptor_1.alignment() }).encode() } },
                                                { push: { storage: true,
-                                                         value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_2),
-                                                                                                      alignment: _descriptor_58.alignment() }).encode() } },
+                                                         value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_2),
+                                                                                                      alignment: _descriptor_79.alignment() }).encode() } },
                                                { ins: { cached: false, n: 1 } },
                                                { ins: { cached: true, n: 2 } }]);
             return [];
           } else {
-            __compactRuntime.assert(this._equal_440(progress_0.slot.phase, 3n)
+            __compactRuntime.assert(this._equal_441(progress_0.slot.phase, 3n)
                                     &&
                                     !progress_0.slot.inactive,
                                     'Action slot ancestry is incomplete or inactive');
-            __compactRuntime.assert(this._equal_441(selected_0.valueVersion, 1n)
+            __compactRuntime.assert(this._equal_442(selected_0.valueVersion, 1n)
                                     &&
-                                    this._equal_442(selected_0.contextHash,
+                                    this._equal_443(selected_0.contextHash,
                                                     intent_0.contextHash)
                                     &&
-                                    this._equal_443(selected_0.resourceHash,
+                                    this._equal_444(selected_0.resourceHash,
                                                     intent_0.resourceHash)
                                     &&
-                                    !this._equal_444(selected_0.payloadCommitment,
+                                    !this._equal_445(selected_0.payloadCommitment,
                                                      new Uint8Array(32))
                                     &&
-                                    !this._equal_445(selected_0.nonce,
+                                    !this._equal_446(selected_0.nonce,
                                                      new Uint8Array(32)),
                                     'Selected action evidence is outside its exact scope or empty');
-            const output_0 = this._equal_446(progress_0.nextInputIndex,
+            const output_0 = this._equal_447(progress_0.nextInputIndex,
                                              policy_0.inputRecordTypeCount);
             const index_0 = output_0 ?
                             progress_0.nextOutputIndex :
@@ -10120,23 +10468,23 @@ export class Contract {
                            policy_0.inputRecordTypesRoot;
             __compactRuntime.assert(!output_0
                                     &&
-                                    this._equal_447(progress_0.nextOutputIndex,
+                                    this._equal_448(progress_0.nextOutputIndex,
                                                     0n)
                                     ||
                                     output_0
                                     &&
-                                    this._equal_448(progress_0.nextInputIndex,
+                                    this._equal_449(progress_0.nextInputIndex,
                                                     policy_0.inputRecordTypeCount),
                                     'Selected action evidence is out of order');
             __compactRuntime.assert(index_0 < count_0
                                     &&
-                                    this._equal_449(this._runtimeCredentialStatusPathIndex_0(typePath_0),
+                                    this._equal_450(this._runtimeCredentialStatusPathIndex_0(typePath_0),
                                                     index_0)
                                     &&
-                                    this._equal_450(typePath_0.leaf,
+                                    this._equal_451(typePath_0.leaf,
                                                     selected_0.typeHash)
                                     &&
-                                    this._equal_451(this._merkleTreePathRoot_3(typePath_0),
+                                    this._equal_452(this._merkleTreePathRoot_3(typePath_0),
                                                     root_0),
                                     'Selected action evidence type/index is not required by the activated policy');
             const next_0 = this._runtimeSelectedActionValueStep_0(output_0 ?
@@ -10156,7 +10504,7 @@ export class Contract {
                                                                           :
                                                                           ((t1) => {
                                                                             if (t1 > 4294967295n) {
-                                                                              throw new __compactRuntime.CompactError('runtime-action-execution.compact line 318 char 85: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                                                                              throw new __compactRuntime.CompactError('runtime-action-execution.compact line 324 char 85: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                                                                             }
                                                                             return t1;
                                                                           })(index_0
@@ -10167,7 +10515,7 @@ export class Contract {
                                                                           ?
                                                                           ((t1) => {
                                                                             if (t1 > 4294967295n) {
-                                                                              throw new __compactRuntime.CompactError('runtime-action-execution.compact line 319 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                                                                              throw new __compactRuntime.CompactError('runtime-action-execution.compact line 325 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                                                                             }
                                                                             return t1;
                                                                           })(index_0
@@ -10204,8 +10552,8 @@ export class Contract {
                                                          value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                       alignment: _descriptor_1.alignment() }).encode() } },
                                                { push: { storage: true,
-                                                         value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_3),
-                                                                                                      alignment: _descriptor_58.alignment() }).encode() } },
+                                                         value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_3),
+                                                                                                      alignment: _descriptor_79.alignment() }).encode() } },
                                                { ins: { cached: false, n: 1 } },
                                                { ins: { cached: true, n: 2 } }]);
             return [];
@@ -10213,7 +10561,7 @@ export class Contract {
         }
       }
     } else {
-      __compactRuntime.assert(!this._equal_452(op_0, 4n),
+      __compactRuntime.assert(!this._equal_453(op_0, 4n),
                               'Only an expired action session can be cleaned');
       this._assertRuntimeActionContext_0(context,
                                          partialProofData,
@@ -10226,7 +10574,7 @@ export class Contract {
                                          policy_0,
                                          binding_0,
                                          bindingPath_0);
-      if (this._equal_453(op_0, 1n)) {
+      if (this._equal_454(op_0, 1n)) {
         __compactRuntime.assert(!_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                             partialProofData,
                                                                                             [
@@ -10268,8 +10616,8 @@ export class Contract {
                                                      value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                   alignment: _descriptor_1.alignment() }).encode() } },
                                            { push: { storage: true,
-                                                     value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_4),
-                                                                                                  alignment: _descriptor_58.alignment() }).encode() } },
+                                                     value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_4),
+                                                                                                  alignment: _descriptor_79.alignment() }).encode() } },
                                            { ins: { cached: false, n: 1 } },
                                            { ins: { cached: true, n: 2 } }]);
         return [];
@@ -10294,7 +10642,7 @@ export class Contract {
                                                                                             { popeq: { cached: true,
                                                                                                        result: undefined } }]).value),
                                 'Action preparation is absent');
-        const pending_1 = _descriptor_58.fromValue(__compactRuntime.queryLedgerState(context,
+        const pending_1 = _descriptor_79.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                      partialProofData,
                                                                                      [
                                                                                       { dup: { n: 0 } },
@@ -10315,21 +10663,21 @@ export class Contract {
                                                                                                                  alignment: _descriptor_1.alignment() } }] } },
                                                                                       { popeq: { cached: false,
                                                                                                  result: undefined } }]).value);
-        __compactRuntime.assert(this._equal_454(pending_1.expiresAt,
+        __compactRuntime.assert(this._equal_455(pending_1.expiresAt,
                                                 command_0.validBefore)
                                 &&
-                                this._equal_455(pending_1.progressCommitment,
+                                this._equal_456(pending_1.progressCommitment,
                                                 this._runtimeActionProgressCommitment_0(progress_0)),
                                 'Action preparation progress is altered or stale');
-        if (this._equal_456(op_0, 2n)) {
-          if (this._equal_457(progress_0.slot.steps, 0n)) {
-            __compactRuntime.assert(this._equal_458(slotStep_0.record.assignment.slotIdHash,
+        if (this._equal_457(op_0, 2n)) {
+          if (this._equal_458(progress_0.slot.steps, 0n)) {
+            __compactRuntime.assert(this._equal_459(slotStep_0.record.assignment.slotIdHash,
                                                     policy_0.actorSlotIdHash)
                                     &&
-                                    this._equal_459(slotStep_0.record.assignment.assignmentIdHash,
+                                    this._equal_460(slotStep_0.record.assignment.assignmentIdHash,
                                                     command_0.slotAssignmentIdHash)
                                     &&
-                                    this._equal_460(slotStep_0.record.assignment.subjectAccountCredentialCommitment,
+                                    this._equal_461(slotStep_0.record.assignment.subjectAccountCredentialCommitment,
                                                     session_0.subjectAccountCredentialCommitment),
                                     'Action subject does not occupy its exact required slot');
           }
@@ -10390,31 +10738,31 @@ export class Contract {
                                                        value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                     alignment: _descriptor_1.alignment() }).encode() } },
                                              { push: { storage: true,
-                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_6),
-                                                                                                    alignment: _descriptor_58.alignment() }).encode() } },
+                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_6),
+                                                                                                    alignment: _descriptor_79.alignment() }).encode() } },
                                              { ins: { cached: false, n: 1 } },
                                              { ins: { cached: true, n: 2 } }]);
           return [];
         } else {
-          __compactRuntime.assert(this._equal_461(progress_0.slot.phase, 3n)
+          __compactRuntime.assert(this._equal_462(progress_0.slot.phase, 3n)
                                   &&
                                   !progress_0.slot.inactive,
                                   'Action slot ancestry is incomplete or inactive');
-          __compactRuntime.assert(this._equal_462(selected_0.valueVersion, 1n)
+          __compactRuntime.assert(this._equal_463(selected_0.valueVersion, 1n)
                                   &&
-                                  this._equal_463(selected_0.contextHash,
+                                  this._equal_464(selected_0.contextHash,
                                                   intent_0.contextHash)
                                   &&
-                                  this._equal_464(selected_0.resourceHash,
+                                  this._equal_465(selected_0.resourceHash,
                                                   intent_0.resourceHash)
                                   &&
-                                  !this._equal_465(selected_0.payloadCommitment,
+                                  !this._equal_466(selected_0.payloadCommitment,
                                                    new Uint8Array(32))
                                   &&
-                                  !this._equal_466(selected_0.nonce,
+                                  !this._equal_467(selected_0.nonce,
                                                    new Uint8Array(32)),
                                   'Selected action evidence is outside its exact scope or empty');
-          const output_1 = this._equal_467(progress_0.nextInputIndex,
+          const output_1 = this._equal_468(progress_0.nextInputIndex,
                                            policy_0.inputRecordTypeCount);
           const index_1 = output_1 ?
                           progress_0.nextOutputIndex :
@@ -10427,22 +10775,22 @@ export class Contract {
                          policy_0.inputRecordTypesRoot;
           __compactRuntime.assert(!output_1
                                   &&
-                                  this._equal_468(progress_0.nextOutputIndex, 0n)
+                                  this._equal_469(progress_0.nextOutputIndex, 0n)
                                   ||
                                   output_1
                                   &&
-                                  this._equal_469(progress_0.nextInputIndex,
+                                  this._equal_470(progress_0.nextInputIndex,
                                                   policy_0.inputRecordTypeCount),
                                   'Selected action evidence is out of order');
           __compactRuntime.assert(index_1 < count_1
                                   &&
-                                  this._equal_470(this._runtimeCredentialStatusPathIndex_0(typePath_0),
+                                  this._equal_471(this._runtimeCredentialStatusPathIndex_0(typePath_0),
                                                   index_1)
                                   &&
-                                  this._equal_471(typePath_0.leaf,
+                                  this._equal_472(typePath_0.leaf,
                                                   selected_0.typeHash)
                                   &&
-                                  this._equal_472(this._merkleTreePathRoot_3(typePath_0),
+                                  this._equal_473(this._merkleTreePathRoot_3(typePath_0),
                                                   root_1),
                                   'Selected action evidence type/index is not required by the activated policy');
           const next_1 = this._runtimeSelectedActionValueStep_0(output_1 ?
@@ -10462,7 +10810,7 @@ export class Contract {
                                                                         :
                                                                         ((t1) => {
                                                                           if (t1 > 4294967295n) {
-                                                                            throw new __compactRuntime.CompactError('runtime-action-execution.compact line 318 char 85: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                                                                            throw new __compactRuntime.CompactError('runtime-action-execution.compact line 324 char 85: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                                                                           }
                                                                           return t1;
                                                                         })(index_1
@@ -10473,7 +10821,7 @@ export class Contract {
                                                                         ?
                                                                         ((t1) => {
                                                                           if (t1 > 4294967295n) {
-                                                                            throw new __compactRuntime.CompactError('runtime-action-execution.compact line 319 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                                                                            throw new __compactRuntime.CompactError('runtime-action-execution.compact line 325 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                                                                           }
                                                                           return t1;
                                                                         })(index_1
@@ -10509,8 +10857,8 @@ export class Contract {
                                                        value: __compactRuntime.StateValue.newCell({ value: _descriptor_1.toValue(key_0),
                                                                                                     alignment: _descriptor_1.alignment() }).encode() } },
                                              { push: { storage: true,
-                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_58.toValue(tmp_7),
-                                                                                                    alignment: _descriptor_58.alignment() }).encode() } },
+                                                       value: __compactRuntime.StateValue.newCell({ value: _descriptor_79.toValue(tmp_7),
+                                                                                                    alignment: _descriptor_79.alignment() }).encode() } },
                                              { ins: { cached: false, n: 1 } },
                                              { ins: { cached: true, n: 2 } }]);
           return [];
@@ -10541,6 +10889,117 @@ export class Contract {
                           transitionPath_0,
                           nextStateIdHash_0,
                           nextNonce_0)
+  {
+    __compactRuntime.assert(!this._equal_474(binding_0.moduleIdHash,
+                                             this._runtimeEvidenceBridgeModuleId_0()),
+                            'Evidence bridge requires its dedicated entry');
+    return this._executeRuntimeActionCore_0(context,
+                                            partialProofData,
+                                            command_0,
+                                            signature_0,
+                                            intent_0,
+                                            ancestry_0,
+                                            sessionSignature_0,
+                                            intentSignature_0,
+                                            capabilityPaths_0,
+                                            sessionPaths_0,
+                                            allocation_0,
+                                            state_0,
+                                            policy_0,
+                                            binding_0,
+                                            bindingPath_0,
+                                            progress_0,
+                                            issuer_0,
+                                            instanceIssuerPath_0,
+                                            namespaceIssuerPath_0,
+                                            transition_0,
+                                            transitionPath_0,
+                                            nextStateIdHash_0,
+                                            nextNonce_0);
+  }
+  _executeRuntimeEvidenceBridge_0(context,
+                                  partialProofData,
+                                  command_0,
+                                  signature_0,
+                                  intent_0,
+                                  ancestry_0,
+                                  sessionSignature_0,
+                                  intentSignature_0,
+                                  capabilityPaths_0,
+                                  sessionPaths_0,
+                                  allocation_0,
+                                  state_0,
+                                  policy_0,
+                                  binding_0,
+                                  bindingPath_0,
+                                  progress_0,
+                                  issuer_0,
+                                  instanceIssuerPath_0,
+                                  namespaceIssuerPath_0,
+                                  transition_0,
+                                  transitionPath_0,
+                                  nextStateIdHash_0,
+                                  nextNonce_0,
+                                  opening_0,
+                                  outputTypeHash_0)
+  {
+    __compactRuntime.assert(this._equal_475(binding_0.moduleIdHash,
+                                            this._runtimeEvidenceBridgeModuleId_0())
+                            &&
+                            !command_0.transitioning,
+                            'Evidence bridge entry requires its dedicated nontransitioning module');
+    this._assertRuntimeEvidenceBridgeOpening_0(command_0,
+                                               intent_0,
+                                               policy_0,
+                                               opening_0,
+                                               outputTypeHash_0);
+    return this._executeRuntimeActionCore_0(context,
+                                            partialProofData,
+                                            command_0,
+                                            signature_0,
+                                            intent_0,
+                                            ancestry_0,
+                                            sessionSignature_0,
+                                            intentSignature_0,
+                                            capabilityPaths_0,
+                                            sessionPaths_0,
+                                            allocation_0,
+                                            state_0,
+                                            policy_0,
+                                            binding_0,
+                                            bindingPath_0,
+                                            progress_0,
+                                            issuer_0,
+                                            instanceIssuerPath_0,
+                                            namespaceIssuerPath_0,
+                                            transition_0,
+                                            transitionPath_0,
+                                            nextStateIdHash_0,
+                                            nextNonce_0);
+  }
+  _executeRuntimeActionCore_0(context,
+                              partialProofData,
+                              command_0,
+                              signature_0,
+                              intent_0,
+                              ancestry_0,
+                              sessionSignature_0,
+                              intentSignature_0,
+                              capabilityPaths_0,
+                              sessionPaths_0,
+                              allocation_0,
+                              state_0,
+                              policy_0,
+                              binding_0,
+                              bindingPath_0,
+                              progress_0,
+                              issuer_0,
+                              instanceIssuerPath_0,
+                              namespaceIssuerPath_0,
+                              transition_0,
+                              transitionPath_0,
+                              nextStateIdHash_0,
+                              nextNonce_0)
   {
     this._assertRuntimeActionContext_0(context,
                                        partialProofData,
@@ -10574,7 +11033,7 @@ export class Contract {
                                                                                         { popeq: { cached: true,
                                                                                                    result: undefined } }]).value),
                             'Action preparation is absent');
-    const pending_0 = _descriptor_58.fromValue(__compactRuntime.queryLedgerState(context,
+    const pending_0 = _descriptor_79.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                  partialProofData,
                                                                                  [
                                                                                   { dup: { n: 0 } },
@@ -10596,28 +11055,28 @@ export class Contract {
                                                                                   { popeq: { cached: false,
                                                                                              result: undefined } }]).value);
     let t_0;
-    __compactRuntime.assert(this._equal_473(pending_0.expiresAt,
+    __compactRuntime.assert(this._equal_476(pending_0.expiresAt,
                                             command_0.validBefore)
                             &&
-                            this._equal_474(pending_0.progressCommitment,
+                            this._equal_477(pending_0.progressCommitment,
                                             this._runtimeActionProgressCommitment_0(progress_0))
                             &&
-                            this._equal_475(progress_0.slot.phase, 3n)
+                            this._equal_478(progress_0.slot.phase, 3n)
                             &&
                             !progress_0.slot.inactive
                             &&
                             (t_0 = progress_0.slot.steps, t_0 > 0n)
                             &&
-                            this._equal_476(progress_0.nextInputIndex,
+                            this._equal_479(progress_0.nextInputIndex,
                                             policy_0.inputRecordTypeCount)
                             &&
-                            this._equal_477(progress_0.nextOutputIndex,
+                            this._equal_480(progress_0.nextOutputIndex,
                                             policy_0.outputClaimTypeCount)
                             &&
-                            this._equal_478(progress_0.inputsAccumulator,
+                            this._equal_481(progress_0.inputsAccumulator,
                                             command_0.selectedInputsCommitment)
                             &&
-                            this._equal_479(progress_0.outputsAccumulator,
+                            this._equal_482(progress_0.outputsAccumulator,
                                             command_0.selectedOutputsCommitment),
                             'Action slot/evidence preparation is incomplete, substituted or stale');
     let tmp_0;
@@ -10673,7 +11132,7 @@ export class Contract {
                                         namespaceIssuerPath_0,
                                         command_0.effectiveAt);
     let t_1;
-    __compactRuntime.assert(this._equal_480(this._governanceActivatorLeafCommitment_0(issuer_0),
+    __compactRuntime.assert(this._equal_483(this._governanceActivatorLeafCommitment_0(issuer_0),
                                             ancestry_0.capabilities[0].namespaceIssuerAuthorityCommitment)
                             &&
                             (t_1 = command_0.validBefore,
@@ -10753,7 +11212,7 @@ export class Contract {
                                                        nextNonce_0,
                                                        command_0.effectiveAt,
                                                        command_0.transitioning);
-    __compactRuntime.assert(this._equal_481(this._runtimeStateCommitment_0(nextState_0),
+    __compactRuntime.assert(this._equal_484(this._runtimeStateCommitment_0(nextState_0),
                                             command_0.nextStateCommitment),
                             'Action signature does not bind the exact next private state');
     const receiptId_0 = this._commitRuntimeActionOutcome_0(context,
@@ -10793,17 +11252,432 @@ export class Contract {
                                        { ins: { cached: true, n: 2 } }]);
     return receiptId_0;
   }
+  _runtimeEvidenceBridgeBinding_0(opening_0) {
+    return this._persistentHash_16({ domain:
+                                       new Uint8Array([112, 101, 114, 109, 105, 111, 58, 101, 118, 105, 100, 101, 110, 99, 101, 45, 98, 114, 105, 100, 103, 101, 58, 118, 50, 0, 0, 0, 0, 0, 0, 0]),
+                                     opening: opening_0 });
+  }
+  _runtimeEvidenceBridgeHexDigit_0(nibble_0) {
+    if (nibble_0 < 10n) {
+      return 48n + nibble_0;
+    } else {
+      return 87n + nibble_0;
+    }
+  }
+  _runtimeEvidenceBridgeByteHex_0(value_0) {
+    let t_0;
+    const r128_0 = ((t1) => {
+                     if (t1 > 127n) {
+                       throw new __compactRuntime.CompactError('runtime-evidence-bridge.compact line 36 char 18: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 127');
+                     }
+                     return t1;
+                   })((t_0 = value_0 >= 128n ? 128n : 0n,
+                       (__compactRuntime.assert(value_0 >= t_0,
+                                                'result of subtraction would be negative'),
+                        value_0 - t_0)));
+    let t_1;
+    const r64_0 = ((t1) => {
+                    if (t1 > 63n) {
+                      throw new __compactRuntime.CompactError('runtime-evidence-bridge.compact line 37 char 17: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 63');
+                    }
+                    return t1;
+                  })((t_1 = r128_0 >= 64n ? 64n : 0n,
+                      (__compactRuntime.assert(r128_0 >= t_1,
+                                               'result of subtraction would be negative'),
+                       r128_0 - t_1)));
+    let t_2;
+    const r32_0 = ((t1) => {
+                    if (t1 > 31n) {
+                      throw new __compactRuntime.CompactError('runtime-evidence-bridge.compact line 38 char 17: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 31');
+                    }
+                    return t1;
+                  })((t_2 = r64_0 >= 32n ? 32n : 0n,
+                      (__compactRuntime.assert(r64_0 >= t_2,
+                                               'result of subtraction would be negative'),
+                       r64_0 - t_2)));
+    const high_0 = (value_0 >= 128n ? 8n : 0n) + (r128_0 >= 64n ? 4n : 0n)
+                   +
+                   (r64_0 >= 32n ? 2n : 0n)
+                   +
+                   (r32_0 >= 16n ? 1n : 0n);
+    let t_3;
+    const low_0 = ((t1) => {
+                    if (t1 > 15n) {
+                      throw new __compactRuntime.CompactError('runtime-evidence-bridge.compact line 41 char 17: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 15');
+                    }
+                    return t1;
+                  })((t_3 = high_0 * 16n,
+                      (__compactRuntime.assert(value_0 >= t_3,
+                                               'result of subtraction would be negative'),
+                       value_0 - t_3)));
+    return [this._runtimeEvidenceBridgeHexDigit_0(high_0),
+            this._runtimeEvidenceBridgeHexDigit_0(low_0)];
+  }
+  _runtimeEvidenceBridgeHex_0(value_0) {
+    const pairs_0 = this._mapper_4((...args_0) =>
+                                     this._runtimeEvidenceBridgeByteHex_0(...args_0),
+                                   Array.from(value_0, BigInt));
+    return Uint8Array.from([48n,
+                            120n,
+                            ...pairs_0[0],
+                            ...pairs_0[1],
+                            ...pairs_0[2],
+                            ...pairs_0[3],
+                            ...pairs_0[4],
+                            ...pairs_0[5],
+                            ...pairs_0[6],
+                            ...pairs_0[7],
+                            ...pairs_0[8],
+                            ...pairs_0[9],
+                            ...pairs_0[10],
+                            ...pairs_0[11],
+                            ...pairs_0[12],
+                            ...pairs_0[13],
+                            ...pairs_0[14],
+                            ...pairs_0[15],
+                            ...pairs_0[16],
+                            ...pairs_0[17],
+                            ...pairs_0[18],
+                            ...pairs_0[19],
+                            ...pairs_0[20],
+                            ...pairs_0[21],
+                            ...pairs_0[22],
+                            ...pairs_0[23],
+                            ...pairs_0[24],
+                            ...pairs_0[25],
+                            ...pairs_0[26],
+                            ...pairs_0[27],
+                            ...pairs_0[28],
+                            ...pairs_0[29],
+                            ...pairs_0[30],
+                            ...pairs_0[31]],
+                           Number);
+  }
+  _runtimeEvidenceBridgeResourceHash_0(value_0) {
+    const preimage_0 = Uint8Array.from([0n,
+                                        0n,
+                                        0n,
+                                        3n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        19n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        99n,
+                                        97n,
+                                        110n,
+                                        111n,
+                                        110n,
+                                        105n,
+                                        99n,
+                                        97n,
+                                        108n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        26n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        114n,
+                                        117n,
+                                        110n,
+                                        116n,
+                                        105n,
+                                        109n,
+                                        101n,
+                                        45n,
+                                        114n,
+                                        101n,
+                                        115n,
+                                        111n,
+                                        117n,
+                                        114n,
+                                        99n,
+                                        101n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        66n,
+                                        ...Array.from(this._runtimeEvidenceBridgeHex_0(value_0),
+                                                      BigInt)],
+                                       Number);
+    return this._persistentHash_17(preimage_0);
+  }
+  _runtimeEvidenceBridgeRecipientHash_0(value_0) {
+    const preimage_0 = Uint8Array.from([0n,
+                                        0n,
+                                        0n,
+                                        3n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        19n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        99n,
+                                        97n,
+                                        110n,
+                                        111n,
+                                        110n,
+                                        105n,
+                                        99n,
+                                        97n,
+                                        108n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        27n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        114n,
+                                        117n,
+                                        110n,
+                                        116n,
+                                        105n,
+                                        109n,
+                                        101n,
+                                        45n,
+                                        114n,
+                                        101n,
+                                        99n,
+                                        105n,
+                                        112n,
+                                        105n,
+                                        101n,
+                                        110n,
+                                        116n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        66n,
+                                        ...Array.from(this._runtimeEvidenceBridgeHex_0(value_0),
+                                                      BigInt)],
+                                       Number);
+    return this._persistentHash_18(preimage_0);
+  }
+  _runtimeEvidenceBridgeNonceHash_0(value_0) {
+    const preimage_0 = Uint8Array.from([0n,
+                                        0n,
+                                        0n,
+                                        3n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        19n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        99n,
+                                        97n,
+                                        110n,
+                                        111n,
+                                        110n,
+                                        105n,
+                                        99n,
+                                        97n,
+                                        108n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        30n,
+                                        112n,
+                                        101n,
+                                        114n,
+                                        109n,
+                                        105n,
+                                        111n,
+                                        58n,
+                                        114n,
+                                        117n,
+                                        110n,
+                                        116n,
+                                        105n,
+                                        109n,
+                                        101n,
+                                        45n,
+                                        105n,
+                                        110n,
+                                        116n,
+                                        101n,
+                                        110n,
+                                        116n,
+                                        45n,
+                                        110n,
+                                        111n,
+                                        110n,
+                                        99n,
+                                        101n,
+                                        58n,
+                                        118n,
+                                        49n,
+                                        0n,
+                                        0n,
+                                        0n,
+                                        66n,
+                                        ...Array.from(this._runtimeEvidenceBridgeHex_0(value_0),
+                                                      BigInt)],
+                                       Number);
+    return this._persistentHash_19(preimage_0);
+  }
+  _runtimeEvidenceBridgeSelectedOutput_0(opening_0, outputTypeHash_0) {
+    const binding_0 = this._runtimeEvidenceBridgeBinding_0(opening_0);
+    return { valueVersion: 1n,
+             typeHash: outputTypeHash_0,
+             contextHash: opening_0.sourceContextHash,
+             resourceHash: this._runtimeEvidenceBridgeResourceHash_0(binding_0),
+             payloadCommitment: binding_0,
+             nonce: opening_0.nonce };
+  }
+  _runtimeEvidenceBridgeOutputCommitment_0(opening_0, outputTypeHash_0) {
+    return this._runtimeSelectedActionValueStep_0(new Uint8Array(32),
+                                                  0n,
+                                                  this._runtimeEvidenceBridgeSelectedOutput_0(opening_0,
+                                                                                              outputTypeHash_0),
+                                                  true);
+  }
+  _runtimeEvidenceBridgeModuleId_0() {
+    return Uint8Array.from([125n,
+                            174n,
+                            96n,
+                            68n,
+                            121n,
+                            113n,
+                            7n,
+                            178n,
+                            114n,
+                            200n,
+                            110n,
+                            160n,
+                            217n,
+                            134n,
+                            124n,
+                            215n,
+                            107n,
+                            153n,
+                            25n,
+                            192n,
+                            5n,
+                            159n,
+                            110n,
+                            16n,
+                            220n,
+                            74n,
+                            128n,
+                            74n,
+                            79n,
+                            116n,
+                            28n,
+                            135n],
+                           Number);
+  }
+  _runtimeEvidenceBridgeInputSchemaHash_0() {
+    return this._persistentHash_25(new Uint8Array([112, 101, 114, 109, 105, 111, 58, 101, 118, 105, 100, 101, 110, 99, 101, 45, 98, 114, 105, 100, 103, 101, 45, 105, 110, 112, 117, 116, 58, 118, 50, 0]));
+  }
+  _runtimeEvidenceBridgeImplementationReference_0(network_0,
+                                                  deployment_0,
+                                                  moduleIdHash_0)
+  {
+    return this._persistentHash_20({ domain:
+                                       new Uint8Array([112, 101, 114, 109, 105, 111, 58, 105, 109, 112, 108, 101, 109, 101, 110, 116, 97, 116, 105, 111, 110, 58, 118, 49, 0, 0, 0, 0, 0, 0, 0, 0]),
+                                     network: network_0,
+                                     deployment: deployment_0,
+                                     contractVersion: 10n,
+                                     entryPoint:
+                                       new Uint8Array([101, 120, 101, 99, 117, 116, 101, 82, 117, 110, 116, 105, 109, 101, 69, 118, 105, 100, 101, 110, 99, 101, 66, 114, 105, 100, 103, 101, 0, 0, 0, 0]),
+                                     moduleIdHash: moduleIdHash_0 });
+  }
+  _assertRuntimeEvidenceBridgeOpening_0(command_0,
+                                        intent_0,
+                                        policy_0,
+                                        opening_0,
+                                        outputTypeHash_0)
+  {
+    let t_0;
+    __compactRuntime.assert(this._equal_485(opening_0.bindingVersion, 2n)
+                            &&
+                            !this._equal_486(opening_0.nonce, new Uint8Array(32))
+                            &&
+                            this._equal_487(opening_0.sourceContextHash,
+                                            intent_0.contextHash)
+                            &&
+                            this._equal_488(opening_0.sourceInstanceCommitment,
+                                            intent_0.instanceCommitment)
+                            &&
+                            this._equal_489(opening_0.purposeHash,
+                                            intent_0.purposeHash)
+                            &&
+                            (t_0 = command_0.validBefore,
+                             t_0 <= opening_0.expiresAt),
+                            'Evidence bridge opening substitutes its version, source, purpose, nonce or expiry');
+    const binding_0 = this._runtimeEvidenceBridgeBinding_0(opening_0);
+    __compactRuntime.assert(this._equal_490(intent_0.resourceHash,
+                                            this._runtimeEvidenceBridgeResourceHash_0(binding_0))
+                            &&
+                            this._equal_491(intent_0.recipientHash,
+                                            this._runtimeEvidenceBridgeRecipientHash_0(opening_0.recipientKeyFingerprint))
+                            &&
+                            this._equal_492(intent_0.nonceHash,
+                                            this._runtimeEvidenceBridgeNonceHash_0(opening_0.nonce)),
+                            'Evidence bridge opening does not match its exact signed resource, recipient or nonce identifiers');
+    __compactRuntime.assert(this._equal_493(policy_0.outputClaimTypeCount, 1n)
+                            &&
+                            this._equal_494(command_0.selectedOutputsCommitment,
+                                            this._runtimeEvidenceBridgeOutputCommitment_0(opening_0,
+                                                                                          outputTypeHash_0)),
+                            'Evidence bridge requires exactly one typed aggregate output bound to its manifest opening');
+    return [];
+  }
   _activationAdmissionMessage_0(envelope_0) {
     return [this._transientHash_7(envelope_0)];
   }
   _activationAdmissionEnvelopeCommitment_0(envelope_0) {
-    return this._persistentHash_17(envelope_0);
+    return this._persistentHash_21(envelope_0);
   }
   _governanceActivatorLeafCommitment_0(leaf_0) {
-    return this._persistentHash_18(leaf_0);
+    return this._persistentHash_22(leaf_0);
   }
   _authorityRootUpdateCommandCommitment_0(command_0) {
-    return this._persistentHash_19(command_0);
+    return this._persistentHash_23(command_0);
   }
   _authorityRootUpdateCommandMessage_0(command_0) {
     return [this._transientHash_8(command_0)];
@@ -10812,13 +11686,13 @@ export class Contract {
     return [this._transientHash_9(command_0)];
   }
   _runtimeAccountCredentialCommitment_0(credential_0) {
-    return this._persistentHash_20(credential_0);
+    return this._persistentHash_24(credential_0);
   }
   _runtimeScopeValueCommitment_0(valueHash_0) {
-    return this._persistentHash_21(valueHash_0);
+    return this._persistentHash_25(valueHash_0);
   }
   _runtimeCredentialStatusLeafCommitment_0(leaf_0) {
-    return this._persistentHash_22(leaf_0);
+    return this._persistentHash_26(leaf_0);
   }
   _runtimeCredentialStatusPathRoot_0(path_0) {
     return this._merkleTreePathRoot_3(path_0);
@@ -10874,25 +11748,25 @@ export class Contract {
     return [this._transientHash_10(command_0)];
   }
   _runtimeCredentialStatusCommandCommitment_0(command_0) {
-    return this._persistentHash_24(command_0);
+    return this._persistentHash_28(command_0);
   }
   _runtimeScopeProgressCommitment_0(progress_0) {
-    return this._persistentHash_25(progress_0);
+    return this._persistentHash_29(progress_0);
   }
   _runtimeScopeElementCommitment_0(element_0) {
-    return this._persistentHash_26(element_0);
+    return this._persistentHash_30(element_0);
   }
   _capabilityAttenuationCertificationCommitment_0(certification_0) {
-    return this._persistentHash_27(certification_0);
+    return this._persistentHash_31(certification_0);
   }
   _runtimeCapabilityCredentialCommitment_0(credential_0) {
-    return this._persistentHash_28(credential_0);
+    return this._persistentHash_32(credential_0);
   }
   _runtimeSessionCredentialCommitment_0(credential_0) {
-    return this._persistentHash_29(credential_0);
+    return this._persistentHash_33(credential_0);
   }
   _runtimeActionIntentCommitment_0(intent_0) {
-    return this._persistentHash_30(intent_0);
+    return this._persistentHash_34(intent_0);
   }
   _runtimeAccountCredentialMessage_0(credential_0) {
     return [this._transientHash_11(credential_0)];
@@ -10907,19 +11781,19 @@ export class Contract {
     return [this._transientHash_14(intent_0)];
   }
   _activeTemplateRecordCommitment_0(record_0) {
-    return this._persistentHash_31(record_0);
+    return this._persistentHash_35(record_0);
   }
   _proofModuleBindingCommitment_0(binding_0) {
-    return this._persistentHash_32(binding_0);
+    return this._persistentHash_36(binding_0);
   }
   _proofModuleProposalCommitment_0(proposal_0) {
-    return this._persistentHash_33(proposal_0);
+    return this._persistentHash_37(proposal_0);
   }
   _proofModuleRecordCommitment_0(record_0) {
-    return this._persistentHash_36(record_0);
+    return this._persistentHash_40(record_0);
   }
   _proofModuleReviewCommitment_0(review_0) {
-    return this._persistentHash_34(review_0);
+    return this._persistentHash_38(review_0);
   }
   _proofModuleReviewMessage_0(review_0) {
     return [this._transientHash_15(review_0)];
@@ -11027,9 +11901,9 @@ export class Contract {
                                          signature_0,
                                          publicKey_0)
   {
-    __compactRuntime.assert(this._equal_482(envelope_0.envelopeVersion, 1n),
+    __compactRuntime.assert(this._equal_495(envelope_0.envelopeVersion, 1n),
                             'Unsupported admission envelope version');
-    __compactRuntime.assert(this._equal_483(envelope_0.registryProtocolVersion,
+    __compactRuntime.assert(this._equal_496(envelope_0.registryProtocolVersion,
                                             1n),
                             'Unsupported registry protocol version');
     this._schnorrVerify_0(context,
@@ -11040,14 +11914,14 @@ export class Contract {
     return [];
   }
   _templateRegistryKey_0(envelope_0) {
-    return this._persistentHash_45({ namespaceHash: envelope_0.namespaceHash,
+    return this._persistentHash_49({ namespaceHash: envelope_0.namespaceHash,
                                      templateIdHash: envelope_0.templateIdHash,
                                      semanticVersion: envelope_0.semanticVersion,
                                      templateContentHash:
                                        envelope_0.templateContentHash });
   }
   _proofModuleRegistryKeyFromIdentity_0(identity_0) {
-    return this._persistentHash_35(identity_0);
+    return this._persistentHash_39(identity_0);
   }
   _proofModuleRegistryKeyFromBinding_0(binding_0) {
     return this._proofModuleRegistryKeyFromIdentity_0({ moduleIdHash:
@@ -11064,12 +11938,12 @@ export class Contract {
                               activator_0,
                               authorityPath_0)
   {
-    __compactRuntime.assert(this._equal_484(envelope_0.envelopeVersion, 1n),
+    __compactRuntime.assert(this._equal_497(envelope_0.envelopeVersion, 1n),
                             'Unsupported admission envelope version');
-    __compactRuntime.assert(this._equal_485(envelope_0.registryProtocolVersion,
+    __compactRuntime.assert(this._equal_498(envelope_0.registryProtocolVersion,
                                             1n),
                             'Unsupported registry protocol version');
-    __compactRuntime.assert(this._equal_486(envelope_0.targetNetworkHash,
+    __compactRuntime.assert(this._equal_499(envelope_0.targetNetworkHash,
                                             _descriptor_1.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                       partialProofData,
                                                                                                       [
@@ -11086,7 +11960,7 @@ export class Contract {
                                                                                                        { popeq: { cached: false,
                                                                                                                   result: undefined } }]).value)),
                             'Admission targets another Midnight network');
-    __compactRuntime.assert(this._equal_487(envelope_0.targetContractIdentity,
+    __compactRuntime.assert(this._equal_500(envelope_0.targetContractIdentity,
                                             _descriptor_52.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                        partialProofData,
                                                                                                        [
@@ -11145,23 +12019,23 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_488(envelope_0.governancePolicyHash,
+    __compactRuntime.assert(this._equal_501(envelope_0.governancePolicyHash,
                                             currentRoot_0.governancePolicyHash)
                             &&
-                            this._equal_489(envelope_0.authorityRootVersion,
+                            this._equal_502(envelope_0.authorityRootVersion,
                                             currentRoot_0.rootVersion)
                             &&
-                            this._equal_490(envelope_0.authorityRootSequence,
+                            this._equal_503(envelope_0.authorityRootSequence,
                                             currentRoot_0.rootSequence),
                             'Admission authority root reference is stale or mismatched');
-    __compactRuntime.assert(this._equal_491(activator_0.leafVersion, 1n)
+    __compactRuntime.assert(this._equal_504(activator_0.leafVersion, 1n)
                             &&
-                            this._equal_492(activator_0.authorityKind, 3n)
+                            this._equal_505(activator_0.authorityKind, 3n)
                             &&
-                            this._equal_493(activator_0.namespaceHash,
+                            this._equal_506(activator_0.namespaceHash,
                                             envelope_0.namespaceHash)
                             &&
-                            this._equal_494(activator_0.governancePolicyHash,
+                            this._equal_507(activator_0.governancePolicyHash,
                                             envelope_0.governancePolicyHash),
                             'Governance activator leaf is outside the admission scope');
     let t_0, t_1;
@@ -11172,10 +12046,10 @@ export class Contract {
                              t_0 < activator_0.validBefore),
                             'Governance activator is outside its validity window');
     const activatorCommitment_0 = this._governanceActivatorLeafCommitment_0(activator_0);
-    __compactRuntime.assert(this._equal_495(authorityPath_0.leaf,
+    __compactRuntime.assert(this._equal_508(authorityPath_0.leaf,
                                             activatorCommitment_0)
                             &&
-                            this._equal_496(this._merkleTreePathRoot_3(authorityPath_0),
+                            this._equal_509(this._merkleTreePathRoot_3(authorityPath_0),
                                             currentRoot_0.root),
                             'Governance activator is not eligible under the current authority root');
     this._schnorrVerify_0(context,
@@ -11237,24 +12111,24 @@ export class Contract {
                                                                                                                  alignment: _descriptor_1.alignment() } }] } },
                                                                                       { popeq: { cached: false,
                                                                                                  result: undefined } }]).value);
-    __compactRuntime.assert(this._equal_497(governancePolicyHash_0,
+    __compactRuntime.assert(this._equal_510(governancePolicyHash_0,
                                             currentRoot_0.governancePolicyHash)
                             &&
-                            this._equal_498(authorityRootVersion_0,
+                            this._equal_511(authorityRootVersion_0,
                                             currentRoot_0.rootVersion)
                             &&
-                            this._equal_499(authorityRootSequence_0,
+                            this._equal_512(authorityRootSequence_0,
                                             currentRoot_0.rootSequence),
                             'Proof-module authority root reference is stale or mismatched');
-    __compactRuntime.assert(this._equal_500(authority_0.leafVersion, 1n)
+    __compactRuntime.assert(this._equal_513(authority_0.leafVersion, 1n)
                             &&
-                            this._equal_501(authority_0.authorityKind,
+                            this._equal_514(authority_0.authorityKind,
                                             requiredAuthorityKind_0)
                             &&
-                            this._equal_502(authority_0.namespaceHash,
+                            this._equal_515(authority_0.namespaceHash,
                                             namespaceHash_0)
                             &&
-                            this._equal_503(authority_0.governancePolicyHash,
+                            this._equal_516(authority_0.governancePolicyHash,
                                             governancePolicyHash_0),
                             'Proof-module authority leaf is outside the required scope');
     __compactRuntime.assert(effectiveAt_0 >= authority_0.validAfter
@@ -11262,10 +12136,10 @@ export class Contract {
                             effectiveAt_0 < authority_0.validBefore,
                             'Proof-module authority is outside its validity window');
     const authorityCommitment_0 = this._governanceActivatorLeafCommitment_0(authority_0);
-    __compactRuntime.assert(this._equal_504(authorityPath_0.leaf,
+    __compactRuntime.assert(this._equal_517(authorityPath_0.leaf,
                                             authorityCommitment_0)
                             &&
-                            this._equal_505(this._merkleTreePathRoot_3(authorityPath_0),
+                            this._equal_518(this._merkleTreePathRoot_3(authorityPath_0),
                                             currentRoot_0.root),
                             'Proof-module authority is not eligible under the current root');
     return currentRoot_0;
@@ -11277,7 +12151,7 @@ export class Contract {
                                governor_0,
                                authorityPath_0)
   {
-    __compactRuntime.assert(this._equal_506(command_0.commandVersion, 1n),
+    __compactRuntime.assert(this._equal_519(command_0.commandVersion, 1n),
                             'Unsupported authority-root update version');
     let tmp_0;
     __compactRuntime.assert((tmp_0 = command_0.namespaceHash,
@@ -11324,22 +12198,22 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_507(command_0.currentGovernancePolicyHash,
+    __compactRuntime.assert(this._equal_520(command_0.currentGovernancePolicyHash,
                                             currentRoot_0.governancePolicyHash)
                             &&
-                            this._equal_508(command_0.currentRoot,
+                            this._equal_521(command_0.currentRoot,
                                             currentRoot_0.root)
                             &&
-                            this._equal_509(command_0.currentRootVersion,
+                            this._equal_522(command_0.currentRootVersion,
                                             currentRoot_0.rootVersion)
                             &&
-                            this._equal_510(command_0.currentRootSequence,
+                            this._equal_523(command_0.currentRootSequence,
                                             currentRoot_0.rootSequence),
                             'Authority-root update does not bind the exact current root');
-    __compactRuntime.assert(this._equal_511(command_0.nextRootVersion,
+    __compactRuntime.assert(this._equal_524(command_0.nextRootVersion,
                                             currentRoot_0.rootVersion + 1n)
                             &&
-                            this._equal_512(command_0.nextRootSequence,
+                            this._equal_525(command_0.nextRootSequence,
                                             currentRoot_0.rootSequence + 1n),
                             'Authority-root version and sequence must advance exactly once');
     let t_1, t_2, t_0;
@@ -11352,14 +12226,14 @@ export class Contract {
                             (t_1 = command_0.nextAuthorityRootUpdateThreshold,
                              t_1 >= 2n),
                             'Authority-root update thresholds must be at least two');
-    __compactRuntime.assert(this._equal_513(governor_0.leafVersion, 1n)
+    __compactRuntime.assert(this._equal_526(governor_0.leafVersion, 1n)
                             &&
-                            this._equal_514(governor_0.authorityKind, 11n)
+                            this._equal_527(governor_0.authorityKind, 11n)
                             &&
-                            this._equal_515(governor_0.namespaceHash,
+                            this._equal_528(governor_0.namespaceHash,
                                             command_0.namespaceHash)
                             &&
-                            this._equal_516(governor_0.governancePolicyHash,
+                            this._equal_529(governor_0.governancePolicyHash,
                                             command_0.currentGovernancePolicyHash),
                             'Authority-root governor leaf is outside the update scope');
     let t_3, t_4;
@@ -11370,10 +12244,10 @@ export class Contract {
                              t_3 < governor_0.validBefore),
                             'Authority-root governor is outside its validity window');
     const governorCommitment_0 = this._governanceActivatorLeafCommitment_0(governor_0);
-    __compactRuntime.assert(this._equal_517(authorityPath_0.leaf,
+    __compactRuntime.assert(this._equal_530(authorityPath_0.leaf,
                                             governorCommitment_0)
                             &&
-                            this._equal_518(this._merkleTreePathRoot_3(authorityPath_0),
+                            this._equal_531(this._merkleTreePathRoot_3(authorityPath_0),
                                             currentRoot_0.root),
                             'Authority-root governor is not eligible under the current root');
     __compactRuntime.assert(this._blockTimeGte_0(context,
@@ -11397,7 +12271,7 @@ export class Contract {
   {
     const updateCommitment_0 = this._authorityRootUpdateCommandCommitment_0(command_0);
     const governorCommitment_0 = this._governanceActivatorLeafCommitment_0(governor_0);
-    const approvalKey_0 = this._persistentHash_42({ updateCommitment:
+    const approvalKey_0 = this._persistentHash_46({ updateCommitment:
                                                       updateCommitment_0,
                                                     approverAuthorityCommitment:
                                                       governorCommitment_0 });
@@ -11421,7 +12295,7 @@ export class Contract {
                                                                                          { popeq: { cached: true,
                                                                                                     result: undefined } }]).value),
                             'Duplicate authority-root governor approval');
-    const nextAccumulator_0 = this._persistentHash_43({ previous:
+    const nextAccumulator_0 = this._persistentHash_47({ previous:
                                                           previousAccumulator_0,
                                                         updateCommitment:
                                                           updateCommitment_0,
@@ -11582,10 +12456,10 @@ export class Contract {
                                                                                                                 alignment: _descriptor_1.alignment() } }] } },
                                                                                      { popeq: { cached: false,
                                                                                                 result: undefined } }]).value);
-      __compactRuntime.assert(this._equal_519(progress_0.updateCommitment,
+      __compactRuntime.assert(this._equal_532(progress_0.updateCommitment,
                                               updateCommitment_0)
                               &&
-                              this._equal_520(progress_0.approvalThreshold,
+                              this._equal_533(progress_0.approvalThreshold,
                                               currentRoot_0.authorityRootUpdateThreshold),
                               'Authority-root approval progress is stale or mismatched');
       return this._commitAuthorityRootUpdateApproval_0(context,
@@ -11596,7 +12470,7 @@ export class Contract {
                                                        progress_0.approvalEvidenceAccumulator,
                                                        ((t1) => {
                                                          if (t1 > 65535n) {
-                                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 1209 char 13: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
+                                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 1210 char 13: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
                                                          }
                                                          return t1;
                                                        })(progress_0.approvalCount
@@ -11613,15 +12487,15 @@ export class Contract {
     }
   }
   _assertModuleCommandTarget_0(context, partialProofData, command_0, record_0) {
-    __compactRuntime.assert(this._equal_521(command_0.commandVersion, 1n)
+    __compactRuntime.assert(this._equal_534(command_0.commandVersion, 1n)
                             &&
-                            this._equal_522(command_0.recordCommitment,
-                                            this._persistentHash_36(record_0))
+                            this._equal_535(command_0.recordCommitment,
+                                            this._persistentHash_40(record_0))
                             &&
-                            this._equal_523(command_0.governanceNamespaceHash,
+                            this._equal_536(command_0.governanceNamespaceHash,
                                             record_0.governanceNamespaceHash)
                             &&
-                            this._equal_524(command_0.expectedLifecycleStatus,
+                            this._equal_537(command_0.expectedLifecycleStatus,
                                             record_0.lifecycleStatus),
                             'Proof-module command does not bind the exact current record');
     let tmp_0;
@@ -11688,7 +12562,7 @@ export class Contract {
              revokedAt: revokedAt_0 };
   }
   _proposeProofModule_0(context, partialProofData, proposal_0) {
-    __compactRuntime.assert(this._equal_525(proposal_0.proposalVersion, 1n),
+    __compactRuntime.assert(this._equal_538(proposal_0.proposalVersion, 1n),
                             'Unsupported proof-module proposal version');
     let tmp_0;
     __compactRuntime.assert((tmp_0 = proposal_0.governanceNamespaceHash,
@@ -11735,13 +12609,13 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_526(proposal_0.governancePolicyHash,
+    __compactRuntime.assert(this._equal_539(proposal_0.governancePolicyHash,
                                             currentRoot_0.governancePolicyHash)
                             &&
-                            this._equal_527(proposal_0.authorityRootVersion,
+                            this._equal_540(proposal_0.authorityRootVersion,
                                             currentRoot_0.rootVersion)
                             &&
-                            this._equal_528(proposal_0.authorityRootSequence,
+                            this._equal_541(proposal_0.authorityRootSequence,
                                             currentRoot_0.rootSequence),
                             'Proof-module proposal authority root reference is stale or mismatched');
     const moduleKey_0 = this._proofModuleRegistryKeyFromIdentity_0(proposal_0.identity);
@@ -11843,7 +12717,7 @@ export class Contract {
                        reviewer_0,
                        authorityPath_0)
   {
-    __compactRuntime.assert(this._equal_529(review_0.reviewVersion, 1n),
+    __compactRuntime.assert(this._equal_542(review_0.reviewVersion, 1n),
                             'Unsupported proof-module review version');
     let tmp_0;
     __compactRuntime.assert((tmp_0 = review_0.moduleKey,
@@ -11890,21 +12764,21 @@ export class Contract {
                                                                                                              alignment: _descriptor_1.alignment() } }] } },
                                                                                   { popeq: { cached: false,
                                                                                              result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_530(record_0.lifecycleStatus, 1n),
+    __compactRuntime.assert(this._equal_543(record_0.lifecycleStatus, 1n),
                             'Proof module no longer accepts reviews');
-    __compactRuntime.assert(this._equal_531(review_0.proposalCommitment,
+    __compactRuntime.assert(this._equal_544(review_0.proposalCommitment,
                                             record_0.proposalCommitment)
                             &&
-                            this._equal_532(review_0.governanceNamespaceHash,
+                            this._equal_545(review_0.governanceNamespaceHash,
                                             record_0.governanceNamespaceHash)
                             &&
-                            this._equal_533(review_0.governancePolicyHash,
+                            this._equal_546(review_0.governancePolicyHash,
                                             record_0.governancePolicyHash)
                             &&
-                            this._equal_534(review_0.authorityRootVersion,
+                            this._equal_547(review_0.authorityRootVersion,
                                             record_0.authorityRootVersion)
                             &&
-                            this._equal_535(review_0.authorityRootSequence,
+                            this._equal_548(review_0.authorityRootSequence,
                                             record_0.authorityRootSequence),
                             'Proof-module review does not bind the exact proposal');
     this._verifyModuleAuthority_0(context,
@@ -11945,7 +12819,7 @@ export class Contract {
                           signature_0,
                           reviewer_0.publicKey);
     const reviewerCommitment_0 = this._governanceActivatorLeafCommitment_0(reviewer_0);
-    const reviewKey_0 = this._persistentHash_40({ moduleKey: review_0.moduleKey,
+    const reviewKey_0 = this._persistentHash_44({ moduleKey: review_0.moduleKey,
                                                   reviewerAuthorityCommitment:
                                                     reviewerCommitment_0 });
     __compactRuntime.assert(!_descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
@@ -11969,7 +12843,7 @@ export class Contract {
                                                                                                     result: undefined } }]).value),
                             'Duplicate proof-module reviewer approval');
     const reviewCommitment_0 = this._proofModuleReviewCommitment_0(review_0);
-    const nextAccumulator_0 = this._persistentHash_41({ previous:
+    const nextAccumulator_0 = this._persistentHash_45({ previous:
                                                           record_0.reviewEvidenceAccumulator,
                                                         reviewCommitment:
                                                           reviewCommitment_0,
@@ -11977,7 +12851,7 @@ export class Contract {
                                                           reviewerCommitment_0 });
     const nextCount_0 = ((t1) => {
                           if (t1 > 65535n) {
-                            throw new __compactRuntime.CompactError('permio-authorization.compact line 1403 char 23: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
+                            throw new __compactRuntime.CompactError('permio-authorization.compact line 1404 char 23: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
                           }
                           return t1;
                         })(record_0.reviewCount + 1n);
@@ -12287,7 +13161,7 @@ export class Contract {
                        authority_0,
                        authorityPath_0)
   {
-    if (this._equal_536(command_0.nextLifecycleStatus, 3n)) {
+    if (this._equal_549(command_0.nextLifecycleStatus, 3n)) {
       const record_0 = this._verifyProofModuleLifecycleCommand_0(context,
                                                                  partialProofData,
                                                                  command_0,
@@ -12296,16 +13170,16 @@ export class Contract {
                                                                  authorityPath_0,
                                                                  8n);
       let t_0;
-      __compactRuntime.assert(this._equal_537(command_0.expectedLifecycleStatus,
+      __compactRuntime.assert(this._equal_550(command_0.expectedLifecycleStatus,
                                               2n)
                               &&
-                              this._equal_538(command_0.nextLifecycleStatus, 3n)
+                              this._equal_551(command_0.nextLifecycleStatus, 3n)
                               &&
                               (t_0 = record_0.reviewCount,
                                t_0 >= record_0.reviewThreshold),
                               'Proof module has not completed the required independent review');
       const approverCommitment_0 = this._governanceActivatorLeafCommitment_0(authority_0);
-      const approvalKey_0 = this._persistentHash_37({ moduleKey:
+      const approvalKey_0 = this._persistentHash_41({ moduleKey:
                                                         command_0.moduleKey,
                                                       approverAuthorityCommitment:
                                                         approverCommitment_0 });
@@ -12329,8 +13203,8 @@ export class Contract {
                                                                                            { popeq: { cached: true,
                                                                                                       result: undefined } }]).value),
                               'Duplicate proof-module approver approval');
-      const approvalCommitment_0 = this._persistentHash_38(command_0);
-      const nextAccumulator_0 = this._persistentHash_39({ previous:
+      const approvalCommitment_0 = this._persistentHash_42(command_0);
+      const nextAccumulator_0 = this._persistentHash_43({ previous:
                                                             record_0.approvalEvidenceAccumulator,
                                                           approvalCommitment:
                                                             approvalCommitment_0,
@@ -12338,7 +13212,7 @@ export class Contract {
                                                             approverCommitment_0 });
       const nextCount_0 = ((t1) => {
                             if (t1 > 65535n) {
-                              throw new __compactRuntime.CompactError('permio-authorization.compact line 1554 char 27: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
+                              throw new __compactRuntime.CompactError('permio-authorization.compact line 1555 char 27: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 65535');
                             }
                             return t1;
                           })(record_0.approvalCount + 1n);
@@ -12500,7 +13374,7 @@ export class Contract {
                                          { ins: { cached: true, n: 2 } }]);
       return nextCount_0;
     } else {
-      if (this._equal_539(command_0.nextLifecycleStatus, 4n)) {
+      if (this._equal_552(command_0.nextLifecycleStatus, 4n)) {
         const record_1 = this._verifyProofModuleLifecycleCommand_0(context,
                                                                    partialProofData,
                                                                    command_0,
@@ -12508,10 +13382,10 @@ export class Contract {
                                                                    authority_0,
                                                                    authorityPath_0,
                                                                    9n);
-        __compactRuntime.assert(this._equal_540(command_0.expectedLifecycleStatus,
+        __compactRuntime.assert(this._equal_553(command_0.expectedLifecycleStatus,
                                                 3n)
                                 &&
-                                this._equal_541(command_0.nextLifecycleStatus,
+                                this._equal_554(command_0.nextLifecycleStatus,
                                                 4n),
                                 'Invalid proof-module activation transition');
         const updated_0 = this._updatedProofModuleRecord_0(record_1,
@@ -12543,7 +13417,7 @@ export class Contract {
                                            updated_0);
         return record_1.approvalCount;
       } else {
-        if (this._equal_542(command_0.nextLifecycleStatus, 5n)) {
+        if (this._equal_555(command_0.nextLifecycleStatus, 5n)) {
           const record_2 = this._verifyProofModuleLifecycleCommand_0(context,
                                                                      partialProofData,
                                                                      command_0,
@@ -12551,10 +13425,10 @@ export class Contract {
                                                                      authority_0,
                                                                      authorityPath_0,
                                                                      8n);
-          __compactRuntime.assert(this._equal_543(command_0.expectedLifecycleStatus,
+          __compactRuntime.assert(this._equal_556(command_0.expectedLifecycleStatus,
                                                   4n)
                                   &&
-                                  this._equal_544(command_0.nextLifecycleStatus,
+                                  this._equal_557(command_0.nextLifecycleStatus,
                                                   5n),
                                   'Invalid proof-module deprecation transition');
           const updated_1 = this._updatedProofModuleRecord_0(record_2,
@@ -12579,13 +13453,13 @@ export class Contract {
                                                                      authority_0,
                                                                      authorityPath_0,
                                                                      10n);
-          __compactRuntime.assert((this._equal_545(command_0.expectedLifecycleStatus,
+          __compactRuntime.assert((this._equal_558(command_0.expectedLifecycleStatus,
                                                    4n)
                                    ||
-                                   this._equal_546(command_0.expectedLifecycleStatus,
+                                   this._equal_559(command_0.expectedLifecycleStatus,
                                                    5n))
                                   &&
-                                  this._equal_547(command_0.nextLifecycleStatus,
+                                  this._equal_560(command_0.nextLifecycleStatus,
                                                   6n),
                                   'Invalid proof-module revocation transition');
           const updated_2 = this._updatedProofModuleRecord_0(record_3,
@@ -12613,7 +13487,7 @@ export class Contract {
     let t_0;
     __compactRuntime.assert((t_0 = input_0.operation, t_0 <= 3n),
                             'Unknown governance dispatch operation');
-    if (this._equal_548(input_0.operation, 0n)) {
+    if (this._equal_561(input_0.operation, 0n)) {
       const count_0 = this._submitAuthorityRootApproval_0(context,
                                                           partialProofData,
                                                           input_0.rootUpdate,
@@ -12622,13 +13496,13 @@ export class Contract {
                                                           input_0.authorityPath);
       return { moduleKey: new Uint8Array(32), approvalCount: count_0 };
     } else {
-      if (this._equal_549(input_0.operation, 1n)) {
+      if (this._equal_562(input_0.operation, 1n)) {
         const key_0 = this._proposeProofModule_0(context,
                                                  partialProofData,
                                                  input_0.proposal);
         return { moduleKey: key_0, approvalCount: 0n };
       } else {
-        if (this._equal_550(input_0.operation, 2n)) {
+        if (this._equal_563(input_0.operation, 2n)) {
           const count_1 = this._reviewProofModule_0(context,
                                                     partialProofData,
                                                     input_0.review,
@@ -12656,7 +13530,7 @@ export class Contract {
                                     authorityPath_0,
                                     requiredAuthorityKind_0)
   {
-    __compactRuntime.assert(this._equal_551(command_0.commandVersion, 1n),
+    __compactRuntime.assert(this._equal_564(command_0.commandVersion, 1n),
                             'Unsupported template lifecycle command version');
     let tmp_0;
     __compactRuntime.assert((tmp_0 = command_0.registryKey,
@@ -12703,13 +13577,13 @@ export class Contract {
                                                                                                              alignment: _descriptor_1.alignment() } }] } },
                                                                                   { popeq: { cached: false,
                                                                                              result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_552(command_0.recordCommitment,
+    __compactRuntime.assert(this._equal_565(command_0.recordCommitment,
                                             this._activeTemplateRecordCommitment_0(record_0))
                             &&
-                            this._equal_553(command_0.namespaceHash,
+                            this._equal_566(command_0.namespaceHash,
                                             record_0.target.namespaceHash)
                             &&
-                            this._equal_554(command_0.expectedLifecycleStatus,
+                            this._equal_567(command_0.expectedLifecycleStatus,
                                             record_0.lifecycleStatus),
                             'Template lifecycle command does not bind the exact current record');
     let tmp_2;
@@ -12779,24 +13653,24 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value));
-    __compactRuntime.assert(this._equal_555(command_0.governancePolicyHash,
+    __compactRuntime.assert(this._equal_568(command_0.governancePolicyHash,
                                             currentRoot_0.governancePolicyHash)
                             &&
-                            this._equal_556(command_0.authorityRootVersion,
+                            this._equal_569(command_0.authorityRootVersion,
                                             currentRoot_0.rootVersion)
                             &&
-                            this._equal_557(command_0.authorityRootSequence,
+                            this._equal_570(command_0.authorityRootSequence,
                                             currentRoot_0.rootSequence),
                             'Template lifecycle authority root reference is stale or mismatched');
-    __compactRuntime.assert(this._equal_558(authority_0.leafVersion, 1n)
+    __compactRuntime.assert(this._equal_571(authority_0.leafVersion, 1n)
                             &&
-                            this._equal_559(authority_0.authorityKind,
+                            this._equal_572(authority_0.authorityKind,
                                             requiredAuthorityKind_0)
                             &&
-                            this._equal_560(authority_0.namespaceHash,
+                            this._equal_573(authority_0.namespaceHash,
                                             command_0.namespaceHash)
                             &&
-                            this._equal_561(authority_0.governancePolicyHash,
+                            this._equal_574(authority_0.governancePolicyHash,
                                             command_0.governancePolicyHash),
                             'Template lifecycle authority leaf is outside the required scope');
     let t_0, t_1;
@@ -12807,13 +13681,13 @@ export class Contract {
                              t_0 < authority_0.validBefore),
                             'Template lifecycle authority is outside its validity window');
     const authorityCommitment_0 = this._governanceActivatorLeafCommitment_0(authority_0);
-    __compactRuntime.assert(this._equal_562(authorityPath_0.leaf,
+    __compactRuntime.assert(this._equal_575(authorityPath_0.leaf,
                                             authorityCommitment_0)
                             &&
-                            this._equal_563(this._merkleTreePathRoot_3(authorityPath_0),
+                            this._equal_576(this._merkleTreePathRoot_3(authorityPath_0),
                                             currentRoot_0.root),
                             'Template lifecycle authority is not eligible under the current root');
-    __compactRuntime.assert(this._equal_564(command_0.effectiveSequence,
+    __compactRuntime.assert(this._equal_577(command_0.effectiveSequence,
                                             _descriptor_2.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                       partialProofData,
                                                                                                       [
@@ -12939,7 +13813,7 @@ export class Contract {
                        authority_0,
                        authorityPath_0)
   {
-    if (this._equal_565(command_0.nextLifecycleStatus, 2n)) {
+    if (this._equal_578(command_0.nextLifecycleStatus, 2n)) {
       const record_0 = this._verifyTemplateLifecycleCommand_0(context,
                                                               partialProofData,
                                                               command_0,
@@ -12947,10 +13821,10 @@ export class Contract {
                                                               authority_0,
                                                               authorityPath_0,
                                                               12n);
-      __compactRuntime.assert(this._equal_566(command_0.expectedLifecycleStatus,
+      __compactRuntime.assert(this._equal_579(command_0.expectedLifecycleStatus,
                                               1n)
                               &&
-                              this._equal_567(command_0.nextLifecycleStatus, 2n),
+                              this._equal_580(command_0.nextLifecycleStatus, 2n),
                               'Invalid template retirement transition');
       this._commitTemplateLifecycle_0(context,
                                       partialProofData,
@@ -12970,13 +13844,13 @@ export class Contract {
                                                               authority_0,
                                                               authorityPath_0,
                                                               5n);
-      __compactRuntime.assert((this._equal_568(command_0.expectedLifecycleStatus,
+      __compactRuntime.assert((this._equal_581(command_0.expectedLifecycleStatus,
                                                1n)
                                ||
-                               this._equal_569(command_0.expectedLifecycleStatus,
+                               this._equal_582(command_0.expectedLifecycleStatus,
                                                2n))
                               &&
-                              this._equal_570(command_0.nextLifecycleStatus, 3n),
+                              this._equal_583(command_0.nextLifecycleStatus, 3n),
                               'Invalid template revocation transition');
       this._commitTemplateLifecycle_0(context,
                                       partialProofData,
@@ -13077,7 +13951,7 @@ export class Contract {
                                                                                                                     alignment: _descriptor_1.alignment() } }] } },
                                                                                          { popeq: { cached: false,
                                                                                                     result: undefined } }]).value));
-      return !this._equal_571(session_0.proofModuleRegistrySequence,
+      return !this._equal_584(session_0.proofModuleRegistrySequence,
                               _descriptor_2.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                         partialProofData,
                                                                                         [
@@ -13094,13 +13968,13 @@ export class Contract {
                                                                                          { popeq: { cached: true,
                                                                                                     result: undefined } }]).value))
              ||
-             !this._equal_572(session_0.governancePolicyHash,
+             !this._equal_585(session_0.governancePolicyHash,
                               currentRoot_0.governancePolicyHash)
              ||
-             !this._equal_573(session_0.authorityRootVersion,
+             !this._equal_586(session_0.authorityRootVersion,
                               currentRoot_0.rootVersion)
              ||
-             !this._equal_574(session_0.authorityRootSequence,
+             !this._equal_587(session_0.authorityRootSequence,
                               currentRoot_0.rootSequence);
     }
   }
@@ -13120,7 +13994,7 @@ export class Contract {
     let t_0;
     __compactRuntime.assert((t_0 = envelope_0.proofModuleBindingCount, t_0 > 0n),
                             'Binding manifest cannot be empty');
-    __compactRuntime.assert(this._equal_575(envelope_0.proofModuleRegistrySequence,
+    __compactRuntime.assert(this._equal_588(envelope_0.proofModuleRegistrySequence,
                                             _descriptor_2.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                       partialProofData,
                                                                                                       [
@@ -13378,7 +14252,7 @@ export class Contract {
                                       session_0);
       return false;
     } else {
-      __compactRuntime.assert(this._equal_576(session_0.proofModuleRegistrySequence,
+      __compactRuntime.assert(this._equal_589(session_0.proofModuleRegistrySequence,
                                               _descriptor_2.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                         partialProofData,
                                                                                                         [
@@ -13396,19 +14270,19 @@ export class Contract {
                                                                                                                     result: undefined } }]).value)),
                               'Proof-module registry changed during activation staging');
       let t_0;
-      __compactRuntime.assert(this._equal_577(binding_0.bindingVersion, 1n)
+      __compactRuntime.assert(this._equal_590(binding_0.bindingVersion, 1n)
                               &&
-                              this._equal_578(binding_0.actionIndex,
+                              this._equal_591(binding_0.actionIndex,
                                               session_0.nextBindingIndex)
                               &&
                               (t_0 = binding_0.actionIndex,
                                t_0 < session_0.proofModuleBindingCount),
                               'Binding index is duplicate, missing, or out of canonical order');
       const bindingCommitment_0 = this._proofModuleBindingCommitment_0(binding_0);
-      __compactRuntime.assert(this._equal_579(bindingPath_0.leaf,
+      __compactRuntime.assert(this._equal_592(bindingPath_0.leaf,
                                               bindingCommitment_0)
                               &&
-                              this._equal_580(this._merkleTreePathRoot_3(bindingPath_0),
+                              this._equal_593(this._merkleTreePathRoot_3(bindingPath_0),
                                               session_0.proofModuleBindingRoot),
                               'Binding is not part of the signed manifest');
       const moduleKey_0 = this._proofModuleRegistryKeyFromBinding_0(binding_0);
@@ -13453,12 +14327,12 @@ export class Contract {
                                                                                                                     alignment: _descriptor_1.alignment() } }] } },
                                                                                          { popeq: { cached: false,
                                                                                                     result: undefined } }]).value);
-      __compactRuntime.assert(this._equal_581(moduleRecord_0.lifecycleStatus, 4n),
+      __compactRuntime.assert(this._equal_594(moduleRecord_0.lifecycleStatus, 4n),
                               'Proof module is not active for new template activation');
-      __compactRuntime.assert(this._equal_582(moduleRecord_0.receiptSchemaHash,
+      __compactRuntime.assert(this._equal_595(moduleRecord_0.receiptSchemaHash,
                                               binding_0.receiptSchemaHash),
                               'Binding receipt schema does not match the registered proof module');
-      const nextAccumulator_0 = this._persistentHash_44({ previous:
+      const nextAccumulator_0 = this._persistentHash_48({ previous:
                                                             session_0.stagedBindingsAccumulator,
                                                           bindingCommitment:
                                                             bindingCommitment_0,
@@ -13477,7 +14351,7 @@ export class Contract {
                       nextBindingIndex:
                         ((t1) => {
                           if (t1 > 4294967295n) {
-                            throw new __compactRuntime.CompactError('permio-authorization.compact line 2057 char 35: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                            throw new __compactRuntime.CompactError('permio-authorization.compact line 2058 char 35: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                           }
                           return t1;
                         })(session_0.nextBindingIndex + 1n),
@@ -13572,10 +14446,10 @@ export class Contract {
                                        signature_0,
                                        activator_0,
                                        authorityPath_0);
-      __compactRuntime.assert(this._equal_583(this._activationAdmissionEnvelopeCommitment_0(envelope_0),
+      __compactRuntime.assert(this._equal_596(this._activationAdmissionEnvelopeCommitment_0(envelope_0),
                                               session_0.envelopeCommitment),
                               'Activation envelope does not match the staged session');
-      __compactRuntime.assert(this._equal_584(session_0.proofModuleRegistrySequence,
+      __compactRuntime.assert(this._equal_597(session_0.proofModuleRegistrySequence,
                                               _descriptor_2.fromValue(__compactRuntime.queryLedgerState(context,
                                                                                                         partialProofData,
                                                                                                         [
@@ -13592,7 +14466,7 @@ export class Contract {
                                                                                                          { popeq: { cached: true,
                                                                                                                     result: undefined } }]).value)),
                               'Proof-module registry changed during activation staging');
-      __compactRuntime.assert(this._equal_585(session_0.nextBindingIndex,
+      __compactRuntime.assert(this._equal_598(session_0.nextBindingIndex,
                                               session_0.proofModuleBindingCount),
                               'Not every action binding has been staged');
       let tmp_0;
@@ -13771,7 +14645,7 @@ export class Contract {
   _runtimeScopeTotalCount_0(counts_0) {
     return ((t1) => {
              if (t1 > 4294967295n) {
-               throw new __compactRuntime.CompactError('permio-authorization.compact line 2150 char 12: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+               throw new __compactRuntime.CompactError('permio-authorization.compact line 2151 char 12: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
              }
              return t1;
            })(counts_0.actionsCount + counts_0.resourceSelectorsCount
@@ -13791,31 +14665,31 @@ export class Contract {
                                                                8,
                                                                ((e, i) => e.slice(i, i+8))(left_0,
                                                                                            Number(24n)),
-                                                               'permio-authorization.compact line 2165 char 26');
+                                                               'permio-authorization.compact line 2166 char 26');
     const rightOrderKey_0 = __compactRuntime.convertBytesToUint(18446744073709551615n,
                                                                 8,
                                                                 ((e, i) => e.slice(i, i+8))(right_0,
                                                                                             Number(24n)),
-                                                                'permio-authorization.compact line 2166 char 27');
+                                                                'permio-authorization.compact line 2167 char 27');
     return leftOrderKey_0 < rightOrderKey_0;
   }
   _runtimeScopeRootForDimension_0(roots_0, dimension_0) {
-    if (this._equal_586(dimension_0, 1n)) {
+    if (this._equal_599(dimension_0, 1n)) {
       return roots_0.actionsRoot;
     } else {
-      if (this._equal_587(dimension_0, 2n)) {
+      if (this._equal_600(dimension_0, 2n)) {
         return roots_0.resourceSelectorsRoot;
       } else {
-        if (this._equal_588(dimension_0, 3n)) {
+        if (this._equal_601(dimension_0, 3n)) {
           return roots_0.resourcesRoot;
         } else {
-          if (this._equal_589(dimension_0, 4n)) {
+          if (this._equal_602(dimension_0, 4n)) {
             return roots_0.purposesRoot;
           } else {
-            if (this._equal_590(dimension_0, 5n)) {
+            if (this._equal_603(dimension_0, 5n)) {
               return roots_0.recipientKindsRoot;
             } else {
-              if (this._equal_591(dimension_0, 6n)) {
+              if (this._equal_604(dimension_0, 6n)) {
                 return roots_0.recipientsRoot;
               } else {
                 return roots_0.disclosurePolicyIdsRoot;
@@ -13827,22 +14701,22 @@ export class Contract {
     }
   }
   _runtimeScopeCountForDimension_0(counts_0, dimension_0) {
-    if (this._equal_592(dimension_0, 1n)) {
+    if (this._equal_605(dimension_0, 1n)) {
       return counts_0.actionsCount;
     } else {
-      if (this._equal_593(dimension_0, 2n)) {
+      if (this._equal_606(dimension_0, 2n)) {
         return counts_0.resourceSelectorsCount;
       } else {
-        if (this._equal_594(dimension_0, 3n)) {
+        if (this._equal_607(dimension_0, 3n)) {
           return counts_0.resourcesCount;
         } else {
-          if (this._equal_595(dimension_0, 4n)) {
+          if (this._equal_608(dimension_0, 4n)) {
             return counts_0.purposesCount;
           } else {
-            if (this._equal_596(dimension_0, 5n)) {
+            if (this._equal_609(dimension_0, 5n)) {
               return counts_0.recipientKindsCount;
             } else {
-              if (this._equal_597(dimension_0, 6n)) {
+              if (this._equal_610(dimension_0, 6n)) {
                 return counts_0.recipientsCount;
               } else {
                 return counts_0.disclosurePolicyIdsCount;
@@ -13854,7 +14728,7 @@ export class Contract {
     }
   }
   _runtimeScopeRootsAfterInsert_0(roots_0, dimension_0, nextRoot_0) {
-    if (this._equal_598(dimension_0, 1n)) {
+    if (this._equal_611(dimension_0, 1n)) {
       return { actionsRoot: nextRoot_0,
                resourceSelectorsRoot: roots_0.resourceSelectorsRoot,
                resourcesRoot: roots_0.resourcesRoot,
@@ -13863,7 +14737,7 @@ export class Contract {
                recipientsRoot: roots_0.recipientsRoot,
                disclosurePolicyIdsRoot: roots_0.disclosurePolicyIdsRoot };
     } else {
-      if (this._equal_599(dimension_0, 2n)) {
+      if (this._equal_612(dimension_0, 2n)) {
         return { actionsRoot: roots_0.actionsRoot,
                  resourceSelectorsRoot: nextRoot_0,
                  resourcesRoot: roots_0.resourcesRoot,
@@ -13872,7 +14746,7 @@ export class Contract {
                  recipientsRoot: roots_0.recipientsRoot,
                  disclosurePolicyIdsRoot: roots_0.disclosurePolicyIdsRoot };
       } else {
-        if (this._equal_600(dimension_0, 3n)) {
+        if (this._equal_613(dimension_0, 3n)) {
           return { actionsRoot: roots_0.actionsRoot,
                    resourceSelectorsRoot: roots_0.resourceSelectorsRoot,
                    resourcesRoot: nextRoot_0,
@@ -13881,7 +14755,7 @@ export class Contract {
                    recipientsRoot: roots_0.recipientsRoot,
                    disclosurePolicyIdsRoot: roots_0.disclosurePolicyIdsRoot };
         } else {
-          if (this._equal_601(dimension_0, 4n)) {
+          if (this._equal_614(dimension_0, 4n)) {
             return { actionsRoot: roots_0.actionsRoot,
                      resourceSelectorsRoot: roots_0.resourceSelectorsRoot,
                      resourcesRoot: roots_0.resourcesRoot,
@@ -13890,7 +14764,7 @@ export class Contract {
                      recipientsRoot: roots_0.recipientsRoot,
                      disclosurePolicyIdsRoot: roots_0.disclosurePolicyIdsRoot };
           } else {
-            if (this._equal_602(dimension_0, 5n)) {
+            if (this._equal_615(dimension_0, 5n)) {
               return { actionsRoot: roots_0.actionsRoot,
                        resourceSelectorsRoot: roots_0.resourceSelectorsRoot,
                        resourcesRoot: roots_0.resourcesRoot,
@@ -13899,7 +14773,7 @@ export class Contract {
                        recipientsRoot: roots_0.recipientsRoot,
                        disclosurePolicyIdsRoot: roots_0.disclosurePolicyIdsRoot };
             } else {
-              if (this._equal_603(dimension_0, 6n)) {
+              if (this._equal_616(dimension_0, 6n)) {
                 return { actionsRoot: roots_0.actionsRoot,
                          resourceSelectorsRoot: roots_0.resourceSelectorsRoot,
                          resourcesRoot: roots_0.resourcesRoot,
@@ -13924,7 +14798,7 @@ export class Contract {
     }
   }
   _runtimeScopeCountsAfterInsert_0(counts_0, dimension_0, nextCount_0) {
-    if (this._equal_604(dimension_0, 1n)) {
+    if (this._equal_617(dimension_0, 1n)) {
       return { actionsCount: nextCount_0,
                resourceSelectorsCount: counts_0.resourceSelectorsCount,
                resourcesCount: counts_0.resourcesCount,
@@ -13933,7 +14807,7 @@ export class Contract {
                recipientsCount: counts_0.recipientsCount,
                disclosurePolicyIdsCount: counts_0.disclosurePolicyIdsCount };
     } else {
-      if (this._equal_605(dimension_0, 2n)) {
+      if (this._equal_618(dimension_0, 2n)) {
         return { actionsCount: counts_0.actionsCount,
                  resourceSelectorsCount: nextCount_0,
                  resourcesCount: counts_0.resourcesCount,
@@ -13942,7 +14816,7 @@ export class Contract {
                  recipientsCount: counts_0.recipientsCount,
                  disclosurePolicyIdsCount: counts_0.disclosurePolicyIdsCount };
       } else {
-        if (this._equal_606(dimension_0, 3n)) {
+        if (this._equal_619(dimension_0, 3n)) {
           return { actionsCount: counts_0.actionsCount,
                    resourceSelectorsCount: counts_0.resourceSelectorsCount,
                    resourcesCount: nextCount_0,
@@ -13951,7 +14825,7 @@ export class Contract {
                    recipientsCount: counts_0.recipientsCount,
                    disclosurePolicyIdsCount: counts_0.disclosurePolicyIdsCount };
         } else {
-          if (this._equal_607(dimension_0, 4n)) {
+          if (this._equal_620(dimension_0, 4n)) {
             return { actionsCount: counts_0.actionsCount,
                      resourceSelectorsCount: counts_0.resourceSelectorsCount,
                      resourcesCount: counts_0.resourcesCount,
@@ -13960,7 +14834,7 @@ export class Contract {
                      recipientsCount: counts_0.recipientsCount,
                      disclosurePolicyIdsCount: counts_0.disclosurePolicyIdsCount };
           } else {
-            if (this._equal_608(dimension_0, 5n)) {
+            if (this._equal_621(dimension_0, 5n)) {
               return { actionsCount: counts_0.actionsCount,
                        resourceSelectorsCount: counts_0.resourceSelectorsCount,
                        resourcesCount: counts_0.resourcesCount,
@@ -13970,7 +14844,7 @@ export class Contract {
                        disclosurePolicyIdsCount:
                          counts_0.disclosurePolicyIdsCount };
             } else {
-              if (this._equal_609(dimension_0, 6n)) {
+              if (this._equal_622(dimension_0, 6n)) {
                 return { actionsCount: counts_0.actionsCount,
                          resourceSelectorsCount: counts_0.resourceSelectorsCount,
                          resourcesCount: counts_0.resourcesCount,
@@ -14012,36 +14886,36 @@ export class Contract {
              lastOrderKey: nextOrderKey_0 };
   }
   _runtimeCredentialStatusLeafVersion_0(credentialKind_0) {
-    return this._equal_610(credentialKind_0, 2n) ?
+    return this._equal_623(credentialKind_0, 2n) ?
            3n :
-           this._equal_611(credentialKind_0, 3n) ? 2n : 1n;
+           this._equal_624(credentialKind_0, 3n) ? 2n : 1n;
   }
   _runtimeScopeProgressIsInitial_0(progress_0) {
     const emptyRoot_0 = this._runtimeScopeEmptyRoot_0();
-    return this._equal_612(progress_0.roots.actionsRoot, emptyRoot_0)
+    return this._equal_625(progress_0.roots.actionsRoot, emptyRoot_0)
            &&
-           this._equal_613(progress_0.roots.resourceSelectorsRoot, emptyRoot_0)
+           this._equal_626(progress_0.roots.resourceSelectorsRoot, emptyRoot_0)
            &&
-           this._equal_614(progress_0.roots.resourcesRoot, emptyRoot_0)
+           this._equal_627(progress_0.roots.resourcesRoot, emptyRoot_0)
            &&
-           this._equal_615(progress_0.roots.purposesRoot, emptyRoot_0)
+           this._equal_628(progress_0.roots.purposesRoot, emptyRoot_0)
            &&
-           this._equal_616(progress_0.roots.recipientKindsRoot, emptyRoot_0)
+           this._equal_629(progress_0.roots.recipientKindsRoot, emptyRoot_0)
            &&
-           this._equal_617(progress_0.roots.recipientsRoot, emptyRoot_0)
+           this._equal_630(progress_0.roots.recipientsRoot, emptyRoot_0)
            &&
-           this._equal_618(progress_0.roots.disclosurePolicyIdsRoot, emptyRoot_0)
+           this._equal_631(progress_0.roots.disclosurePolicyIdsRoot, emptyRoot_0)
            &&
-           this._equal_619(this._runtimeScopeTotalCount_0(progress_0.counts), 0n)
+           this._equal_632(this._runtimeScopeTotalCount_0(progress_0.counts), 0n)
            &&
-           this._equal_620(progress_0.lastDimension, 0n)
+           this._equal_633(progress_0.lastDimension, 0n)
            &&
-           this._equal_621(progress_0.lastOrderKey, new Uint8Array(32));
+           this._equal_634(progress_0.lastOrderKey, new Uint8Array(32));
   }
   _runtimeScopeProgressIsComplete_0(progress_0, credential_0) {
-    return this._equal_622(progress_0.roots, credential_0.roots)
+    return this._equal_635(progress_0.roots, credential_0.roots)
            &&
-           this._equal_623(progress_0.counts, credential_0.counts);
+           this._equal_636(progress_0.counts, credential_0.counts);
   }
   _runtimeScopedCredential_0(isSession_0, capability_0, session_0) {
     if (isSession_0) {
@@ -14115,7 +14989,7 @@ export class Contract {
                                    sessionCredential_0,
                                    instanceBinding_0)
   {
-    __compactRuntime.assert(this._equal_624(command_0.commandVersion, 4n),
+    __compactRuntime.assert(this._equal_637(command_0.commandVersion, 4n),
                             'Unsupported credential-status command version');
     __compactRuntime.assert(operation_0 >= 1n && operation_0 <= 4n,
                             'Unsupported credential-status operation');
@@ -14124,13 +14998,13 @@ export class Contract {
                             &&
                             (t_0 = command_0.credentialKind, t_0 <= 3n),
                             'Credential kind must be account, capability, or session');
-    __compactRuntime.assert(this._equal_625(command_0.expectedStatus, 0n)
+    __compactRuntime.assert(this._equal_638(command_0.expectedStatus, 0n)
                             &&
-                            this._equal_626(command_0.nextStatus, 1n)
+                            this._equal_639(command_0.nextStatus, 1n)
                             ||
-                            this._equal_627(command_0.expectedStatus, 1n)
+                            this._equal_640(command_0.expectedStatus, 1n)
                             &&
-                            this._equal_628(command_0.nextStatus, 2n),
+                            this._equal_641(command_0.nextStatus, 2n),
                             'Credential status transition must be empty-to-active or active-to-revoked');
     let tmp_0, tmp_1;
     __compactRuntime.assert((tmp_1 = command_0.namespaceHash,
@@ -14221,7 +15095,7 @@ export class Contract {
                                                                                                                  alignment: _descriptor_1.alignment() } }] } },
                                                                                       { popeq: { cached: false,
                                                                                                  result: undefined } }]).value));
-    const isSession_0 = this._equal_629(command_0.credentialKind, 3n);
+    const isSession_0 = this._equal_642(command_0.credentialKind, 3n);
     const credential_0 = this._runtimeScopedCredential_0(isSession_0,
                                                          capability_0,
                                                          sessionCredential_0);
@@ -14229,10 +15103,10 @@ export class Contract {
     const parentCapabilityCommitment_0 = this._runtimeCapabilityCredentialCommitment_0(parentCapability_0);
     const isRootCapability_0 = !isSession_0
                                &&
-                               this._equal_630(capability_0.delegationDepth, 0n);
+                               this._equal_643(capability_0.delegationDepth, 0n);
     const scopeValueOrderValid_0 = this._runtimeScopeValueHashLessThan_0(scopeProgress_0.lastOrderKey,
                                                                          scopeElement_0.valueHash);
-    if (this._equal_631(operation_0, 3n)) {
+    if (this._equal_644(operation_0, 3n)) {
       let tmp_4;
       __compactRuntime.assert((tmp_4 = command_0.commandNonce,
                                _descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
@@ -14304,14 +15178,14 @@ export class Contract {
                                                                            credential_0,
                                                                            parentCapabilityCommitment_0,
                                                                            accountAuthorityCommitment_0);
-        __compactRuntime.assert(this._equal_632(this._capabilityAttenuationCertificationCommitment_0(certification_0),
+        __compactRuntime.assert(this._equal_645(this._capabilityAttenuationCertificationCommitment_0(certification_0),
                                                 session_0.certificationCommitment),
                                 'Capability attenuation inputs do not match the opened session');
-        __compactRuntime.assert(this._equal_633(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
+        __compactRuntime.assert(this._equal_646(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
                                                 session_0.progressCommitment),
                                 'Capability attenuation progress does not match the staged commitment');
         let t_2, t_3;
-        __compactRuntime.assert(this._equal_634(scopeElement_0.elementVersion,
+        __compactRuntime.assert(this._equal_647(scopeElement_0.elementVersion,
                                                 1n)
                                 &&
                                 (t_3 = scopeElement_0.dimension, t_3 >= 1n)
@@ -14338,10 +15212,10 @@ export class Contract {
                                  ||
                                  scopeValueOrderValid_0),
                                 'Capability scope values must be unique and canonically ordered');
-        __compactRuntime.assert(this._equal_635(childScopePath_0.leaf,
+        __compactRuntime.assert(this._equal_648(childScopePath_0.leaf,
                                                 new Uint8Array(32))
                                 &&
-                                this._equal_636(this._merkleTreePathRoot_3(childScopePath_0),
+                                this._equal_649(this._merkleTreePathRoot_3(childScopePath_0),
                                                 this._runtimeScopeRootForDimension_0(scopeProgress_0.roots,
                                                                                      scopeElement_0.dimension)),
                                 'Capability child scope insertion does not start from the exact empty leaf');
@@ -14349,10 +15223,10 @@ export class Contract {
         const childNextPath_0 = { leaf: scopeValueCommitment_0,
                                   path: childScopePath_0.path };
         if (!isRootCapability_0) {
-          __compactRuntime.assert(this._equal_637(parentScopePath_0.leaf,
+          __compactRuntime.assert(this._equal_650(parentScopePath_0.leaf,
                                                   scopeValueCommitment_0)
                                   &&
-                                  this._equal_638(this._merkleTreePathRoot_3(parentScopePath_0),
+                                  this._equal_651(this._merkleTreePathRoot_3(parentScopePath_0),
                                                   this._runtimeScopeRootForDimension_0(parentCapability_0.scopeRoots,
                                                                                        scopeElement_0.dimension)),
                                   'Delegated capability scope value is outside its parent scope');
@@ -14362,7 +15236,7 @@ export class Contract {
                                                                        this._merkleTreePathRoot_3(childNextPath_0),
                                                                        ((t1) => {
                                                                          if (t1 > 4294967295n) {
-                                                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 2479 char 13: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                                                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 2480 char 13: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                                                                          }
                                                                          return t1;
                                                                        })(currentDimensionCount_0
@@ -14377,7 +15251,7 @@ export class Contract {
                         nextElementIndex:
                           ((t1) => {
                             if (t1 > 4294967295n) {
-                              throw new __compactRuntime.CompactError('permio-authorization.compact line 2488 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
+                              throw new __compactRuntime.CompactError('permio-authorization.compact line 2489 char 39: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 4294967295');
                             }
                             return t1;
                           })(session_0.nextElementIndex + 1n),
@@ -14428,20 +15302,20 @@ export class Contract {
                                                                                             { popeq: { cached: true,
                                                                                                        result: undefined } }]).value)),
                               'Credential-status command nonce already used');
-      __compactRuntime.assert(this._equal_639(command_0.governancePolicyHash,
+      __compactRuntime.assert(this._equal_652(command_0.governancePolicyHash,
                                               authorityRoot_0.governancePolicyHash)
                               &&
-                              this._equal_640(command_0.authorityRootVersion,
+                              this._equal_653(command_0.authorityRootVersion,
                                               authorityRoot_0.rootVersion)
                               &&
-                              this._equal_641(command_0.authorityRootSequence,
+                              this._equal_654(command_0.authorityRootSequence,
                                               authorityRoot_0.rootSequence),
                               'Credential-status command authority root is stale or mismatched');
       __compactRuntime.assert(this._blockTimeGte_0(context,
                                                    partialProofData,
                                                    command_0.effectiveAt),
                               'Credential-status command is not yet effective');
-      if (this._equal_642(operation_0, 4n)) {
+      if (this._equal_655(operation_0, 4n)) {
         let tmp_10;
         __compactRuntime.assert((tmp_10 = command_0.commandNonce,
                                  _descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
@@ -14509,14 +15383,14 @@ export class Contract {
                                              { ins: { cached: true, n: 2 } }]);
           return statusRoot_0.rootSequence;
         } else {
-          const directAccountAuthority_0 = this._equal_643(operation_0, 1n)
+          const directAccountAuthority_0 = this._equal_656(operation_0, 1n)
                                            &&
-                                           (this._equal_644(command_0.credentialKind,
+                                           (this._equal_657(command_0.credentialKind,
                                                             1n)
                                             ||
-                                            !this._equal_645(command_0.revocationAuthorityAccountCredentialCommitment,
+                                            !this._equal_658(command_0.revocationAuthorityAccountCredentialCommitment,
                                                              new Uint8Array(32)));
-          __compactRuntime.assert(this._equal_646(this._runtimeCredentialStatusPathIndex_0(currentStatusPath_0),
+          __compactRuntime.assert(this._equal_659(this._runtimeCredentialStatusPathIndex_0(currentStatusPath_0),
                                                   command_0.statusIndex),
                                   'Credential status path position does not match the signed index');
           const boundTarget_0 = directAccountAuthority_0 ?
@@ -14567,57 +15441,57 @@ export class Contract {
                                                                                                                     alignment: _descriptor_1.alignment() } }] } },
                                                                                          { popeq: { cached: false,
                                                                                                     result: undefined } }]).value);
-          __compactRuntime.assert(this._equal_647(allocation_0.allocationVersion,
+          __compactRuntime.assert(this._equal_660(allocation_0.allocationVersion,
                                                   1n)
                                   &&
-                                  this._equal_648(allocation_0.target,
+                                  this._equal_661(allocation_0.target,
                                                   boundTarget_0)
                                   &&
-                                  this._equal_649(allocation_0.target.namespaceHash,
+                                  this._equal_662(allocation_0.target.namespaceHash,
                                                   command_0.namespaceHash)
                                   &&
-                                  this._equal_650(allocation_0.instanceCommitment,
+                                  this._equal_663(allocation_0.instanceCommitment,
                                                   boundInstance_0)
                                   &&
-                                  this._equal_651(this._runtimeInstanceAllocationCommitment_0(allocation_0),
+                                  this._equal_664(this._runtimeInstanceAllocationCommitment_0(allocation_0),
                                                   instance_0.allocationCommitment)
                                   &&
-                                  this._equal_652(command_0.allocationCommitment,
+                                  this._equal_665(command_0.allocationCommitment,
                                                   instance_0.allocationCommitment),
                                   'Runtime credential does not match the immutable private allocation');
           const currentInstanceState_0 = instanceBinding_0.state;
-          __compactRuntime.assert(this._equal_653(currentInstanceState_0.stateVersion,
+          __compactRuntime.assert(this._equal_666(currentInstanceState_0.stateVersion,
                                                   2n)
                                   &&
-                                  this._equal_654(currentInstanceState_0.instanceCommitment,
+                                  this._equal_667(currentInstanceState_0.instanceCommitment,
                                                   boundInstance_0)
                                   &&
-                                  this._equal_655(this._runtimeStateCommitment_0(currentInstanceState_0),
+                                  this._equal_668(this._runtimeStateCommitment_0(currentInstanceState_0),
                                                   command_0.instanceStateCommitment)
                                   &&
-                                  this._equal_656(command_0.instanceStateCommitment,
+                                  this._equal_669(command_0.instanceStateCommitment,
                                                   instance_0.currentStateCommitment)
                                   &&
-                                  this._equal_657(instanceBinding_0.stateSequence,
+                                  this._equal_670(instanceBinding_0.stateSequence,
                                                   command_0.instanceStateSequence)
                                   &&
-                                  this._equal_658(command_0.instanceStateSequence,
+                                  this._equal_671(command_0.instanceStateSequence,
                                                   instance_0.transitionSequence),
                                   'Credential command is stale against the exact instance state and sequence');
           let t_7;
           __compactRuntime.assert((t_7 = command_0.effectiveAt,
                                    t_7 >= currentInstanceState_0.lastMutationAt),
                                   'Credential mutation cannot backdate the instance mutation watermark');
-          __compactRuntime.assert(!this._equal_659(instanceBinding_0.nextStateNonce,
+          __compactRuntime.assert(!this._equal_672(instanceBinding_0.nextStateNonce,
                                                    new Uint8Array(32))
                                   &&
-                                  !this._equal_660(instanceBinding_0.nextStateNonce,
+                                  !this._equal_673(instanceBinding_0.nextStateNonce,
                                                    currentInstanceState_0.nonce),
                                   'Credential mutation requires a fresh private state nonce');
           const nextInstanceState_0 = this._runtimeCredentialNextState_0(currentInstanceState_0,
                                                                          command_0.effectiveAt,
                                                                          instanceBinding_0.nextStateNonce);
-          __compactRuntime.assert(this._equal_661(this._runtimeStateCommitment_0(nextInstanceState_0),
+          __compactRuntime.assert(this._equal_674(this._runtimeStateCommitment_0(nextInstanceState_0),
                                                   command_0.nextInstanceStateCommitment),
                                   'Credential command does not bind the exact next private instance state');
           let t_8;
@@ -14628,9 +15502,9 @@ export class Contract {
                                                       partialProofData,
                                                       instanceBinding_0.validBefore),
                                   'Credential proof submission window has expired');
-          if (this._equal_662(command_0.expectedStatus, 0n)) {
+          if (this._equal_675(command_0.expectedStatus, 0n)) {
             let t_10, t_11, t_9;
-            __compactRuntime.assert(this._equal_663(instance_0.lifecycleStatus,
+            __compactRuntime.assert(this._equal_676(instance_0.lifecycleStatus,
                                                     1n)
                                     &&
                                     (t_9 = command_0.effectiveAt,
@@ -14639,24 +15513,24 @@ export class Contract {
                                     (t_11 = instanceBinding_0.validBefore,
                                      t_11 <= allocation_0.expiresAt)
                                     &&
-                                    (this._equal_664(operation_0, 1n)
+                                    (this._equal_677(operation_0, 1n)
                                      ||
                                      (t_10 = credential_0.expiresAt,
                                       t_10 <= allocation_0.expiresAt)),
                                     'Credential activation is outside its allocated instance lifetime');
           }
-          const namespaceOperation_0 = this._equal_665(operation_0, 1n)
+          const namespaceOperation_0 = this._equal_678(operation_0, 1n)
                                        &&
-                                       (this._equal_666(command_0.revocationAuthorityAccountCredentialCommitment,
+                                       (this._equal_679(command_0.revocationAuthorityAccountCredentialCommitment,
                                                         new Uint8Array(32))
                                         ||
-                                        this._equal_667(command_0.credentialKind,
+                                        this._equal_680(command_0.credentialKind,
                                                         1n)
                                         &&
-                                        this._equal_668(command_0.expectedStatus,
+                                        this._equal_681(command_0.expectedStatus,
                                                         0n))
                                        ||
-                                       !this._equal_669(operation_0, 1n)
+                                       !this._equal_682(operation_0, 1n)
                                        &&
                                        isRootCapability_0;
           if (namespaceOperation_0) {
@@ -14672,17 +15546,17 @@ export class Contract {
                                     (t_12 = instanceBinding_0.validBefore,
                                      t_12 <= namespaceAuthority_0.validBefore),
                                     'Namespace issuer is outside the current credential proof window');
-            if (this._equal_670(command_0.credentialKind, 2n)) {
-              __compactRuntime.assert(this._equal_671(capability_0.credentialVersion,
+            if (this._equal_683(command_0.credentialKind, 2n)) {
+              __compactRuntime.assert(this._equal_684(capability_0.credentialVersion,
                                                       3n)
                                       &&
-                                      this._equal_672(capability_0.delegationDepth,
+                                      this._equal_685(capability_0.delegationDepth,
                                                       0n)
                                       &&
-                                      this._equal_673(credential_0.commitment,
+                                      this._equal_686(credential_0.commitment,
                                                       command_0.credentialCommitment)
                                       &&
-                                      this._equal_674(capability_0.namespaceIssuerAuthorityCommitment,
+                                      this._equal_687(capability_0.namespaceIssuerAuthorityCommitment,
                                                       this._governanceActivatorLeafCommitment_0(namespaceAuthority_0)),
                                       'Only the exact original namespace issuer may manage this root capability');
             }
@@ -14700,18 +15574,18 @@ export class Contract {
                                 this._runtimeCredentialStatusCommandMessage_0(command_0),
                                 signature_0,
                                 commandIssuerKey_0);
-          if (this._equal_675(operation_0, 2n)) {
-            __compactRuntime.assert((this._equal_676(command_0.credentialKind,
+          if (this._equal_688(operation_0, 2n)) {
+            __compactRuntime.assert((this._equal_689(command_0.credentialKind,
                                                      2n)
                                      ||
-                                     this._equal_677(command_0.credentialKind,
+                                     this._equal_690(command_0.credentialKind,
                                                      3n))
                                     &&
-                                    this._equal_678(command_0.expectedStatus, 0n)
+                                    this._equal_691(command_0.expectedStatus, 0n)
                                     &&
-                                    this._equal_679(command_0.nextStatus, 1n),
+                                    this._equal_692(command_0.nextStatus, 1n),
                                     'Capability attenuation begin requires capability activation');
-            __compactRuntime.assert(this._equal_680(command_0.credentialStatusRootSequence,
+            __compactRuntime.assert(this._equal_693(command_0.credentialStatusRootSequence,
                                                     statusRoot_0.rootSequence),
                                     'Capability attenuation begin root sequence is stale');
             let t_15, t_16;
@@ -14726,22 +15600,22 @@ export class Contract {
                                                           command_0.stagingExpiresAt),
                                     'Capability attenuation staging deadline has expired');
             let t_18, t_19, t_17;
-            __compactRuntime.assert(this._equal_681(credential_0.version,
+            __compactRuntime.assert(this._equal_694(credential_0.version,
                                                     isSession_0 ? 2n : 3n)
                                     &&
-                                    this._equal_682(credential_0.target.namespaceHash,
+                                    this._equal_695(credential_0.target.namespaceHash,
                                                     command_0.namespaceHash)
                                     &&
-                                    this._equal_683(credential_0.commitment,
+                                    this._equal_696(credential_0.commitment,
                                                     command_0.credentialCommitment)
                                     &&
-                                    this._equal_684(credential_0.subject,
+                                    this._equal_697(credential_0.subject,
                                                     command_0.subjectAccountCredentialCommitment)
                                     &&
-                                    this._equal_685(credential_0.statusIndex,
+                                    this._equal_698(credential_0.statusIndex,
                                                     command_0.statusIndex)
                                     &&
-                                    this._equal_686(credential_0.issuedAt,
+                                    this._equal_699(credential_0.issuedAt,
                                                     command_0.effectiveAt)
                                     &&
                                     (t_17 = credential_0.notBefore,
@@ -14775,22 +15649,22 @@ export class Contract {
                                     (t_25 = credential_0.counts.disclosurePolicyIdsCount,
                                      t_25 > 0n),
                                     'Every capability scope dimension must contain at least one value');
-            __compactRuntime.assert(this._equal_687(currentStatusPath_0.leaf,
+            __compactRuntime.assert(this._equal_700(currentStatusPath_0.leaf,
                                                     new Uint8Array(32))
                                     &&
-                                    this._equal_688(this._merkleTreePathRoot_3(currentStatusPath_0),
+                                    this._equal_701(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                     statusRoot_0.root),
                                     'Capability activation requires the exact current empty status leaf');
             __compactRuntime.assert(this._runtimeScopeProgressIsInitial_0(scopeProgress_0),
                                     'Capability attenuation must begin from seven exact empty scope trees');
             if (isRootCapability_0) {
-              __compactRuntime.assert(this._equal_689(capability_0.parentCapabilityCredentialCommitment,
+              __compactRuntime.assert(this._equal_702(capability_0.parentCapabilityCredentialCommitment,
                                                       new Uint8Array(32))
                                       &&
-                                      this._equal_690(capability_0.issuerAccountCredentialCommitment,
+                                      this._equal_703(capability_0.issuerAccountCredentialCommitment,
                                                       new Uint8Array(32))
                                       &&
-                                      this._equal_691(command_0.revocationAuthorityAccountCredentialCommitment,
+                                      this._equal_704(command_0.revocationAuthorityAccountCredentialCommitment,
                                                       new Uint8Array(32)),
                                       'Root capability must not name a parent or account issuer');
               let t_27, t_28;
@@ -14808,36 +15682,36 @@ export class Contract {
                                        (t_29 = capability_0.delegationDepth,
                                         t_29 <= 16n))
                                       &&
-                                      this._equal_692(parentCapability_0.credentialVersion,
+                                      this._equal_705(parentCapability_0.credentialVersion,
                                                       3n)
                                       &&
                                       (isSession_0
                                        ||
-                                       this._equal_693(capability_0.namespaceIssuerAuthorityCommitment,
+                                       this._equal_706(capability_0.namespaceIssuerAuthorityCommitment,
                                                        parentCapability_0.namespaceIssuerAuthorityCommitment))
                                       &&
-                                      this._equal_694(credential_0.parent,
+                                      this._equal_707(credential_0.parent,
                                                       parentCapabilityCommitment_0)
                                       &&
-                                      this._equal_695(credential_0.issuer,
+                                      this._equal_708(credential_0.issuer,
                                                       issuerAccountCommitment_0)
                                       &&
-                                      this._equal_696(parentCapability_0.subjectAccountCredentialCommitment,
+                                      this._equal_709(parentCapability_0.subjectAccountCredentialCommitment,
                                                       issuerAccountCommitment_0)
                                       &&
-                                      this._equal_697(command_0.revocationAuthorityAccountCredentialCommitment,
+                                      this._equal_710(command_0.revocationAuthorityAccountCredentialCommitment,
                                                       issuerAccountCommitment_0)
                                       &&
-                                      this._equal_698(accountAuthority_0.credentialVersion,
+                                      this._equal_711(accountAuthority_0.credentialVersion,
                                                       1n)
                                       &&
-                                      this._equal_699(accountAuthority_0.target,
+                                      this._equal_712(accountAuthority_0.target,
                                                       credential_0.target)
                                       &&
-                                      this._equal_700(accountAuthority_0.instanceCommitment,
+                                      this._equal_713(accountAuthority_0.instanceCommitment,
                                                       credential_0.instanceCommitment)
                                       &&
-                                      this._equal_701(accountAuthority_0.contextHash,
+                                      this._equal_714(accountAuthority_0.contextHash,
                                                       credential_0.contextHash)
                                       &&
                                       (t_31 = command_0.effectiveAt,
@@ -14847,18 +15721,18 @@ export class Contract {
                                        t_30 <= accountAuthority_0.validBefore),
                                       'Delegated capability parent and issuer bindings are invalid');
               let t_34, t_35, t_32, t_33;
-              __compactRuntime.assert(this._equal_702(credential_0.target,
+              __compactRuntime.assert(this._equal_715(credential_0.target,
                                                       parentCapability_0.target)
                                       &&
-                                      this._equal_703(credential_0.instanceCommitment,
+                                      this._equal_716(credential_0.instanceCommitment,
                                                       parentCapability_0.instanceCommitment)
                                       &&
-                                      this._equal_704(credential_0.contextHash,
+                                      this._equal_717(credential_0.contextHash,
                                                       parentCapability_0.contextHash)
                                       &&
                                       (isSession_0
                                        ||
-                                       this._equal_705(capability_0.delegationDepth,
+                                       this._equal_718(capability_0.delegationDepth,
                                                        parentCapability_0.delegationDepth
                                                        +
                                                        1n)
@@ -14983,34 +15857,34 @@ export class Contract {
                                                                                            parentCapability_0.statusIndex,
                                                                                          status:
                                                                                            1n });
-              __compactRuntime.assert(this._equal_706(accountAuthorityStatusPath_0.leaf,
+              __compactRuntime.assert(this._equal_719(accountAuthorityStatusPath_0.leaf,
                                                       activeIssuerLeaf_0)
                                       &&
-                                      this._equal_707(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                      this._equal_720(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                       accountAuthority_0.statusIndex)
                                       &&
-                                      this._equal_708(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                      this._equal_721(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                       statusRoot_0.root)
                                       &&
-                                      this._equal_709(parentCapabilityStatusPath_0.leaf,
+                                      this._equal_722(parentCapabilityStatusPath_0.leaf,
                                                       activeParentLeaf_0)
                                       &&
-                                      this._equal_710(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
+                                      this._equal_723(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
                                                       parentCapability_0.statusIndex)
                                       &&
-                                      this._equal_711(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
+                                      this._equal_724(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
                                                       statusRoot_0.root),
                                       'Delegated capability issuer and parent must be active under the current status root');
             }
             if (isSession_0) {
               let t_52;
-              __compactRuntime.assert(this._equal_712(credential_0.subject,
+              __compactRuntime.assert(this._equal_725(credential_0.subject,
                                                       accountAuthorityCommitment_0)
                                       &&
                                       (t_52 = credential_0.expiresAt,
                                        t_52 <= accountAuthority_0.validBefore)
                                       &&
-                                      !this._equal_713(sessionCredential_0.runtimePublicKey,
+                                      !this._equal_726(sessionCredential_0.runtimePublicKey,
                                                        accountAuthority_0.runtimePublicKey),
                                       'Session must bind its exact holder window and a distinct runtime key');
             }
@@ -15125,7 +15999,7 @@ export class Contract {
                                                { ins: { cached: true, n: 2 } }]);
             return statusRoot_0.rootSequence;
           } else {
-            if (this._equal_714(operation_0, 4n)) {
+            if (this._equal_727(operation_0, 4n)) {
               let tmp_18;
               __compactRuntime.assert((tmp_18 = command_0.commandNonce,
                                        _descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
@@ -15199,22 +16073,22 @@ export class Contract {
                                                                                    credential_0,
                                                                                    parentCapabilityCommitment_0,
                                                                                    accountAuthorityCommitment_0);
-                __compactRuntime.assert(this._equal_715(this._capabilityAttenuationCertificationCommitment_0(certification_2),
+                __compactRuntime.assert(this._equal_728(this._capabilityAttenuationCertificationCommitment_0(certification_2),
                                                         session_1.certificationCommitment)
                                         &&
-                                        this._equal_716(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
+                                        this._equal_729(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
                                                         session_1.progressCommitment)
                                         &&
-                                        this._equal_717(session_1.nextElementIndex,
+                                        this._equal_730(session_1.nextElementIndex,
                                                         session_1.totalScopeElementCount)
                                         &&
                                         this._runtimeScopeProgressIsComplete_0(scopeProgress_0,
                                                                                credential_0),
                                         'Capability attenuation session is incomplete or mismatched');
-                __compactRuntime.assert(this._equal_718(currentStatusPath_0.leaf,
+                __compactRuntime.assert(this._equal_731(currentStatusPath_0.leaf,
                                                         new Uint8Array(32))
                                         &&
-                                        this._equal_719(this._merkleTreePathRoot_3(currentStatusPath_0),
+                                        this._equal_732(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                         statusRoot_0.root),
                                         'Capability finalization requires the exact current empty status leaf');
                 if (!isRootCapability_0) {
@@ -15247,22 +16121,22 @@ export class Contract {
                                                                                                parentCapability_0.statusIndex,
                                                                                              status:
                                                                                                1n });
-                  __compactRuntime.assert(this._equal_720(accountAuthorityStatusPath_0.leaf,
+                  __compactRuntime.assert(this._equal_733(accountAuthorityStatusPath_0.leaf,
                                                           activeIssuerLeaf_1)
                                           &&
-                                          this._equal_721(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                          this._equal_734(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                           accountAuthority_0.statusIndex)
                                           &&
-                                          this._equal_722(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                          this._equal_735(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                           statusRoot_0.root)
                                           &&
-                                          this._equal_723(parentCapabilityStatusPath_0.leaf,
+                                          this._equal_736(parentCapabilityStatusPath_0.leaf,
                                                           activeParentLeaf_1)
                                           &&
-                                          this._equal_724(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
+                                          this._equal_737(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
                                                           parentCapability_0.statusIndex)
                                           &&
-                                          this._equal_725(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
+                                          this._equal_738(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
                                                           statusRoot_0.root),
                                           'Delegated capability issuer or parent was revoked during staging');
                 }
@@ -15284,7 +16158,7 @@ export class Contract {
                                                  path: currentStatusPath_0.path };
                 const nextSequence_0 = ((t1) => {
                                          if (t1 > 18446744073709551615n) {
-                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 2867 char 30: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                           throw new __compactRuntime.CompactError('permio-authorization.compact line 2868 char 30: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                          }
                                          return t1;
                                        })(statusRoot_0.rootSequence + 1n);
@@ -15357,7 +16231,7 @@ export class Contract {
                                  transitionSequence:
                                    ((t1) => {
                                      if (t1 > 18446744073709551615n) {
-                                       throw new __compactRuntime.CompactError('permio-authorization.compact line 2882 char 33: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                       throw new __compactRuntime.CompactError('permio-authorization.compact line 2883 char 33: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                      }
                                      return t1;
                                    })(instance_0.transitionSequence + 1n),
@@ -15385,40 +16259,40 @@ export class Contract {
                 return nextSequence_0;
               }
             } else {
-              __compactRuntime.assert(this._equal_726(operation_0, 1n),
+              __compactRuntime.assert(this._equal_739(operation_0, 1n),
                                       'Direct credential transition requires operation one');
-              __compactRuntime.assert(this._equal_727(command_0.stagingExpiresAt,
+              __compactRuntime.assert(this._equal_740(command_0.stagingExpiresAt,
                                                       0n),
                                       'Direct credential transition cannot stage scope');
-              __compactRuntime.assert(this._equal_728(command_0.credentialStatusRootSequence,
+              __compactRuntime.assert(this._equal_741(command_0.credentialStatusRootSequence,
                                                       statusRoot_0.rootSequence),
                                       'Credential-status command root sequence is stale');
               let t_53;
               __compactRuntime.assert(!((t_53 = command_0.credentialKind,
                                          t_53 >= 2n)
                                         &&
-                                        this._equal_729(command_0.expectedStatus,
+                                        this._equal_742(command_0.expectedStatus,
                                                         0n)),
                                       'Capability or session activation requires staged scope certification');
-              const namespaceSigned_0 = this._equal_730(command_0.revocationAuthorityAccountCredentialCommitment,
+              const namespaceSigned_0 = this._equal_743(command_0.revocationAuthorityAccountCredentialCommitment,
                                                         new Uint8Array(32))
                                         ||
-                                        this._equal_731(command_0.credentialKind,
+                                        this._equal_744(command_0.credentialKind,
                                                         1n)
                                         &&
-                                        this._equal_732(command_0.expectedStatus,
+                                        this._equal_745(command_0.expectedStatus,
                                                         0n);
               if (namespaceSigned_0) {
-                __compactRuntime.assert(this._equal_733(namespaceAuthority_0.leafVersion,
+                __compactRuntime.assert(this._equal_746(namespaceAuthority_0.leafVersion,
                                                         1n)
                                         &&
-                                        this._equal_734(namespaceAuthority_0.authorityKind,
+                                        this._equal_747(namespaceAuthority_0.authorityKind,
                                                         6n)
                                         &&
-                                        this._equal_735(namespaceAuthority_0.namespaceHash,
+                                        this._equal_748(namespaceAuthority_0.namespaceHash,
                                                         command_0.namespaceHash)
                                         &&
-                                        this._equal_736(namespaceAuthority_0.governancePolicyHash,
+                                        this._equal_749(namespaceAuthority_0.governancePolicyHash,
                                                         command_0.governancePolicyHash),
                                         'Credential issuer is outside the namespace capability-issuer scope');
                 let t_54, t_55;
@@ -15429,27 +16303,27 @@ export class Contract {
                                          t_54 < namespaceAuthority_0.validBefore),
                                         'Namespace capability issuer is outside its validity window');
                 const authorityCommitment_0 = this._governanceActivatorLeafCommitment_0(namespaceAuthority_0);
-                __compactRuntime.assert(this._equal_737(namespaceAuthorityPath_0.leaf,
+                __compactRuntime.assert(this._equal_750(namespaceAuthorityPath_0.leaf,
                                                         authorityCommitment_0)
                                         &&
-                                        this._equal_738(this._merkleTreePathRoot_3(namespaceAuthorityPath_0),
+                                        this._equal_751(this._merkleTreePathRoot_3(namespaceAuthorityPath_0),
                                                         authorityRoot_0.root),
                                         'Namespace capability issuer is not eligible under the current authority root');
-                if (this._equal_739(command_0.credentialKind, 1n)) {
+                if (this._equal_752(command_0.credentialKind, 1n)) {
                   let t_58, t_59, t_56, t_57;
-                  __compactRuntime.assert(this._equal_740(command_0.expectedStatus,
+                  __compactRuntime.assert(this._equal_753(command_0.expectedStatus,
                                                           0n)
                                           &&
-                                          this._equal_741(command_0.revocationAuthorityAccountCredentialCommitment,
+                                          this._equal_754(command_0.revocationAuthorityAccountCredentialCommitment,
                                                           command_0.credentialCommitment)
                                           &&
-                                          this._equal_742(accountAuthority_0.credentialVersion,
+                                          this._equal_755(accountAuthority_0.credentialVersion,
                                                           1n)
                                           &&
-                                          this._equal_743(accountAuthorityCommitment_0,
+                                          this._equal_756(accountAuthorityCommitment_0,
                                                           command_0.credentialCommitment)
                                           &&
-                                          this._equal_744(accountAuthority_0.statusIndex,
+                                          this._equal_757(accountAuthority_0.statusIndex,
                                                           command_0.statusIndex)
                                           &&
                                           (t_57 = accountAuthority_0.issuedAt,
@@ -15469,13 +16343,13 @@ export class Contract {
                 }
               } else {
                 const accountCommitment_0 = accountAuthorityCommitment_0;
-                __compactRuntime.assert(this._equal_745(accountCommitment_0,
+                __compactRuntime.assert(this._equal_758(accountCommitment_0,
                                                         command_0.revocationAuthorityAccountCredentialCommitment)
                                         &&
-                                        this._equal_746(accountAuthority_0.credentialVersion,
+                                        this._equal_759(accountAuthority_0.credentialVersion,
                                                         1n)
                                         &&
-                                        this._equal_747(accountAuthority_0.target.namespaceHash,
+                                        this._equal_760(accountAuthority_0.target.namespaceHash,
                                                         command_0.namespaceHash),
                                         'Runtime account authority does not match the status command');
                 let t_60, t_61;
@@ -15499,13 +16373,13 @@ export class Contract {
                                                                                               accountAuthority_0.statusIndex,
                                                                                             status:
                                                                                               1n });
-                __compactRuntime.assert(this._equal_748(accountAuthorityStatusPath_0.leaf,
+                __compactRuntime.assert(this._equal_761(accountAuthorityStatusPath_0.leaf,
                                                         activeAccountLeaf_0)
                                         &&
-                                        this._equal_749(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                        this._equal_762(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                         accountAuthority_0.statusIndex)
                                         &&
-                                        this._equal_750(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                        this._equal_763(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                         statusRoot_0.root),
                                         'Runtime account authority is not active under the current status root');
               }
@@ -15519,16 +16393,16 @@ export class Contract {
                                         command_0.revocationAuthorityAccountCredentialCommitment,
                                       statusIndex: command_0.statusIndex,
                                       status: command_0.expectedStatus };
-              if (this._equal_751(command_0.expectedStatus, 0n)) {
-                __compactRuntime.assert(this._equal_752(currentStatusPath_0.leaf,
+              if (this._equal_764(command_0.expectedStatus, 0n)) {
+                __compactRuntime.assert(this._equal_765(currentStatusPath_0.leaf,
                                                         new Uint8Array(32)),
                                         'Credential issuance requires the exact empty status leaf');
               } else {
-                __compactRuntime.assert(this._equal_753(currentStatusPath_0.leaf,
+                __compactRuntime.assert(this._equal_766(currentStatusPath_0.leaf,
                                                         this._runtimeCredentialStatusLeafCommitment_0(currentLeaf_0)),
                                         'Credential revocation requires the exact active status leaf');
               }
-              __compactRuntime.assert(this._equal_754(this._merkleTreePathRoot_3(currentStatusPath_0),
+              __compactRuntime.assert(this._equal_767(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                       statusRoot_0.root),
                                       'Credential status path does not match the exact current leaf and root');
               const nextLeafCommitment_0 = this._runtimeCredentialStatusLeafCommitment_0({ leafVersion:
@@ -15549,7 +16423,7 @@ export class Contract {
                                          path: currentStatusPath_0.path };
               const nextSequence_1 = ((t1) => {
                                        if (t1 > 18446744073709551615n) {
-                                         throw new __compactRuntime.CompactError('permio-authorization.compact line 3008 char 26: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                         throw new __compactRuntime.CompactError('permio-authorization.compact line 3009 char 26: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                        }
                                        return t1;
                                      })(statusRoot_0.rootSequence + 1n);
@@ -15604,7 +16478,7 @@ export class Contract {
                                transitionSequence:
                                  ((t1) => {
                                    if (t1 > 18446744073709551615n) {
-                                     throw new __compactRuntime.CompactError('permio-authorization.compact line 3022 char 29: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                     throw new __compactRuntime.CompactError('permio-authorization.compact line 3023 char 29: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                    }
                                    return t1;
                                  })(instance_0.transitionSequence + 1n),
@@ -15634,14 +16508,14 @@ export class Contract {
           }
         }
       } else {
-        const directAccountAuthority_1 = this._equal_755(operation_0, 1n)
+        const directAccountAuthority_1 = this._equal_768(operation_0, 1n)
                                          &&
-                                         (this._equal_756(command_0.credentialKind,
+                                         (this._equal_769(command_0.credentialKind,
                                                           1n)
                                           ||
-                                          !this._equal_757(command_0.revocationAuthorityAccountCredentialCommitment,
+                                          !this._equal_770(command_0.revocationAuthorityAccountCredentialCommitment,
                                                            new Uint8Array(32)));
-        __compactRuntime.assert(this._equal_758(this._runtimeCredentialStatusPathIndex_0(currentStatusPath_0),
+        __compactRuntime.assert(this._equal_771(this._runtimeCredentialStatusPathIndex_0(currentStatusPath_0),
                                                 command_0.statusIndex),
                                 'Credential status path position does not match the signed index');
         const boundTarget_1 = directAccountAuthority_1 ?
@@ -15692,57 +16566,57 @@ export class Contract {
                                                                                                                   alignment: _descriptor_1.alignment() } }] } },
                                                                                        { popeq: { cached: false,
                                                                                                   result: undefined } }]).value);
-        __compactRuntime.assert(this._equal_759(allocation_1.allocationVersion,
+        __compactRuntime.assert(this._equal_772(allocation_1.allocationVersion,
                                                 1n)
                                 &&
-                                this._equal_760(allocation_1.target,
+                                this._equal_773(allocation_1.target,
                                                 boundTarget_1)
                                 &&
-                                this._equal_761(allocation_1.target.namespaceHash,
+                                this._equal_774(allocation_1.target.namespaceHash,
                                                 command_0.namespaceHash)
                                 &&
-                                this._equal_762(allocation_1.instanceCommitment,
+                                this._equal_775(allocation_1.instanceCommitment,
                                                 boundInstance_1)
                                 &&
-                                this._equal_763(this._runtimeInstanceAllocationCommitment_0(allocation_1),
+                                this._equal_776(this._runtimeInstanceAllocationCommitment_0(allocation_1),
                                                 instance_1.allocationCommitment)
                                 &&
-                                this._equal_764(command_0.allocationCommitment,
+                                this._equal_777(command_0.allocationCommitment,
                                                 instance_1.allocationCommitment),
                                 'Runtime credential does not match the immutable private allocation');
         const currentInstanceState_1 = instanceBinding_0.state;
-        __compactRuntime.assert(this._equal_765(currentInstanceState_1.stateVersion,
+        __compactRuntime.assert(this._equal_778(currentInstanceState_1.stateVersion,
                                                 2n)
                                 &&
-                                this._equal_766(currentInstanceState_1.instanceCommitment,
+                                this._equal_779(currentInstanceState_1.instanceCommitment,
                                                 boundInstance_1)
                                 &&
-                                this._equal_767(this._runtimeStateCommitment_0(currentInstanceState_1),
+                                this._equal_780(this._runtimeStateCommitment_0(currentInstanceState_1),
                                                 command_0.instanceStateCommitment)
                                 &&
-                                this._equal_768(command_0.instanceStateCommitment,
+                                this._equal_781(command_0.instanceStateCommitment,
                                                 instance_1.currentStateCommitment)
                                 &&
-                                this._equal_769(instanceBinding_0.stateSequence,
+                                this._equal_782(instanceBinding_0.stateSequence,
                                                 command_0.instanceStateSequence)
                                 &&
-                                this._equal_770(command_0.instanceStateSequence,
+                                this._equal_783(command_0.instanceStateSequence,
                                                 instance_1.transitionSequence),
                                 'Credential command is stale against the exact instance state and sequence');
         let t_62;
         __compactRuntime.assert((t_62 = command_0.effectiveAt,
                                  t_62 >= currentInstanceState_1.lastMutationAt),
                                 'Credential mutation cannot backdate the instance mutation watermark');
-        __compactRuntime.assert(!this._equal_771(instanceBinding_0.nextStateNonce,
+        __compactRuntime.assert(!this._equal_784(instanceBinding_0.nextStateNonce,
                                                  new Uint8Array(32))
                                 &&
-                                !this._equal_772(instanceBinding_0.nextStateNonce,
+                                !this._equal_785(instanceBinding_0.nextStateNonce,
                                                  currentInstanceState_1.nonce),
                                 'Credential mutation requires a fresh private state nonce');
         const nextInstanceState_1 = this._runtimeCredentialNextState_0(currentInstanceState_1,
                                                                        command_0.effectiveAt,
                                                                        instanceBinding_0.nextStateNonce);
-        __compactRuntime.assert(this._equal_773(this._runtimeStateCommitment_0(nextInstanceState_1),
+        __compactRuntime.assert(this._equal_786(this._runtimeStateCommitment_0(nextInstanceState_1),
                                                 command_0.nextInstanceStateCommitment),
                                 'Credential command does not bind the exact next private instance state');
         let t_63;
@@ -15753,9 +16627,9 @@ export class Contract {
                                                     partialProofData,
                                                     instanceBinding_0.validBefore),
                                 'Credential proof submission window has expired');
-        if (this._equal_774(command_0.expectedStatus, 0n)) {
+        if (this._equal_787(command_0.expectedStatus, 0n)) {
           let t_65, t_66, t_64;
-          __compactRuntime.assert(this._equal_775(instance_1.lifecycleStatus, 1n)
+          __compactRuntime.assert(this._equal_788(instance_1.lifecycleStatus, 1n)
                                   &&
                                   (t_64 = command_0.effectiveAt,
                                    t_64 >= allocation_1.createdAt)
@@ -15763,24 +16637,24 @@ export class Contract {
                                   (t_66 = instanceBinding_0.validBefore,
                                    t_66 <= allocation_1.expiresAt)
                                   &&
-                                  (this._equal_776(operation_0, 1n)
+                                  (this._equal_789(operation_0, 1n)
                                    ||
                                    (t_65 = credential_0.expiresAt,
                                     t_65 <= allocation_1.expiresAt)),
                                   'Credential activation is outside its allocated instance lifetime');
         }
-        const namespaceOperation_1 = this._equal_777(operation_0, 1n)
+        const namespaceOperation_1 = this._equal_790(operation_0, 1n)
                                      &&
-                                     (this._equal_778(command_0.revocationAuthorityAccountCredentialCommitment,
+                                     (this._equal_791(command_0.revocationAuthorityAccountCredentialCommitment,
                                                       new Uint8Array(32))
                                       ||
-                                      this._equal_779(command_0.credentialKind,
+                                      this._equal_792(command_0.credentialKind,
                                                       1n)
                                       &&
-                                      this._equal_780(command_0.expectedStatus,
+                                      this._equal_793(command_0.expectedStatus,
                                                       0n))
                                      ||
-                                     !this._equal_781(operation_0, 1n)
+                                     !this._equal_794(operation_0, 1n)
                                      &&
                                      isRootCapability_0;
         if (namespaceOperation_1) {
@@ -15796,17 +16670,17 @@ export class Contract {
                                   (t_67 = instanceBinding_0.validBefore,
                                    t_67 <= namespaceAuthority_0.validBefore),
                                   'Namespace issuer is outside the current credential proof window');
-          if (this._equal_782(command_0.credentialKind, 2n)) {
-            __compactRuntime.assert(this._equal_783(capability_0.credentialVersion,
+          if (this._equal_795(command_0.credentialKind, 2n)) {
+            __compactRuntime.assert(this._equal_796(capability_0.credentialVersion,
                                                     3n)
                                     &&
-                                    this._equal_784(capability_0.delegationDepth,
+                                    this._equal_797(capability_0.delegationDepth,
                                                     0n)
                                     &&
-                                    this._equal_785(credential_0.commitment,
+                                    this._equal_798(credential_0.commitment,
                                                     command_0.credentialCommitment)
                                     &&
-                                    this._equal_786(capability_0.namespaceIssuerAuthorityCommitment,
+                                    this._equal_799(capability_0.namespaceIssuerAuthorityCommitment,
                                                     this._governanceActivatorLeafCommitment_0(namespaceAuthority_0)),
                                     'Only the exact original namespace issuer may manage this root capability');
           }
@@ -15824,16 +16698,16 @@ export class Contract {
                               this._runtimeCredentialStatusCommandMessage_0(command_0),
                               signature_0,
                               commandIssuerKey_1);
-        if (this._equal_787(operation_0, 2n)) {
-          __compactRuntime.assert((this._equal_788(command_0.credentialKind, 2n)
+        if (this._equal_800(operation_0, 2n)) {
+          __compactRuntime.assert((this._equal_801(command_0.credentialKind, 2n)
                                    ||
-                                   this._equal_789(command_0.credentialKind, 3n))
+                                   this._equal_802(command_0.credentialKind, 3n))
                                   &&
-                                  this._equal_790(command_0.expectedStatus, 0n)
+                                  this._equal_803(command_0.expectedStatus, 0n)
                                   &&
-                                  this._equal_791(command_0.nextStatus, 1n),
+                                  this._equal_804(command_0.nextStatus, 1n),
                                   'Capability attenuation begin requires capability activation');
-          __compactRuntime.assert(this._equal_792(command_0.credentialStatusRootSequence,
+          __compactRuntime.assert(this._equal_805(command_0.credentialStatusRootSequence,
                                                   statusRoot_0.rootSequence),
                                   'Capability attenuation begin root sequence is stale');
           let t_70, t_71;
@@ -15848,22 +16722,22 @@ export class Contract {
                                                         command_0.stagingExpiresAt),
                                   'Capability attenuation staging deadline has expired');
           let t_73, t_74, t_72;
-          __compactRuntime.assert(this._equal_793(credential_0.version,
+          __compactRuntime.assert(this._equal_806(credential_0.version,
                                                   isSession_0 ? 2n : 3n)
                                   &&
-                                  this._equal_794(credential_0.target.namespaceHash,
+                                  this._equal_807(credential_0.target.namespaceHash,
                                                   command_0.namespaceHash)
                                   &&
-                                  this._equal_795(credential_0.commitment,
+                                  this._equal_808(credential_0.commitment,
                                                   command_0.credentialCommitment)
                                   &&
-                                  this._equal_796(credential_0.subject,
+                                  this._equal_809(credential_0.subject,
                                                   command_0.subjectAccountCredentialCommitment)
                                   &&
-                                  this._equal_797(credential_0.statusIndex,
+                                  this._equal_810(credential_0.statusIndex,
                                                   command_0.statusIndex)
                                   &&
-                                  this._equal_798(credential_0.issuedAt,
+                                  this._equal_811(credential_0.issuedAt,
                                                   command_0.effectiveAt)
                                   &&
                                   (t_72 = credential_0.notBefore,
@@ -15897,22 +16771,22 @@ export class Contract {
                                   (t_80 = credential_0.counts.disclosurePolicyIdsCount,
                                    t_80 > 0n),
                                   'Every capability scope dimension must contain at least one value');
-          __compactRuntime.assert(this._equal_799(currentStatusPath_0.leaf,
+          __compactRuntime.assert(this._equal_812(currentStatusPath_0.leaf,
                                                   new Uint8Array(32))
                                   &&
-                                  this._equal_800(this._merkleTreePathRoot_3(currentStatusPath_0),
+                                  this._equal_813(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                   statusRoot_0.root),
                                   'Capability activation requires the exact current empty status leaf');
           __compactRuntime.assert(this._runtimeScopeProgressIsInitial_0(scopeProgress_0),
                                   'Capability attenuation must begin from seven exact empty scope trees');
           if (isRootCapability_0) {
-            __compactRuntime.assert(this._equal_801(capability_0.parentCapabilityCredentialCommitment,
+            __compactRuntime.assert(this._equal_814(capability_0.parentCapabilityCredentialCommitment,
                                                     new Uint8Array(32))
                                     &&
-                                    this._equal_802(capability_0.issuerAccountCredentialCommitment,
+                                    this._equal_815(capability_0.issuerAccountCredentialCommitment,
                                                     new Uint8Array(32))
                                     &&
-                                    this._equal_803(command_0.revocationAuthorityAccountCredentialCommitment,
+                                    this._equal_816(command_0.revocationAuthorityAccountCredentialCommitment,
                                                     new Uint8Array(32)),
                                     'Root capability must not name a parent or account issuer');
             let t_82, t_83;
@@ -15930,36 +16804,36 @@ export class Contract {
                                      (t_84 = capability_0.delegationDepth,
                                       t_84 <= 16n))
                                     &&
-                                    this._equal_804(parentCapability_0.credentialVersion,
+                                    this._equal_817(parentCapability_0.credentialVersion,
                                                     3n)
                                     &&
                                     (isSession_0
                                      ||
-                                     this._equal_805(capability_0.namespaceIssuerAuthorityCommitment,
+                                     this._equal_818(capability_0.namespaceIssuerAuthorityCommitment,
                                                      parentCapability_0.namespaceIssuerAuthorityCommitment))
                                     &&
-                                    this._equal_806(credential_0.parent,
+                                    this._equal_819(credential_0.parent,
                                                     parentCapabilityCommitment_0)
                                     &&
-                                    this._equal_807(credential_0.issuer,
+                                    this._equal_820(credential_0.issuer,
                                                     issuerAccountCommitment_2)
                                     &&
-                                    this._equal_808(parentCapability_0.subjectAccountCredentialCommitment,
+                                    this._equal_821(parentCapability_0.subjectAccountCredentialCommitment,
                                                     issuerAccountCommitment_2)
                                     &&
-                                    this._equal_809(command_0.revocationAuthorityAccountCredentialCommitment,
+                                    this._equal_822(command_0.revocationAuthorityAccountCredentialCommitment,
                                                     issuerAccountCommitment_2)
                                     &&
-                                    this._equal_810(accountAuthority_0.credentialVersion,
+                                    this._equal_823(accountAuthority_0.credentialVersion,
                                                     1n)
                                     &&
-                                    this._equal_811(accountAuthority_0.target,
+                                    this._equal_824(accountAuthority_0.target,
                                                     credential_0.target)
                                     &&
-                                    this._equal_812(accountAuthority_0.instanceCommitment,
+                                    this._equal_825(accountAuthority_0.instanceCommitment,
                                                     credential_0.instanceCommitment)
                                     &&
-                                    this._equal_813(accountAuthority_0.contextHash,
+                                    this._equal_826(accountAuthority_0.contextHash,
                                                     credential_0.contextHash)
                                     &&
                                     (t_86 = command_0.effectiveAt,
@@ -15969,18 +16843,18 @@ export class Contract {
                                      t_85 <= accountAuthority_0.validBefore),
                                     'Delegated capability parent and issuer bindings are invalid');
             let t_89, t_90, t_87, t_88;
-            __compactRuntime.assert(this._equal_814(credential_0.target,
+            __compactRuntime.assert(this._equal_827(credential_0.target,
                                                     parentCapability_0.target)
                                     &&
-                                    this._equal_815(credential_0.instanceCommitment,
+                                    this._equal_828(credential_0.instanceCommitment,
                                                     parentCapability_0.instanceCommitment)
                                     &&
-                                    this._equal_816(credential_0.contextHash,
+                                    this._equal_829(credential_0.contextHash,
                                                     parentCapability_0.contextHash)
                                     &&
                                     (isSession_0
                                      ||
-                                     this._equal_817(capability_0.delegationDepth,
+                                     this._equal_830(capability_0.delegationDepth,
                                                      parentCapability_0.delegationDepth
                                                      +
                                                      1n)
@@ -16105,34 +16979,34 @@ export class Contract {
                                                                                          parentCapability_0.statusIndex,
                                                                                        status:
                                                                                          1n });
-            __compactRuntime.assert(this._equal_818(accountAuthorityStatusPath_0.leaf,
+            __compactRuntime.assert(this._equal_831(accountAuthorityStatusPath_0.leaf,
                                                     activeIssuerLeaf_2)
                                     &&
-                                    this._equal_819(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                    this._equal_832(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                     accountAuthority_0.statusIndex)
                                     &&
-                                    this._equal_820(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                    this._equal_833(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                     statusRoot_0.root)
                                     &&
-                                    this._equal_821(parentCapabilityStatusPath_0.leaf,
+                                    this._equal_834(parentCapabilityStatusPath_0.leaf,
                                                     activeParentLeaf_2)
                                     &&
-                                    this._equal_822(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
+                                    this._equal_835(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
                                                     parentCapability_0.statusIndex)
                                     &&
-                                    this._equal_823(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
+                                    this._equal_836(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
                                                     statusRoot_0.root),
                                     'Delegated capability issuer and parent must be active under the current status root');
           }
           if (isSession_0) {
             let t_107;
-            __compactRuntime.assert(this._equal_824(credential_0.subject,
+            __compactRuntime.assert(this._equal_837(credential_0.subject,
                                                     accountAuthorityCommitment_0)
                                     &&
                                     (t_107 = credential_0.expiresAt,
                                      t_107 <= accountAuthority_0.validBefore)
                                     &&
-                                    !this._equal_825(sessionCredential_0.runtimePublicKey,
+                                    !this._equal_838(sessionCredential_0.runtimePublicKey,
                                                      accountAuthority_0.runtimePublicKey),
                                     'Session must bind its exact holder window and a distinct runtime key');
           }
@@ -16247,7 +17121,7 @@ export class Contract {
                                              { ins: { cached: true, n: 2 } }]);
           return statusRoot_0.rootSequence;
         } else {
-          if (this._equal_826(operation_0, 4n)) {
+          if (this._equal_839(operation_0, 4n)) {
             let tmp_35;
             __compactRuntime.assert((tmp_35 = command_0.commandNonce,
                                      _descriptor_16.fromValue(__compactRuntime.queryLedgerState(context,
@@ -16321,22 +17195,22 @@ export class Contract {
                                                                                  credential_0,
                                                                                  parentCapabilityCommitment_0,
                                                                                  accountAuthorityCommitment_0);
-              __compactRuntime.assert(this._equal_827(this._capabilityAttenuationCertificationCommitment_0(certification_4),
+              __compactRuntime.assert(this._equal_840(this._capabilityAttenuationCertificationCommitment_0(certification_4),
                                                       session_2.certificationCommitment)
                                       &&
-                                      this._equal_828(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
+                                      this._equal_841(this._runtimeScopeProgressCommitment_0(scopeProgress_0),
                                                       session_2.progressCommitment)
                                       &&
-                                      this._equal_829(session_2.nextElementIndex,
+                                      this._equal_842(session_2.nextElementIndex,
                                                       session_2.totalScopeElementCount)
                                       &&
                                       this._runtimeScopeProgressIsComplete_0(scopeProgress_0,
                                                                              credential_0),
                                       'Capability attenuation session is incomplete or mismatched');
-              __compactRuntime.assert(this._equal_830(currentStatusPath_0.leaf,
+              __compactRuntime.assert(this._equal_843(currentStatusPath_0.leaf,
                                                       new Uint8Array(32))
                                       &&
-                                      this._equal_831(this._merkleTreePathRoot_3(currentStatusPath_0),
+                                      this._equal_844(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                       statusRoot_0.root),
                                       'Capability finalization requires the exact current empty status leaf');
               if (!isRootCapability_0) {
@@ -16369,22 +17243,22 @@ export class Contract {
                                                                                              parentCapability_0.statusIndex,
                                                                                            status:
                                                                                              1n });
-                __compactRuntime.assert(this._equal_832(accountAuthorityStatusPath_0.leaf,
+                __compactRuntime.assert(this._equal_845(accountAuthorityStatusPath_0.leaf,
                                                         activeIssuerLeaf_3)
                                         &&
-                                        this._equal_833(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                        this._equal_846(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                         accountAuthority_0.statusIndex)
                                         &&
-                                        this._equal_834(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                        this._equal_847(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                         statusRoot_0.root)
                                         &&
-                                        this._equal_835(parentCapabilityStatusPath_0.leaf,
+                                        this._equal_848(parentCapabilityStatusPath_0.leaf,
                                                         activeParentLeaf_3)
                                         &&
-                                        this._equal_836(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
+                                        this._equal_849(this._runtimeCredentialStatusPathIndex_0(parentCapabilityStatusPath_0),
                                                         parentCapability_0.statusIndex)
                                         &&
-                                        this._equal_837(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
+                                        this._equal_850(this._merkleTreePathRoot_3(parentCapabilityStatusPath_0),
                                                         statusRoot_0.root),
                                         'Delegated capability issuer or parent was revoked during staging');
               }
@@ -16406,7 +17280,7 @@ export class Contract {
                                                path: currentStatusPath_0.path };
               const nextSequence_2 = ((t1) => {
                                        if (t1 > 18446744073709551615n) {
-                                         throw new __compactRuntime.CompactError('permio-authorization.compact line 2867 char 30: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                         throw new __compactRuntime.CompactError('permio-authorization.compact line 2868 char 30: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                        }
                                        return t1;
                                      })(statusRoot_0.rootSequence + 1n);
@@ -16479,7 +17353,7 @@ export class Contract {
                                transitionSequence:
                                  ((t1) => {
                                    if (t1 > 18446744073709551615n) {
-                                     throw new __compactRuntime.CompactError('permio-authorization.compact line 2882 char 33: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                     throw new __compactRuntime.CompactError('permio-authorization.compact line 2883 char 33: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                    }
                                    return t1;
                                  })(instance_1.transitionSequence + 1n),
@@ -16507,40 +17381,40 @@ export class Contract {
               return nextSequence_2;
             }
           } else {
-            __compactRuntime.assert(this._equal_838(operation_0, 1n),
+            __compactRuntime.assert(this._equal_851(operation_0, 1n),
                                     'Direct credential transition requires operation one');
-            __compactRuntime.assert(this._equal_839(command_0.stagingExpiresAt,
+            __compactRuntime.assert(this._equal_852(command_0.stagingExpiresAt,
                                                     0n),
                                     'Direct credential transition cannot stage scope');
-            __compactRuntime.assert(this._equal_840(command_0.credentialStatusRootSequence,
+            __compactRuntime.assert(this._equal_853(command_0.credentialStatusRootSequence,
                                                     statusRoot_0.rootSequence),
                                     'Credential-status command root sequence is stale');
             let t_108;
             __compactRuntime.assert(!((t_108 = command_0.credentialKind,
                                        t_108 >= 2n)
                                       &&
-                                      this._equal_841(command_0.expectedStatus,
+                                      this._equal_854(command_0.expectedStatus,
                                                       0n)),
                                     'Capability or session activation requires staged scope certification');
-            const namespaceSigned_1 = this._equal_842(command_0.revocationAuthorityAccountCredentialCommitment,
+            const namespaceSigned_1 = this._equal_855(command_0.revocationAuthorityAccountCredentialCommitment,
                                                       new Uint8Array(32))
                                       ||
-                                      this._equal_843(command_0.credentialKind,
+                                      this._equal_856(command_0.credentialKind,
                                                       1n)
                                       &&
-                                      this._equal_844(command_0.expectedStatus,
+                                      this._equal_857(command_0.expectedStatus,
                                                       0n);
             if (namespaceSigned_1) {
-              __compactRuntime.assert(this._equal_845(namespaceAuthority_0.leafVersion,
+              __compactRuntime.assert(this._equal_858(namespaceAuthority_0.leafVersion,
                                                       1n)
                                       &&
-                                      this._equal_846(namespaceAuthority_0.authorityKind,
+                                      this._equal_859(namespaceAuthority_0.authorityKind,
                                                       6n)
                                       &&
-                                      this._equal_847(namespaceAuthority_0.namespaceHash,
+                                      this._equal_860(namespaceAuthority_0.namespaceHash,
                                                       command_0.namespaceHash)
                                       &&
-                                      this._equal_848(namespaceAuthority_0.governancePolicyHash,
+                                      this._equal_861(namespaceAuthority_0.governancePolicyHash,
                                                       command_0.governancePolicyHash),
                                       'Credential issuer is outside the namespace capability-issuer scope');
               let t_109, t_110;
@@ -16551,27 +17425,27 @@ export class Contract {
                                        t_109 < namespaceAuthority_0.validBefore),
                                       'Namespace capability issuer is outside its validity window');
               const authorityCommitment_1 = this._governanceActivatorLeafCommitment_0(namespaceAuthority_0);
-              __compactRuntime.assert(this._equal_849(namespaceAuthorityPath_0.leaf,
+              __compactRuntime.assert(this._equal_862(namespaceAuthorityPath_0.leaf,
                                                       authorityCommitment_1)
                                       &&
-                                      this._equal_850(this._merkleTreePathRoot_3(namespaceAuthorityPath_0),
+                                      this._equal_863(this._merkleTreePathRoot_3(namespaceAuthorityPath_0),
                                                       authorityRoot_0.root),
                                       'Namespace capability issuer is not eligible under the current authority root');
-              if (this._equal_851(command_0.credentialKind, 1n)) {
+              if (this._equal_864(command_0.credentialKind, 1n)) {
                 let t_113, t_114, t_111, t_112;
-                __compactRuntime.assert(this._equal_852(command_0.expectedStatus,
+                __compactRuntime.assert(this._equal_865(command_0.expectedStatus,
                                                         0n)
                                         &&
-                                        this._equal_853(command_0.revocationAuthorityAccountCredentialCommitment,
+                                        this._equal_866(command_0.revocationAuthorityAccountCredentialCommitment,
                                                         command_0.credentialCommitment)
                                         &&
-                                        this._equal_854(accountAuthority_0.credentialVersion,
+                                        this._equal_867(accountAuthority_0.credentialVersion,
                                                         1n)
                                         &&
-                                        this._equal_855(accountAuthorityCommitment_0,
+                                        this._equal_868(accountAuthorityCommitment_0,
                                                         command_0.credentialCommitment)
                                         &&
-                                        this._equal_856(accountAuthority_0.statusIndex,
+                                        this._equal_869(accountAuthority_0.statusIndex,
                                                         command_0.statusIndex)
                                         &&
                                         (t_112 = accountAuthority_0.issuedAt,
@@ -16589,13 +17463,13 @@ export class Contract {
               }
             } else {
               const accountCommitment_1 = accountAuthorityCommitment_0;
-              __compactRuntime.assert(this._equal_857(accountCommitment_1,
+              __compactRuntime.assert(this._equal_870(accountCommitment_1,
                                                       command_0.revocationAuthorityAccountCredentialCommitment)
                                       &&
-                                      this._equal_858(accountAuthority_0.credentialVersion,
+                                      this._equal_871(accountAuthority_0.credentialVersion,
                                                       1n)
                                       &&
-                                      this._equal_859(accountAuthority_0.target.namespaceHash,
+                                      this._equal_872(accountAuthority_0.target.namespaceHash,
                                                       command_0.namespaceHash),
                                       'Runtime account authority does not match the status command');
               let t_115, t_116;
@@ -16619,13 +17493,13 @@ export class Contract {
                                                                                             accountAuthority_0.statusIndex,
                                                                                           status:
                                                                                             1n });
-              __compactRuntime.assert(this._equal_860(accountAuthorityStatusPath_0.leaf,
+              __compactRuntime.assert(this._equal_873(accountAuthorityStatusPath_0.leaf,
                                                       activeAccountLeaf_1)
                                       &&
-                                      this._equal_861(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
+                                      this._equal_874(this._runtimeCredentialStatusPathIndex_0(accountAuthorityStatusPath_0),
                                                       accountAuthority_0.statusIndex)
                                       &&
-                                      this._equal_862(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
+                                      this._equal_875(this._merkleTreePathRoot_3(accountAuthorityStatusPath_0),
                                                       statusRoot_0.root),
                                       'Runtime account authority is not active under the current status root');
             }
@@ -16639,16 +17513,16 @@ export class Contract {
                                       command_0.revocationAuthorityAccountCredentialCommitment,
                                     statusIndex: command_0.statusIndex,
                                     status: command_0.expectedStatus };
-            if (this._equal_863(command_0.expectedStatus, 0n)) {
-              __compactRuntime.assert(this._equal_864(currentStatusPath_0.leaf,
+            if (this._equal_876(command_0.expectedStatus, 0n)) {
+              __compactRuntime.assert(this._equal_877(currentStatusPath_0.leaf,
                                                       new Uint8Array(32)),
                                       'Credential issuance requires the exact empty status leaf');
             } else {
-              __compactRuntime.assert(this._equal_865(currentStatusPath_0.leaf,
+              __compactRuntime.assert(this._equal_878(currentStatusPath_0.leaf,
                                                       this._runtimeCredentialStatusLeafCommitment_0(currentLeaf_1)),
                                       'Credential revocation requires the exact active status leaf');
             }
-            __compactRuntime.assert(this._equal_866(this._merkleTreePathRoot_3(currentStatusPath_0),
+            __compactRuntime.assert(this._equal_879(this._merkleTreePathRoot_3(currentStatusPath_0),
                                                     statusRoot_0.root),
                                     'Credential status path does not match the exact current leaf and root');
             const nextLeafCommitment_1 = this._runtimeCredentialStatusLeafCommitment_0({ leafVersion:
@@ -16669,7 +17543,7 @@ export class Contract {
                                        path: currentStatusPath_0.path };
             const nextSequence_3 = ((t1) => {
                                      if (t1 > 18446744073709551615n) {
-                                       throw new __compactRuntime.CompactError('permio-authorization.compact line 3008 char 26: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                       throw new __compactRuntime.CompactError('permio-authorization.compact line 3009 char 26: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                      }
                                      return t1;
                                    })(statusRoot_0.rootSequence + 1n);
@@ -16723,7 +17597,7 @@ export class Contract {
                              transitionSequence:
                                ((t1) => {
                                  if (t1 > 18446744073709551615n) {
-                                   throw new __compactRuntime.CompactError('permio-authorization.compact line 3022 char 29: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
+                                   throw new __compactRuntime.CompactError('permio-authorization.compact line 3023 char 29: cast from Field or Uint value to smaller Uint value failed: ' + t1 + ' is greater than 18446744073709551615');
                                  }
                                  return t1;
                                })(instance_1.transitionSequence + 1n),
@@ -19379,7 +20253,7 @@ export class Contract {
     return true;
   }
   _equal_418(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_419(x0, y0) {
@@ -19395,7 +20269,7 @@ export class Contract {
     return true;
   }
   _equal_422(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_423(x0, y0) {
@@ -19431,7 +20305,7 @@ export class Contract {
     return true;
   }
   _equal_431(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_432(x0, y0) {
@@ -19443,11 +20317,11 @@ export class Contract {
     return true;
   }
   _equal_434(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_435(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_436(x0, y0) {
@@ -19455,7 +20329,7 @@ export class Contract {
     return true;
   }
   _equal_437(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_438(x0, y0) {
@@ -19467,7 +20341,7 @@ export class Contract {
     return true;
   }
   _equal_440(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_441(x0, y0) {
@@ -19475,7 +20349,7 @@ export class Contract {
     return true;
   }
   _equal_442(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_443(x0, y0) {
@@ -19491,7 +20365,7 @@ export class Contract {
     return true;
   }
   _equal_446(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_447(x0, y0) {
@@ -19507,19 +20381,19 @@ export class Contract {
     return true;
   }
   _equal_450(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_451(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_452(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
       if (x1 !== y1) { return false; }
     }
-    return true;
-  }
-  _equal_452(x0, y0) {
-    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_453(x0, y0) {
@@ -19531,11 +20405,11 @@ export class Contract {
     return true;
   }
   _equal_455(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_456(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_457(x0, y0) {
@@ -19543,7 +20417,7 @@ export class Contract {
     return true;
   }
   _equal_458(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_459(x0, y0) {
@@ -19555,7 +20429,7 @@ export class Contract {
     return true;
   }
   _equal_461(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_462(x0, y0) {
@@ -19563,7 +20437,7 @@ export class Contract {
     return true;
   }
   _equal_463(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_464(x0, y0) {
@@ -19579,7 +20453,7 @@ export class Contract {
     return true;
   }
   _equal_467(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_468(x0, y0) {
@@ -19595,10 +20469,14 @@ export class Contract {
     return true;
   }
   _equal_471(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_472(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_473(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
@@ -19606,16 +20484,12 @@ export class Contract {
     }
     return true;
   }
-  _equal_473(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
   _equal_474(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_475(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_476(x0, y0) {
@@ -19623,18 +20497,30 @@ export class Contract {
     return true;
   }
   _equal_477(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_478(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_479(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_480(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_481(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_482(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_483(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
@@ -19642,21 +20528,14 @@ export class Contract {
     for (let i = 0; i < 17; i++) { x = f(context, partialProofData, x, a0[i]); }
     return x;
   }
-  _equal_481(x0, y0) {
+  _equal_484(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _equal_482(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_483(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_484(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
+  _mapper_4(f, a0) {
+    let a = [];
+    for (let i = 0; i < 32; i++) { a[i] = f(a0[i]); }
+    return a;
   }
   _equal_485(x0, y0) {
     if (x0 !== y0) { return false; }
@@ -19675,23 +20554,23 @@ export class Contract {
     return true;
   }
   _equal_489(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_490(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_491(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_492(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_493(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_494(x0, y0) {
@@ -19699,19 +20578,15 @@ export class Contract {
     return true;
   }
   _equal_495(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_496(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_497(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_498(x0, y0) {
@@ -19719,39 +20594,35 @@ export class Contract {
     return true;
   }
   _equal_499(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_500(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_501(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_502(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_503(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_504(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_505(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_506(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_507(x0, y0) {
@@ -19759,6 +20630,10 @@ export class Contract {
     return true;
   }
   _equal_508(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_509(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
@@ -19766,12 +20641,8 @@ export class Contract {
     }
     return true;
   }
-  _equal_509(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
   _equal_510(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_511(x0, y0) {
@@ -19811,23 +20682,27 @@ export class Contract {
     return true;
   }
   _equal_519(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_520(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_521(x0, y0) {
-    if (x0 !== y0) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_522(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_523(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_524(x0, y0) {
@@ -19839,7 +20714,7 @@ export class Contract {
     return true;
   }
   _equal_526(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_527(x0, y0) {
@@ -19847,19 +20722,23 @@ export class Contract {
     return true;
   }
   _equal_528(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_529(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_530(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_531(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_532(x0, y0) {
@@ -19867,7 +20746,7 @@ export class Contract {
     return true;
   }
   _equal_533(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_534(x0, y0) {
@@ -19875,11 +20754,11 @@ export class Contract {
     return true;
   }
   _equal_535(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_536(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_537(x0, y0) {
@@ -19891,7 +20770,7 @@ export class Contract {
     return true;
   }
   _equal_539(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_540(x0, y0) {
@@ -19911,15 +20790,15 @@ export class Contract {
     return true;
   }
   _equal_544(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_545(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_546(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_547(x0, y0) {
@@ -19943,11 +20822,11 @@ export class Contract {
     return true;
   }
   _equal_552(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_553(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_554(x0, y0) {
@@ -19955,7 +20834,7 @@ export class Contract {
     return true;
   }
   _equal_555(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_556(x0, y0) {
@@ -19975,23 +20854,19 @@ export class Contract {
     return true;
   }
   _equal_560(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_561(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_562(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_563(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_564(x0, y0) {
@@ -19999,11 +20874,11 @@ export class Contract {
     return true;
   }
   _equal_565(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_566(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_567(x0, y0) {
@@ -20011,7 +20886,7 @@ export class Contract {
     return true;
   }
   _equal_568(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_569(x0, y0) {
@@ -20027,23 +20902,27 @@ export class Contract {
     return true;
   }
   _equal_572(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_573(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_574(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_575(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_576(x0, y0) {
-    if (x0 !== y0) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_577(x0, y0) {
@@ -20055,15 +20934,11 @@ export class Contract {
     return true;
   }
   _equal_579(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_580(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_581(x0, y0) {
@@ -20071,11 +20946,11 @@ export class Contract {
     return true;
   }
   _equal_582(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_583(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_584(x0, y0) {
@@ -20083,7 +20958,7 @@ export class Contract {
     return true;
   }
   _equal_585(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_586(x0, y0) {
@@ -20111,11 +20986,15 @@ export class Contract {
     return true;
   }
   _equal_592(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_593(x0, y0) {
-    if (x0 !== y0) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_594(x0, y0) {
@@ -20123,11 +21002,11 @@ export class Contract {
     return true;
   }
   _equal_595(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_596(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_597(x0, y0) {
@@ -20191,59 +21070,31 @@ export class Contract {
     return true;
   }
   _equal_612(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_613(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_614(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_615(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_616(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_617(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_618(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_619(x0, y0) {
@@ -20255,10 +21106,90 @@ export class Contract {
     return true;
   }
   _equal_621(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_622(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_623(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_624(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_625(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_626(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_627(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_628(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_629(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_630(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_631(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_632(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_633(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_634(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_635(x0, y0) {
     {
       let x1 = x0.actionsRoot;
       let y1 = y0.actionsRoot;
@@ -20324,7 +21255,7 @@ export class Contract {
     }
     return true;
   }
-  _equal_623(x0, y0) {
+  _equal_636(x0, y0) {
     {
       let x1 = x0.actionsCount;
       let y1 = y0.actionsCount;
@@ -20362,76 +21293,16 @@ export class Contract {
     }
     return true;
   }
-  _equal_624(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_625(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_626(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_627(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_628(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_629(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_630(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_631(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_632(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_633(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_634(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_635(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_636(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
   _equal_637(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_638(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_639(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_640(x0, y0) {
@@ -20459,7 +21330,7 @@ export class Contract {
     return true;
   }
   _equal_646(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_647(x0, y0) {
@@ -20467,6 +21338,66 @@ export class Contract {
     return true;
   }
   _equal_648(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_649(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_650(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_651(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_652(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_653(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_654(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_655(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_656(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_657(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_658(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_659(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_660(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_661(x0, y0) {
     {
       let x1 = x0.namespaceHash;
       let y1 = y0.namespaceHash;
@@ -20503,88 +21434,36 @@ export class Contract {
     }
     return true;
   }
-  _equal_649(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_650(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_651(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_652(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_653(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_654(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_655(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_656(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_657(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_658(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_659(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_660(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_661(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
   _equal_662(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_663(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_664(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_665(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_666(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _equal_667(x0, y0) {
+  _equal_664(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_665(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_666(x0, y0) {
     if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_667(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_668(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_669(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_670(x0, y0) {
@@ -20596,7 +21475,7 @@ export class Contract {
     return true;
   }
   _equal_672(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_673(x0, y0) {
@@ -20624,7 +21503,7 @@ export class Contract {
     return true;
   }
   _equal_679(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_680(x0, y0) {
@@ -20636,15 +21515,15 @@ export class Contract {
     return true;
   }
   _equal_682(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_683(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_684(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_685(x0, y0) {
@@ -20652,7 +21531,7 @@ export class Contract {
     return true;
   }
   _equal_686(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_687(x0, y0) {
@@ -20660,23 +21539,19 @@ export class Contract {
     return true;
   }
   _equal_688(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_689(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_690(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_691(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_692(x0, y0) {
@@ -20684,11 +21559,11 @@ export class Contract {
     return true;
   }
   _equal_693(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_694(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_695(x0, y0) {
@@ -20708,40 +21583,7 @@ export class Contract {
     return true;
   }
   _equal_699(x0, y0) {
-    {
-      let x1 = x0.namespaceHash;
-      let y1 = y0.namespaceHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.templateIdHash;
-      let y1 = y0.templateIdHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.semanticVersion;
-      let y1 = y0.semanticVersion;
-      {
-        let x2 = x1.major;
-        let y2 = y1.major;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.minor;
-        let y2 = y1.minor;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.patch;
-        let y2 = y1.patch;
-        if (x2 !== y2) { return false; }
-      }
-    }
-    {
-      let x1 = x0.templateContentHash;
-      let y1 = y0.templateContentHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_700(x0, y0) {
@@ -20749,44 +21591,15 @@ export class Contract {
     return true;
   }
   _equal_701(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_702(x0, y0) {
-    {
-      let x1 = x0.namespaceHash;
-      let y1 = y0.namespaceHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.templateIdHash;
-      let y1 = y0.templateIdHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.semanticVersion;
-      let y1 = y0.semanticVersion;
-      {
-        let x2 = x1.major;
-        let y2 = y1.major;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.minor;
-        let y2 = y1.minor;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.patch;
-        let y2 = y1.patch;
-        if (x2 !== y2) { return false; }
-      }
-    }
-    {
-      let x1 = x0.templateContentHash;
-      let y1 = y0.templateContentHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_703(x0, y0) {
@@ -20806,15 +21619,11 @@ export class Contract {
     return true;
   }
   _equal_707(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_708(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_709(x0, y0) {
@@ -20822,243 +21631,14 @@ export class Contract {
     return true;
   }
   _equal_710(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_711(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_712(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_713(x0, y0) {
-    {
-      let x1 = x0.x;
-      let y1 = y0.x;
-      if (x1 !== y1) { return false; }
-    }
-    {
-      let x1 = x0.y;
-      let y1 = y0.y;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_714(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_715(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_716(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_717(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_718(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_719(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_720(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_721(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_722(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_723(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_724(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_725(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_726(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_727(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_728(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_729(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_730(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_731(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_732(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_733(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_734(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_735(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_736(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_737(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_738(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_739(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_740(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_741(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_742(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_743(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_744(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_745(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_746(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_747(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_748(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_749(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_750(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_751(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_752(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_753(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_754(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_755(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_756(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_757(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_758(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_759(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_760(x0, y0) {
     {
       let x1 = x0.namespaceHash;
       let y1 = y0.namespaceHash;
@@ -21095,24 +21675,286 @@ export class Contract {
     }
     return true;
   }
+  _equal_713(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_714(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_715(x0, y0) {
+    {
+      let x1 = x0.namespaceHash;
+      let y1 = y0.namespaceHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.templateIdHash;
+      let y1 = y0.templateIdHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.semanticVersion;
+      let y1 = y0.semanticVersion;
+      {
+        let x2 = x1.major;
+        let y2 = y1.major;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.minor;
+        let y2 = y1.minor;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.patch;
+        let y2 = y1.patch;
+        if (x2 !== y2) { return false; }
+      }
+    }
+    {
+      let x1 = x0.templateContentHash;
+      let y1 = y0.templateContentHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    return true;
+  }
+  _equal_716(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_717(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_718(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_719(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_720(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_721(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_722(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_723(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_724(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_725(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_726(x0, y0) {
+    {
+      let x1 = x0.x;
+      let y1 = y0.x;
+      if (x1 !== y1) { return false; }
+    }
+    {
+      let x1 = x0.y;
+      let y1 = y0.y;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_727(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_728(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_729(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_730(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_731(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_732(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_733(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_734(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_735(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_736(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_737(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_738(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_739(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_740(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_741(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_742(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_743(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_744(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_745(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_746(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_747(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_748(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_749(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_750(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_751(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_752(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_753(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_754(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_755(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_756(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_757(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_758(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_759(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_760(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
   _equal_761(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_762(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_763(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_764(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_765(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_766(x0, y0) {
@@ -21120,11 +21962,15 @@ export class Contract {
     return true;
   }
   _equal_767(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_768(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_769(x0, y0) {
@@ -21132,51 +21978,84 @@ export class Contract {
     return true;
   }
   _equal_770(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_771(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_772(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_773(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.namespaceHash;
+      let y1 = y0.namespaceHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.templateIdHash;
+      let y1 = y0.templateIdHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.semanticVersion;
+      let y1 = y0.semanticVersion;
+      {
+        let x2 = x1.major;
+        let y2 = y1.major;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.minor;
+        let y2 = y1.minor;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.patch;
+        let y2 = y1.patch;
+        if (x2 !== y2) { return false; }
+      }
+    }
+    {
+      let x1 = x0.templateContentHash;
+      let y1 = y0.templateContentHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
     return true;
   }
   _equal_774(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_775(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_776(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_777(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_778(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _equal_779(x0, y0) {
+  _equal_775(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_776(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_777(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_778(x0, y0) {
     if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_779(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_780(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_781(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_782(x0, y0) {
@@ -21188,7 +22067,7 @@ export class Contract {
     return true;
   }
   _equal_784(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_785(x0, y0) {
@@ -21216,7 +22095,7 @@ export class Contract {
     return true;
   }
   _equal_791(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_792(x0, y0) {
@@ -21228,15 +22107,15 @@ export class Contract {
     return true;
   }
   _equal_794(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_795(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_796(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_797(x0, y0) {
@@ -21244,7 +22123,7 @@ export class Contract {
     return true;
   }
   _equal_798(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_799(x0, y0) {
@@ -21252,23 +22131,19 @@ export class Contract {
     return true;
   }
   _equal_800(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_801(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_802(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_803(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_804(x0, y0) {
@@ -21276,11 +22151,11 @@ export class Contract {
     return true;
   }
   _equal_805(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_806(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_807(x0, y0) {
@@ -21300,40 +22175,7 @@ export class Contract {
     return true;
   }
   _equal_811(x0, y0) {
-    {
-      let x1 = x0.namespaceHash;
-      let y1 = y0.namespaceHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.templateIdHash;
-      let y1 = y0.templateIdHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.semanticVersion;
-      let y1 = y0.semanticVersion;
-      {
-        let x2 = x1.major;
-        let y2 = y1.major;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.minor;
-        let y2 = y1.minor;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.patch;
-        let y2 = y1.patch;
-        if (x2 !== y2) { return false; }
-      }
-    }
-    {
-      let x1 = x0.templateContentHash;
-      let y1 = y0.templateContentHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_812(x0, y0) {
@@ -21341,44 +22183,15 @@ export class Contract {
     return true;
   }
   _equal_813(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_814(x0, y0) {
-    {
-      let x1 = x0.namespaceHash;
-      let y1 = y0.namespaceHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.templateIdHash;
-      let y1 = y0.templateIdHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
-    {
-      let x1 = x0.semanticVersion;
-      let y1 = y0.semanticVersion;
-      {
-        let x2 = x1.major;
-        let y2 = y1.major;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.minor;
-        let y2 = y1.minor;
-        if (x2 !== y2) { return false; }
-      }
-      {
-        let x2 = x1.patch;
-        let y2 = y1.patch;
-        if (x2 !== y2) { return false; }
-      }
-    }
-    {
-      let x1 = x0.templateContentHash;
-      let y1 = y0.templateContentHash;
-      if (!x1.every((x, i) => y1[i] === x)) { return false; }
-    }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_815(x0, y0) {
@@ -21398,15 +22211,11 @@ export class Contract {
     return true;
   }
   _equal_819(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_820(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_821(x0, y0) {
@@ -21414,10 +22223,116 @@ export class Contract {
     return true;
   }
   _equal_822(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_823(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_824(x0, y0) {
+    {
+      let x1 = x0.namespaceHash;
+      let y1 = y0.namespaceHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.templateIdHash;
+      let y1 = y0.templateIdHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.semanticVersion;
+      let y1 = y0.semanticVersion;
+      {
+        let x2 = x1.major;
+        let y2 = y1.major;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.minor;
+        let y2 = y1.minor;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.patch;
+        let y2 = y1.patch;
+        if (x2 !== y2) { return false; }
+      }
+    }
+    {
+      let x1 = x0.templateContentHash;
+      let y1 = y0.templateContentHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    return true;
+  }
+  _equal_825(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_826(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_827(x0, y0) {
+    {
+      let x1 = x0.namespaceHash;
+      let y1 = y0.namespaceHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.templateIdHash;
+      let y1 = y0.templateIdHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    {
+      let x1 = x0.semanticVersion;
+      let y1 = y0.semanticVersion;
+      {
+        let x2 = x1.major;
+        let y2 = y1.major;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.minor;
+        let y2 = y1.minor;
+        if (x2 !== y2) { return false; }
+      }
+      {
+        let x2 = x1.patch;
+        let y2 = y1.patch;
+        if (x2 !== y2) { return false; }
+      }
+    }
+    {
+      let x1 = x0.templateContentHash;
+      let y1 = y0.templateContentHash;
+      if (!x1.every((x, i) => y1[i] === x)) { return false; }
+    }
+    return true;
+  }
+  _equal_828(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_829(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_830(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_831(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_832(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_833(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
@@ -21425,11 +22340,27 @@ export class Contract {
     }
     return true;
   }
-  _equal_824(x0, y0) {
+  _equal_834(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _equal_825(x0, y0) {
+  _equal_835(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_836(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_837(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_838(x0, y0) {
     {
       let x1 = x0.x;
       let y1 = y0.x;
@@ -21442,96 +22373,36 @@ export class Contract {
     }
     return true;
   }
-  _equal_826(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_827(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_828(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_829(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_830(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_831(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_832(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_833(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_834(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_835(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
-  _equal_836(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_837(x0, y0) {
-    {
-      let x1 = x0.field;
-      let y1 = y0.field;
-      if (x1 !== y1) { return false; }
-    }
-    return true;
-  }
-  _equal_838(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
   _equal_839(x0, y0) {
     if (x0 !== y0) { return false; }
     return true;
   }
   _equal_840(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_841(x0, y0) {
-    if (x0 !== y0) { return false; }
-    return true;
-  }
-  _equal_842(x0, y0) {
     if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
-  _equal_843(x0, y0) {
+  _equal_841(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_842(x0, y0) {
     if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_843(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_844(x0, y0) {
-    if (x0 !== y0) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_845(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_846(x0, y0) {
@@ -21539,7 +22410,11 @@ export class Contract {
     return true;
   }
   _equal_847(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
     return true;
   }
   _equal_848(x0, y0) {
@@ -21547,7 +22422,7 @@ export class Contract {
     return true;
   }
   _equal_849(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_850(x0, y0) {
@@ -21567,7 +22442,7 @@ export class Contract {
     return true;
   }
   _equal_853(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_854(x0, y0) {
@@ -21583,7 +22458,7 @@ export class Contract {
     return true;
   }
   _equal_857(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_858(x0, y0) {
@@ -21591,7 +22466,7 @@ export class Contract {
     return true;
   }
   _equal_859(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_860(x0, y0) {
@@ -21599,10 +22474,14 @@ export class Contract {
     return true;
   }
   _equal_861(x0, y0) {
-    if (x0 !== y0) { return false; }
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
     return true;
   }
   _equal_862(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_863(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
@@ -21610,19 +22489,71 @@ export class Contract {
     }
     return true;
   }
-  _equal_863(x0, y0) {
+  _equal_864(x0, y0) {
     if (x0 !== y0) { return false; }
     return true;
   }
-  _equal_864(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
-    return true;
-  }
   _equal_865(x0, y0) {
-    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    if (x0 !== y0) { return false; }
     return true;
   }
   _equal_866(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_867(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_868(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_869(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_870(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_871(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_872(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_873(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_874(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_875(x0, y0) {
+    {
+      let x1 = x0.field;
+      let y1 = y0.field;
+      if (x1 !== y1) { return false; }
+    }
+    return true;
+  }
+  _equal_876(x0, y0) {
+    if (x0 !== y0) { return false; }
+    return true;
+  }
+  _equal_877(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_878(x0, y0) {
+    if (!x0.every((x, i) => y0[i] === x)) { return false; }
+    return true;
+  }
+  _equal_879(x0, y0) {
     {
       let x1 = x0.field;
       let y1 = y0.field;
@@ -23778,7 +24709,7 @@ export function ledger(stateOrChargedState) {
                                      'Bytes<32>',
                                      key_0)
         }
-        return _descriptor_83.fromValue(__compactRuntime.queryLedgerState(context,
+        return _descriptor_87.fromValue(__compactRuntime.queryLedgerState(context,
                                                                           partialProofData,
                                                                           [
                                                                            { dup: { n: 0 } },
@@ -23805,7 +24736,7 @@ export function ledger(stateOrChargedState) {
           throw new __compactRuntime.CompactError(`iter: expected 0 arguments, received ${args_0.length}`);
         }
         const self_0 = state.asArray()[1].asArray()[10];
-        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_83.fromValue(value.value)    ];  })[Symbol.iterator]();
+        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_87.fromValue(value.value)    ];  })[Symbol.iterator]();
       }
     },
     usedRuntimeSlotCommandNonces: {
@@ -24073,7 +25004,7 @@ export function ledger(stateOrChargedState) {
                                      'Bytes<32>',
                                      key_0)
         }
-        return _descriptor_82.fromValue(__compactRuntime.queryLedgerState(context,
+        return _descriptor_86.fromValue(__compactRuntime.queryLedgerState(context,
                                                                           partialProofData,
                                                                           [
                                                                            { dup: { n: 0 } },
@@ -24100,7 +25031,7 @@ export function ledger(stateOrChargedState) {
           throw new __compactRuntime.CompactError(`iter: expected 0 arguments, received ${args_0.length}`);
         }
         const self_0 = state.asArray()[1].asArray()[13];
-        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_82.fromValue(value.value)    ];  })[Symbol.iterator]();
+        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_86.fromValue(value.value)    ];  })[Symbol.iterator]();
       }
     },
     runtimeActionSessions: {
@@ -24158,7 +25089,7 @@ export function ledger(stateOrChargedState) {
         if (!(key_0.buffer instanceof ArrayBuffer && key_0.BYTES_PER_ELEMENT === 1 && key_0.length === 32)) {
           __compactRuntime.typeError('member',
                                      'argument 1',
-                                     'runtime-action-execution.compact line 244 char 1',
+                                     'runtime-action-execution.compact line 250 char 1',
                                      'Bytes<32>',
                                      key_0)
         }
@@ -24190,11 +25121,11 @@ export function ledger(stateOrChargedState) {
         if (!(key_0.buffer instanceof ArrayBuffer && key_0.BYTES_PER_ELEMENT === 1 && key_0.length === 32)) {
           __compactRuntime.typeError('lookup',
                                      'argument 1',
-                                     'runtime-action-execution.compact line 244 char 1',
+                                     'runtime-action-execution.compact line 250 char 1',
                                      'Bytes<32>',
                                      key_0)
         }
-        return _descriptor_58.fromValue(__compactRuntime.queryLedgerState(context,
+        return _descriptor_79.fromValue(__compactRuntime.queryLedgerState(context,
                                                                           partialProofData,
                                                                           [
                                                                            { dup: { n: 0 } },
@@ -24221,7 +25152,7 @@ export function ledger(stateOrChargedState) {
           throw new __compactRuntime.CompactError(`iter: expected 0 arguments, received ${args_0.length}`);
         }
         const self_0 = state.asArray()[1].asArray()[14];
-        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_58.fromValue(value.value)    ];  })[Symbol.iterator]();
+        return self_0.asMap().keys().map(  (key) => {    const value = self_0.asMap().get(key).asCell();    return [      _descriptor_1.fromValue(key.value),      _descriptor_79.fromValue(value.value)    ];  })[Symbol.iterator]();
       }
     }
   };
@@ -25495,14 +26426,14 @@ export const pureCircuits = {
     if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
       __compactRuntime.typeError('runtimeActionSlotContext',
                                  'argument 1',
-                                 'runtime-action-execution.compact line 137 char 1',
+                                 'runtime-action-execution.compact line 140 char 1',
                                  'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                  intent_0)
     }
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.intentCommitment.buffer instanceof ArrayBuffer && command_0.intentCommitment.BYTES_PER_ELEMENT === 1 && command_0.intentCommitment.length === 32 && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.stateCommitment.buffer instanceof ArrayBuffer && command_0.stateCommitment.BYTES_PER_ELEMENT === 1 && command_0.stateCommitment.length === 32 && typeof(command_0.stateSequence) === 'bigint' && command_0.stateSequence >= 0n && command_0.stateSequence <= 18446744073709551615n && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.statusRootSequence) === 'bigint' && command_0.statusRootSequence >= 0n && command_0.statusRootSequence <= 18446744073709551615n && command_0.policyCommitment.buffer instanceof ArrayBuffer && command_0.policyCommitment.BYTES_PER_ELEMENT === 1 && command_0.policyCommitment.length === 32 && command_0.bindingCommitment.buffer instanceof ArrayBuffer && command_0.bindingCommitment.BYTES_PER_ELEMENT === 1 && command_0.bindingCommitment.length === 32 && command_0.slotAssignmentIdHash.buffer instanceof ArrayBuffer && command_0.slotAssignmentIdHash.BYTES_PER_ELEMENT === 1 && command_0.slotAssignmentIdHash.length === 32 && command_0.selectedInputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedInputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedInputsCommitment.length === 32 && command_0.selectedOutputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedOutputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedOutputsCommitment.length === 32 && command_0.nextStateCommitment.buffer instanceof ArrayBuffer && command_0.nextStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextStateCommitment.length === 32 && typeof(command_0.transitioning) === 'boolean' && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.validBefore) === 'bigint' && command_0.validBefore >= 0n && command_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeActionSlotContext',
                                  'argument 2',
-                                 'runtime-action-execution.compact line 137 char 1',
+                                 'runtime-action-execution.compact line 140 char 1',
                                  'struct RuntimeActionCommand<commandVersion: Uint<0..65536>, intentCommitment: Bytes<32>, allocationCommitment: Bytes<32>, stateCommitment: Bytes<32>, stateSequence: Uint<0..18446744073709551616>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, statusRootSequence: Uint<0..18446744073709551616>, policyCommitment: Bytes<32>, bindingCommitment: Bytes<32>, slotAssignmentIdHash: Bytes<32>, selectedInputsCommitment: Bytes<32>, selectedOutputsCommitment: Bytes<32>, nextStateCommitment: Bytes<32>, transitioning: Boolean, effectiveAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  command_0)
     }
@@ -25517,18 +26448,164 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.intentCommitment.buffer instanceof ArrayBuffer && command_0.intentCommitment.BYTES_PER_ELEMENT === 1 && command_0.intentCommitment.length === 32 && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.stateCommitment.buffer instanceof ArrayBuffer && command_0.stateCommitment.BYTES_PER_ELEMENT === 1 && command_0.stateCommitment.length === 32 && typeof(command_0.stateSequence) === 'bigint' && command_0.stateSequence >= 0n && command_0.stateSequence <= 18446744073709551615n && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.statusRootSequence) === 'bigint' && command_0.statusRootSequence >= 0n && command_0.statusRootSequence <= 18446744073709551615n && command_0.policyCommitment.buffer instanceof ArrayBuffer && command_0.policyCommitment.BYTES_PER_ELEMENT === 1 && command_0.policyCommitment.length === 32 && command_0.bindingCommitment.buffer instanceof ArrayBuffer && command_0.bindingCommitment.BYTES_PER_ELEMENT === 1 && command_0.bindingCommitment.length === 32 && command_0.slotAssignmentIdHash.buffer instanceof ArrayBuffer && command_0.slotAssignmentIdHash.BYTES_PER_ELEMENT === 1 && command_0.slotAssignmentIdHash.length === 32 && command_0.selectedInputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedInputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedInputsCommitment.length === 32 && command_0.selectedOutputsCommitment.buffer instanceof ArrayBuffer && command_0.selectedOutputsCommitment.BYTES_PER_ELEMENT === 1 && command_0.selectedOutputsCommitment.length === 32 && command_0.nextStateCommitment.buffer instanceof ArrayBuffer && command_0.nextStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextStateCommitment.length === 32 && typeof(command_0.transitioning) === 'boolean' && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.validBefore) === 'bigint' && command_0.validBefore >= 0n && command_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeActionInitialProgress',
                                  'argument 1',
-                                 'runtime-action-execution.compact line 153 char 1',
+                                 'runtime-action-execution.compact line 156 char 1',
                                  'struct RuntimeActionCommand<commandVersion: Uint<0..65536>, intentCommitment: Bytes<32>, allocationCommitment: Bytes<32>, stateCommitment: Bytes<32>, stateSequence: Uint<0..18446744073709551616>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, statusRootSequence: Uint<0..18446744073709551616>, policyCommitment: Bytes<32>, bindingCommitment: Bytes<32>, slotAssignmentIdHash: Bytes<32>, selectedInputsCommitment: Bytes<32>, selectedOutputsCommitment: Bytes<32>, nextStateCommitment: Bytes<32>, transitioning: Boolean, effectiveAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  command_0)
     }
     if (!(typeof(session_0) === 'object' && typeof(session_0.credentialVersion) === 'bigint' && session_0.credentialVersion >= 0n && session_0.credentialVersion <= 65535n && typeof(session_0.target) === 'object' && session_0.target.namespaceHash.buffer instanceof ArrayBuffer && session_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && session_0.target.namespaceHash.length === 32 && session_0.target.templateIdHash.buffer instanceof ArrayBuffer && session_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && session_0.target.templateIdHash.length === 32 && typeof(session_0.target.semanticVersion) === 'object' && typeof(session_0.target.semanticVersion.major) === 'bigint' && session_0.target.semanticVersion.major >= 0n && session_0.target.semanticVersion.major <= 18446744073709551615n && typeof(session_0.target.semanticVersion.minor) === 'bigint' && session_0.target.semanticVersion.minor >= 0n && session_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(session_0.target.semanticVersion.patch) === 'bigint' && session_0.target.semanticVersion.patch >= 0n && session_0.target.semanticVersion.patch <= 18446744073709551615n && session_0.target.templateContentHash.buffer instanceof ArrayBuffer && session_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && session_0.target.templateContentHash.length === 32 && session_0.instanceCommitment.buffer instanceof ArrayBuffer && session_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && session_0.instanceCommitment.length === 32 && session_0.contextHash.buffer instanceof ArrayBuffer && session_0.contextHash.BYTES_PER_ELEMENT === 1 && session_0.contextHash.length === 32 && session_0.sessionIdHash.buffer instanceof ArrayBuffer && session_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && session_0.sessionIdHash.length === 32 && session_0.m5SessionCommitment.buffer instanceof ArrayBuffer && session_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && session_0.m5SessionCommitment.length === 32 && session_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && session_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && session_0.subjectAccountCredentialCommitment.length === 32 && session_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && session_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && session_0.capabilityCredentialCommitment.length === 32 && typeof(session_0.scopeRoots) === 'object' && typeof(session_0.scopeRoots.actionsRoot) === 'object' && typeof(session_0.scopeRoots.actionsRoot.field) === 'bigint' && session_0.scopeRoots.actionsRoot.field >= 0 && session_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(session_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && session_0.scopeRoots.resourceSelectorsRoot.field >= 0 && session_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.resourcesRoot) === 'object' && typeof(session_0.scopeRoots.resourcesRoot.field) === 'bigint' && session_0.scopeRoots.resourcesRoot.field >= 0 && session_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.purposesRoot) === 'object' && typeof(session_0.scopeRoots.purposesRoot.field) === 'bigint' && session_0.scopeRoots.purposesRoot.field >= 0 && session_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(session_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && session_0.scopeRoots.recipientKindsRoot.field >= 0 && session_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.recipientsRoot) === 'object' && typeof(session_0.scopeRoots.recipientsRoot.field) === 'bigint' && session_0.scopeRoots.recipientsRoot.field >= 0 && session_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(session_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && session_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && session_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(session_0.scopeCounts) === 'object' && typeof(session_0.scopeCounts.actionsCount) === 'bigint' && session_0.scopeCounts.actionsCount >= 0n && session_0.scopeCounts.actionsCount <= 4294967295n && typeof(session_0.scopeCounts.resourceSelectorsCount) === 'bigint' && session_0.scopeCounts.resourceSelectorsCount >= 0n && session_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(session_0.scopeCounts.resourcesCount) === 'bigint' && session_0.scopeCounts.resourcesCount >= 0n && session_0.scopeCounts.resourcesCount <= 4294967295n && typeof(session_0.scopeCounts.purposesCount) === 'bigint' && session_0.scopeCounts.purposesCount >= 0n && session_0.scopeCounts.purposesCount <= 4294967295n && typeof(session_0.scopeCounts.recipientKindsCount) === 'bigint' && session_0.scopeCounts.recipientKindsCount >= 0n && session_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(session_0.scopeCounts.recipientsCount) === 'bigint' && session_0.scopeCounts.recipientsCount >= 0n && session_0.scopeCounts.recipientsCount <= 4294967295n && typeof(session_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && session_0.scopeCounts.disclosurePolicyIdsCount >= 0n && session_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(session_0.notBefore) === 'bigint' && session_0.notBefore >= 0n && session_0.notBefore <= 18446744073709551615n && typeof(session_0.expiresAt) === 'bigint' && session_0.expiresAt >= 0n && session_0.expiresAt <= 18446744073709551615n && typeof(session_0.statusIndex) === 'bigint' && session_0.statusIndex >= 0n && session_0.statusIndex <= 18446744073709551615n && typeof(session_0.issuedAt) === 'bigint' && session_0.issuedAt >= 0n && session_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeActionInitialProgress',
                                  'argument 2',
-                                 'runtime-action-execution.compact line 153 char 1',
+                                 'runtime-action-execution.compact line 156 char 1',
                                  'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  session_0)
     }
     return _dummyContract._runtimeActionInitialProgress_0(command_0, session_0);
+  },
+  runtimeEvidenceBridgeBinding: (...args_0) => {
+    if (args_0.length !== 1) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeBinding: expected 1 argument (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const opening_0 = args_0[0];
+    if (!(typeof(opening_0) === 'object' && typeof(opening_0.bindingVersion) === 'bigint' && opening_0.bindingVersion >= 0n && opening_0.bindingVersion <= 65535n && opening_0.sourceContextHash.buffer instanceof ArrayBuffer && opening_0.sourceContextHash.BYTES_PER_ELEMENT === 1 && opening_0.sourceContextHash.length === 32 && opening_0.sourceInstanceCommitment.buffer instanceof ArrayBuffer && opening_0.sourceInstanceCommitment.BYTES_PER_ELEMENT === 1 && opening_0.sourceInstanceCommitment.length === 32 && opening_0.destinationContextCommitment.buffer instanceof ArrayBuffer && opening_0.destinationContextCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationContextCommitment.length === 32 && opening_0.destinationCaseCommitment.buffer instanceof ArrayBuffer && opening_0.destinationCaseCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationCaseCommitment.length === 32 && opening_0.purposeHash.buffer instanceof ArrayBuffer && opening_0.purposeHash.BYTES_PER_ELEMENT === 1 && opening_0.purposeHash.length === 32 && opening_0.permittedUseHash.buffer instanceof ArrayBuffer && opening_0.permittedUseHash.BYTES_PER_ELEMENT === 1 && opening_0.permittedUseHash.length === 32 && typeof(opening_0.expiresAt) === 'bigint' && opening_0.expiresAt >= 0n && opening_0.expiresAt <= 18446744073709551615n && opening_0.nonce.buffer instanceof ArrayBuffer && opening_0.nonce.BYTES_PER_ELEMENT === 1 && opening_0.nonce.length === 32 && opening_0.recipientKeyFingerprint.buffer instanceof ArrayBuffer && opening_0.recipientKeyFingerprint.BYTES_PER_ELEMENT === 1 && opening_0.recipientKeyFingerprint.length === 32 && opening_0.manifestRoot.buffer instanceof ArrayBuffer && opening_0.manifestRoot.BYTES_PER_ELEMENT === 1 && opening_0.manifestRoot.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeBinding',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 22 char 1',
+                                 'struct RuntimeEvidenceBridgeOpening<bindingVersion: Uint<0..65536>, sourceContextHash: Bytes<32>, sourceInstanceCommitment: Bytes<32>, destinationContextCommitment: Bytes<32>, destinationCaseCommitment: Bytes<32>, purposeHash: Bytes<32>, permittedUseHash: Bytes<32>, expiresAt: Uint<0..18446744073709551616>, nonce: Bytes<32>, recipientKeyFingerprint: Bytes<32>, manifestRoot: Bytes<32>>',
+                                 opening_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeBinding_0(opening_0);
+  },
+  runtimeEvidenceBridgeResourceHash: (...args_0) => {
+    if (args_0.length !== 1) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeResourceHash: expected 1 argument (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const value_0 = args_0[0];
+    if (!(value_0.buffer instanceof ArrayBuffer && value_0.BYTES_PER_ELEMENT === 1 && value_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeResourceHash',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 59 char 1',
+                                 'Bytes<32>',
+                                 value_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeResourceHash_0(value_0);
+  },
+  runtimeEvidenceBridgeRecipientHash: (...args_0) => {
+    if (args_0.length !== 1) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeRecipientHash: expected 1 argument (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const value_0 = args_0[0];
+    if (!(value_0.buffer instanceof ArrayBuffer && value_0.BYTES_PER_ELEMENT === 1 && value_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeRecipientHash',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 65 char 1',
+                                 'Bytes<32>',
+                                 value_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeRecipientHash_0(value_0);
+  },
+  runtimeEvidenceBridgeNonceHash: (...args_0) => {
+    if (args_0.length !== 1) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeNonceHash: expected 1 argument (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const value_0 = args_0[0];
+    if (!(value_0.buffer instanceof ArrayBuffer && value_0.BYTES_PER_ELEMENT === 1 && value_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeNonceHash',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 71 char 1',
+                                 'Bytes<32>',
+                                 value_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeNonceHash_0(value_0);
+  },
+  runtimeEvidenceBridgeSelectedOutput: (...args_0) => {
+    if (args_0.length !== 2) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeSelectedOutput: expected 2 arguments (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const opening_0 = args_0[0];
+    const outputTypeHash_0 = args_0[1];
+    if (!(typeof(opening_0) === 'object' && typeof(opening_0.bindingVersion) === 'bigint' && opening_0.bindingVersion >= 0n && opening_0.bindingVersion <= 65535n && opening_0.sourceContextHash.buffer instanceof ArrayBuffer && opening_0.sourceContextHash.BYTES_PER_ELEMENT === 1 && opening_0.sourceContextHash.length === 32 && opening_0.sourceInstanceCommitment.buffer instanceof ArrayBuffer && opening_0.sourceInstanceCommitment.BYTES_PER_ELEMENT === 1 && opening_0.sourceInstanceCommitment.length === 32 && opening_0.destinationContextCommitment.buffer instanceof ArrayBuffer && opening_0.destinationContextCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationContextCommitment.length === 32 && opening_0.destinationCaseCommitment.buffer instanceof ArrayBuffer && opening_0.destinationCaseCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationCaseCommitment.length === 32 && opening_0.purposeHash.buffer instanceof ArrayBuffer && opening_0.purposeHash.BYTES_PER_ELEMENT === 1 && opening_0.purposeHash.length === 32 && opening_0.permittedUseHash.buffer instanceof ArrayBuffer && opening_0.permittedUseHash.BYTES_PER_ELEMENT === 1 && opening_0.permittedUseHash.length === 32 && typeof(opening_0.expiresAt) === 'bigint' && opening_0.expiresAt >= 0n && opening_0.expiresAt <= 18446744073709551615n && opening_0.nonce.buffer instanceof ArrayBuffer && opening_0.nonce.BYTES_PER_ELEMENT === 1 && opening_0.nonce.length === 32 && opening_0.recipientKeyFingerprint.buffer instanceof ArrayBuffer && opening_0.recipientKeyFingerprint.BYTES_PER_ELEMENT === 1 && opening_0.recipientKeyFingerprint.length === 32 && opening_0.manifestRoot.buffer instanceof ArrayBuffer && opening_0.manifestRoot.BYTES_PER_ELEMENT === 1 && opening_0.manifestRoot.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeSelectedOutput',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 77 char 1',
+                                 'struct RuntimeEvidenceBridgeOpening<bindingVersion: Uint<0..65536>, sourceContextHash: Bytes<32>, sourceInstanceCommitment: Bytes<32>, destinationContextCommitment: Bytes<32>, destinationCaseCommitment: Bytes<32>, purposeHash: Bytes<32>, permittedUseHash: Bytes<32>, expiresAt: Uint<0..18446744073709551616>, nonce: Bytes<32>, recipientKeyFingerprint: Bytes<32>, manifestRoot: Bytes<32>>',
+                                 opening_0)
+    }
+    if (!(outputTypeHash_0.buffer instanceof ArrayBuffer && outputTypeHash_0.BYTES_PER_ELEMENT === 1 && outputTypeHash_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeSelectedOutput',
+                                 'argument 2',
+                                 'runtime-evidence-bridge.compact line 77 char 1',
+                                 'Bytes<32>',
+                                 outputTypeHash_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeSelectedOutput_0(opening_0,
+                                                                 outputTypeHash_0);
+  },
+  runtimeEvidenceBridgeOutputCommitment: (...args_0) => {
+    if (args_0.length !== 2) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeOutputCommitment: expected 2 arguments (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const opening_0 = args_0[0];
+    const outputTypeHash_0 = args_0[1];
+    if (!(typeof(opening_0) === 'object' && typeof(opening_0.bindingVersion) === 'bigint' && opening_0.bindingVersion >= 0n && opening_0.bindingVersion <= 65535n && opening_0.sourceContextHash.buffer instanceof ArrayBuffer && opening_0.sourceContextHash.BYTES_PER_ELEMENT === 1 && opening_0.sourceContextHash.length === 32 && opening_0.sourceInstanceCommitment.buffer instanceof ArrayBuffer && opening_0.sourceInstanceCommitment.BYTES_PER_ELEMENT === 1 && opening_0.sourceInstanceCommitment.length === 32 && opening_0.destinationContextCommitment.buffer instanceof ArrayBuffer && opening_0.destinationContextCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationContextCommitment.length === 32 && opening_0.destinationCaseCommitment.buffer instanceof ArrayBuffer && opening_0.destinationCaseCommitment.BYTES_PER_ELEMENT === 1 && opening_0.destinationCaseCommitment.length === 32 && opening_0.purposeHash.buffer instanceof ArrayBuffer && opening_0.purposeHash.BYTES_PER_ELEMENT === 1 && opening_0.purposeHash.length === 32 && opening_0.permittedUseHash.buffer instanceof ArrayBuffer && opening_0.permittedUseHash.BYTES_PER_ELEMENT === 1 && opening_0.permittedUseHash.length === 32 && typeof(opening_0.expiresAt) === 'bigint' && opening_0.expiresAt >= 0n && opening_0.expiresAt <= 18446744073709551615n && opening_0.nonce.buffer instanceof ArrayBuffer && opening_0.nonce.BYTES_PER_ELEMENT === 1 && opening_0.nonce.length === 32 && opening_0.recipientKeyFingerprint.buffer instanceof ArrayBuffer && opening_0.recipientKeyFingerprint.BYTES_PER_ELEMENT === 1 && opening_0.recipientKeyFingerprint.length === 32 && opening_0.manifestRoot.buffer instanceof ArrayBuffer && opening_0.manifestRoot.BYTES_PER_ELEMENT === 1 && opening_0.manifestRoot.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeOutputCommitment',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 87 char 1',
+                                 'struct RuntimeEvidenceBridgeOpening<bindingVersion: Uint<0..65536>, sourceContextHash: Bytes<32>, sourceInstanceCommitment: Bytes<32>, destinationContextCommitment: Bytes<32>, destinationCaseCommitment: Bytes<32>, purposeHash: Bytes<32>, permittedUseHash: Bytes<32>, expiresAt: Uint<0..18446744073709551616>, nonce: Bytes<32>, recipientKeyFingerprint: Bytes<32>, manifestRoot: Bytes<32>>',
+                                 opening_0)
+    }
+    if (!(outputTypeHash_0.buffer instanceof ArrayBuffer && outputTypeHash_0.BYTES_PER_ELEMENT === 1 && outputTypeHash_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeOutputCommitment',
+                                 'argument 2',
+                                 'runtime-evidence-bridge.compact line 87 char 1',
+                                 'Bytes<32>',
+                                 outputTypeHash_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeOutputCommitment_0(opening_0,
+                                                                   outputTypeHash_0);
+  },
+  runtimeEvidenceBridgeModuleId: (...args_0) => {
+    if (args_0.length !== 0) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeModuleId: expected 0 arguments (as invoked from Typescript), received ${args_0.length}`);
+    }
+    return _dummyContract._runtimeEvidenceBridgeModuleId_0();
+  },
+  runtimeEvidenceBridgeInputSchemaHash: (...args_0) => {
+    if (args_0.length !== 0) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeInputSchemaHash: expected 0 arguments (as invoked from Typescript), received ${args_0.length}`);
+    }
+    return _dummyContract._runtimeEvidenceBridgeInputSchemaHash_0();
+  },
+  runtimeEvidenceBridgeImplementationReference: (...args_0) => {
+    if (args_0.length !== 3) {
+      throw new __compactRuntime.CompactError(`runtimeEvidenceBridgeImplementationReference: expected 3 arguments (as invoked from Typescript), received ${args_0.length}`);
+    }
+    const network_0 = args_0[0];
+    const deployment_0 = args_0[1];
+    const moduleIdHash_0 = args_0[2];
+    if (!(network_0.buffer instanceof ArrayBuffer && network_0.BYTES_PER_ELEMENT === 1 && network_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeImplementationReference',
+                                 'argument 1',
+                                 'runtime-evidence-bridge.compact line 102 char 1',
+                                 'Bytes<32>',
+                                 network_0)
+    }
+    if (!(deployment_0.buffer instanceof ArrayBuffer && deployment_0.BYTES_PER_ELEMENT === 1 && deployment_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeImplementationReference',
+                                 'argument 2',
+                                 'runtime-evidence-bridge.compact line 102 char 1',
+                                 'Bytes<32>',
+                                 deployment_0)
+    }
+    if (!(moduleIdHash_0.buffer instanceof ArrayBuffer && moduleIdHash_0.BYTES_PER_ELEMENT === 1 && moduleIdHash_0.length === 32)) {
+      __compactRuntime.typeError('runtimeEvidenceBridgeImplementationReference',
+                                 'argument 3',
+                                 'runtime-evidence-bridge.compact line 102 char 1',
+                                 'Bytes<32>',
+                                 moduleIdHash_0)
+    }
+    return _dummyContract._runtimeEvidenceBridgeImplementationReference_0(network_0,
+                                                                          deployment_0,
+                                                                          moduleIdHash_0);
   },
   activationAdmissionMessage: (...args_0) => {
     if (args_0.length !== 1) {
@@ -25538,7 +26615,7 @@ export const pureCircuits = {
     if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('activationAdmissionMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 556 char 1',
+                                 'permio-authorization.compact line 557 char 1',
                                  'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                  envelope_0)
     }
@@ -25552,7 +26629,7 @@ export const pureCircuits = {
     if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('activationAdmissionEnvelopeCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 562 char 1',
+                                 'permio-authorization.compact line 563 char 1',
                                  'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                  envelope_0)
     }
@@ -25566,7 +26643,7 @@ export const pureCircuits = {
     if (!(typeof(leaf_0) === 'object' && typeof(leaf_0.leafVersion) === 'bigint' && leaf_0.leafVersion >= 0n && leaf_0.leafVersion <= 65535n && leaf_0.namespaceHash.buffer instanceof ArrayBuffer && leaf_0.namespaceHash.BYTES_PER_ELEMENT === 1 && leaf_0.namespaceHash.length === 32 && leaf_0.governancePolicyHash.buffer instanceof ArrayBuffer && leaf_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && leaf_0.governancePolicyHash.length === 32 && typeof(leaf_0.authorityKind) === 'bigint' && leaf_0.authorityKind >= 0n && leaf_0.authorityKind <= 65535n && true && typeof(leaf_0.validAfter) === 'bigint' && leaf_0.validAfter >= 0n && leaf_0.validAfter <= 18446744073709551615n && typeof(leaf_0.validBefore) === 'bigint' && leaf_0.validBefore >= 0n && leaf_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('governanceActivatorLeafCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 568 char 1',
+                                 'permio-authorization.compact line 569 char 1',
                                  'struct GovernanceActivatorLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityKind: Uint<0..65536>, publicKey: Opaque<"JubjubPoint">, validAfter: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  leaf_0)
     }
@@ -25580,7 +26657,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.currentGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.currentGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.currentGovernancePolicyHash.length === 32 && typeof(command_0.currentRoot) === 'object' && typeof(command_0.currentRoot.field) === 'bigint' && command_0.currentRoot.field >= 0 && command_0.currentRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.currentRootVersion) === 'bigint' && command_0.currentRootVersion >= 0n && command_0.currentRootVersion <= 18446744073709551615n && typeof(command_0.currentRootSequence) === 'bigint' && command_0.currentRootSequence >= 0n && command_0.currentRootSequence <= 18446744073709551615n && command_0.nextGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.nextGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.nextGovernancePolicyHash.length === 32 && typeof(command_0.nextRoot) === 'object' && typeof(command_0.nextRoot.field) === 'bigint' && command_0.nextRoot.field >= 0 && command_0.nextRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.nextRootVersion) === 'bigint' && command_0.nextRootVersion >= 0n && command_0.nextRootVersion <= 18446744073709551615n && typeof(command_0.nextRootSequence) === 'bigint' && command_0.nextRootSequence >= 0n && command_0.nextRootSequence <= 18446744073709551615n && typeof(command_0.nextModuleReviewThreshold) === 'bigint' && command_0.nextModuleReviewThreshold >= 0n && command_0.nextModuleReviewThreshold <= 65535n && typeof(command_0.nextModuleApprovalThreshold) === 'bigint' && command_0.nextModuleApprovalThreshold >= 0n && command_0.nextModuleApprovalThreshold <= 65535n && typeof(command_0.nextAuthorityRootUpdateThreshold) === 'bigint' && command_0.nextAuthorityRootUpdateThreshold >= 0n && command_0.nextAuthorityRootUpdateThreshold <= 65535n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && command_0.updateNonce.buffer instanceof ArrayBuffer && command_0.updateNonce.BYTES_PER_ELEMENT === 1 && command_0.updateNonce.length === 32)) {
       __compactRuntime.typeError('authorityRootUpdateCommandCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 574 char 1',
+                                 'permio-authorization.compact line 575 char 1',
                                  'struct AuthorityRootUpdateCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, currentGovernancePolicyHash: Bytes<32>, currentRoot: struct MerkleTreeDigest<field: Field>, currentRootVersion: Uint<0..18446744073709551616>, currentRootSequence: Uint<0..18446744073709551616>, nextGovernancePolicyHash: Bytes<32>, nextRoot: struct MerkleTreeDigest<field: Field>, nextRootVersion: Uint<0..18446744073709551616>, nextRootSequence: Uint<0..18446744073709551616>, nextModuleReviewThreshold: Uint<0..65536>, nextModuleApprovalThreshold: Uint<0..65536>, nextAuthorityRootUpdateThreshold: Uint<0..65536>, effectiveAt: Uint<0..18446744073709551616>, updateNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25594,7 +26671,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.currentGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.currentGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.currentGovernancePolicyHash.length === 32 && typeof(command_0.currentRoot) === 'object' && typeof(command_0.currentRoot.field) === 'bigint' && command_0.currentRoot.field >= 0 && command_0.currentRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.currentRootVersion) === 'bigint' && command_0.currentRootVersion >= 0n && command_0.currentRootVersion <= 18446744073709551615n && typeof(command_0.currentRootSequence) === 'bigint' && command_0.currentRootSequence >= 0n && command_0.currentRootSequence <= 18446744073709551615n && command_0.nextGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.nextGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.nextGovernancePolicyHash.length === 32 && typeof(command_0.nextRoot) === 'object' && typeof(command_0.nextRoot.field) === 'bigint' && command_0.nextRoot.field >= 0 && command_0.nextRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.nextRootVersion) === 'bigint' && command_0.nextRootVersion >= 0n && command_0.nextRootVersion <= 18446744073709551615n && typeof(command_0.nextRootSequence) === 'bigint' && command_0.nextRootSequence >= 0n && command_0.nextRootSequence <= 18446744073709551615n && typeof(command_0.nextModuleReviewThreshold) === 'bigint' && command_0.nextModuleReviewThreshold >= 0n && command_0.nextModuleReviewThreshold <= 65535n && typeof(command_0.nextModuleApprovalThreshold) === 'bigint' && command_0.nextModuleApprovalThreshold >= 0n && command_0.nextModuleApprovalThreshold <= 65535n && typeof(command_0.nextAuthorityRootUpdateThreshold) === 'bigint' && command_0.nextAuthorityRootUpdateThreshold >= 0n && command_0.nextAuthorityRootUpdateThreshold <= 65535n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && command_0.updateNonce.buffer instanceof ArrayBuffer && command_0.updateNonce.BYTES_PER_ELEMENT === 1 && command_0.updateNonce.length === 32)) {
       __compactRuntime.typeError('authorityRootUpdateCommandMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 580 char 1',
+                                 'permio-authorization.compact line 581 char 1',
                                  'struct AuthorityRootUpdateCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, currentGovernancePolicyHash: Bytes<32>, currentRoot: struct MerkleTreeDigest<field: Field>, currentRootVersion: Uint<0..18446744073709551616>, currentRootSequence: Uint<0..18446744073709551616>, nextGovernancePolicyHash: Bytes<32>, nextRoot: struct MerkleTreeDigest<field: Field>, nextRootVersion: Uint<0..18446744073709551616>, nextRootSequence: Uint<0..18446744073709551616>, nextModuleReviewThreshold: Uint<0..65536>, nextModuleApprovalThreshold: Uint<0..65536>, nextAuthorityRootUpdateThreshold: Uint<0..65536>, effectiveAt: Uint<0..18446744073709551616>, updateNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25608,7 +26685,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.registryKey.buffer instanceof ArrayBuffer && command_0.registryKey.BYTES_PER_ELEMENT === 1 && command_0.registryKey.length === 32 && command_0.recordCommitment.buffer instanceof ArrayBuffer && command_0.recordCommitment.BYTES_PER_ELEMENT === 1 && command_0.recordCommitment.length === 32 && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.expectedLifecycleStatus) === 'bigint' && command_0.expectedLifecycleStatus >= 0n && command_0.expectedLifecycleStatus <= 255n && typeof(command_0.nextLifecycleStatus) === 'bigint' && command_0.nextLifecycleStatus >= 0n && command_0.nextLifecycleStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.effectiveSequence) === 'bigint' && command_0.effectiveSequence >= 0n && command_0.effectiveSequence <= 18446744073709551615n && command_0.reasonHash.buffer instanceof ArrayBuffer && command_0.reasonHash.BYTES_PER_ELEMENT === 1 && command_0.reasonHash.length === 32 && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('templateLifecycleCommandMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 586 char 1',
+                                 'permio-authorization.compact line 587 char 1',
                                  'struct TemplateLifecycleCommand<commandVersion: Uint<0..65536>, registryKey: Bytes<32>, recordCommitment: Bytes<32>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, effectiveSequence: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25622,7 +26699,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.accountIdHash.buffer instanceof ArrayBuffer && credential_0.accountIdHash.BYTES_PER_ELEMENT === 1 && credential_0.accountIdHash.length === 32 && typeof(credential_0.principalKind) === 'bigint' && credential_0.principalKind >= 0n && credential_0.principalKind <= 65535n && credential_0.m5AccountCommitment.buffer instanceof ArrayBuffer && credential_0.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5AccountCommitment.length === 32 && true && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n && typeof(credential_0.validBefore) === 'bigint' && credential_0.validBefore >= 0n && credential_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeAccountCredentialCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 592 char 1',
+                                 'permio-authorization.compact line 593 char 1',
                                  'struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25636,7 +26713,7 @@ export const pureCircuits = {
     if (!(valueHash_0.buffer instanceof ArrayBuffer && valueHash_0.BYTES_PER_ELEMENT === 1 && valueHash_0.length === 32)) {
       __compactRuntime.typeError('runtimeScopeValueCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 598 char 1',
+                                 'permio-authorization.compact line 599 char 1',
                                  'Bytes<32>',
                                  valueHash_0)
     }
@@ -25650,7 +26727,7 @@ export const pureCircuits = {
     if (!(typeof(leaf_0) === 'object' && typeof(leaf_0.leafVersion) === 'bigint' && leaf_0.leafVersion >= 0n && leaf_0.leafVersion <= 65535n && leaf_0.namespaceHash.buffer instanceof ArrayBuffer && leaf_0.namespaceHash.BYTES_PER_ELEMENT === 1 && leaf_0.namespaceHash.length === 32 && typeof(leaf_0.credentialKind) === 'bigint' && leaf_0.credentialKind >= 0n && leaf_0.credentialKind <= 65535n && leaf_0.credentialCommitment.buffer instanceof ArrayBuffer && leaf_0.credentialCommitment.BYTES_PER_ELEMENT === 1 && leaf_0.credentialCommitment.length === 32 && leaf_0.revocationAuthorityAccountCredentialCommitment.buffer instanceof ArrayBuffer && leaf_0.revocationAuthorityAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && leaf_0.revocationAuthorityAccountCredentialCommitment.length === 32 && typeof(leaf_0.statusIndex) === 'bigint' && leaf_0.statusIndex >= 0n && leaf_0.statusIndex <= 18446744073709551615n && typeof(leaf_0.status) === 'bigint' && leaf_0.status >= 0n && leaf_0.status <= 255n)) {
       __compactRuntime.typeError('runtimeCredentialStatusLeafCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 604 char 1',
+                                 'permio-authorization.compact line 605 char 1',
                                  'struct RuntimeCredentialStatusLeaf<leafVersion: Uint<0..65536>, namespaceHash: Bytes<32>, credentialKind: Uint<0..65536>, credentialCommitment: Bytes<32>, revocationAuthorityAccountCredentialCommitment: Bytes<32>, statusIndex: Uint<0..18446744073709551616>, status: Uint<0..256>>',
                                  leaf_0)
     }
@@ -25664,7 +26741,7 @@ export const pureCircuits = {
     if (!(typeof(path_0) === 'object' && path_0.leaf.buffer instanceof ArrayBuffer && path_0.leaf.BYTES_PER_ELEMENT === 1 && path_0.leaf.length === 32 && Array.isArray(path_0.path) && path_0.path.length === 20 && path_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
       __compactRuntime.typeError('runtimeCredentialStatusPathRoot',
                                  'argument 1',
-                                 'permio-authorization.compact line 610 char 1',
+                                 'permio-authorization.compact line 611 char 1',
                                  'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                  path_0)
     }
@@ -25678,7 +26755,7 @@ export const pureCircuits = {
     if (!(typeof(path_0) === 'object' && path_0.leaf.buffer instanceof ArrayBuffer && path_0.leaf.BYTES_PER_ELEMENT === 1 && path_0.leaf.length === 32 && Array.isArray(path_0.path) && path_0.path.length === 20 && path_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
       __compactRuntime.typeError('runtimeCredentialStatusPathIndex',
                                  'argument 1',
-                                 'permio-authorization.compact line 618 char 1',
+                                 'permio-authorization.compact line 619 char 1',
                                  'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<20, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                  path_0)
     }
@@ -25692,7 +26769,7 @@ export const pureCircuits = {
     if (!(typeof(path_0) === 'object' && path_0.leaf.buffer instanceof ArrayBuffer && path_0.leaf.BYTES_PER_ELEMENT === 1 && path_0.leaf.length === 32 && Array.isArray(path_0.path) && path_0.path.length === 1 && path_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
       __compactRuntime.typeError('runtimeCredentialStatusLeafParent',
                                  'argument 1',
-                                 'permio-authorization.compact line 645 char 1',
+                                 'permio-authorization.compact line 646 char 1',
                                  'struct MerkleTreePath<leaf: Bytes<32>, path: Vector<1, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                  path_0)
     }
@@ -25706,7 +26783,7 @@ export const pureCircuits = {
     if (!(typeof(path_0) === 'object' && typeof(path_0.leaf) === 'object' && typeof(path_0.leaf.field) === 'bigint' && path_0.leaf.field >= 0 && path_0.leaf.field <= __compactRuntime.MAX_FIELD && Array.isArray(path_0.path) && path_0.path.length === 1 && path_0.path.every((t) => typeof(t) === 'object' && typeof(t.sibling) === 'object' && typeof(t.sibling.field) === 'bigint' && t.sibling.field >= 0 && t.sibling.field <= __compactRuntime.MAX_FIELD && typeof(t.goes_left) === 'boolean'))) {
       __compactRuntime.typeError('runtimeCredentialStatusNodeParent',
                                  'argument 1',
-                                 'permio-authorization.compact line 651 char 1',
+                                 'permio-authorization.compact line 652 char 1',
                                  'struct MerkleTreePath<leaf: struct MerkleTreeDigest<field: Field>, path: Vector<1, struct MerkleTreePathEntry<sibling: struct MerkleTreeDigest<field: Field>, goes_left: Boolean>>>',
                                  path_0)
     }
@@ -25720,7 +26797,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.credentialStatusRootSequence) === 'bigint' && command_0.credentialStatusRootSequence >= 0n && command_0.credentialStatusRootSequence <= 18446744073709551615n && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.instanceStateCommitment.buffer instanceof ArrayBuffer && command_0.instanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.instanceStateCommitment.length === 32 && typeof(command_0.instanceStateSequence) === 'bigint' && command_0.instanceStateSequence >= 0n && command_0.instanceStateSequence <= 18446744073709551615n && command_0.nextInstanceStateCommitment.buffer instanceof ArrayBuffer && command_0.nextInstanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextInstanceStateCommitment.length === 32 && typeof(command_0.credentialKind) === 'bigint' && command_0.credentialKind >= 0n && command_0.credentialKind <= 65535n && command_0.credentialCommitment.buffer instanceof ArrayBuffer && command_0.credentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.credentialCommitment.length === 32 && command_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.subjectAccountCredentialCommitment.length === 32 && command_0.revocationAuthorityAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.revocationAuthorityAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.revocationAuthorityAccountCredentialCommitment.length === 32 && typeof(command_0.statusIndex) === 'bigint' && command_0.statusIndex >= 0n && command_0.statusIndex <= 18446744073709551615n && typeof(command_0.expectedStatus) === 'bigint' && command_0.expectedStatus >= 0n && command_0.expectedStatus <= 255n && typeof(command_0.nextStatus) === 'bigint' && command_0.nextStatus >= 0n && command_0.nextStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.stagingExpiresAt) === 'bigint' && command_0.stagingExpiresAt >= 0n && command_0.stagingExpiresAt <= 18446744073709551615n && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('runtimeCredentialStatusCommandMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 657 char 1',
+                                 'permio-authorization.compact line 658 char 1',
                                  'struct RuntimeCredentialStatusCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, credentialStatusRootSequence: Uint<0..18446744073709551616>, allocationCommitment: Bytes<32>, instanceStateCommitment: Bytes<32>, instanceStateSequence: Uint<0..18446744073709551616>, nextInstanceStateCommitment: Bytes<32>, credentialKind: Uint<0..65536>, credentialCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, revocationAuthorityAccountCredentialCommitment: Bytes<32>, statusIndex: Uint<0..18446744073709551616>, expectedStatus: Uint<0..256>, nextStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25734,7 +26811,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.credentialStatusRootSequence) === 'bigint' && command_0.credentialStatusRootSequence >= 0n && command_0.credentialStatusRootSequence <= 18446744073709551615n && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.instanceStateCommitment.buffer instanceof ArrayBuffer && command_0.instanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.instanceStateCommitment.length === 32 && typeof(command_0.instanceStateSequence) === 'bigint' && command_0.instanceStateSequence >= 0n && command_0.instanceStateSequence <= 18446744073709551615n && command_0.nextInstanceStateCommitment.buffer instanceof ArrayBuffer && command_0.nextInstanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextInstanceStateCommitment.length === 32 && typeof(command_0.credentialKind) === 'bigint' && command_0.credentialKind >= 0n && command_0.credentialKind <= 65535n && command_0.credentialCommitment.buffer instanceof ArrayBuffer && command_0.credentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.credentialCommitment.length === 32 && command_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.subjectAccountCredentialCommitment.length === 32 && command_0.revocationAuthorityAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.revocationAuthorityAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.revocationAuthorityAccountCredentialCommitment.length === 32 && typeof(command_0.statusIndex) === 'bigint' && command_0.statusIndex >= 0n && command_0.statusIndex <= 18446744073709551615n && typeof(command_0.expectedStatus) === 'bigint' && command_0.expectedStatus >= 0n && command_0.expectedStatus <= 255n && typeof(command_0.nextStatus) === 'bigint' && command_0.nextStatus >= 0n && command_0.nextStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.stagingExpiresAt) === 'bigint' && command_0.stagingExpiresAt >= 0n && command_0.stagingExpiresAt <= 18446744073709551615n && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('runtimeCredentialStatusCommandCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 663 char 1',
+                                 'permio-authorization.compact line 664 char 1',
                                  'struct RuntimeCredentialStatusCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, credentialStatusRootSequence: Uint<0..18446744073709551616>, allocationCommitment: Bytes<32>, instanceStateCommitment: Bytes<32>, instanceStateSequence: Uint<0..18446744073709551616>, nextInstanceStateCommitment: Bytes<32>, credentialKind: Uint<0..65536>, credentialCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, revocationAuthorityAccountCredentialCommitment: Bytes<32>, statusIndex: Uint<0..18446744073709551616>, expectedStatus: Uint<0..256>, nextStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25748,7 +26825,7 @@ export const pureCircuits = {
     if (!(typeof(progress_0) === 'object' && typeof(progress_0.roots) === 'object' && typeof(progress_0.roots.actionsRoot) === 'object' && typeof(progress_0.roots.actionsRoot.field) === 'bigint' && progress_0.roots.actionsRoot.field >= 0 && progress_0.roots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.resourceSelectorsRoot) === 'object' && typeof(progress_0.roots.resourceSelectorsRoot.field) === 'bigint' && progress_0.roots.resourceSelectorsRoot.field >= 0 && progress_0.roots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.resourcesRoot) === 'object' && typeof(progress_0.roots.resourcesRoot.field) === 'bigint' && progress_0.roots.resourcesRoot.field >= 0 && progress_0.roots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.purposesRoot) === 'object' && typeof(progress_0.roots.purposesRoot.field) === 'bigint' && progress_0.roots.purposesRoot.field >= 0 && progress_0.roots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.recipientKindsRoot) === 'object' && typeof(progress_0.roots.recipientKindsRoot.field) === 'bigint' && progress_0.roots.recipientKindsRoot.field >= 0 && progress_0.roots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.recipientsRoot) === 'object' && typeof(progress_0.roots.recipientsRoot.field) === 'bigint' && progress_0.roots.recipientsRoot.field >= 0 && progress_0.roots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.roots.disclosurePolicyIdsRoot) === 'object' && typeof(progress_0.roots.disclosurePolicyIdsRoot.field) === 'bigint' && progress_0.roots.disclosurePolicyIdsRoot.field >= 0 && progress_0.roots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(progress_0.counts) === 'object' && typeof(progress_0.counts.actionsCount) === 'bigint' && progress_0.counts.actionsCount >= 0n && progress_0.counts.actionsCount <= 4294967295n && typeof(progress_0.counts.resourceSelectorsCount) === 'bigint' && progress_0.counts.resourceSelectorsCount >= 0n && progress_0.counts.resourceSelectorsCount <= 4294967295n && typeof(progress_0.counts.resourcesCount) === 'bigint' && progress_0.counts.resourcesCount >= 0n && progress_0.counts.resourcesCount <= 4294967295n && typeof(progress_0.counts.purposesCount) === 'bigint' && progress_0.counts.purposesCount >= 0n && progress_0.counts.purposesCount <= 4294967295n && typeof(progress_0.counts.recipientKindsCount) === 'bigint' && progress_0.counts.recipientKindsCount >= 0n && progress_0.counts.recipientKindsCount <= 4294967295n && typeof(progress_0.counts.recipientsCount) === 'bigint' && progress_0.counts.recipientsCount >= 0n && progress_0.counts.recipientsCount <= 4294967295n && typeof(progress_0.counts.disclosurePolicyIdsCount) === 'bigint' && progress_0.counts.disclosurePolicyIdsCount >= 0n && progress_0.counts.disclosurePolicyIdsCount <= 4294967295n && typeof(progress_0.lastDimension) === 'bigint' && progress_0.lastDimension >= 0n && progress_0.lastDimension <= 255n && progress_0.lastOrderKey.buffer instanceof ArrayBuffer && progress_0.lastOrderKey.BYTES_PER_ELEMENT === 1 && progress_0.lastOrderKey.length === 32)) {
       __compactRuntime.typeError('runtimeScopeProgressCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 669 char 1',
+                                 'permio-authorization.compact line 670 char 1',
                                  'struct RuntimeScopeProgress<roots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, counts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, lastDimension: Uint<0..256>, lastOrderKey: Bytes<32>>',
                                  progress_0)
     }
@@ -25762,7 +26839,7 @@ export const pureCircuits = {
     if (!(typeof(element_0) === 'object' && typeof(element_0.elementVersion) === 'bigint' && element_0.elementVersion >= 0n && element_0.elementVersion <= 65535n && typeof(element_0.dimension) === 'bigint' && element_0.dimension >= 0n && element_0.dimension <= 255n && element_0.valueHash.buffer instanceof ArrayBuffer && element_0.valueHash.BYTES_PER_ELEMENT === 1 && element_0.valueHash.length === 32)) {
       __compactRuntime.typeError('runtimeScopeElementCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 675 char 1',
+                                 'permio-authorization.compact line 676 char 1',
                                  'struct RuntimeScopeElement<elementVersion: Uint<0..65536>, dimension: Uint<0..256>, valueHash: Bytes<32>>',
                                  element_0)
     }
@@ -25776,7 +26853,7 @@ export const pureCircuits = {
     if (!(typeof(certification_0) === 'object' && typeof(certification_0.certificationVersion) === 'bigint' && certification_0.certificationVersion >= 0n && certification_0.certificationVersion <= 65535n && certification_0.commandCommitment.buffer instanceof ArrayBuffer && certification_0.commandCommitment.BYTES_PER_ELEMENT === 1 && certification_0.commandCommitment.length === 32 && certification_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && certification_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && certification_0.capabilityCredentialCommitment.length === 32 && certification_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && certification_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && certification_0.parentCapabilityCredentialCommitment.length === 32 && certification_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && certification_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && certification_0.issuerAccountCredentialCommitment.length === 32 && typeof(certification_0.totalScopeElementCount) === 'bigint' && certification_0.totalScopeElementCount >= 0n && certification_0.totalScopeElementCount <= 4294967295n && typeof(certification_0.stagingExpiresAt) === 'bigint' && certification_0.stagingExpiresAt >= 0n && certification_0.stagingExpiresAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('capabilityAttenuationCertificationCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 681 char 1',
+                                 'permio-authorization.compact line 682 char 1',
                                  'struct CapabilityAttenuationCertification<certificationVersion: Uint<0..65536>, commandCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, totalScopeElementCount: Uint<0..4294967296>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                  certification_0)
     }
@@ -25790,7 +26867,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.grantIdHash.buffer instanceof ArrayBuffer && credential_0.grantIdHash.BYTES_PER_ELEMENT === 1 && credential_0.grantIdHash.length === 32 && credential_0.m5GrantCommitment.buffer instanceof ArrayBuffer && credential_0.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5GrantCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.parentCapabilityCredentialCommitment.length === 32 && credential_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.issuerAccountCredentialCommitment.length === 32 && credential_0.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && credential_0.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && credential_0.namespaceIssuerAuthorityCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.delegationDepth) === 'bigint' && credential_0.delegationDepth >= 0n && credential_0.delegationDepth <= 65535n && typeof(credential_0.maxDelegationDepth) === 'bigint' && credential_0.maxDelegationDepth >= 0n && credential_0.maxDelegationDepth <= 65535n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeCapabilityCredentialCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 687 char 1',
+                                 'permio-authorization.compact line 688 char 1',
                                  'struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25804,7 +26881,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.sessionIdHash.buffer instanceof ArrayBuffer && credential_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && credential_0.sessionIdHash.length === 32 && credential_0.m5SessionCommitment.buffer instanceof ArrayBuffer && credential_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5SessionCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.capabilityCredentialCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeSessionCredentialCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 693 char 1',
+                                 'permio-authorization.compact line 694 char 1',
                                  'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25818,7 +26895,7 @@ export const pureCircuits = {
     if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
       __compactRuntime.typeError('runtimeActionIntentCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 699 char 1',
+                                 'permio-authorization.compact line 700 char 1',
                                  'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                  intent_0)
     }
@@ -25832,7 +26909,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.accountIdHash.buffer instanceof ArrayBuffer && credential_0.accountIdHash.BYTES_PER_ELEMENT === 1 && credential_0.accountIdHash.length === 32 && typeof(credential_0.principalKind) === 'bigint' && credential_0.principalKind >= 0n && credential_0.principalKind <= 65535n && credential_0.m5AccountCommitment.buffer instanceof ArrayBuffer && credential_0.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5AccountCommitment.length === 32 && true && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n && typeof(credential_0.validBefore) === 'bigint' && credential_0.validBefore >= 0n && credential_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeAccountCredentialMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 705 char 1',
+                                 'permio-authorization.compact line 706 char 1',
                                  'struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25846,7 +26923,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.grantIdHash.buffer instanceof ArrayBuffer && credential_0.grantIdHash.BYTES_PER_ELEMENT === 1 && credential_0.grantIdHash.length === 32 && credential_0.m5GrantCommitment.buffer instanceof ArrayBuffer && credential_0.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5GrantCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.parentCapabilityCredentialCommitment.length === 32 && credential_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.issuerAccountCredentialCommitment.length === 32 && credential_0.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && credential_0.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && credential_0.namespaceIssuerAuthorityCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.delegationDepth) === 'bigint' && credential_0.delegationDepth >= 0n && credential_0.delegationDepth <= 65535n && typeof(credential_0.maxDelegationDepth) === 'bigint' && credential_0.maxDelegationDepth >= 0n && credential_0.maxDelegationDepth <= 65535n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeCapabilityCredentialMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 711 char 1',
+                                 'permio-authorization.compact line 712 char 1',
                                  'struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25860,7 +26937,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.sessionIdHash.buffer instanceof ArrayBuffer && credential_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && credential_0.sessionIdHash.length === 32 && credential_0.m5SessionCommitment.buffer instanceof ArrayBuffer && credential_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5SessionCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.capabilityCredentialCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeSessionCredentialMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 717 char 1',
+                                 'permio-authorization.compact line 718 char 1',
                                  'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -25874,7 +26951,7 @@ export const pureCircuits = {
     if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
       __compactRuntime.typeError('runtimeActionIntentMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 723 char 1',
+                                 'permio-authorization.compact line 724 char 1',
                                  'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                  intent_0)
     }
@@ -25888,7 +26965,7 @@ export const pureCircuits = {
     if (!(typeof(record_0) === 'object' && typeof(record_0.target) === 'object' && record_0.target.namespaceHash.buffer instanceof ArrayBuffer && record_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && record_0.target.namespaceHash.length === 32 && record_0.target.templateIdHash.buffer instanceof ArrayBuffer && record_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && record_0.target.templateIdHash.length === 32 && typeof(record_0.target.semanticVersion) === 'object' && typeof(record_0.target.semanticVersion.major) === 'bigint' && record_0.target.semanticVersion.major >= 0n && record_0.target.semanticVersion.major <= 18446744073709551615n && typeof(record_0.target.semanticVersion.minor) === 'bigint' && record_0.target.semanticVersion.minor >= 0n && record_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(record_0.target.semanticVersion.patch) === 'bigint' && record_0.target.semanticVersion.patch >= 0n && record_0.target.semanticVersion.patch <= 18446744073709551615n && record_0.target.templateContentHash.buffer instanceof ArrayBuffer && record_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && record_0.target.templateContentHash.length === 32 && record_0.governancePolicyHash.buffer instanceof ArrayBuffer && record_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && record_0.governancePolicyHash.length === 32 && record_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && record_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && record_0.proofModuleBindingsHash.length === 32 && typeof(record_0.proofModuleBindingRoot) === 'object' && typeof(record_0.proofModuleBindingRoot.field) === 'bigint' && record_0.proofModuleBindingRoot.field >= 0 && record_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(record_0.proofModuleBindingCount) === 'bigint' && record_0.proofModuleBindingCount >= 0n && record_0.proofModuleBindingCount <= 4294967295n && typeof(record_0.proofModuleRegistrySequence) === 'bigint' && record_0.proofModuleRegistrySequence >= 0n && record_0.proofModuleRegistrySequence <= 18446744073709551615n && record_0.stagedBindingsAccumulator.buffer instanceof ArrayBuffer && record_0.stagedBindingsAccumulator.BYTES_PER_ELEMENT === 1 && record_0.stagedBindingsAccumulator.length === 32 && record_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && record_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && record_0.m4ActivationRecordHash.length === 32 && record_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && record_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && record_0.approvalEvidenceCommitment.length === 32 && typeof(record_0.authorityRootVersion) === 'bigint' && record_0.authorityRootVersion >= 0n && record_0.authorityRootVersion <= 18446744073709551615n && typeof(record_0.authorityRootSequence) === 'bigint' && record_0.authorityRootSequence >= 0n && record_0.authorityRootSequence <= 18446744073709551615n && typeof(record_0.lifecycleStatus) === 'bigint' && record_0.lifecycleStatus >= 0n && record_0.lifecycleStatus <= 255n && typeof(record_0.activationSequence) === 'bigint' && record_0.activationSequence >= 0n && record_0.activationSequence <= 18446744073709551615n && typeof(record_0.activatedAt) === 'bigint' && record_0.activatedAt >= 0n && record_0.activatedAt <= 18446744073709551615n && typeof(record_0.terminationEffectiveSequence) === 'bigint' && record_0.terminationEffectiveSequence >= 0n && record_0.terminationEffectiveSequence <= 18446744073709551615n && record_0.terminationReasonHash.buffer instanceof ArrayBuffer && record_0.terminationReasonHash.BYTES_PER_ELEMENT === 1 && record_0.terminationReasonHash.length === 32 && typeof(record_0.retiredAt) === 'bigint' && record_0.retiredAt >= 0n && record_0.retiredAt <= 18446744073709551615n && typeof(record_0.revokedAt) === 'bigint' && record_0.revokedAt >= 0n && record_0.revokedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('activeTemplateRecordCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 729 char 1',
+                                 'permio-authorization.compact line 730 char 1',
                                  'struct ActiveTemplateRecord<target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, stagedBindingsAccumulator: Bytes<32>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, lifecycleStatus: Uint<0..256>, activationSequence: Uint<0..18446744073709551616>, activatedAt: Uint<0..18446744073709551616>, terminationEffectiveSequence: Uint<0..18446744073709551616>, terminationReasonHash: Bytes<32>, retiredAt: Uint<0..18446744073709551616>, revokedAt: Uint<0..18446744073709551616>>',
                                  record_0)
     }
@@ -25902,7 +26979,7 @@ export const pureCircuits = {
     if (!(typeof(binding_0) === 'object' && typeof(binding_0.bindingVersion) === 'bigint' && binding_0.bindingVersion >= 0n && binding_0.bindingVersion <= 65535n && typeof(binding_0.actionIndex) === 'bigint' && binding_0.actionIndex >= 0n && binding_0.actionIndex <= 4294967295n && binding_0.actionIdHash.buffer instanceof ArrayBuffer && binding_0.actionIdHash.BYTES_PER_ELEMENT === 1 && binding_0.actionIdHash.length === 32 && binding_0.proofProfileIdHash.buffer instanceof ArrayBuffer && binding_0.proofProfileIdHash.BYTES_PER_ELEMENT === 1 && binding_0.proofProfileIdHash.length === 32 && binding_0.moduleIdHash.buffer instanceof ArrayBuffer && binding_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && binding_0.moduleIdHash.length === 32 && typeof(binding_0.moduleVersion) === 'object' && typeof(binding_0.moduleVersion.major) === 'bigint' && binding_0.moduleVersion.major >= 0n && binding_0.moduleVersion.major <= 18446744073709551615n && typeof(binding_0.moduleVersion.minor) === 'bigint' && binding_0.moduleVersion.minor >= 0n && binding_0.moduleVersion.minor <= 18446744073709551615n && typeof(binding_0.moduleVersion.patch) === 'bigint' && binding_0.moduleVersion.patch >= 0n && binding_0.moduleVersion.patch <= 18446744073709551615n && binding_0.implementationHash.buffer instanceof ArrayBuffer && binding_0.implementationHash.BYTES_PER_ELEMENT === 1 && binding_0.implementationHash.length === 32 && binding_0.configurationHash.buffer instanceof ArrayBuffer && binding_0.configurationHash.BYTES_PER_ELEMENT === 1 && binding_0.configurationHash.length === 32 && binding_0.receiptSchemaHash.buffer instanceof ArrayBuffer && binding_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && binding_0.receiptSchemaHash.length === 32)) {
       __compactRuntime.typeError('proofModuleBindingCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 735 char 1',
+                                 'permio-authorization.compact line 736 char 1',
                                  'struct ProofModuleBinding<bindingVersion: Uint<0..65536>, actionIndex: Uint<0..4294967296>, actionIdHash: Bytes<32>, proofProfileIdHash: Bytes<32>, moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>, configurationHash: Bytes<32>, receiptSchemaHash: Bytes<32>>',
                                  binding_0)
     }
@@ -25916,7 +26993,7 @@ export const pureCircuits = {
     if (!(typeof(proposal_0) === 'object' && typeof(proposal_0.proposalVersion) === 'bigint' && proposal_0.proposalVersion >= 0n && proposal_0.proposalVersion <= 65535n && typeof(proposal_0.identity) === 'object' && proposal_0.identity.moduleIdHash.buffer instanceof ArrayBuffer && proposal_0.identity.moduleIdHash.BYTES_PER_ELEMENT === 1 && proposal_0.identity.moduleIdHash.length === 32 && typeof(proposal_0.identity.moduleVersion) === 'object' && typeof(proposal_0.identity.moduleVersion.major) === 'bigint' && proposal_0.identity.moduleVersion.major >= 0n && proposal_0.identity.moduleVersion.major <= 18446744073709551615n && typeof(proposal_0.identity.moduleVersion.minor) === 'bigint' && proposal_0.identity.moduleVersion.minor >= 0n && proposal_0.identity.moduleVersion.minor <= 18446744073709551615n && typeof(proposal_0.identity.moduleVersion.patch) === 'bigint' && proposal_0.identity.moduleVersion.patch >= 0n && proposal_0.identity.moduleVersion.patch <= 18446744073709551615n && proposal_0.identity.implementationHash.buffer instanceof ArrayBuffer && proposal_0.identity.implementationHash.BYTES_PER_ELEMENT === 1 && proposal_0.identity.implementationHash.length === 32 && proposal_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && proposal_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && proposal_0.governanceNamespaceHash.length === 32 && proposal_0.governancePolicyHash.buffer instanceof ArrayBuffer && proposal_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && proposal_0.governancePolicyHash.length === 32 && typeof(proposal_0.authorityRootVersion) === 'bigint' && proposal_0.authorityRootVersion >= 0n && proposal_0.authorityRootVersion <= 18446744073709551615n && typeof(proposal_0.authorityRootSequence) === 'bigint' && proposal_0.authorityRootSequence >= 0n && proposal_0.authorityRootSequence <= 18446744073709551615n && proposal_0.implementationReferenceHash.buffer instanceof ArrayBuffer && proposal_0.implementationReferenceHash.BYTES_PER_ELEMENT === 1 && proposal_0.implementationReferenceHash.length === 32 && proposal_0.sourceHash.buffer instanceof ArrayBuffer && proposal_0.sourceHash.BYTES_PER_ELEMENT === 1 && proposal_0.sourceHash.length === 32 && proposal_0.inputSchemaHash.buffer instanceof ArrayBuffer && proposal_0.inputSchemaHash.BYTES_PER_ELEMENT === 1 && proposal_0.inputSchemaHash.length === 32 && proposal_0.configurationSchemaHash.buffer instanceof ArrayBuffer && proposal_0.configurationSchemaHash.BYTES_PER_ELEMENT === 1 && proposal_0.configurationSchemaHash.length === 32 && proposal_0.receiptSchemaHash.buffer instanceof ArrayBuffer && proposal_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && proposal_0.receiptSchemaHash.length === 32 && proposal_0.compilerVersionHash.buffer instanceof ArrayBuffer && proposal_0.compilerVersionHash.BYTES_PER_ELEMENT === 1 && proposal_0.compilerVersionHash.length === 32 && proposal_0.compatibilityPolicyHash.buffer instanceof ArrayBuffer && proposal_0.compatibilityPolicyHash.BYTES_PER_ELEMENT === 1 && proposal_0.compatibilityPolicyHash.length === 32 && typeof(proposal_0.proposedAt) === 'bigint' && proposal_0.proposedAt >= 0n && proposal_0.proposedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('proofModuleProposalCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 741 char 1',
+                                 'permio-authorization.compact line 742 char 1',
                                  'struct ProofModuleProposal<proposalVersion: Uint<0..65536>, identity: struct ProofModuleIdentity<moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, implementationReferenceHash: Bytes<32>, sourceHash: Bytes<32>, inputSchemaHash: Bytes<32>, configurationSchemaHash: Bytes<32>, receiptSchemaHash: Bytes<32>, compilerVersionHash: Bytes<32>, compatibilityPolicyHash: Bytes<32>, proposedAt: Uint<0..18446744073709551616>>',
                                  proposal_0)
     }
@@ -25930,7 +27007,7 @@ export const pureCircuits = {
     if (!(typeof(record_0) === 'object' && typeof(record_0.identity) === 'object' && record_0.identity.moduleIdHash.buffer instanceof ArrayBuffer && record_0.identity.moduleIdHash.BYTES_PER_ELEMENT === 1 && record_0.identity.moduleIdHash.length === 32 && typeof(record_0.identity.moduleVersion) === 'object' && typeof(record_0.identity.moduleVersion.major) === 'bigint' && record_0.identity.moduleVersion.major >= 0n && record_0.identity.moduleVersion.major <= 18446744073709551615n && typeof(record_0.identity.moduleVersion.minor) === 'bigint' && record_0.identity.moduleVersion.minor >= 0n && record_0.identity.moduleVersion.minor <= 18446744073709551615n && typeof(record_0.identity.moduleVersion.patch) === 'bigint' && record_0.identity.moduleVersion.patch >= 0n && record_0.identity.moduleVersion.patch <= 18446744073709551615n && record_0.identity.implementationHash.buffer instanceof ArrayBuffer && record_0.identity.implementationHash.BYTES_PER_ELEMENT === 1 && record_0.identity.implementationHash.length === 32 && record_0.proposalCommitment.buffer instanceof ArrayBuffer && record_0.proposalCommitment.BYTES_PER_ELEMENT === 1 && record_0.proposalCommitment.length === 32 && record_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && record_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && record_0.governanceNamespaceHash.length === 32 && record_0.governancePolicyHash.buffer instanceof ArrayBuffer && record_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && record_0.governancePolicyHash.length === 32 && typeof(record_0.authorityRootVersion) === 'bigint' && record_0.authorityRootVersion >= 0n && record_0.authorityRootVersion <= 18446744073709551615n && typeof(record_0.authorityRootSequence) === 'bigint' && record_0.authorityRootSequence >= 0n && record_0.authorityRootSequence <= 18446744073709551615n && record_0.implementationReferenceHash.buffer instanceof ArrayBuffer && record_0.implementationReferenceHash.BYTES_PER_ELEMENT === 1 && record_0.implementationReferenceHash.length === 32 && record_0.sourceHash.buffer instanceof ArrayBuffer && record_0.sourceHash.BYTES_PER_ELEMENT === 1 && record_0.sourceHash.length === 32 && record_0.inputSchemaHash.buffer instanceof ArrayBuffer && record_0.inputSchemaHash.BYTES_PER_ELEMENT === 1 && record_0.inputSchemaHash.length === 32 && record_0.configurationSchemaHash.buffer instanceof ArrayBuffer && record_0.configurationSchemaHash.BYTES_PER_ELEMENT === 1 && record_0.configurationSchemaHash.length === 32 && record_0.receiptSchemaHash.buffer instanceof ArrayBuffer && record_0.receiptSchemaHash.BYTES_PER_ELEMENT === 1 && record_0.receiptSchemaHash.length === 32 && record_0.compilerVersionHash.buffer instanceof ArrayBuffer && record_0.compilerVersionHash.BYTES_PER_ELEMENT === 1 && record_0.compilerVersionHash.length === 32 && record_0.compatibilityPolicyHash.buffer instanceof ArrayBuffer && record_0.compatibilityPolicyHash.BYTES_PER_ELEMENT === 1 && record_0.compatibilityPolicyHash.length === 32 && record_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && record_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && record_0.approvalEvidenceCommitment.length === 32 && typeof(record_0.reviewThreshold) === 'bigint' && record_0.reviewThreshold >= 0n && record_0.reviewThreshold <= 65535n && typeof(record_0.reviewCount) === 'bigint' && record_0.reviewCount >= 0n && record_0.reviewCount <= 65535n && record_0.reviewEvidenceAccumulator.buffer instanceof ArrayBuffer && record_0.reviewEvidenceAccumulator.BYTES_PER_ELEMENT === 1 && record_0.reviewEvidenceAccumulator.length === 32 && typeof(record_0.approvalThreshold) === 'bigint' && record_0.approvalThreshold >= 0n && record_0.approvalThreshold <= 65535n && typeof(record_0.approvalCount) === 'bigint' && record_0.approvalCount >= 0n && record_0.approvalCount <= 65535n && record_0.approvalEvidenceAccumulator.buffer instanceof ArrayBuffer && record_0.approvalEvidenceAccumulator.BYTES_PER_ELEMENT === 1 && record_0.approvalEvidenceAccumulator.length === 32 && typeof(record_0.lifecycleStatus) === 'bigint' && record_0.lifecycleStatus >= 0n && record_0.lifecycleStatus <= 255n && typeof(record_0.activationSequence) === 'bigint' && record_0.activationSequence >= 0n && record_0.activationSequence <= 18446744073709551615n && typeof(record_0.proposedAt) === 'bigint' && record_0.proposedAt >= 0n && record_0.proposedAt <= 18446744073709551615n && typeof(record_0.reviewedAt) === 'bigint' && record_0.reviewedAt >= 0n && record_0.reviewedAt <= 18446744073709551615n && typeof(record_0.approvedAt) === 'bigint' && record_0.approvedAt >= 0n && record_0.approvedAt <= 18446744073709551615n && typeof(record_0.activatedAt) === 'bigint' && record_0.activatedAt >= 0n && record_0.activatedAt <= 18446744073709551615n && typeof(record_0.deprecatedAt) === 'bigint' && record_0.deprecatedAt >= 0n && record_0.deprecatedAt <= 18446744073709551615n && typeof(record_0.revokedAt) === 'bigint' && record_0.revokedAt >= 0n && record_0.revokedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('proofModuleRecordCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 747 char 1',
+                                 'permio-authorization.compact line 748 char 1',
                                  'struct ProofModuleRecord<identity: struct ProofModuleIdentity<moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>>, proposalCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, implementationReferenceHash: Bytes<32>, sourceHash: Bytes<32>, inputSchemaHash: Bytes<32>, configurationSchemaHash: Bytes<32>, receiptSchemaHash: Bytes<32>, compilerVersionHash: Bytes<32>, compatibilityPolicyHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, reviewThreshold: Uint<0..65536>, reviewCount: Uint<0..65536>, reviewEvidenceAccumulator: Bytes<32>, approvalThreshold: Uint<0..65536>, approvalCount: Uint<0..65536>, approvalEvidenceAccumulator: Bytes<32>, lifecycleStatus: Uint<0..256>, activationSequence: Uint<0..18446744073709551616>, proposedAt: Uint<0..18446744073709551616>, reviewedAt: Uint<0..18446744073709551616>, approvedAt: Uint<0..18446744073709551616>, activatedAt: Uint<0..18446744073709551616>, deprecatedAt: Uint<0..18446744073709551616>, revokedAt: Uint<0..18446744073709551616>>',
                                  record_0)
     }
@@ -25944,7 +27021,7 @@ export const pureCircuits = {
     if (!(typeof(review_0) === 'object' && typeof(review_0.reviewVersion) === 'bigint' && review_0.reviewVersion >= 0n && review_0.reviewVersion <= 65535n && review_0.moduleKey.buffer instanceof ArrayBuffer && review_0.moduleKey.BYTES_PER_ELEMENT === 1 && review_0.moduleKey.length === 32 && review_0.proposalCommitment.buffer instanceof ArrayBuffer && review_0.proposalCommitment.BYTES_PER_ELEMENT === 1 && review_0.proposalCommitment.length === 32 && review_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && review_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && review_0.governanceNamespaceHash.length === 32 && review_0.governancePolicyHash.buffer instanceof ArrayBuffer && review_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && review_0.governancePolicyHash.length === 32 && typeof(review_0.authorityRootVersion) === 'bigint' && review_0.authorityRootVersion >= 0n && review_0.authorityRootVersion <= 18446744073709551615n && typeof(review_0.authorityRootSequence) === 'bigint' && review_0.authorityRootSequence >= 0n && review_0.authorityRootSequence <= 18446744073709551615n && typeof(review_0.reviewedAt) === 'bigint' && review_0.reviewedAt >= 0n && review_0.reviewedAt <= 18446744073709551615n && review_0.reviewNonce.buffer instanceof ArrayBuffer && review_0.reviewNonce.BYTES_PER_ELEMENT === 1 && review_0.reviewNonce.length === 32)) {
       __compactRuntime.typeError('proofModuleReviewCommitment',
                                  'argument 1',
-                                 'permio-authorization.compact line 753 char 1',
+                                 'permio-authorization.compact line 754 char 1',
                                  'struct ProofModuleReview<reviewVersion: Uint<0..65536>, moduleKey: Bytes<32>, proposalCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, reviewedAt: Uint<0..18446744073709551616>, reviewNonce: Bytes<32>>',
                                  review_0)
     }
@@ -25958,7 +27035,7 @@ export const pureCircuits = {
     if (!(typeof(review_0) === 'object' && typeof(review_0.reviewVersion) === 'bigint' && review_0.reviewVersion >= 0n && review_0.reviewVersion <= 65535n && review_0.moduleKey.buffer instanceof ArrayBuffer && review_0.moduleKey.BYTES_PER_ELEMENT === 1 && review_0.moduleKey.length === 32 && review_0.proposalCommitment.buffer instanceof ArrayBuffer && review_0.proposalCommitment.BYTES_PER_ELEMENT === 1 && review_0.proposalCommitment.length === 32 && review_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && review_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && review_0.governanceNamespaceHash.length === 32 && review_0.governancePolicyHash.buffer instanceof ArrayBuffer && review_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && review_0.governancePolicyHash.length === 32 && typeof(review_0.authorityRootVersion) === 'bigint' && review_0.authorityRootVersion >= 0n && review_0.authorityRootVersion <= 18446744073709551615n && typeof(review_0.authorityRootSequence) === 'bigint' && review_0.authorityRootSequence >= 0n && review_0.authorityRootSequence <= 18446744073709551615n && typeof(review_0.reviewedAt) === 'bigint' && review_0.reviewedAt >= 0n && review_0.reviewedAt <= 18446744073709551615n && review_0.reviewNonce.buffer instanceof ArrayBuffer && review_0.reviewNonce.BYTES_PER_ELEMENT === 1 && review_0.reviewNonce.length === 32)) {
       __compactRuntime.typeError('proofModuleReviewMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 759 char 1',
+                                 'permio-authorization.compact line 760 char 1',
                                  'struct ProofModuleReview<reviewVersion: Uint<0..65536>, moduleKey: Bytes<32>, proposalCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, reviewedAt: Uint<0..18446744073709551616>, reviewNonce: Bytes<32>>',
                                  review_0)
     }
@@ -25972,7 +27049,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.moduleKey.buffer instanceof ArrayBuffer && command_0.moduleKey.BYTES_PER_ELEMENT === 1 && command_0.moduleKey.length === 32 && command_0.recordCommitment.buffer instanceof ArrayBuffer && command_0.recordCommitment.BYTES_PER_ELEMENT === 1 && command_0.recordCommitment.length === 32 && command_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && command_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && command_0.governanceNamespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.expectedLifecycleStatus) === 'bigint' && command_0.expectedLifecycleStatus >= 0n && command_0.expectedLifecycleStatus <= 255n && typeof(command_0.nextLifecycleStatus) === 'bigint' && command_0.nextLifecycleStatus >= 0n && command_0.nextLifecycleStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && command_0.reasonHash.buffer instanceof ArrayBuffer && command_0.reasonHash.BYTES_PER_ELEMENT === 1 && command_0.reasonHash.length === 32 && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('proofModuleLifecycleCommandMessage',
                                  'argument 1',
-                                 'permio-authorization.compact line 765 char 1',
+                                 'permio-authorization.compact line 766 char 1',
                                  'struct ProofModuleLifecycleCommand<commandVersion: Uint<0..65536>, moduleKey: Bytes<32>, recordCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -25988,7 +27065,7 @@ export const pureCircuits = {
     if (!(typeof(review_0) === 'object' && typeof(review_0.reviewVersion) === 'bigint' && review_0.reviewVersion >= 0n && review_0.reviewVersion <= 65535n && review_0.moduleKey.buffer instanceof ArrayBuffer && review_0.moduleKey.BYTES_PER_ELEMENT === 1 && review_0.moduleKey.length === 32 && review_0.proposalCommitment.buffer instanceof ArrayBuffer && review_0.proposalCommitment.BYTES_PER_ELEMENT === 1 && review_0.proposalCommitment.length === 32 && review_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && review_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && review_0.governanceNamespaceHash.length === 32 && review_0.governancePolicyHash.buffer instanceof ArrayBuffer && review_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && review_0.governancePolicyHash.length === 32 && typeof(review_0.authorityRootVersion) === 'bigint' && review_0.authorityRootVersion >= 0n && review_0.authorityRootVersion <= 18446744073709551615n && typeof(review_0.authorityRootSequence) === 'bigint' && review_0.authorityRootSequence >= 0n && review_0.authorityRootSequence <= 18446744073709551615n && typeof(review_0.reviewedAt) === 'bigint' && review_0.reviewedAt >= 0n && review_0.reviewedAt <= 18446744073709551615n && review_0.reviewNonce.buffer instanceof ArrayBuffer && review_0.reviewNonce.BYTES_PER_ELEMENT === 1 && review_0.reviewNonce.length === 32)) {
       __compactRuntime.typeError('proofModuleReviewSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 771 char 1',
+                                 'permio-authorization.compact line 772 char 1',
                                  'struct ProofModuleReview<reviewVersion: Uint<0..65536>, moduleKey: Bytes<32>, proposalCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, reviewedAt: Uint<0..18446744073709551616>, reviewNonce: Bytes<32>>',
                                  review_0)
     }
@@ -26006,7 +27083,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.moduleKey.buffer instanceof ArrayBuffer && command_0.moduleKey.BYTES_PER_ELEMENT === 1 && command_0.moduleKey.length === 32 && command_0.recordCommitment.buffer instanceof ArrayBuffer && command_0.recordCommitment.BYTES_PER_ELEMENT === 1 && command_0.recordCommitment.length === 32 && command_0.governanceNamespaceHash.buffer instanceof ArrayBuffer && command_0.governanceNamespaceHash.BYTES_PER_ELEMENT === 1 && command_0.governanceNamespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.expectedLifecycleStatus) === 'bigint' && command_0.expectedLifecycleStatus >= 0n && command_0.expectedLifecycleStatus <= 255n && typeof(command_0.nextLifecycleStatus) === 'bigint' && command_0.nextLifecycleStatus >= 0n && command_0.nextLifecycleStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && command_0.reasonHash.buffer instanceof ArrayBuffer && command_0.reasonHash.BYTES_PER_ELEMENT === 1 && command_0.reasonHash.length === 32 && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('proofModuleLifecycleSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 785 char 1',
+                                 'permio-authorization.compact line 786 char 1',
                                  'struct ProofModuleLifecycleCommand<commandVersion: Uint<0..65536>, moduleKey: Bytes<32>, recordCommitment: Bytes<32>, governanceNamespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -26024,7 +27101,7 @@ export const pureCircuits = {
     if (!(typeof(envelope_0) === 'object' && typeof(envelope_0.envelopeVersion) === 'bigint' && envelope_0.envelopeVersion >= 0n && envelope_0.envelopeVersion <= 65535n && envelope_0.namespaceHash.buffer instanceof ArrayBuffer && envelope_0.namespaceHash.BYTES_PER_ELEMENT === 1 && envelope_0.namespaceHash.length === 32 && envelope_0.templateIdHash.buffer instanceof ArrayBuffer && envelope_0.templateIdHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateIdHash.length === 32 && typeof(envelope_0.semanticVersion) === 'object' && typeof(envelope_0.semanticVersion.major) === 'bigint' && envelope_0.semanticVersion.major >= 0n && envelope_0.semanticVersion.major <= 18446744073709551615n && typeof(envelope_0.semanticVersion.minor) === 'bigint' && envelope_0.semanticVersion.minor >= 0n && envelope_0.semanticVersion.minor <= 18446744073709551615n && typeof(envelope_0.semanticVersion.patch) === 'bigint' && envelope_0.semanticVersion.patch >= 0n && envelope_0.semanticVersion.patch <= 18446744073709551615n && envelope_0.templateContentHash.buffer instanceof ArrayBuffer && envelope_0.templateContentHash.BYTES_PER_ELEMENT === 1 && envelope_0.templateContentHash.length === 32 && envelope_0.governancePolicyHash.buffer instanceof ArrayBuffer && envelope_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && envelope_0.governancePolicyHash.length === 32 && envelope_0.proofModuleBindingsHash.buffer instanceof ArrayBuffer && envelope_0.proofModuleBindingsHash.BYTES_PER_ELEMENT === 1 && envelope_0.proofModuleBindingsHash.length === 32 && typeof(envelope_0.proofModuleBindingRoot) === 'object' && typeof(envelope_0.proofModuleBindingRoot.field) === 'bigint' && envelope_0.proofModuleBindingRoot.field >= 0 && envelope_0.proofModuleBindingRoot.field <= __compactRuntime.MAX_FIELD && typeof(envelope_0.proofModuleBindingCount) === 'bigint' && envelope_0.proofModuleBindingCount >= 0n && envelope_0.proofModuleBindingCount <= 4294967295n && typeof(envelope_0.proofModuleRegistrySequence) === 'bigint' && envelope_0.proofModuleRegistrySequence >= 0n && envelope_0.proofModuleRegistrySequence <= 18446744073709551615n && envelope_0.m4ActivationRecordHash.buffer instanceof ArrayBuffer && envelope_0.m4ActivationRecordHash.BYTES_PER_ELEMENT === 1 && envelope_0.m4ActivationRecordHash.length === 32 && envelope_0.approvalEvidenceCommitment.buffer instanceof ArrayBuffer && envelope_0.approvalEvidenceCommitment.BYTES_PER_ELEMENT === 1 && envelope_0.approvalEvidenceCommitment.length === 32 && typeof(envelope_0.authorityRootVersion) === 'bigint' && envelope_0.authorityRootVersion >= 0n && envelope_0.authorityRootVersion <= 18446744073709551615n && typeof(envelope_0.authorityRootSequence) === 'bigint' && envelope_0.authorityRootSequence >= 0n && envelope_0.authorityRootSequence <= 18446744073709551615n && envelope_0.targetNetworkHash.buffer instanceof ArrayBuffer && envelope_0.targetNetworkHash.BYTES_PER_ELEMENT === 1 && envelope_0.targetNetworkHash.length === 32 && envelope_0.targetContractIdentity.buffer instanceof ArrayBuffer && envelope_0.targetContractIdentity.BYTES_PER_ELEMENT === 1 && envelope_0.targetContractIdentity.length === 32 && typeof(envelope_0.registryProtocolVersion) === 'bigint' && envelope_0.registryProtocolVersion >= 0n && envelope_0.registryProtocolVersion <= 65535n && envelope_0.admissionNonce.buffer instanceof ArrayBuffer && envelope_0.admissionNonce.BYTES_PER_ELEMENT === 1 && envelope_0.admissionNonce.length === 32 && typeof(envelope_0.activatedAt) === 'bigint' && envelope_0.activatedAt >= 0n && envelope_0.activatedAt <= 18446744073709551615n && typeof(envelope_0.stagingExpiresAt) === 'bigint' && envelope_0.stagingExpiresAt >= 0n && envelope_0.stagingExpiresAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('governanceActivationSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 799 char 1',
+                                 'permio-authorization.compact line 800 char 1',
                                  'struct ActivationAdmissionEnvelope<envelopeVersion: Uint<0..65536>, namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>, governancePolicyHash: Bytes<32>, proofModuleBindingsHash: Bytes<32>, proofModuleBindingRoot: struct MerkleTreeDigest<field: Field>, proofModuleBindingCount: Uint<0..4294967296>, proofModuleRegistrySequence: Uint<0..18446744073709551616>, m4ActivationRecordHash: Bytes<32>, approvalEvidenceCommitment: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, targetNetworkHash: Bytes<32>, targetContractIdentity: Bytes<32>, registryProtocolVersion: Uint<0..65536>, admissionNonce: Bytes<32>, activatedAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>>',
                                  envelope_0)
     }
@@ -26042,7 +27119,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.currentGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.currentGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.currentGovernancePolicyHash.length === 32 && typeof(command_0.currentRoot) === 'object' && typeof(command_0.currentRoot.field) === 'bigint' && command_0.currentRoot.field >= 0 && command_0.currentRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.currentRootVersion) === 'bigint' && command_0.currentRootVersion >= 0n && command_0.currentRootVersion <= 18446744073709551615n && typeof(command_0.currentRootSequence) === 'bigint' && command_0.currentRootSequence >= 0n && command_0.currentRootSequence <= 18446744073709551615n && command_0.nextGovernancePolicyHash.buffer instanceof ArrayBuffer && command_0.nextGovernancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.nextGovernancePolicyHash.length === 32 && typeof(command_0.nextRoot) === 'object' && typeof(command_0.nextRoot.field) === 'bigint' && command_0.nextRoot.field >= 0 && command_0.nextRoot.field <= __compactRuntime.MAX_FIELD && typeof(command_0.nextRootVersion) === 'bigint' && command_0.nextRootVersion >= 0n && command_0.nextRootVersion <= 18446744073709551615n && typeof(command_0.nextRootSequence) === 'bigint' && command_0.nextRootSequence >= 0n && command_0.nextRootSequence <= 18446744073709551615n && typeof(command_0.nextModuleReviewThreshold) === 'bigint' && command_0.nextModuleReviewThreshold >= 0n && command_0.nextModuleReviewThreshold <= 65535n && typeof(command_0.nextModuleApprovalThreshold) === 'bigint' && command_0.nextModuleApprovalThreshold >= 0n && command_0.nextModuleApprovalThreshold <= 65535n && typeof(command_0.nextAuthorityRootUpdateThreshold) === 'bigint' && command_0.nextAuthorityRootUpdateThreshold >= 0n && command_0.nextAuthorityRootUpdateThreshold <= 65535n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && command_0.updateNonce.buffer instanceof ArrayBuffer && command_0.updateNonce.BYTES_PER_ELEMENT === 1 && command_0.updateNonce.length === 32)) {
       __compactRuntime.typeError('authorityRootUpdateSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 813 char 1',
+                                 'permio-authorization.compact line 814 char 1',
                                  'struct AuthorityRootUpdateCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, currentGovernancePolicyHash: Bytes<32>, currentRoot: struct MerkleTreeDigest<field: Field>, currentRootVersion: Uint<0..18446744073709551616>, currentRootSequence: Uint<0..18446744073709551616>, nextGovernancePolicyHash: Bytes<32>, nextRoot: struct MerkleTreeDigest<field: Field>, nextRootVersion: Uint<0..18446744073709551616>, nextRootSequence: Uint<0..18446744073709551616>, nextModuleReviewThreshold: Uint<0..65536>, nextModuleApprovalThreshold: Uint<0..65536>, nextAuthorityRootUpdateThreshold: Uint<0..65536>, effectiveAt: Uint<0..18446744073709551616>, updateNonce: Bytes<32>>',
                                  command_0)
     }
@@ -26060,7 +27137,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.registryKey.buffer instanceof ArrayBuffer && command_0.registryKey.BYTES_PER_ELEMENT === 1 && command_0.registryKey.length === 32 && command_0.recordCommitment.buffer instanceof ArrayBuffer && command_0.recordCommitment.BYTES_PER_ELEMENT === 1 && command_0.recordCommitment.length === 32 && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.expectedLifecycleStatus) === 'bigint' && command_0.expectedLifecycleStatus >= 0n && command_0.expectedLifecycleStatus <= 255n && typeof(command_0.nextLifecycleStatus) === 'bigint' && command_0.nextLifecycleStatus >= 0n && command_0.nextLifecycleStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.effectiveSequence) === 'bigint' && command_0.effectiveSequence >= 0n && command_0.effectiveSequence <= 18446744073709551615n && command_0.reasonHash.buffer instanceof ArrayBuffer && command_0.reasonHash.BYTES_PER_ELEMENT === 1 && command_0.reasonHash.length === 32 && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('templateLifecycleSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 827 char 1',
+                                 'permio-authorization.compact line 828 char 1',
                                  'struct TemplateLifecycleCommand<commandVersion: Uint<0..65536>, registryKey: Bytes<32>, recordCommitment: Bytes<32>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, expectedLifecycleStatus: Uint<0..256>, nextLifecycleStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, effectiveSequence: Uint<0..18446744073709551616>, reasonHash: Bytes<32>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -26078,7 +27155,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.accountIdHash.buffer instanceof ArrayBuffer && credential_0.accountIdHash.BYTES_PER_ELEMENT === 1 && credential_0.accountIdHash.length === 32 && typeof(credential_0.principalKind) === 'bigint' && credential_0.principalKind >= 0n && credential_0.principalKind <= 65535n && credential_0.m5AccountCommitment.buffer instanceof ArrayBuffer && credential_0.m5AccountCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5AccountCommitment.length === 32 && true && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n && typeof(credential_0.validBefore) === 'bigint' && credential_0.validBefore >= 0n && credential_0.validBefore <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeAccountCredentialSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 841 char 1',
+                                 'permio-authorization.compact line 842 char 1',
                                  'struct RuntimeAccountCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, accountIdHash: Bytes<32>, principalKind: Uint<0..65536>, m5AccountCommitment: Bytes<32>, runtimePublicKey: Opaque<"JubjubPoint">, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>, validBefore: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -26096,7 +27173,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.grantIdHash.buffer instanceof ArrayBuffer && credential_0.grantIdHash.BYTES_PER_ELEMENT === 1 && credential_0.grantIdHash.length === 32 && credential_0.m5GrantCommitment.buffer instanceof ArrayBuffer && credential_0.m5GrantCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5GrantCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.parentCapabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.parentCapabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.parentCapabilityCredentialCommitment.length === 32 && credential_0.issuerAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.issuerAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.issuerAccountCredentialCommitment.length === 32 && credential_0.namespaceIssuerAuthorityCommitment.buffer instanceof ArrayBuffer && credential_0.namespaceIssuerAuthorityCommitment.BYTES_PER_ELEMENT === 1 && credential_0.namespaceIssuerAuthorityCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.delegationDepth) === 'bigint' && credential_0.delegationDepth >= 0n && credential_0.delegationDepth <= 65535n && typeof(credential_0.maxDelegationDepth) === 'bigint' && credential_0.maxDelegationDepth >= 0n && credential_0.maxDelegationDepth <= 65535n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeCapabilityCredentialSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 855 char 1',
+                                 'permio-authorization.compact line 856 char 1',
                                  'struct RuntimeCapabilityCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, grantIdHash: Bytes<32>, m5GrantCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, parentCapabilityCredentialCommitment: Bytes<32>, issuerAccountCredentialCommitment: Bytes<32>, namespaceIssuerAuthorityCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, delegationDepth: Uint<0..65536>, maxDelegationDepth: Uint<0..65536>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -26114,7 +27191,7 @@ export const pureCircuits = {
     if (!(typeof(credential_0) === 'object' && typeof(credential_0.credentialVersion) === 'bigint' && credential_0.credentialVersion >= 0n && credential_0.credentialVersion <= 65535n && typeof(credential_0.target) === 'object' && credential_0.target.namespaceHash.buffer instanceof ArrayBuffer && credential_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && credential_0.target.namespaceHash.length === 32 && credential_0.target.templateIdHash.buffer instanceof ArrayBuffer && credential_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateIdHash.length === 32 && typeof(credential_0.target.semanticVersion) === 'object' && typeof(credential_0.target.semanticVersion.major) === 'bigint' && credential_0.target.semanticVersion.major >= 0n && credential_0.target.semanticVersion.major <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.minor) === 'bigint' && credential_0.target.semanticVersion.minor >= 0n && credential_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(credential_0.target.semanticVersion.patch) === 'bigint' && credential_0.target.semanticVersion.patch >= 0n && credential_0.target.semanticVersion.patch <= 18446744073709551615n && credential_0.target.templateContentHash.buffer instanceof ArrayBuffer && credential_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && credential_0.target.templateContentHash.length === 32 && credential_0.instanceCommitment.buffer instanceof ArrayBuffer && credential_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && credential_0.instanceCommitment.length === 32 && credential_0.contextHash.buffer instanceof ArrayBuffer && credential_0.contextHash.BYTES_PER_ELEMENT === 1 && credential_0.contextHash.length === 32 && credential_0.sessionIdHash.buffer instanceof ArrayBuffer && credential_0.sessionIdHash.BYTES_PER_ELEMENT === 1 && credential_0.sessionIdHash.length === 32 && credential_0.m5SessionCommitment.buffer instanceof ArrayBuffer && credential_0.m5SessionCommitment.BYTES_PER_ELEMENT === 1 && credential_0.m5SessionCommitment.length === 32 && credential_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.subjectAccountCredentialCommitment.length === 32 && credential_0.capabilityCredentialCommitment.buffer instanceof ArrayBuffer && credential_0.capabilityCredentialCommitment.BYTES_PER_ELEMENT === 1 && credential_0.capabilityCredentialCommitment.length === 32 && typeof(credential_0.scopeRoots) === 'object' && typeof(credential_0.scopeRoots.actionsRoot) === 'object' && typeof(credential_0.scopeRoots.actionsRoot.field) === 'bigint' && credential_0.scopeRoots.actionsRoot.field >= 0 && credential_0.scopeRoots.actionsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourceSelectorsRoot) === 'object' && typeof(credential_0.scopeRoots.resourceSelectorsRoot.field) === 'bigint' && credential_0.scopeRoots.resourceSelectorsRoot.field >= 0 && credential_0.scopeRoots.resourceSelectorsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.resourcesRoot) === 'object' && typeof(credential_0.scopeRoots.resourcesRoot.field) === 'bigint' && credential_0.scopeRoots.resourcesRoot.field >= 0 && credential_0.scopeRoots.resourcesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.purposesRoot) === 'object' && typeof(credential_0.scopeRoots.purposesRoot.field) === 'bigint' && credential_0.scopeRoots.purposesRoot.field >= 0 && credential_0.scopeRoots.purposesRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientKindsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientKindsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientKindsRoot.field >= 0 && credential_0.scopeRoots.recipientKindsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.recipientsRoot) === 'object' && typeof(credential_0.scopeRoots.recipientsRoot.field) === 'bigint' && credential_0.scopeRoots.recipientsRoot.field >= 0 && credential_0.scopeRoots.recipientsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot) === 'object' && typeof(credential_0.scopeRoots.disclosurePolicyIdsRoot.field) === 'bigint' && credential_0.scopeRoots.disclosurePolicyIdsRoot.field >= 0 && credential_0.scopeRoots.disclosurePolicyIdsRoot.field <= __compactRuntime.MAX_FIELD && typeof(credential_0.scopeCounts) === 'object' && typeof(credential_0.scopeCounts.actionsCount) === 'bigint' && credential_0.scopeCounts.actionsCount >= 0n && credential_0.scopeCounts.actionsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourceSelectorsCount) === 'bigint' && credential_0.scopeCounts.resourceSelectorsCount >= 0n && credential_0.scopeCounts.resourceSelectorsCount <= 4294967295n && typeof(credential_0.scopeCounts.resourcesCount) === 'bigint' && credential_0.scopeCounts.resourcesCount >= 0n && credential_0.scopeCounts.resourcesCount <= 4294967295n && typeof(credential_0.scopeCounts.purposesCount) === 'bigint' && credential_0.scopeCounts.purposesCount >= 0n && credential_0.scopeCounts.purposesCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientKindsCount) === 'bigint' && credential_0.scopeCounts.recipientKindsCount >= 0n && credential_0.scopeCounts.recipientKindsCount <= 4294967295n && typeof(credential_0.scopeCounts.recipientsCount) === 'bigint' && credential_0.scopeCounts.recipientsCount >= 0n && credential_0.scopeCounts.recipientsCount <= 4294967295n && typeof(credential_0.scopeCounts.disclosurePolicyIdsCount) === 'bigint' && credential_0.scopeCounts.disclosurePolicyIdsCount >= 0n && credential_0.scopeCounts.disclosurePolicyIdsCount <= 4294967295n && true && typeof(credential_0.notBefore) === 'bigint' && credential_0.notBefore >= 0n && credential_0.notBefore <= 18446744073709551615n && typeof(credential_0.expiresAt) === 'bigint' && credential_0.expiresAt >= 0n && credential_0.expiresAt <= 18446744073709551615n && typeof(credential_0.statusIndex) === 'bigint' && credential_0.statusIndex >= 0n && credential_0.statusIndex <= 18446744073709551615n && typeof(credential_0.issuedAt) === 'bigint' && credential_0.issuedAt >= 0n && credential_0.issuedAt <= 18446744073709551615n)) {
       __compactRuntime.typeError('runtimeSessionCredentialSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 869 char 1',
+                                 'permio-authorization.compact line 870 char 1',
                                  'struct RuntimeSessionCredential<credentialVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionIdHash: Bytes<32>, m5SessionCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, capabilityCredentialCommitment: Bytes<32>, scopeRoots: struct RuntimeScopeRoots<actionsRoot: struct MerkleTreeDigest<field: Field>, resourceSelectorsRoot: struct MerkleTreeDigest<field: Field>, resourcesRoot: struct MerkleTreeDigest<field: Field>, purposesRoot: struct MerkleTreeDigest<field: Field>, recipientKindsRoot: struct MerkleTreeDigest<field: Field>, recipientsRoot: struct MerkleTreeDigest<field: Field>, disclosurePolicyIdsRoot: struct MerkleTreeDigest<field: Field>>, scopeCounts: struct RuntimeScopeCounts<actionsCount: Uint<0..4294967296>, resourceSelectorsCount: Uint<0..4294967296>, resourcesCount: Uint<0..4294967296>, purposesCount: Uint<0..4294967296>, recipientKindsCount: Uint<0..4294967296>, recipientsCount: Uint<0..4294967296>, disclosurePolicyIdsCount: Uint<0..4294967296>>, runtimePublicKey: Opaque<"JubjubPoint">, notBefore: Uint<0..18446744073709551616>, expiresAt: Uint<0..18446744073709551616>, statusIndex: Uint<0..18446744073709551616>, issuedAt: Uint<0..18446744073709551616>>',
                                  credential_0)
     }
@@ -26132,7 +27209,7 @@ export const pureCircuits = {
     if (!(typeof(intent_0) === 'object' && typeof(intent_0.intentVersion) === 'bigint' && intent_0.intentVersion >= 0n && intent_0.intentVersion <= 65535n && typeof(intent_0.target) === 'object' && intent_0.target.namespaceHash.buffer instanceof ArrayBuffer && intent_0.target.namespaceHash.BYTES_PER_ELEMENT === 1 && intent_0.target.namespaceHash.length === 32 && intent_0.target.templateIdHash.buffer instanceof ArrayBuffer && intent_0.target.templateIdHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateIdHash.length === 32 && typeof(intent_0.target.semanticVersion) === 'object' && typeof(intent_0.target.semanticVersion.major) === 'bigint' && intent_0.target.semanticVersion.major >= 0n && intent_0.target.semanticVersion.major <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.minor) === 'bigint' && intent_0.target.semanticVersion.minor >= 0n && intent_0.target.semanticVersion.minor <= 18446744073709551615n && typeof(intent_0.target.semanticVersion.patch) === 'bigint' && intent_0.target.semanticVersion.patch >= 0n && intent_0.target.semanticVersion.patch <= 18446744073709551615n && intent_0.target.templateContentHash.buffer instanceof ArrayBuffer && intent_0.target.templateContentHash.BYTES_PER_ELEMENT === 1 && intent_0.target.templateContentHash.length === 32 && intent_0.instanceCommitment.buffer instanceof ArrayBuffer && intent_0.instanceCommitment.BYTES_PER_ELEMENT === 1 && intent_0.instanceCommitment.length === 32 && intent_0.contextHash.buffer instanceof ArrayBuffer && intent_0.contextHash.BYTES_PER_ELEMENT === 1 && intent_0.contextHash.length === 32 && intent_0.sessionCredentialCommitment.buffer instanceof ArrayBuffer && intent_0.sessionCredentialCommitment.BYTES_PER_ELEMENT === 1 && intent_0.sessionCredentialCommitment.length === 32 && intent_0.actionIdHash.buffer instanceof ArrayBuffer && intent_0.actionIdHash.BYTES_PER_ELEMENT === 1 && intent_0.actionIdHash.length === 32 && intent_0.resourceSelectorHash.buffer instanceof ArrayBuffer && intent_0.resourceSelectorHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceSelectorHash.length === 32 && intent_0.resourceHash.buffer instanceof ArrayBuffer && intent_0.resourceHash.BYTES_PER_ELEMENT === 1 && intent_0.resourceHash.length === 32 && intent_0.purposeHash.buffer instanceof ArrayBuffer && intent_0.purposeHash.BYTES_PER_ELEMENT === 1 && intent_0.purposeHash.length === 32 && intent_0.recipientKindHash.buffer instanceof ArrayBuffer && intent_0.recipientKindHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientKindHash.length === 32 && intent_0.recipientHash.buffer instanceof ArrayBuffer && intent_0.recipientHash.BYTES_PER_ELEMENT === 1 && intent_0.recipientHash.length === 32 && intent_0.disclosurePolicyIdHash.buffer instanceof ArrayBuffer && intent_0.disclosurePolicyIdHash.BYTES_PER_ELEMENT === 1 && intent_0.disclosurePolicyIdHash.length === 32 && intent_0.m5IntentCommitment.buffer instanceof ArrayBuffer && intent_0.m5IntentCommitment.BYTES_PER_ELEMENT === 1 && intent_0.m5IntentCommitment.length === 32 && typeof(intent_0.issuedAt) === 'bigint' && intent_0.issuedAt >= 0n && intent_0.issuedAt <= 18446744073709551615n && intent_0.nonceHash.buffer instanceof ArrayBuffer && intent_0.nonceHash.BYTES_PER_ELEMENT === 1 && intent_0.nonceHash.length === 32)) {
       __compactRuntime.typeError('runtimeActionIntentSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 883 char 1',
+                                 'permio-authorization.compact line 884 char 1',
                                  'struct RuntimeActionIntent<intentVersion: Uint<0..65536>, target: struct TemplateRegistryTarget<namespaceHash: Bytes<32>, templateIdHash: Bytes<32>, semanticVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, templateContentHash: Bytes<32>>, instanceCommitment: Bytes<32>, contextHash: Bytes<32>, sessionCredentialCommitment: Bytes<32>, actionIdHash: Bytes<32>, resourceSelectorHash: Bytes<32>, resourceHash: Bytes<32>, purposeHash: Bytes<32>, recipientKindHash: Bytes<32>, recipientHash: Bytes<32>, disclosurePolicyIdHash: Bytes<32>, m5IntentCommitment: Bytes<32>, issuedAt: Uint<0..18446744073709551616>, nonceHash: Bytes<32>>',
                                  intent_0)
     }
@@ -26150,7 +27227,7 @@ export const pureCircuits = {
     if (!(typeof(command_0) === 'object' && typeof(command_0.commandVersion) === 'bigint' && command_0.commandVersion >= 0n && command_0.commandVersion <= 65535n && command_0.namespaceHash.buffer instanceof ArrayBuffer && command_0.namespaceHash.BYTES_PER_ELEMENT === 1 && command_0.namespaceHash.length === 32 && command_0.governancePolicyHash.buffer instanceof ArrayBuffer && command_0.governancePolicyHash.BYTES_PER_ELEMENT === 1 && command_0.governancePolicyHash.length === 32 && typeof(command_0.authorityRootVersion) === 'bigint' && command_0.authorityRootVersion >= 0n && command_0.authorityRootVersion <= 18446744073709551615n && typeof(command_0.authorityRootSequence) === 'bigint' && command_0.authorityRootSequence >= 0n && command_0.authorityRootSequence <= 18446744073709551615n && typeof(command_0.credentialStatusRootSequence) === 'bigint' && command_0.credentialStatusRootSequence >= 0n && command_0.credentialStatusRootSequence <= 18446744073709551615n && command_0.allocationCommitment.buffer instanceof ArrayBuffer && command_0.allocationCommitment.BYTES_PER_ELEMENT === 1 && command_0.allocationCommitment.length === 32 && command_0.instanceStateCommitment.buffer instanceof ArrayBuffer && command_0.instanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.instanceStateCommitment.length === 32 && typeof(command_0.instanceStateSequence) === 'bigint' && command_0.instanceStateSequence >= 0n && command_0.instanceStateSequence <= 18446744073709551615n && command_0.nextInstanceStateCommitment.buffer instanceof ArrayBuffer && command_0.nextInstanceStateCommitment.BYTES_PER_ELEMENT === 1 && command_0.nextInstanceStateCommitment.length === 32 && typeof(command_0.credentialKind) === 'bigint' && command_0.credentialKind >= 0n && command_0.credentialKind <= 65535n && command_0.credentialCommitment.buffer instanceof ArrayBuffer && command_0.credentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.credentialCommitment.length === 32 && command_0.subjectAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.subjectAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.subjectAccountCredentialCommitment.length === 32 && command_0.revocationAuthorityAccountCredentialCommitment.buffer instanceof ArrayBuffer && command_0.revocationAuthorityAccountCredentialCommitment.BYTES_PER_ELEMENT === 1 && command_0.revocationAuthorityAccountCredentialCommitment.length === 32 && typeof(command_0.statusIndex) === 'bigint' && command_0.statusIndex >= 0n && command_0.statusIndex <= 18446744073709551615n && typeof(command_0.expectedStatus) === 'bigint' && command_0.expectedStatus >= 0n && command_0.expectedStatus <= 255n && typeof(command_0.nextStatus) === 'bigint' && command_0.nextStatus >= 0n && command_0.nextStatus <= 255n && typeof(command_0.effectiveAt) === 'bigint' && command_0.effectiveAt >= 0n && command_0.effectiveAt <= 18446744073709551615n && typeof(command_0.stagingExpiresAt) === 'bigint' && command_0.stagingExpiresAt >= 0n && command_0.stagingExpiresAt <= 18446744073709551615n && command_0.commandNonce.buffer instanceof ArrayBuffer && command_0.commandNonce.BYTES_PER_ELEMENT === 1 && command_0.commandNonce.length === 32)) {
       __compactRuntime.typeError('runtimeCredentialStatusSignatureChallenge',
                                  'argument 3',
-                                 'permio-authorization.compact line 897 char 1',
+                                 'permio-authorization.compact line 898 char 1',
                                  'struct RuntimeCredentialStatusCommand<commandVersion: Uint<0..65536>, namespaceHash: Bytes<32>, governancePolicyHash: Bytes<32>, authorityRootVersion: Uint<0..18446744073709551616>, authorityRootSequence: Uint<0..18446744073709551616>, credentialStatusRootSequence: Uint<0..18446744073709551616>, allocationCommitment: Bytes<32>, instanceStateCommitment: Bytes<32>, instanceStateSequence: Uint<0..18446744073709551616>, nextInstanceStateCommitment: Bytes<32>, credentialKind: Uint<0..65536>, credentialCommitment: Bytes<32>, subjectAccountCredentialCommitment: Bytes<32>, revocationAuthorityAccountCredentialCommitment: Bytes<32>, statusIndex: Uint<0..18446744073709551616>, expectedStatus: Uint<0..256>, nextStatus: Uint<0..256>, effectiveAt: Uint<0..18446744073709551616>, stagingExpiresAt: Uint<0..18446744073709551616>, commandNonce: Bytes<32>>',
                                  command_0)
     }
@@ -26166,7 +27243,7 @@ export const pureCircuits = {
     if (!(typeof(identity_0) === 'object' && identity_0.moduleIdHash.buffer instanceof ArrayBuffer && identity_0.moduleIdHash.BYTES_PER_ELEMENT === 1 && identity_0.moduleIdHash.length === 32 && typeof(identity_0.moduleVersion) === 'object' && typeof(identity_0.moduleVersion.major) === 'bigint' && identity_0.moduleVersion.major >= 0n && identity_0.moduleVersion.major <= 18446744073709551615n && typeof(identity_0.moduleVersion.minor) === 'bigint' && identity_0.moduleVersion.minor >= 0n && identity_0.moduleVersion.minor <= 18446744073709551615n && typeof(identity_0.moduleVersion.patch) === 'bigint' && identity_0.moduleVersion.patch >= 0n && identity_0.moduleVersion.patch <= 18446744073709551615n && identity_0.implementationHash.buffer instanceof ArrayBuffer && identity_0.implementationHash.BYTES_PER_ELEMENT === 1 && identity_0.implementationHash.length === 32)) {
       __compactRuntime.typeError('proofModuleRegistryKeyFromIdentity',
                                  'argument 1',
-                                 'permio-authorization.compact line 941 char 1',
+                                 'permio-authorization.compact line 942 char 1',
                                  'struct ProofModuleIdentity<moduleIdHash: Bytes<32>, moduleVersion: struct SemanticVersion<major: Uint<0..18446744073709551616>, minor: Uint<0..18446744073709551616>, patch: Uint<0..18446744073709551616>>, implementationHash: Bytes<32>>',
                                  identity_0)
     }

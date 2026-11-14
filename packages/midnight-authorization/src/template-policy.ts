@@ -18,6 +18,7 @@ export const RUNTIME_TEMPLATE_POLICY_VERSION = 3 as const;
 const FAMILIES = new Map([
   ["delegated-capability-action-v1", "delegated-capability-action"],
   ["private-state-transition-v1", "private-state-transition"],
+  ["cross-context-evidence-bridge-v1", "cross-context-evidence-bridge"],
 ]);
 
 function hash(kind: string, values: readonly string[]): Uint8Array {

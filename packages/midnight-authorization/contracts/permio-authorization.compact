@@ -508,6 +508,7 @@ include "runtime-instance-allocation";
 include "runtime-participant-slots";
 include "runtime-action-outcome";
 include "runtime-action-execution";
+include "runtime-evidence-bridge";
 
 constructor(
     networkHash: Bytes<32>,

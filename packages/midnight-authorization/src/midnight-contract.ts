@@ -54,6 +54,7 @@ export type {
   RuntimeSlotProgress,
   RuntimeSlotSession,
   RuntimeAllocationPolicyWitness,
+  RuntimeEvidenceBridgeOpening,
   RuntimeActionCommand,
   RuntimeActionProgress,
   RuntimeSelectedActionValue,

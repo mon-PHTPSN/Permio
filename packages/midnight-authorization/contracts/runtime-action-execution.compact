@@ -1,4 +1,4 @@
-// Ordinary-user preparation grants no authority. Only executeRuntimeAction can
+// Preparation grants no authority. Only the two checked execution wrappers can
 // consume an action nullifier, change instance state or create a receipt.
 export struct RuntimeActionCommand {
     commandVersion: Uint<16>;
@@ -99,8 +99,8 @@ export pure circuit runtimeActionImplementationReference(
     network: Bytes<32>, deployment: Bytes<32>, moduleIdHash: Bytes<32>
 ): Bytes<32> {
     // Frozen v9 action-implementation profile, independent of the v10 governance
-    // ABI. This action program is byte-identical; network and exact deployment
-    // identity still bind every reference, in addition to its registered code hash.
+    // ABI. Network and exact deployment identity bind every reference, in
+    // addition to its registered code hash.
     return persistentHash<RuntimeActionImplementationReference>(RuntimeActionImplementationReference{
         domain: pad(32, "permio:implementation:v1"), network: network, deployment: deployment,
         contractVersion: 9, entryPoint: pad(32, "executeRuntimeAction"), moduleIdHash: moduleIdHash
@@ -224,20 +224,23 @@ circuit assertRuntimeActionContext(
     const moduleKey = proofModuleRegistryKeyFromBinding(binding);
     assert(proofModules.member(disclose(moduleKey)), "Action proof module is not registered");
     const moduleRecord = proofModules.lookup(disclose(moduleKey));
-    const implementationReference = runtimeActionImplementationReference(
-        targetNetworkHash, allocation.targetContractIdentity, binding.moduleIdHash);
+    const network = targetNetworkHash;
+    const bridge = binding.moduleIdHash == runtimeEvidenceBridgeModuleId();
+    const implementationReference = bridge
+        ? runtimeEvidenceBridgeImplementationReference(network, allocation.targetContractIdentity, binding.moduleIdHash)
+        : runtimeActionImplementationReference(network, allocation.targetContractIdentity, binding.moduleIdHash);
     assert(moduleRecord.lifecycleStatus == 4 && binding.moduleVersion.major == 1 &&
         binding.moduleVersion.minor == 0 && binding.moduleVersion.patch == 0 &&
         moduleRecord.receiptSchemaHash == binding.receiptSchemaHash &&
         binding.receiptSchemaHash == runtimeActionReceiptSchemaHash() &&
-        moduleRecord.inputSchemaHash == runtimeActionInputSchemaHash() &&
+        moduleRecord.inputSchemaHash == (bridge ? runtimeEvidenceBridgeInputSchemaHash() : runtimeActionInputSchemaHash()) &&
         moduleRecord.configurationSchemaHash == runtimeActionConfigurationSchemaHash() &&
         moduleRecord.compilerVersionHash == runtimeActionCompilerProfileHash() &&
         moduleRecord.compatibilityPolicyHash == runtimeActionCompatibilityPolicyHash() &&
         moduleRecord.implementationReferenceHash == implementationReference,
         "Action module implementation, lifecycle, version or receipt schema is unsupported");
     assert((command.transitioning && binding.moduleIdHash == runtimeStateTransitionModuleId()) ||
-        (!command.transitioning && binding.moduleIdHash == runtimeDelegatedActionModuleId()),
+        (!command.transitioning && (binding.moduleIdHash == runtimeDelegatedActionModuleId() || bridge)),
         "UNSUPPORTED_PROOF_REQUIREMENT");
     Schnorr_schnorrVerify<1>(runtimeActionCommandMessage(command), signature, session.runtimePublicKey);
     assert(!usedRuntimeActionNullifiers.member(disclose(runtimeScopedActionNullifier(allocation, intent))),
@@ -326,7 +329,51 @@ export circuit prepareRuntimeAction(
     }));
 }
 
+// The ordinary entry explicitly excludes the bridge family: preparation alone
+// cannot bypass the extra private manifest opening in the dedicated entry.
 export circuit executeRuntimeAction(
+    command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
+    intent: RuntimeActionIntent, ancestry: RuntimeActiveAncestry,
+    sessionSignature: Schnorr_SchnorrSignature, intentSignature: Schnorr_SchnorrSignature,
+    capabilityPaths: RuntimeActionScopePaths, sessionPaths: RuntimeActionScopePaths,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening,
+    policy: RuntimeTemplateActionPolicy, binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>, progress: RuntimeActionProgress,
+    issuer: GovernanceActivatorLeaf, instanceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    namespaceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    transition: RuntimeTemplateTransition, transitionPath: MerkleTreePath<20, Bytes<32>>,
+    nextStateIdHash: Bytes<32>, nextNonce: Bytes<32>
+): Bytes<32> {
+    assert(binding.moduleIdHash != runtimeEvidenceBridgeModuleId(),
+        "Evidence bridge requires its dedicated entry");
+    return executeRuntimeActionCore(command, signature, intent, ancestry, sessionSignature, intentSignature,
+        capabilityPaths, sessionPaths, allocation, state, policy, binding, bindingPath, progress,
+        issuer, instanceIssuerPath, namespaceIssuerPath, transition, transitionPath, nextStateIdHash, nextNonce);
+}
+
+export circuit executeRuntimeEvidenceBridge(
+    command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
+    intent: RuntimeActionIntent, ancestry: RuntimeActiveAncestry,
+    sessionSignature: Schnorr_SchnorrSignature, intentSignature: Schnorr_SchnorrSignature,
+    capabilityPaths: RuntimeActionScopePaths, sessionPaths: RuntimeActionScopePaths,
+    allocation: RuntimeInstanceAllocation, state: RuntimeStateOpening,
+    policy: RuntimeTemplateActionPolicy, binding: ProofModuleBinding,
+    bindingPath: MerkleTreePath<20, Bytes<32>>, progress: RuntimeActionProgress,
+    issuer: GovernanceActivatorLeaf, instanceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    namespaceIssuerPath: MerkleTreePath<20, Bytes<32>>,
+    transition: RuntimeTemplateTransition, transitionPath: MerkleTreePath<20, Bytes<32>>,
+    nextStateIdHash: Bytes<32>, nextNonce: Bytes<32>,
+    opening: RuntimeEvidenceBridgeOpening, outputTypeHash: Bytes<32>
+): Bytes<32> {
+    assert(binding.moduleIdHash == runtimeEvidenceBridgeModuleId() && !command.transitioning,
+        "Evidence bridge entry requires its dedicated nontransitioning module");
+    assertRuntimeEvidenceBridgeOpening(command, intent, policy, opening, outputTypeHash);
+    return executeRuntimeActionCore(command, signature, intent, ancestry, sessionSignature, intentSignature,
+        capabilityPaths, sessionPaths, allocation, state, policy, binding, bindingPath, progress,
+        issuer, instanceIssuerPath, namespaceIssuerPath, transition, transitionPath, nextStateIdHash, nextNonce);
+}
+
+circuit executeRuntimeActionCore(
     command: RuntimeActionCommand, signature: Schnorr_SchnorrSignature,
     intent: RuntimeActionIntent, ancestry: RuntimeActiveAncestry,
     sessionSignature: Schnorr_SchnorrSignature, intentSignature: Schnorr_SchnorrSignature,

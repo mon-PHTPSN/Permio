@@ -23481,6 +23481,3787 @@
       }
     },
     {
+      "name": "executeRuntimeEvidenceBridge",
+      "pure": false,
+      "proof": true,
+      "arguments": [
+        {
+          "name": "command",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActionCommand",
+            "elements": [
+              {
+                "name": "commandVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "intentCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "allocationCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "stateCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "stateSequence",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "authorityRootVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "authorityRootSequence",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "statusRootSequence",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "policyCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "bindingCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "slotAssignmentIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "selectedInputsCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "selectedOutputsCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "nextStateCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "transitioning",
+                "type": {
+                  "type-name": "Boolean"
+                }
+              },
+              {
+                "name": "effectiveAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "validBefore",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "signature",
+          "type": {
+            "type-name": "Struct",
+            "name": "SchnorrSignature",
+            "elements": [
+              {
+                "name": "announcement",
+                "type": {
+                  "type-name": "Alias",
+                  "name": "JubjubPoint",
+                  "type": {
+                    "type-name": "Opaque",
+                    "tsType": "JubjubPoint"
+                  }
+                }
+              },
+              {
+                "name": "response",
+                "type": {
+                  "type-name": "Field"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "intent",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActionIntent",
+            "elements": [
+              {
+                "name": "intentVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "target",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "TemplateRegistryTarget",
+                  "elements": [
+                    {
+                      "name": "namespaceHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "templateIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "semanticVersion",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "SemanticVersion",
+                        "elements": [
+                          {
+                            "name": "major",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "minor",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "patch",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "templateContentHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "instanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "contextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "sessionCredentialCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "actionIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "resourceSelectorHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "resourceHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKindHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "disclosurePolicyIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "m5IntentCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "issuedAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "nonceHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "ancestry",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActiveAncestry",
+            "elements": [
+              {
+                "name": "witnessVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "capabilityCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 255
+                }
+              },
+              {
+                "name": "capabilities",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 17,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "RuntimeCapabilityCredential",
+                    "elements": [
+                      {
+                        "name": "credentialVersion",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 65535
+                        }
+                      },
+                      {
+                        "name": "target",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "TemplateRegistryTarget",
+                          "elements": [
+                            {
+                              "name": "namespaceHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            },
+                            {
+                              "name": "templateIdHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            },
+                            {
+                              "name": "semanticVersion",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "SemanticVersion",
+                                "elements": [
+                                  {
+                                    "name": "major",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  },
+                                  {
+                                    "name": "minor",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  },
+                                  {
+                                    "name": "patch",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "templateContentHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "instanceCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "contextHash",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "grantIdHash",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "m5GrantCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "subjectAccountCredentialCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "parentCapabilityCredentialCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "issuerAccountCredentialCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "namespaceIssuerAuthorityCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "scopeRoots",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "RuntimeScopeRoots",
+                          "elements": [
+                            {
+                              "name": "actionsRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "resourceSelectorsRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "resourcesRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "purposesRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "recipientKindsRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "recipientsRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "disclosurePolicyIdsRoot",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "scopeCounts",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "RuntimeScopeCounts",
+                          "elements": [
+                            {
+                              "name": "actionsCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "resourceSelectorsCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "resourcesCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "purposesCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "recipientKindsCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "recipientsCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            },
+                            {
+                              "name": "disclosurePolicyIdsCount",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 4294967295
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "notBefore",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      },
+                      {
+                        "name": "expiresAt",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      },
+                      {
+                        "name": "delegationDepth",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 65535
+                        }
+                      },
+                      {
+                        "name": "maxDelegationDepth",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 65535
+                        }
+                      },
+                      {
+                        "name": "statusIndex",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      },
+                      {
+                        "name": "issuedAt",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "accounts",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 17,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "RuntimeAccountCredential",
+                    "elements": [
+                      {
+                        "name": "credentialVersion",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 65535
+                        }
+                      },
+                      {
+                        "name": "target",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "TemplateRegistryTarget",
+                          "elements": [
+                            {
+                              "name": "namespaceHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            },
+                            {
+                              "name": "templateIdHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            },
+                            {
+                              "name": "semanticVersion",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "SemanticVersion",
+                                "elements": [
+                                  {
+                                    "name": "major",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  },
+                                  {
+                                    "name": "minor",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  },
+                                  {
+                                    "name": "patch",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 18446744073709551615
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "templateContentHash",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "instanceCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "contextHash",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "accountIdHash",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "principalKind",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 65535
+                        }
+                      },
+                      {
+                        "name": "m5AccountCommitment",
+                        "type": {
+                          "type-name": "Bytes",
+                          "length": 32
+                        }
+                      },
+                      {
+                        "name": "runtimePublicKey",
+                        "type": {
+                          "type-name": "Alias",
+                          "name": "JubjubPoint",
+                          "type": {
+                            "type-name": "Opaque",
+                            "tsType": "JubjubPoint"
+                          }
+                        }
+                      },
+                      {
+                        "name": "statusIndex",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      },
+                      {
+                        "name": "issuedAt",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      },
+                      {
+                        "name": "validBefore",
+                        "type": {
+                          "type-name": "Uint",
+                          "maxval": 18446744073709551615
+                        }
+                      }
+                    ]
+                  }
+                }
+              },
+              {
+                "name": "session",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "RuntimeSessionCredential",
+                  "elements": [
+                    {
+                      "name": "credentialVersion",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 65535
+                      }
+                    },
+                    {
+                      "name": "target",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "TemplateRegistryTarget",
+                        "elements": [
+                          {
+                            "name": "namespaceHash",
+                            "type": {
+                              "type-name": "Bytes",
+                              "length": 32
+                            }
+                          },
+                          {
+                            "name": "templateIdHash",
+                            "type": {
+                              "type-name": "Bytes",
+                              "length": 32
+                            }
+                          },
+                          {
+                            "name": "semanticVersion",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "SemanticVersion",
+                              "elements": [
+                                {
+                                  "name": "major",
+                                  "type": {
+                                    "type-name": "Uint",
+                                    "maxval": 18446744073709551615
+                                  }
+                                },
+                                {
+                                  "name": "minor",
+                                  "type": {
+                                    "type-name": "Uint",
+                                    "maxval": 18446744073709551615
+                                  }
+                                },
+                                {
+                                  "name": "patch",
+                                  "type": {
+                                    "type-name": "Uint",
+                                    "maxval": 18446744073709551615
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "templateContentHash",
+                            "type": {
+                              "type-name": "Bytes",
+                              "length": 32
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "instanceCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "contextHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "sessionIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "m5SessionCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "subjectAccountCredentialCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "capabilityCredentialCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "scopeRoots",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "RuntimeScopeRoots",
+                        "elements": [
+                          {
+                            "name": "actionsRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "resourceSelectorsRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "resourcesRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "purposesRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "recipientKindsRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "recipientsRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          },
+                          {
+                            "name": "disclosurePolicyIdsRoot",
+                            "type": {
+                              "type-name": "Struct",
+                              "name": "MerkleTreeDigest",
+                              "elements": [
+                                {
+                                  "name": "field",
+                                  "type": {
+                                    "type-name": "Field"
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "scopeCounts",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "RuntimeScopeCounts",
+                        "elements": [
+                          {
+                            "name": "actionsCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "resourceSelectorsCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "resourcesCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "purposesCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "recipientKindsCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "recipientsCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          },
+                          {
+                            "name": "disclosurePolicyIdsCount",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 4294967295
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "runtimePublicKey",
+                      "type": {
+                        "type-name": "Alias",
+                        "name": "JubjubPoint",
+                        "type": {
+                          "type-name": "Opaque",
+                          "tsType": "JubjubPoint"
+                        }
+                      }
+                    },
+                    {
+                      "name": "notBefore",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "expiresAt",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "statusIndex",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "issuedAt",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "statusProof",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "RuntimeStatusMultiproof",
+                  "elements": [
+                    {
+                      "name": "witnessVersion",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 65535
+                      }
+                    },
+                    {
+                      "name": "rootSequence",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "leafCount",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 255
+                      }
+                    },
+                    {
+                      "name": "leaves",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 35,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "RuntimeStatusMembership",
+                          "elements": [
+                            {
+                              "name": "statusIndex",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 1048575
+                              }
+                            },
+                            {
+                              "name": "leaf",
+                              "type": {
+                                "type-name": "Bytes",
+                                "length": 32
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    },
+                    {
+                      "name": "steps",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 588,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "RuntimeStatusProofStep",
+                          "elements": [
+                            {
+                              "name": "kind",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 255
+                              }
+                            },
+                            {
+                              "name": "leftFromStack",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            },
+                            {
+                              "name": "rightFromStack",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            },
+                            {
+                              "name": "left",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "RuntimeStatusProofNode",
+                                "elements": [
+                                  {
+                                    "name": "level",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 255
+                                    }
+                                  },
+                                  {
+                                    "name": "index",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 1048575
+                                    }
+                                  },
+                                  {
+                                    "name": "digest",
+                                    "type": {
+                                      "type-name": "Struct",
+                                      "name": "MerkleTreeDigest",
+                                      "elements": [
+                                        {
+                                          "name": "field",
+                                          "type": {
+                                            "type-name": "Field"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "right",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "RuntimeStatusProofNode",
+                                "elements": [
+                                  {
+                                    "name": "level",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 255
+                                    }
+                                  },
+                                  {
+                                    "name": "index",
+                                    "type": {
+                                      "type-name": "Uint",
+                                      "maxval": 1048575
+                                    }
+                                  },
+                                  {
+                                    "name": "digest",
+                                    "type": {
+                                      "type-name": "Struct",
+                                      "name": "MerkleTreeDigest",
+                                      "elements": [
+                                        {
+                                          "name": "field",
+                                          "type": {
+                                            "type-name": "Field"
+                                          }
+                                        }
+                                      ]
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "parentIndex",
+                              "type": {
+                                "type-name": "Uint",
+                                "maxval": 1048575
+                              }
+                            },
+                            {
+                              "name": "stackTail",
+                              "type": {
+                                "type-name": "Field"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "sessionSignature",
+          "type": {
+            "type-name": "Struct",
+            "name": "SchnorrSignature",
+            "elements": [
+              {
+                "name": "announcement",
+                "type": {
+                  "type-name": "Alias",
+                  "name": "JubjubPoint",
+                  "type": {
+                    "type-name": "Opaque",
+                    "tsType": "JubjubPoint"
+                  }
+                }
+              },
+              {
+                "name": "response",
+                "type": {
+                  "type-name": "Field"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "intentSignature",
+          "type": {
+            "type-name": "Struct",
+            "name": "SchnorrSignature",
+            "elements": [
+              {
+                "name": "announcement",
+                "type": {
+                  "type-name": "Alias",
+                  "name": "JubjubPoint",
+                  "type": {
+                    "type-name": "Opaque",
+                    "tsType": "JubjubPoint"
+                  }
+                }
+              },
+              {
+                "name": "response",
+                "type": {
+                  "type-name": "Field"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "capabilityPaths",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActionScopePaths",
+            "elements": [
+              {
+                "name": "actions",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "resourceSelectors",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "resources",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "purposes",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "recipientKinds",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "recipients",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "disclosurePolicyIds",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "sessionPaths",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActionScopePaths",
+            "elements": [
+              {
+                "name": "actions",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "resourceSelectors",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "resources",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "purposes",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "recipientKinds",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "recipients",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "disclosurePolicyIds",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreePath",
+                  "elements": [
+                    {
+                      "name": "leaf",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "path",
+                      "type": {
+                        "type-name": "Vector",
+                        "length": 20,
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreePathEntry",
+                          "elements": [
+                            {
+                              "name": "sibling",
+                              "type": {
+                                "type-name": "Struct",
+                                "name": "MerkleTreeDigest",
+                                "elements": [
+                                  {
+                                    "name": "field",
+                                    "type": {
+                                      "type-name": "Field"
+                                    }
+                                  }
+                                ]
+                              }
+                            },
+                            {
+                              "name": "goes_left",
+                              "type": {
+                                "type-name": "Boolean"
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "allocation",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeInstanceAllocation",
+            "elements": [
+              {
+                "name": "allocationVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "target",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "TemplateRegistryTarget",
+                  "elements": [
+                    {
+                      "name": "namespaceHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "templateIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "semanticVersion",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "SemanticVersion",
+                        "elements": [
+                          {
+                            "name": "major",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "minor",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "patch",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "templateContentHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "instanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "instanceIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "allocationRequestIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "m4AuthorizationCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "allocatorAuthorityCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "capabilityIssuersRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "capabilityIssuerCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "initialStateCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "governancePolicyHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "authorityRootVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "authorityRootSequence",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "targetNetworkHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "targetContractIdentity",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "authorizedAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "createdAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "expiresAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "allocationValidBefore",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "allocationNonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "state",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeStateOpening",
+            "elements": [
+              {
+                "name": "stateVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "instanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "stateIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "lastMutationAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "slotAssignmentsRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "slotAssignmentCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "slotBindingsRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "slotBindingCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "nonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "policy",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeTemplateActionPolicy",
+            "elements": [
+              {
+                "name": "policyVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "target",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "TemplateRegistryTarget",
+                  "elements": [
+                    {
+                      "name": "namespaceHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "templateIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "semanticVersion",
+                      "type": {
+                        "type-name": "Struct",
+                        "name": "SemanticVersion",
+                        "elements": [
+                          {
+                            "name": "major",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "minor",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          },
+                          {
+                            "name": "patch",
+                            "type": {
+                              "type-name": "Uint",
+                              "maxval": 18446744073709551615
+                            }
+                          }
+                        ]
+                      }
+                    },
+                    {
+                      "name": "templateContentHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "actionIndex",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "bindingActionIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "actionIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "proofProfileIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "proofFamilyHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "contextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "actorSlotIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "slotAssignmentRulesRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "slotAssignmentRuleCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "initialStateIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "resourceSelectorHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKindHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "disclosurePolicyIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "capabilityRuleIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "maxCapabilityDuration",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "maxDelegationDepth",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 255
+                }
+              },
+              {
+                "name": "revocable",
+                "type": {
+                  "type-name": "Boolean"
+                }
+              },
+              {
+                "name": "inputRecordTypesHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "outputClaimTypesHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "inputRecordTypesRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "inputRecordTypeCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "outputClaimTypesRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "outputClaimTypeCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "executionAdapterHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "transitionRoot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "MerkleTreeDigest",
+                  "elements": [
+                    {
+                      "name": "field",
+                      "type": {
+                        "type-name": "Field"
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "transitionCount",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "binding",
+          "type": {
+            "type-name": "Struct",
+            "name": "ProofModuleBinding",
+            "elements": [
+              {
+                "name": "bindingVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "actionIndex",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "actionIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "proofProfileIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "moduleIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "moduleVersion",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "SemanticVersion",
+                  "elements": [
+                    {
+                      "name": "major",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "minor",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "patch",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "implementationHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "configurationHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "receiptSchemaHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "bindingPath",
+          "type": {
+            "type-name": "Struct",
+            "name": "MerkleTreePath",
+            "elements": [
+              {
+                "name": "leaf",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "path",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 20,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "MerkleTreePathEntry",
+                    "elements": [
+                      {
+                        "name": "sibling",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreeDigest",
+                          "elements": [
+                            {
+                              "name": "field",
+                              "type": {
+                                "type-name": "Field"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "goes_left",
+                        "type": {
+                          "type-name": "Boolean"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "progress",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeActionProgress",
+            "elements": [
+              {
+                "name": "slot",
+                "type": {
+                  "type-name": "Struct",
+                  "name": "RuntimeSlotProgress",
+                  "elements": [
+                    {
+                      "name": "phase",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 255
+                      }
+                    },
+                    {
+                      "name": "nextAssignmentIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "expectedAccountCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "childIssuedSequence",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 18446744073709551615
+                      }
+                    },
+                    {
+                      "name": "previousBindingAssignmentIdHash",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "previousBindingAccountCommitment",
+                      "type": {
+                        "type-name": "Bytes",
+                        "length": 32
+                      }
+                    },
+                    {
+                      "name": "inactive",
+                      "type": {
+                        "type-name": "Boolean"
+                      }
+                    },
+                    {
+                      "name": "steps",
+                      "type": {
+                        "type-name": "Uint",
+                        "maxval": 4294967295
+                      }
+                    }
+                  ]
+                }
+              },
+              {
+                "name": "nextInputIndex",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "nextOutputIndex",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 4294967295
+                }
+              },
+              {
+                "name": "inputsAccumulator",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "outputsAccumulator",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "issuer",
+          "type": {
+            "type-name": "Struct",
+            "name": "GovernanceActivatorLeaf",
+            "elements": [
+              {
+                "name": "leafVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "namespaceHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "governancePolicyHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "authorityKind",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "publicKey",
+                "type": {
+                  "type-name": "Alias",
+                  "name": "JubjubPoint",
+                  "type": {
+                    "type-name": "Opaque",
+                    "tsType": "JubjubPoint"
+                  }
+                }
+              },
+              {
+                "name": "validAfter",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "validBefore",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "instanceIssuerPath",
+          "type": {
+            "type-name": "Struct",
+            "name": "MerkleTreePath",
+            "elements": [
+              {
+                "name": "leaf",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "path",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 20,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "MerkleTreePathEntry",
+                    "elements": [
+                      {
+                        "name": "sibling",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreeDigest",
+                          "elements": [
+                            {
+                              "name": "field",
+                              "type": {
+                                "type-name": "Field"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "goes_left",
+                        "type": {
+                          "type-name": "Boolean"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "namespaceIssuerPath",
+          "type": {
+            "type-name": "Struct",
+            "name": "MerkleTreePath",
+            "elements": [
+              {
+                "name": "leaf",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "path",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 20,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "MerkleTreePathEntry",
+                    "elements": [
+                      {
+                        "name": "sibling",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreeDigest",
+                          "elements": [
+                            {
+                              "name": "field",
+                              "type": {
+                                "type-name": "Field"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "goes_left",
+                        "type": {
+                          "type-name": "Boolean"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "transition",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeTemplateTransition",
+            "elements": [
+              {
+                "name": "transitionVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "actionIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "fromStateIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "toStateIdHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "transitionPath",
+          "type": {
+            "type-name": "Struct",
+            "name": "MerkleTreePath",
+            "elements": [
+              {
+                "name": "leaf",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "path",
+                "type": {
+                  "type-name": "Vector",
+                  "length": 20,
+                  "type": {
+                    "type-name": "Struct",
+                    "name": "MerkleTreePathEntry",
+                    "elements": [
+                      {
+                        "name": "sibling",
+                        "type": {
+                          "type-name": "Struct",
+                          "name": "MerkleTreeDigest",
+                          "elements": [
+                            {
+                              "name": "field",
+                              "type": {
+                                "type-name": "Field"
+                              }
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "name": "goes_left",
+                        "type": {
+                          "type-name": "Boolean"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "nextStateIdHash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "nextNonce",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "opening",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeEvidenceBridgeOpening",
+            "elements": [
+              {
+                "name": "bindingVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "sourceContextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "sourceInstanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationContextCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationCaseCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "permittedUseHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "expiresAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "nonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKeyFingerprint",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "manifestRoot",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "outputTypeHash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeBinding",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "opening",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeEvidenceBridgeOpening",
+            "elements": [
+              {
+                "name": "bindingVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "sourceContextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "sourceInstanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationContextCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationCaseCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "permittedUseHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "expiresAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "nonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKeyFingerprint",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "manifestRoot",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeResourceHash",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "value",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeRecipientHash",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "value",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeNonceHash",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "value",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeSelectedOutput",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "opening",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeEvidenceBridgeOpening",
+            "elements": [
+              {
+                "name": "bindingVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "sourceContextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "sourceInstanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationContextCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationCaseCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "permittedUseHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "expiresAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "nonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKeyFingerprint",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "manifestRoot",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "outputTypeHash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Struct",
+        "name": "RuntimeSelectedActionValue",
+        "elements": [
+          {
+            "name": "valueVersion",
+            "type": {
+              "type-name": "Uint",
+              "maxval": 65535
+            }
+          },
+          {
+            "name": "typeHash",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "contextHash",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "resourceHash",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "payloadCommitment",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          },
+          {
+            "name": "nonce",
+            "type": {
+              "type-name": "Bytes",
+              "length": 32
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeOutputCommitment",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "opening",
+          "type": {
+            "type-name": "Struct",
+            "name": "RuntimeEvidenceBridgeOpening",
+            "elements": [
+              {
+                "name": "bindingVersion",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 65535
+                }
+              },
+              {
+                "name": "sourceContextHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "sourceInstanceCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationContextCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "destinationCaseCommitment",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "purposeHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "permittedUseHash",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "expiresAt",
+                "type": {
+                  "type-name": "Uint",
+                  "maxval": 18446744073709551615
+                }
+              },
+              {
+                "name": "nonce",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "recipientKeyFingerprint",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              },
+              {
+                "name": "manifestRoot",
+                "type": {
+                  "type-name": "Bytes",
+                  "length": 32
+                }
+              }
+            ]
+          }
+        },
+        {
+          "name": "outputTypeHash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeModuleId",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeInputSchemaHash",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
+      "name": "runtimeEvidenceBridgeImplementationReference",
+      "pure": true,
+      "proof": false,
+      "arguments": [
+        {
+          "name": "network",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "deployment",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        },
+        {
+          "name": "moduleIdHash",
+          "type": {
+            "type-name": "Bytes",
+            "length": 32
+          }
+        }
+      ],
+      "result-type": {
+        "type-name": "Bytes",
+        "length": 32
+      }
+    },
+    {
       "name": "activationAdmissionMessage",
       "pure": true,
       "proof": false,

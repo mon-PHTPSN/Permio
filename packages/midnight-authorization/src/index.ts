@@ -31,3 +31,4 @@ export { Contract as BusinessAuthorizationContract, ledger as businessAuthorizat
   pureCircuits as businessAuthorizationPureCircuits } from "../contracts/managed/permio-authorization-v11/contract/index.js";
 export type { RuntimeBusinessRecord, RuntimeSignedBusinessRecord, RuntimeBusinessPredicate,
   RuntimeBusinessPredicateContext, RuntimeBusinessActionProgress } from "../contracts/managed/permio-authorization-v11/contract/index.js";
+export * from "./evidence-bridge.ts";

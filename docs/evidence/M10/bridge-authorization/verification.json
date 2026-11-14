@@ -1,0 +1,113 @@
+{
+  "baseline": "8d08ece2271ca5eb291b2d88b4436c8045ba8938",
+  "branch": "feat/evidence-bridge-authorization",
+  "environment": {
+    "windowsNode": "24.13.1",
+    "wslNode": "22.23.2",
+    "wslNpm": "10.9.8",
+    "compiler": "0.31.1",
+    "language": "0.23.0",
+    "runtime": "0.16.0",
+    "zkir": "2.1.0 (pinned; key generation not run)"
+  },
+  "scope": "generated Compact circuit/ledger simulation; no actual ZK proof, deployment, activation, transaction or chain-finality claim",
+  "sourceFiles": {
+    "packages/midnight-authorization/contracts/permio-authorization.compact": "5dbf4a38722346381d06ece894d39cb1bc8689816aed179b5c19d29df427acac",
+    "packages/midnight-authorization/contracts/runtime-action-execution.compact": "76a828c0aeedd5cc815969b25863a1d0c66778d6de763fc7936458fc9b5d7a0f",
+    "packages/midnight-authorization/contracts/runtime-evidence-bridge.compact": "d22e4969e3709a965aaec391806393a6ec9895c35cd84b47bf4fb0150d1b5cc4",
+    "packages/midnight-authorization/src/evidence-bridge.ts": "b2dacc2b841e35cca278f1dec33f0b4c78e25ceb2ce2bf3078afdb71ef3d15ab",
+    "packages/midnight-authorization/src/template-policy.ts": "8985e592de13bc910f63fe02ac75f5925a7595ce2f71705a741b36b1090900d4",
+    "packages/midnight-authorization/src/indexed-decision-receipt.ts": "ce53ac2a7029890b1caddca242f37befc31b910ffbfedd93ca40cd9893e1bc7c",
+    "packages/midnight-authorization/src/midnight-contract.ts": "ee6e33e93a7837cc9b2d3e1014de13e5478cce3bcde74687a173dc8d07980015",
+    "packages/midnight-authorization/src/index.ts": "5ff875f13c1454d9f036ffade3a1f2b1a2667079063a512b9eee9db1a8253359",
+    "packages/midnight-authorization/package.json": "86a8b388845c89888e77272327a0b803740fdd4e13176cbfa07bae9abc74bb17",
+    "packages/midnight-authorization/test/evidence-bridge-identifiers.test.ts": "620ac552b2aa3f92c363fa6f6433d21380a0161949d206e4c7b95e1c8fd84f04",
+    "packages/midnight-authorization/test/evidence-bridge.test.ts": "f2af649314d4a76cde49c0986d2b964ecfc9b583fade432fcffaf77c4ac7206b",
+    "packages/midnight-authorization/test/fixtures/ordinary-action.ts": "ba9a5fbb35ab459b3eda5c2dca9ac6edabcc0b025a4750144fe6d7de4a089d28",
+    "packages/midnight-authorization/test/indexed-decision-receipt.test.ts": "88500fdd6243b67824108245a191c6163630ce3c456b1786606731cba5858606"
+  },
+  "compile": {
+    "command": "wsl.exe -d Ubuntu-24.04 -u root -- /root/.compact/versions/0.31.1/x86_64-unknown-linux-musl/compactc --skip-zk /mnt/c/Users/GEB/.codex/worktrees/permio-evidence-bridge/Permio-m8-execution-registry/packages/midnight-authorization/contracts/permio-authorization.compact /mnt/c/Users/GEB/.codex/worktrees/permio-evidence-bridge/Permio-m8-execution-registry/packages/midnight-authorization/contracts/managed/permio-authorization",
+    "exitCode": 0,
+    "attempts": 2,
+    "firstAttempt": "potential witness disclosure from public network ledger read inside private conditional; fixed by reading public network before conditional"
+  },
+  "tests": [
+    {
+      "command": "node --test packages/midnight-authorization/test/evidence-bridge-identifiers.test.ts (before implementation)",
+      "pass": 3,
+      "fail": 3,
+      "expectedRed": "missing generated bridge identifier helpers"
+    },
+    {
+      "command": "node --test packages/midnight-authorization/test/evidence-bridge.test.ts (before implementation)",
+      "pass": 0,
+      "fail": 6,
+      "expectedRed": "UNSUPPORTED_PROOF_REQUIREMENT"
+    },
+    {
+      "command": "node --test --test-name-pattern \"pins a dedicated\" packages/midnight-authorization/test/indexed-decision-receipt.test.ts (before reader implementation)",
+      "pass": 0,
+      "fail": 1,
+      "expectedRed": "missing dedicated pinned bridge reader"
+    },
+    {
+      "command": "node --test packages/midnight-authorization/test/evidence-bridge-identifiers.test.ts packages/midnight-authorization/test/evidence-bridge.test.ts packages/midnight-authorization/test/ordinary-action.test.ts packages/midnight-authorization/test/module-semantic-rejection.test.ts packages/midnight-authorization/test/indexed-decision-receipt.test.ts",
+      "pass": 29,
+      "fail": 1,
+      "durationMs": 304343.6603,
+      "failure": "invalid zero opening-nonce fixture also supplied zero selected-output nonce; existing evidence-plan nonzero nonce guard rejected before circuit. Corrected fixture and reran bridge suite. Ordinary13/13,module-semantic1/1 passed."
+    },
+    {
+      "command": "node --test packages/midnight-authorization/test/evidence-bridge.test.ts",
+      "pass": 7,
+      "fail": 0,
+      "durationMs": 180316.8616,
+      "stdout": "bridge-simulation.log"
+    },
+    {
+      "command": "node --test packages/midnight-authorization/test/evidence-bridge-identifiers.test.ts packages/midnight-authorization/test/indexed-decision-receipt.test.ts",
+      "pass": 10,
+      "fail": 0,
+      "durationMs": 3655.1597,
+      "stdout": "identifiers-and-reader.log"
+    }
+  ],
+  "typecheck": {
+    "command": "tsc --project <temporary scoped config extending root tsconfig with exact authorization src/test files, repository rootDir and root node_modules/@types>",
+    "exitCode": 0,
+    "initialHarnessCorrections": [
+      "Windows command-line length limit avoided with temporary config",
+      "explicit files/rootDir supplied for temp config outside repository"
+    ],
+    "rootCheck": "clean peer root tsc initially failed on missing generated Solidity types in three unrelated files; parent prepared worktree owns root verification"
+  },
+  "browserSmoke": {
+    "exitCode": 0,
+    "result": "import @permio/midnight-authorization/evidence-bridge and compute binding/output with globalThis.Buffer undefined"
+  },
+  "ledgerReceiptPath": [
+    1,
+    13
+  ],
+  "moduleIdHash": "0x7dae6044797107b272c86ea0d9867cd76b9919c0059f6e10dc4a804a4f741c87",
+  "approvalReview": {
+    "command": "npm run compile:solidity",
+    "status": "rejected before execution",
+    "reason": "generated Solidity artifact mutation outside assigned authorization scope",
+    "followup": "no retry or workaround; parent owns prepared-worktree root checks"
+  },
+  "remainingGates": [
+    "actual prover/verifier key generation and proof generation",
+    "deployment and bridge template/module activation",
+    "finalized chain execution and receipt gateway acceptance"
+  ],
+  "git": {
+    "indexChanged": false,
+    "commitsCreated": false,
+    "privateOverrideIgnored": true,
+    "generatedBindings": "baseline tracks compiler info and managed JS/types/map; compiler regenerated them; parent re-generates independently",
+    "keyAndZkirAssetsIgnored": true,
+    "lockfileChanged": false
+  }
+}

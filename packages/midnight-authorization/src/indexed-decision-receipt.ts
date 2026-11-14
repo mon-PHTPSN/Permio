@@ -5,7 +5,7 @@ import { ContractCall, Transaction,
 import { Bytes32Descriptor, CompactTypeBoolean, CompactTypeUnsignedInteger, ContractState, StateValue } from "@midnight-ntwrk/midnight-js-protocol/compact-runtime";
 import { getNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import type { PublicDataProvider } from "@midnight-ntwrk/midnight-js-types";
-import { ledger } from "../contracts/managed/permio-authorization/contract/index.js";
+import { ledger, pureCircuits as pure } from "../contracts/managed/permio-authorization/contract/index.js";
 import { ledger as businessLedger } from "../contracts/managed/permio-authorization-v11/contract/index.js";
 import { ledger as activationLedger } from "../contracts/managed/permio-authorization-v12/contract/index.js";
 import { runtimeDecisionReceiptAlignedValue, runtimeDecisionReceiptId,
@@ -58,7 +58,7 @@ function assertDecisionReceiptInsertion(
     `Exact ${version} action did not prove absence and insert this receipt body`);
 }
 
-interface IndexedDecisionReceiptReaderInput {
+export interface IndexedDecisionReceiptReaderInput {
   readonly network: "preprod" | "undeployed";
   readonly indexerUrl?: string;
   readonly profile?: PreprodConnectionProfile;
@@ -83,20 +83,26 @@ interface ReceiptLayout {
  * It is not a self-verifying consensus light client and performs no submission.
  */
 export function createIndexedDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
-  return createIndexedReceiptReader(input, { decodeLedger: ledger, assertInsertion: assertV9DecisionReceiptInsertion });
+  return createIndexedReceiptReader(input, { decodeLedger: ledger, assertInsertion: assertV9DecisionReceiptInsertion }, "executeRuntimeAction");
 }
 
 /** Explicit v11 source adapter; never guesses a contract version from receipt data. */
 export function createIndexedBusinessDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
-  return createIndexedReceiptReader(input, { decodeLedger: businessLedger, assertInsertion: assertV11DecisionReceiptInsertion });
+  return createIndexedReceiptReader(input, { decodeLedger: businessLedger, assertInsertion: assertV11DecisionReceiptInsertion }, "executeRuntimeAction");
 }
 
 /** Explicit v12 source adapter; never infers deployment ABI from receipt data. */
 export function createIndexedActivationDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
-  return createIndexedReceiptReader(input, { decodeLedger: activationLedger, assertInsertion: assertV12DecisionReceiptInsertion });
+  return createIndexedReceiptReader(input, { decodeLedger: activationLedger, assertInsertion: assertV12DecisionReceiptInsertion }, "executeRuntimeAction");
 }
 
-function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, layout: ReceiptLayout): DecisionReceiptSourceReader {
+/** Fixed bridge entry profile; no caller-controlled entry point acceptance. */
+export function createIndexedEvidenceBridgeDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
+  return createIndexedReceiptReader(input, { decodeLedger: ledger, assertInsertion: assertV9DecisionReceiptInsertion }, "executeRuntimeEvidenceBridge");
+}
+
+function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, layout: ReceiptLayout,
+  entryPoint: "executeRuntimeAction" | "executeRuntimeEvidenceBridge"): DecisionReceiptSourceReader {
   const { network, publicDataProvider, contract, receiptId } = input;
   assert(network !== "preprod" || input.profile instanceof PreprodConnectionProfile);
   assert(network !== "preprod" || input.indexerUrl === undefined, "Use the existing authenticated Preprod profile");
@@ -127,7 +133,7 @@ function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, la
       tx.block.height === finalized.blockHeight && tx.contractActions?.length === 1);
     const action = tx.contractActions[0];
     assert(action.__typename === "ContractCall" && normalize(action.address) === contract.slice(2) &&
-      action.entryPoint === "executeRuntimeAction", "Receipt source must be the exact ordinary-action entry");
+      action.entryPoint === entryPoint, "Receipt source must be the exact pinned action entry");
     const raw = normalize(tx.raw), state = normalize(action.state);
     assert(/^[0-9a-f]+$/.test(raw) && raw.length % 2 === 0 && raw.length <= 8 * 1024**2 &&
       /^[0-9a-f]+$/.test(state) && state.length % 2 === 0);
@@ -138,12 +144,18 @@ function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, la
     assert(calls.length === 1 && calls[0] instanceof ContractCall);
     const call = calls[0];
     const entry = typeof call.entryPoint === "string" ? call.entryPoint : Buffer.from(call.entryPoint).toString("utf8");
-    assert(call.address === contract.slice(2) && entry === "executeRuntimeAction");
+    assert(call.address === contract.slice(2) && entry === entryPoint);
     const view = layout.decodeLedger(ContractState.deserialize(Buffer.from(state, "hex")).data);
     const key = Buffer.from(receiptId.slice(2), "hex");
     assert(view.decisionReceipts.member(key), "Receipt is absent from this exact call state");
     const body = view.decisionReceipts.lookup(key);
     assert(runtimeDecisionReceiptId(body) === receiptId);
+    if (entryPoint === "executeRuntimeEvidenceBridge") {
+      assert(isDeepStrictEqual(body.moduleIdentity.moduleIdHash, pure.runtimeEvidenceBridgeModuleId()) &&
+        body.moduleIdentity.moduleVersion.major === 1n && body.moduleIdentity.moduleVersion.minor === 0n &&
+        body.moduleIdentity.moduleVersion.patch === 0n && body.receiptVersion === 1n && !body.transitioning,
+        "Bridge source receipt must use the dedicated nontransitioning v1 module");
+    }
     const programs = [call.guaranteedTranscript?.program, call.fallibleTranscript?.program].filter(Boolean);
     stage = "receipt-creation-transcript";
     // Partition boundaries must not be crossed to fabricate an instruction match.

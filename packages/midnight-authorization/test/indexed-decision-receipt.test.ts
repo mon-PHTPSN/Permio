@@ -67,3 +67,33 @@ it("the exact SDK reader preserves a sanitized transient finality-read category"
       error => error instanceof Error && error.name === "IndexedReceiptUnavailableError" && error.message === "INDEXED_RECEIPT_UNAVAILABLE");
   } finally { setNetworkId(previous); }
 });
+
+it("pins a dedicated bridge source entry without admitting arbitrary entries", async () => {
+  const source = await import("../src/indexed-decision-receipt.ts");
+  const createBridge = (source as unknown as Record<string, typeof createIndexedDecisionReceiptReader>).createIndexedEvidenceBridgeDecisionReceiptReader;
+  assert.equal(typeof createBridge, "function", "dedicated pinned bridge reader must exist");
+  const previous = (() => { try { return getNetworkId(); } catch { return "undeployed"; } })();
+  const originalFetch = globalThis.fetch;
+  const id = "00" + "17".repeat(32), address = "16".repeat(32), txHash = "22".repeat(32), blockHash = "33".repeat(32);
+  const provider = { async watchForTxData() { return { status: "SucceedEntirely", identifiers: [id],
+    tx: { identifiers: () => [id] }, blockHeight: 123, txHash, blockHash }; } } as unknown as PublicDataProvider;
+  try {
+    setNetworkId("undeployed");
+    for (const [factory, entryPoint, recognized] of [
+      [createIndexedDecisionReceiptReader, "executeRuntimeAction", true],
+      [createIndexedDecisionReceiptReader, "executeRuntimeEvidenceBridge", false],
+      [createBridge!, "executeRuntimeEvidenceBridge", true],
+      [createBridge!, "executeRuntimeAction", false], [createBridge!, "arbitraryEntry", false],
+    ] as const) {
+      globalThis.fetch = async () => new Response(JSON.stringify({ data: { transactions: [{
+        protocolVersion: 1000000, raw: "00", hash: txHash, block: { hash: blockHash, height: 123 },
+        identifiers: [id], transactionResult: { status: "SUCCESS" },
+        contractActions: [{ __typename: "ContractCall", address, state: "00", entryPoint }],
+      }] } }));
+      const reader = factory({ network: "undeployed", publicDataProvider: provider,
+        contract: `0x${address}`, receiptId: `0x${"44".repeat(32)}`, indexerUrl: "http://127.0.0.1:8088/api/v4/graphql" });
+      await assert.rejects(reader.readReceiptAtTransaction(id), recognized
+        ? /at serialized-call-and-state/ : /at exact-indexer-transaction/);
+    }
+  } finally { globalThis.fetch = originalFetch; setNetworkId(previous); }
+});

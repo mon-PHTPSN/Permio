@@ -2,7 +2,7 @@ import { createCircuitContext, createConstructorContext, sampleContractAddress, 
   ChargedState, type StateValue } from "@midnight-ntwrk/midnight-js-protocol/compact-runtime";
 import { Contract, ledger, pureCircuits as pure, type RuntimeAccountCredential,
   type RuntimeCapabilityCredential, type RuntimeSessionCredential, type RuntimeActionIntent,
-  type RuntimeSlotRecord, type RuntimeSlotAncestryStep } from "../../contracts/managed/permio-authorization/contract/index.js";
+  type RuntimeSlotRecord, type RuntimeSlotAncestryStep, type RuntimeEvidenceBridgeOpening } from "../../contracts/managed/permio-authorization/contract/index.js";
 import { permioAuthorizationWitnesses, governanceActivatorPublicKey, signRuntimeSessionCredential,
   signRuntimeActionIntent, signRuntimeActionCommand } from "../../src/compact-crypto.ts";
 import { createRuntimeTemplateActionPolicy, createRuntimePolicyBindingManifest } from "../../src/template-policy.ts";
@@ -16,6 +16,7 @@ import { prepareRuntimeActiveAncestry } from "../../src/active-ancestry.ts";
 import { buildRuntimeActionScopePaths } from "../../src/action-scope.ts";
 import { createRuntimeActionCommand, createRuntimeActionEvidencePlan,
   advanceRuntimeActionSlotProgress, advanceRuntimeActionEvidenceProgress } from "../../src/action-execution.ts";
+import { createRuntimeStatusMultiproof } from "../../src/status-multiproof-program.ts";
 import { parseScenarioTemplate } from "@permio/scenario-domain";
 import { emptyGeneratedMapValue, emptyGeneratedValue, generatedDescriptor, generatedInfo, seedGeneratedMap } from "./generated-genesis.ts";
 
@@ -24,34 +25,51 @@ const hex = (value: Uint8Array) => `0x${Buffer.from(value).toString("hex")}` as 
 
 /** Crypto-valid synthetic genesis; no M4 review, chain issuance or finality claim. */
 export function ordinaryActionFixture(options: { slots?: number; capabilities?: number;
-  revokedSlot?: number; transitioning?: boolean; preservedStatusLeaves?: boolean } = {}) {
+  revokedSlot?: number; transitioning?: boolean; preservedStatusLeaves?: boolean;
+  evidenceBridge?: { opening?: Partial<RuntimeEvidenceBridgeOpening>; capabilityResource?: string;
+    sessionResource?: string; revokedCredential?: "capability" | "session"; outputPayload?: Uint8Array; outputNonce?: Uint8Array; outputClaimTypes?: string[] } } = {}) {
   const slotCount = options.slots ?? 1, capabilityCount = options.capabilities ?? 1;
-  const transitioning = options.transitioning ?? true;
+  const bridge = options.evidenceBridge;
+  const transitioning = options.transitioning ?? !bridge;
+  const profileId = bridge ? "cross-context-evidence-bridge-v1" : "action-proof";
+  const outputTypes = bridge?.outputClaimTypes ?? ["claim-one"];
   const statusOffset=options.preservedStatusLeaves ? 10 : 0;
   const template = parseScenarioTemplate({ schemaVersion: 1, namespace: "test.ordinary", templateId: "test.ordinary/action",
     version: "1.0.0", displayName: "Synthetic action", description: "Generated-code authorization fixture.",
     participantSlots: [{ id: "requester", description: "Required actor", assignableBy: ["@instance-creator", "requester"] }],
     contexts: [{ id: "context-one", description: "Isolated context", allowedSlotIds: ["requester"],
-      recordTypes: ["record-one"], claimTypes: ["claim-one"], recipientKinds: ["organization"], purposes: ["purpose-one"] }],
+      recordTypes: ["record-one"], claimTypes: outputTypes, recipientKinds: ["organization"], purposes: ["purpose-one"] }],
     states: transitioning ? ["ready", "done"] : ["ready"], initialState: "ready",
     actions: [{ id: "perform", description: "One ordinary action", contextId: "context-one", actorSlotId: "requester",
-      inputRecordTypes: ["record-one"], outputClaimTypes: ["claim-one"], purpose: "purpose-one",
-      recipientKind: "organization", capabilityRuleId: "perform-rule", proofProfileId: "action-proof", executionAdapterId: null }],
+      inputRecordTypes: ["record-one"], outputClaimTypes: outputTypes, purpose: "purpose-one",
+      recipientKind: "organization", capabilityRuleId: "perform-rule", proofProfileId: profileId, executionAdapterId: null }],
     transitions: [{ id: "perform-transition", actionId: "perform", fromState: "ready", toState: transitioning ? "done" : "ready" }],
     capabilityRules: [{ id: "perform-rule", description: "Scoped action", actionIds: ["perform"],
       resourceSelector: "item-id", purpose: "purpose-one", recipientConstraint: "organization", validForSeconds: 2000,
       maxDelegationDepth: 16, disclosurePolicyId: "minimal", revocable: true }],
-    proofProfiles: [{ id: "action-proof", circuitId: transitioning ? "private-state-transition-v1" : "delegated-capability-action-v1",
+    proofProfiles: [{ id: profileId, circuitId: bridge ? "cross-context-evidence-bridge-v1" : transitioning ? "private-state-transition-v1" : "delegated-capability-action-v1",
       publicOutputSchemaId: "decision-receipt-v1" }], executionAdapters: [],
     privacyInvariants: [{ id: "private-witness", description: "No private payload appears in the receipt." }],
   });
   const projection = createRuntimeTemplateActionPolicy(template, "perform"), target = projection.policy.target;
   const common = { target, instanceCommitment: testBytes(30), contextHash: projection.policy.contextHash };
+  const opening: RuntimeEvidenceBridgeOpening | undefined = bridge ? {
+    bindingVersion: 2n, sourceContextHash: common.contextHash, sourceInstanceCommitment: common.instanceCommitment,
+    destinationContextCommitment: testBytes(201), destinationCaseCommitment: testBytes(202),
+    purposeHash: projection.policy.purposeHash, permittedUseHash: testBytes(203), expiresAt: 1000n,
+    nonce: testBytes(204), recipientKeyFingerprint: testBytes(205), manifestRoot: testBytes(206), ...bridge.opening,
+  } : undefined;
+  const bridgeBinding = opening && pure.runtimeEvidenceBridgeBinding(opening);
+  const resource = bridgeBinding ? hex(bridgeBinding) : "item-one";
+  const recipient = opening ? hex(opening.recipientKeyFingerprint) : "recipient-one";
   const issuer = { leafVersion: 1n, namespaceHash: target.namespaceHash, governancePolicyHash: testBytes(0), authorityKind: 6n,
     publicKey: governanceActivatorPublicKey(11n), validAfter: 0n, validBefore: 2000n };
   const authority = buildAuthorityRoot([issuer]);
-  const scope = buildRuntimeScopeTrees({ actions: ["perform"], resourceSelectors: ["item-id"], resources: ["item-one"],
-    purposes: ["purpose-one"], recipientKinds: ["organization"], recipients: ["recipient-one"], disclosurePolicyIds: ["minimal"] });
+  const scope = buildRuntimeScopeTrees({ actions: ["perform"], resourceSelectors: ["item-id"], resources: [bridge?.capabilityResource ?? resource],
+    purposes: ["purpose-one"], recipientKinds: ["organization"], recipients: [recipient], disclosurePolicyIds: ["minimal"] });
+  const sessionScope = bridge ? buildRuntimeScopeTrees({ actions: ["perform"], resourceSelectors: ["item-id"],
+    resources: [bridge.sessionResource ?? resource], purposes: ["purpose-one"], recipientKinds: ["organization"], recipients: [recipient],
+    disclosurePolicyIds: ["minimal"] }) : scope;
   const accounts: RuntimeAccountCredential[] = Array.from({ length: capabilityCount }, (_, index) => ({
     ...common, credentialVersion: 1n, accountIdHash: testBytes(40 + index), principalKind: 1n,
     m5AccountCommitment: testBytes(60 + index), runtimePublicKey: governanceActivatorPublicKey(BigInt(31 + index)),
@@ -72,7 +90,7 @@ export function ordinaryActionFixture(options: { slots?: number; capabilities?: 
   const terminal = accounts.at(-1)!;
   const session: RuntimeSessionCredential = { ...common, credentialVersion: 2n, sessionIdHash: testBytes(130), m5SessionCommitment: testBytes(131),
     subjectAccountCredentialCommitment: accountHashes.at(-1)!, capabilityCredentialCommitment: pure.runtimeCapabilityCredentialCommitment(capabilities.at(-1)!),
-    scopeRoots: scope.roots, scopeCounts: counts, runtimePublicKey: governanceActivatorPublicKey(131n),
+    scopeRoots: sessionScope.roots, scopeCounts: counts, runtimePublicKey: governanceActivatorPublicKey(131n),
     notBefore: 200n, expiresAt: 1400n, statusIndex: BigInt(statusOffset + capabilityCount * 2), issuedAt: 200n };
   const status = new CredentialStatusTree();
   if(options.preservedStatusLeaves) for(let i=0;i<3;i++) status.issue({namespace:template.namespace,kind:(["account","capability","session"] as const)[i]!,
@@ -125,25 +143,39 @@ export function ordinaryActionFixture(options: { slots?: number; capabilities?: 
     expiresAt: 1900n, allocationValidBefore: 1800n, allocationNonce: testBytes(186) };
   const intent: RuntimeActionIntent = { ...common, intentVersion: 1n, sessionCredentialCommitment: pure.runtimeSessionCredentialCommitment(session),
     actionIdHash: hashRuntimeIdentifier("action-id", "perform"), resourceSelectorHash: hashRuntimeIdentifier("resource-selector", "item-id"),
-    resourceHash: hashRuntimeIdentifier("resource", "item-one"), purposeHash: hashRuntimeIdentifier("purpose", "purpose-one"),
-    recipientKindHash: hashRuntimeIdentifier("recipient-kind", "organization"), recipientHash: hashRuntimeIdentifier("recipient", "recipient-one"),
+    resourceHash: hashRuntimeIdentifier("resource", resource), purposeHash: hashRuntimeIdentifier("purpose", "purpose-one"),
+    recipientKindHash: hashRuntimeIdentifier("recipient-kind", "organization"), recipientHash: hashRuntimeIdentifier("recipient", recipient),
     disclosurePolicyIdHash: hashRuntimeIdentifier("disclosure-policy-id", "minimal"), m5IntentCommitment: testBytes(187),
-    issuedAt: 450n, nonceHash: testBytes(188) };
-  const manifest = createRuntimePolicyBindingManifest(template, [{ actionId: "perform", proofProfileId: "action-proof",
-    moduleId: transitioning ? "private-state-transition" : "delegated-capability-action", moduleVersion: "1.0.0",
+    issuedAt: 450n, nonceHash: opening ? hashRuntimeIdentifier("intent-nonce", hex(opening.nonce)) : testBytes(188) };
+  const manifest = createRuntimePolicyBindingManifest(template, [{ actionId: "perform", proofProfileId: profileId,
+    moduleId: bridge ? "cross-context-evidence-bridge" : transitioning ? "private-state-transition" : "delegated-capability-action", moduleVersion: "1.0.0",
     implementationHash: hex(testBytes(189)), receiptSchemaHash: hex(pure.runtimeActionReceiptSchemaHash()) }]);
   const tree = buildProofModuleBindingTree(orderProofModuleBindings(template, manifest)), binding = tree.compactBindingAt(0);
   const evidence = createRuntimeActionEvidencePlan({ template, actionId: "perform", intent,
     inputs: [{ payloadCommitment: testBytes(190), nonce: testBytes(191) }],
-    outputs: [{ payloadCommitment: testBytes(192), nonce: testBytes(193) }] });
+    outputs: outputTypes.map(() => ({ payloadCommitment: bridge?.outputPayload ?? bridgeBinding ?? testBytes(192),
+      nonce: bridge?.outputNonce ?? opening?.nonce ?? testBytes(193) })) });
   const prepared = createRuntimeActionCommand({ intent, session, allocation, state, stateSequence: options.preservedStatusLeaves ? 4n : BigInt(slotCount + 1),
     policy: projection.policy, binding, authorityRootVersion: 1n, authorityRootSequence: 1n, statusRootSequence: status.sequence,
     slotAssignmentIdHash: records.at(-1)!.assignment.assignmentIdHash, evidence,
     transition: projection.transitionAt(0), transitionPath: projection.transitionPathAt(0),
     nextStateIdHash: projection.transitionAt(0).toStateIdHash, nextNonce: testBytes(194), transitioning,
     effectiveAt: 500n, validBefore: 900n });
-  const command = prepared.command, signature = signRuntimeActionCommand(command, 131n, 151n);
+  const command = prepared.command;
   const ancestry = prepareRuntimeActiveAncestry({ accounts, capabilities, session, statusTree: status, now: 500n });
+  if (bridge?.revokedCredential) {
+    const capability = capabilities.at(-1)!;
+    status.revoke({ namespace: template.namespace, kind: bridge.revokedCredential,
+      statusIndex: bridge.revokedCredential === "session" ? session.statusIndex : capability.statusIndex,
+      credentialCommitment: bridge.revokedCredential === "session" ? pure.runtimeSessionCredentialCommitment(session)
+        : pure.runtimeCapabilityCredentialCommitment(capability),
+      revocationAuthorityAccountCredentialCommitment: bridge.revokedCredential === "session" ? accountHashes.at(-1)!
+        : capability.issuerAccountCredentialCommitment });
+    ancestry.statusProof = createRuntimeStatusMultiproof(status.multiproofFor([
+      ...accounts.map(row => row.statusIndex), ...capabilities.map(row => row.statusIndex), session.statusIndex ]));
+    command.statusRootSequence = status.sequence;
+  }
+  const signature = signRuntimeActionCommand(command, 131n, 151n);
   const contract = new Contract(permioAuthorizationWitnesses);
   const initial = contract.initialState(createConstructorContext(undefined, "00".repeat(32)), network,
     target.namespaceHash, testBytes(0), authority.root, 1n, 1n, status.root, 2n, 2n, 2n);
@@ -153,8 +185,8 @@ export function ordinaryActionFixture(options: { slots?: number; capabilities?: 
   const moduleIdentity = { moduleIdHash: binding.moduleIdHash, moduleVersion: binding.moduleVersion, implementationHash: binding.implementationHash };
   const moduleKey = pure.proofModuleRegistryKeyFromIdentity(moduleIdentity);
   const moduleRecord = { ...emptyGeneratedMapValue("proofModules"), identity: moduleIdentity, lifecycleStatus: 4n,
-    implementationReferenceHash: pure.runtimeActionImplementationReference(network, allocation.targetContractIdentity, binding.moduleIdHash),
-    inputSchemaHash: pure.runtimeActionInputSchemaHash(), configurationSchemaHash: pure.runtimeActionConfigurationSchemaHash(),
+    implementationReferenceHash: (bridge ? pure.runtimeEvidenceBridgeImplementationReference : pure.runtimeActionImplementationReference)(network, allocation.targetContractIdentity, binding.moduleIdHash),
+    inputSchemaHash: bridge ? pure.runtimeEvidenceBridgeInputSchemaHash() : pure.runtimeActionInputSchemaHash(), configurationSchemaHash: pure.runtimeActionConfigurationSchemaHash(),
     receiptSchemaHash: pure.runtimeActionReceiptSchemaHash(), compilerVersionHash: pure.runtimeActionCompilerProfileHash(),
     compatibilityPolicyHash: pure.runtimeActionCompatibilityPolicyHash() };
   const instanceRecord = { allocationCommitment: pure.runtimeInstanceAllocationCommitment(allocation),
@@ -198,17 +230,22 @@ export function ordinaryActionFixture(options: { slots?: number; capabilities?: 
   const intentSignature = signRuntimeActionIntent(intent, 131n, 153n);
   function executeArgs() {
     return [command, signature, intent, ancestry, sessionSignature, intentSignature,
-      buildRuntimeActionScopePaths(intent, scope), buildRuntimeActionScopePaths(intent, scope),
+      // A wrong exact-resource path is supplied deliberately for negative fixtures;
+      // the circuit must reject it even though these are valid trees/credentials.
+      buildRuntimeActionScopePaths({ ...intent, resourceHash: hashRuntimeIdentifier("resource", bridge?.capabilityResource ?? resource) }, scope),
+      buildRuntimeActionScopePaths({ ...intent, resourceHash: hashRuntimeIdentifier("resource", bridge?.sessionResource ?? resource) }, sessionScope),
       allocation, state, projection.policy, binding, tree.pathFor(0), progress, issuer,
       authority.pathFor(pure.governanceActivatorLeafCommitment(issuer)), authority.pathFor(pure.governanceActivatorLeafCommitment(issuer)),
       projection.transitionAt(0), projection.transitionPathAt(0), projection.transitionAt(0).toStateIdHash, prepared.nextNonce] as const;
   }
   function execute() {
-    const result = contract.circuits.executeRuntimeAction(context(), ...executeArgs());
+    const result = opening
+      ? contract.circuits.executeRuntimeEvidenceBridge(context(), ...executeArgs(), opening, projection.outputClaims.at(0).typeHash)
+      : contract.circuits.executeRuntimeAction(context(), ...executeArgs());
     current = result.context.currentQueryContext.state;
     return result;
   }
-  return { template, target, projection, binding, tree, moduleKey, moduleRecord, templateKey, templateRecord,
+  return { opening, bridgeBinding, template, target, projection, binding, tree, moduleKey, moduleRecord, templateKey, templateRecord,
     instanceRecord, state, allocation, command, intent, ancestry, status, issuer, evidence, prepared, slotSteps,
     contract, context, prep, prepareArgs, finishPreparation, executeArgs, execute,
     get current(): StateValue | ChargedState { return current; },
