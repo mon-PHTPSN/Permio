@@ -1143,24 +1143,31 @@ Status: `NOT_STARTED`; depends on M6 and M9
 
 ### Concrete bridge sequence
 
-1. The source context selects an explicit record manifest. Every entry contains
-   a record commitment, media/type descriptor, byte length, and ciphertext
-   digest; it never contains the plaintext record in a public artifact.
-2. Before signing, the client displays source and destination contexts, exact
+1. The source context selects the exact records and disclosure scope, including
+   the source instance, destination/case, and recipient's current encryption key.
+2. Before encryption or signing, the client displays source and destination contexts, exact
    recipient encryption-key fingerprint, purpose, selected records, expiry,
-   permitted use, and the new cross-context linkage.
-3. A scoped session signs a cross-context `ActionIntent` binding those values,
+   permitted use, and the new cross-context linkage, and obtains explicit confirmation.
+3. The client encrypts the selected records locally to that exact recipient key.
+   It then builds the manifest, whose entries contain a record commitment,
+   media/type descriptor, byte length, and digest of the prepared ciphertext.
+   Ciphertext remains local. Changes to the selected records, recipient key,
+   or disclosure scope require a new preview; public artifacts never contain plaintext.
+4. A scoped session signs a cross-context `ActionIntent` binding those values,
    the source instance commitment, destination/case commitment, manifest root,
    and a one-use nonce.
-4. M6 verifies the source capability, bridge proof module, current credential
+5. The Midnight authorization contract verifies the source capability, bridge proof module, current credential
    status, exact recipient and purpose, manifest commitment, validity, and
    nullifier. It emits a bridge receipt but never receives ciphertext.
-5. The client encrypts each selected record to the recipient's exact current
-   key and sends ciphertext plus manifest directly to the evidence vault.
-6. Before decryption, the vault verifies the M6/M7 receipt, manifest root,
+6. Only after verifying the authorization receipt does the client send the
+   already prepared ciphertext and manifest directly to the evidence vault.
+   It does not re-encrypt between signing and delivery. Denied, expired, or
+   revoked authorization blocks delivery.
+7. Before decryption, the vault verifies the authorization-contract receipt,
+   receipt-gateway authenticity when used, manifest root,
    ciphertext digests, source and destination commitments, recipient-key
    fingerprint, expiry, and revocation state.
-7. Recipient key rotation never silently retargets existing ciphertext. New
+8. Recipient key rotation never silently retargets existing ciphertext. New
    encryption requires a new bridge intent and receipt unless the approved
    envelope explicitly contains the replacement key and re-encryption rule.
 
@@ -1243,7 +1250,7 @@ requirements below are additional.
    expiry, remaining delegation depth, and current revocation state. The
    revocation control is available to the correct authority without exposing a
    universal administrator.
-6. A bridge journey presents the complete M10 linkage and disclosure preview
+6. A bridge journey presents the complete cross-context linkage and disclosure preview
    before any signature or encryption occurs.
 7. Retirement, emergency revocation, module deprecation/revocation, expired
    sessions, stale state, failed downstream execution, and retry recovery each
@@ -2209,18 +2216,21 @@ intent。
 
 ### 具体桥接顺序
 
-1. 来源上下文选择显式记录 manifest。每一项包含记录 commitment、媒体／类型描述、字节长度和
-   密文 digest；公开产物绝不包含记录明文。
-2. 签名前，客户端显示来源与目标上下文、精确接收方加密密钥 fingerprint、用途、选定记录、
-   期限、允许用途和新建跨上下文关联。
-3. 限定范围 session 签署跨上下文 `ActionIntent`，绑定上述值、来源实例 commitment、目标／
+1. 来源上下文选定精确记录和披露范围，包括来源实例、目标／case，以及接收方当前的加密密钥。
+2. 加密或签名前，客户端显示来源与目标上下文、精确接收方加密密钥 fingerprint、用途、选定记录、
+   期限、允许用途和新建跨上下文关联，并取得明确确认。
+3. 客户端在本地将选定记录加密给该精确接收方密钥，再生成 manifest；每一项包含记录
+   commitment、媒体／类型描述、字节长度和已准备密文的 digest。密文仍保留在本地。
+   选定记录、接收方密钥或披露范围发生变化时必须重新预览；公开产物绝不包含明文。
+4. 限定范围 session 签署跨上下文 `ActionIntent`，绑定上述值、来源实例 commitment、目标／
    case commitment、manifest root 和一次性 nonce。
-4. M6 验证来源 capability、桥接证明模块、当前 credential 状态、精确接收方与用途、manifest
-   commitment、期限和 nullifier。M6 发出桥接收据，但永远不接收密文。
-5. 客户端把每份选定记录加密给接收方当前精确密钥，并将密文与 manifest 直接发送到证据保险库。
-6. 解密前，保险库验证 M6/M7 收据、manifest root、密文 digest、来源与目标 commitment、
+5. Midnight 授权合约验证来源 capability、桥接证明模块、当前 credential 状态、精确接收方与用途、
+   manifest commitment、期限和 nullifier。授权合约发出桥接收据，但永远不接收密文。
+6. 客户端只有在验证授权收据后，才将已准备好的密文和 manifest 直接发送到证据保险库。
+   签名与交付之间不重新加密；授权被拒绝、过期或撤销时阻止交付。
+7. 解密前，保险库验证授权合约收据、所用收据网关的真实性、manifest root、密文 digest、来源与目标 commitment、
    接收方密钥 fingerprint、期限和撤销状态。
-7. 接收方密钥轮换绝不能静默改变已有密文的接收目标。除非已批准封装明确包含替代密钥与重加密
+8. 接收方密钥轮换绝不能静默改变已有密文的接收目标。除非已批准封装明确包含替代密钥与重加密
    规则，否则必须创建新的桥接 intent 和收据。
 
 Mera adapter 明确用于非账户工作：它重建 passkey PRF 密钥材料，以解锁接收方加密、可轮换的
@@ -2265,7 +2275,7 @@ Midnight 钱包连接、独立 Monad EVM 钱包绑定、Agent 会话撤销，以
    并分别看到 Midnight 授权结果与 Monad／应用执行结果。
 5. Agent 视图显示交易对手、操作、资源／金额上限、用途、期限、剩余委托深度和当前撤销状态。
    正确权限主体可以立即撤销，但不存在万能管理员。
-6. 桥接旅程在任何签名或加密发生前显示完整 M10 关联和披露预览。
+6. 桥接旅程在任何签名或加密发生前显示完整跨上下文关联和披露预览。
 7. 模板退役、紧急撤销、模块弃用／撤销、session 过期、旧状态、下游执行失败和重试恢复各自具有
    可区分的用户结果。
 8. 参与者通过 Dynamic 登录，连接 1AM 以执行用户批准的 Midnight 交互，并单独连接或创建 Monad
