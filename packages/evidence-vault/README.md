@@ -2,8 +2,9 @@
 
 This package provides local client primitives. The confirmed-disclosure workflow
 coordinates signing, authorization-receipt
-verification and independent delivery channels. Deployment-specific bridge
-authorization and evidence-server integration remain pending. The
+verification and independent delivery channels. A separate private HTTP/SQLite
+service provides durable ciphertext retrieval.
+Live deployment and product identity provisioning remain pending. The
 approved preview, local encryption, signing, authorization and delivery order
 is recorded in [the sequence decision](../../docs/evidence/M10/bridge-sequence-decision.md).
 
@@ -23,11 +24,20 @@ record, HKDF-SHA-256 key derivation, and AES-256-GCM authenticated encryption.
 The manifest contains ciphertext digests and commitments, never record plaintext.
 It is private delivery metadata, not an allowlist for public publication.
 
-`selectedRecordManifestRoot()` commits to the ordered selected-record metadata
-and ciphertext digests. `bridgeBindingCommitment()` additionally commits to the
-complete scope. Their versioned domains and length-delimited encoding are a new
-versioned evidence-delivery commitment; the authorization contract's receipt
-schema remains authoritative.
+`selectedRecordManifestRoot()` preserves the v1 ordered record/ciphertext format.
+`createEvidenceBridgeOpening()` constructs the fixed typed bridge header, and
+`bridgeBindingCommitment()` uses the authorization package's generated Compact
+hash helper with binding version **2**. The header binds source context/instance,
+destination context/case, purpose, permitted use, expiry, nonce, exact recipient
+key fingerprint and manifest root. There is no fixed record-count cap; HTTP size
+limits still bound upload resources. Old local binding-v1 commitments are not
+accepted or silently migrated. No binding-v1 live deployment is claimed.
+
+The bridge emits one typed aggregate selected output. Receipt v1 commits to its
+ordered output accumulator, which is deliberately different from the bridge
+binding. The receipt recipient is the runtime hash of the exact fingerprint;
+it is not an EVM address or a truncated value. The bridge helper matches the
+existing canonical resource, recipient and nonce identifier encoding.
 
 `bindBridgeActionIntent(existingContextAccountPayload, manifest)` puts that complete binding
 in the existing context-account `ActionIntent.resource` field and sets the exact recipient fingerprint,
@@ -35,6 +45,12 @@ purpose, and nonce. It returns an ordinary context-account payload for the calle
 scoped-session signing API. Template/action/disclosure policy and source private
 instance identifiers remain the caller's approved context-account values. This helper grants
 no capability and does not make an unregistered bridge action executable.
+
+After encryption, both the capability and signing session must explicitly cover
+the newly calculated binding resource before the signature is produced. An old
+record-resource permission does not cover it. The host reserves the intended
+session ID and obtains the exact scope through its authenticated issuer; the
+signer may not substitute another session or modify the confirmed payload.
 
 `verifyAndDecryptEvidence(bundle, expectedBinding, recipientKey, authorization)`
 checks expiry, key fingerprint, manifest root, complete binding, exact ciphertext
@@ -72,7 +88,8 @@ salt/ciphertext/nonce and nonsecret credential-recovery metadata are the only
 provider-specific persisted values. RP migration and authenticator compatibility
 need explicit deployment evidence; failure never falls back to another identity.
 
-The package has no built-in persistence, server, ledger or logging. Delivery
+The browser entry has no persistence, server or logging. The separate Node-only
+service below stores ciphertext and public receipts. Delivery
 uses explicit caller-supplied channels after current authorization checks.
 Only the JSON-safe returned vault manifest is suitable for private persistence;
 public encryption keys are registered separately. Temporary private-key and
@@ -126,8 +143,8 @@ The workflow clears its owned plaintext byte arrays after preparation/failure/
 withdrawal and when expiry is observed. It has no idle cleanup timer or durable
 outbox; the host must dispose of abandoned workflows with `withdraw()`. Neither
 JavaScript strings nor crypto-runtime copies have guaranteed forensic erasure.
-Restart recovery and authenticated server-side retrieval remain separate
-integration requirements.
+Client outbox recovery remains separate; the Node service below provides
+durable authenticated ciphertext retrieval.
 
 ```ts
 const delivery = await createEvidenceDelivery(input, adapters);
@@ -139,6 +156,69 @@ await delivery.deliver("receipt");
 await delivery.deliver("ciphertext");
 // Retry only an unacknowledged channel; never create a new ciphertext for it.
 ```
+
+## Private ciphertext service
+
+The separate `@permio/evidence-vault/server` export provides
+`EvidenceVaultStore`, `createEvidenceVaultCredential()` and
+`createEvidenceVaultServer()`. It is Node-only and is not imported by the
+browser entry. SQLite stores the ciphertext bundle and the full public receipt;
+it stores neither plaintext, private keys, passkey material nor access tokens.
+Receipt acquisition uses a required trusted resolver, outside the ciphertext
+upload body. The public receipt channel remains separate.
+
+The host provisions a random access token for one exact bridge binding and
+recipient-key fingerprint, an expiry and explicit `deliver` or `retrieve`
+operations. Only its SHA-256 digest belongs in private service configuration.
+Give the original token only to the intended caller after the product's
+authenticated account/recipient binding has been checked. These private access
+credentials grant no on-chain capability, are never inferred from possession
+of a public receipt, and have no HTTP issuance endpoint. Sender upload and
+recipient retrieval may use different tokens and permissions.
+
+- `PUT /v1/evidence/<deliveryId>` accepts only the exact ciphertext-delivery
+  schema after checking the scoped credential, manifest/ciphertext digests,
+  complete binding, stable identifier and current authorization.
+- `GET /v1/evidence/<deliveryId>` requires a retrieval credential for that exact
+  binding and recipient. It rechecks the stored receipt and current revocation,
+  expiry and authorization before returning the unchanged encrypted bundle.
+- There is no list/search or public history route. Unknown and out-of-scope
+  identifiers produce the same not-found response. Responses prohibit caching.
+- Retries are idempotent. Existing ciphertext and receipt bodies cannot be
+  overwritten, including after a service restart. Expiry or revocation blocks
+  new retrieval without deleting immutable receipt history.
+- Input size is bounded, undeclared fields are rejected, and HTTP errors never
+  include private adapter diagnostics. The service does not log request bodies
+  or credentials.
+
+The resolver and `BridgeReceiptVerifier` remain mandatory. They must reconcile
+the approved finalized bridge receipt and current authorization; the storage
+tests label their external authorization fixture explicitly. Local service
+tests do not establish a deployed network or product identity integration.
+
+`createFinalizedEvidenceBridgeVerifier()` (from the Node-only server export)
+provides the concrete receipt and manifest checks. Its trusted deployment
+configuration pins the network/contract, evidence-bridge module version and
+implementation, template version/content, action schema and aggregate output
+type. The required source-reader factory should use
+`createIndexedEvidenceBridgeDecisionReceiptReader()` from the authorization
+package; it reconciles both the indexer and serialized transaction entry
+`executeRuntimeEvidenceBridge`, finality and exact receipt creation. All 25 public
+receipt fields must match the authoritative decoder. The verifier recomputes
+the binding, runtime recipient and generated selected-output accumulator, checks
+non-transitioning state fields and enforces both receipt/disclosure windows.
+
+Current authorization is a separate mandatory authenticated callback. A receipt
+records the decision at execution; it cannot by itself establish that private
+credentials remain unrevoked later. There is no accepting callback default.
+Production must supply this status integration and its trusted source/resolver;
+test-only source observations are explicitly labeled.
+
+Keep the SQLite file and credential configuration in a private directory outside
+web roots, build outputs and Git, with host access limited to the service user.
+Bind the service to loopback behind the intended authenticated HTTPS product
+entry point. No deployment, public listener or reverse-proxy rule is installed
+by this package. It supplies no browser key storage or decryption endpoint.
 
 ## Verification and limits
 
@@ -154,6 +234,7 @@ Tests exercise real WebCrypto and the real Mera vault implementation with a
 labeled software authenticator. That fixture proves neither hardware support
 nor synchronized-passkey recovery. Workflow tests use real context-account
 signatures and local HTTP delivery, with explicitly synthetic external
-authorization. No browser UI, authenticated retrieval service, live bridge
-authorization, durable restart recovery or real cross-device test is included. See [the development log](../../docs/evidence/M10/development-log.md)
+authorization. No browser UI, production identity provisioning, live bridge
+authorization, browser outbox recovery or real cross-device test is included.
+Service restart persistence is tested separately with real SQLite and HTTP. See [the development log](../../docs/evidence/M10/development-log.md)
 for exact commands and remaining acceptance gates.

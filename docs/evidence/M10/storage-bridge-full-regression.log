@@ -1,0 +1,996 @@
+
+> permio@0.1.0 test
+> npm run test:diagnostics && npm run test:protocol && npm run test:scenario-domain && npm run test:scenario-generator && npm run test:scenario-governance && npm run test:context-accounts && npm run test:scenario-packs && npm run test:midnight-authorization && npm run test:evidence-vault && npm run test:gateway && npm run test:contracts && npm run dashboard:test
+
+
+> permio@0.1.0 test:diagnostics
+> node --test scripts/test/*.test.ts
+
+✔ a consumed nullifier alone rejects the original genuine program while receipt/preparation fields remain unchanged (24293.1648ms)
+✔ bounded real-key building requires explicit opt-in and rejects unknown or duplicate controls (3.1111ms)
+✔ numeric bounded-key sampling excludes textual payloads and rejects duplicate or unsafe counters (0.7367ms)
+✔ bounded-key worker verifies actual limits and ancestor ceilings before starting the compiler (0.8837ms)
+✔ ordinary paging is allowed but duration, OOM and shared-memory emergencies stop the owned job (0.3818ms)
+✔ slot-key reuse binds exact program, compiler, public parameters and successful result, not the old deployment tag (1.5342ms)
+✔ failed, guarded, mock, legacy or malformed slot-key reports cannot create a ready inventory (5.3346ms)
+✔ worker profiles are explicit and allowlisted without changing RAM, swap, jobs or deadlines (3.5518ms)
+✔ experiment reclaim reproduces 5/6 GiB and one worker without enlarging shared swap or changing defaults (0.5996ms)
+✔ soft-limit helper can write only the exact owned prover high file, with no capabilities or network (2.2419ms)
+✔ cloud systemd cgroups retain exact ownership and a single writable high file (0.6447ms)
+✔ cgroup path selection rejects unknown drivers and path injection (0.4722ms)
+✔ applied high threshold is mandatory, not confused with Docker memory reservation (0.5522ms)
+✔ owned reset requires explicit slot-only opt-in, rejects duplicates and preserves normal defaults (0.3945ms)
+✔ reset handshake binds exact owned client/run and cannot supply a foreign container, command or endpoint (0.8446ms)
+✔ capped runtime startup counts existing paging headroom without raising the hard RAM cap (0.6094ms)
+✔ the client and prover have a combined 5 GiB hard RAM ceiling, not an uncapped client (0.4423ms)
+✔ client startup rejects unapplied, missing and restrictive ancestor limits before wallet imports (2.9099ms)
+✔ capped runtime keeps time, OOM, exit and shared-machine emergency guards (0.4128ms)
+(node:138472) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ checkpoint recovery restores all seven scope-tree methods and builds actual action paths (9704.21ms)
+✔ checkpoint recovery rejects scope values that do not reproduce the certified roots (1202.2705ms)
+✔ checkpoint inspection requires both its result and a successful owned-child exit (2.5064ms)
+✔ the outer deadline terminates only the owned child and cannot turn an early success message into a pass (14.4819ms)
+✔ spawn errors and a failing progress reporter do not expose error text or leave the child running (1.0774ms)
+✔ the actual inspector CLI rejects incomplete or duplicate selectors before SDK loading or private reads (1884.6416ms)
+✔ approved fresh-instance schedule has exactly 30 additional calls and closes warm session before main (15.9838ms)
+✔ second application uses namespace status sequence6 and preserves old leaves and instance through atomic action (18259.4075ms)
+✔ generated non-transitioning witness rejects revoked module/template rows at their lifecycle checks (42486.2966ms)
+✔ generated state-changing witness rejects revoked module/template rows at their lifecycle checks (34853.7074ms)
+(node:208664) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ the live mutation matrix produces the expected attributable errors in the actual generated contract (174657.7737ms)
+✔ live failure classification exposes only a fixed HTTP status label, never URL/body/witness data (3.9425ms)
+✔ known public protocol and resource failures remain distinct without copying error text (0.7998ms)
+✔ unknown errors, non-errors and private accessors remain redacted (0.3589ms)
+✔ native and SDK-wrapped timeout names or causes yield only the fixed timeout label (0.33ms)
+✔ error accessors, proxies, deep causes and cycles cannot leak data or recurse without a bound (0.4002ms)
+(node:486992) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ the capped-prover selector changes only the loopback prover port, never ledger, network or indexer (6.2545ms)
+✔ only the bounded local prover gets a finite ten-minute HTTP wait without extending protocol deadlines (0.412ms)
+✔ recovery requires the same exact state and transaction without finalized-chain regression (3.9461ms)
+✔ an ambiguous stop or failed outage check always restarts the exact affected service (1.871ms)
+✔ changed persisted state fails after restoration and never advances to the node interruption (0.5947ms)
+✔ the public module-row audit changes exactly one selected entry and preserves other records, arrays and its source snapshots (39.3549ms)
+✔ finds the real call segment in a genuine balanced transaction containing a separate fee intent (246.0294ms)
+✔ does not require pool rejection before the single authorized fallible-action negative submission (0.5347ms)
+✔ requires exact failed segment and unchanged whole contract state for an included negative (4.037ms)
+✔ only a definite native invalid response paired with an auth-compatible validation can complete a negative attempt (0.3132ms)
+✔ a confirmation timeout after broadcast resolves the exact indexed failed contract segment with one submission (2.2822ms)
+✔ a returned transaction id still requires the exact failed segment and bytes (0.5335ms)
+✔ a conclusive native authorization RPC rejection does not need an indexed transaction (0.4936ms)
+✔ never count successful application as the expected negative (1.417ms)
+✔ never count different bound bytes as the expected negative (0.7932ms)
+✔ never count other failed segment as the expected negative (0.5477ms)
+✔ unresolved finality stays uncertain and never causes another native submission (0.5866ms)
+✔ node replay requires explicit submission opt-in and an exact worktree public log (3.0775ms)
+✔ only an explicit node invalid status or recognized RPC rejection passes replay diagnostics (1.1508ms)
+✔ replay payload must come from one successful exact public ledger-v8 call (1.9149ms)
+✔ malformed, oversized and substituted public bytes fail before node submission (13.3318ms)
+✔ runtime arguments retain the original extrinsic length prefix exactly once (40.1326ms)
+✔ captured resource rejection and control rejection remain distinct without exposing metadata (0.4553ms)
+✔ malformed, conflicting and unrecognized validation responses fail closed (1.4097ms)
+✔ ordinary users and bounded delegates use actual M4/M5 APIs and seven M6 scope paths (1526.6015ms)
+✔ representative negatives deny before mutation and retain prospective ancestor revocation (5726.234ms)
+✔ percentiles are nearest rank and reject invalid input (3.778ms)
+✔ benchmark CLI rejects unsupported, duplicate and unbounded options (0.659ms)
+✔ public report never mislabels client timings as proofs or exports fixture secrets (10484.5065ms)
+✔ required-chain mode cannot pass with only an off-chain benchmark (6056.441ms)
+(node:221440) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ fixture checkpoint failure stops governance before opening the wallet or spending DUST (28638.78ms)
+✔ saved M4 fixture restoration verifies original reviews, policy bindings and activation without new keys (289.1055ms)
+✔ Preprod controls require explicit network, scope and local selectors; never accept remote witness destinations or Local Dev controls (12.9569ms)
+✔ private input loading requires ignored untracked regular files, redacts inspection and detects changed source snapshots (3201.2138ms)
+✔ Preprod supervisor requires exact requested scope plus exit zero, and forwards only fixed safe phases (42.7344ms)
+✔ deadline, spawn failure and reporter errors cannot pass or expose error text; only the owned worker is terminated (10.141ms)
+✔ the supervisor force-terminates only its owned worker if graceful termination is ignored (7.9192ms)
+✔ preserves revalidated submission codes and the failing phase without forwarding raw child error fields (1.803ms)
+✔ importing the shared runner never starts the CLI and Preprod rejects Local Dev controls before its provider callback (5.1849ms)
+✔ missing real build assets stop the shared runner before opening providers or submitting (14596.5198ms)
+✔ the generated current-contract constructor preserves the exact Preprod network binding without proving assets (257.7313ms)
+✔ invalid Preprod CLI controls fail before SDK, wallet access, network or submission (289.733ms)
+✔ records only public candidate transaction IDs before submission and never retries an uncertain result (1.0746ms)
+✔ accepts actual Ledger 8 typed transaction IDs, rejects bare hashes and unknown type bytes, and binds the returned ID (20.5818ms)
+✔ requires actual node and indexer subscription data, starting the indexer at its latest queried block (31.5843ms)
+✔ network errors and token-bearing messages produce fixed redacted categories and close owned sockets (0.798ms)
+✔ a failed indexer operation cannot be relabeled as a valid subscription or proof (1.5082ms)
+✔ a successful query alone and a block before the requested offset cannot pass indexer subscription readiness (1.9549ms)
+✔ proof observation passes exact private arguments/results without inspecting or publishing them (2.7039ms)
+✔ failed proofs preserve the original rejection and emit no accepted result or secret error text (19.7897ms)
+✔ memory parser retains only whitelisted numeric resource counters (2.3598ms)
+✔ memory parser rejects incomplete, duplicate and unsafe counters (0.7398ms)
+✔ prover sampling distinguishes soft reclaim events from hard-limit and OOM events (0.2567ms)
+✔ diagnostic arguments cannot silently replace the full acceptance scope (6.7547ms)
+✔ secondary local prover selection requires explicit flag, enables sampling and cannot inject a container command (0.6169ms)
+✔ sampler bounds concurrent reads and finishes with a final sample (117.7475ms)
+✔ sampling failures never print command errors or fabricate successful profiling (0.765ms)
+✔ missing Docker access fails before starting the diagnostic workload (0.2805ms)
+✔ the public-artifact scan detects raw, encoded, escaped and binary private values without disclosing them (5.1419ms)
+✔ public log copies remove private allocation expiry while preserving the explicitly public signed transaction deadline (3.9084ms)
+✔ legacy future-credential timing fields are removed without hiding diagnostic codes or operation labels (0.3329ms)
+✔ unstructured output and unclassified validity metadata fail closed instead of becoming public evidence (2.1134ms)
+(node:414148) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ public state reader requires one explicit worktree public log and labels final assertions (2.1898ms)
+✔ partial observation is explicit and cannot disable final or complete-workflow assertions (2.2ms)
+✔ public state reader rejects traversal, arbitrary private files and unsupported options before IO (1.678ms)
+✔ v8 public expectations count credential mutations without relabeling old slot evidence (1.0193ms)
+✔ v8 credential-state completion requires exact count and commitment without fabricating an allocation-only result (0.5464ms)
+✔ public-state expectation parsing rejects unknown tagged profiles and conflated slot nonce counts (0.3122ms)
+✔ allocation-only final evidence does not require or falsely claim credential-state completion (0.4164ms)
+(node:443128) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ a second genuine non-transitioning program survives the first receipt but fails after the status root changes (18152.5427ms)
+✔ approved150 preserves failed55 in135 baseline, exactly four instances and four distinct native negatives (11.4292ms)
+✔ warm recovery ranges close before all six main action proofs and never include a native negative (0.4585ms)
+✔ approved172 preserves all115 historical attempts and limits the remaining phase to42 calls/five instances (11.585ms)
+✔ the fresh wallet batch ends before every large action proof and native negative (0.3914ms)
+(node:376564) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ 45 finalized calls plus the reordered continuation use exactly the same96normal+4negative and two-instance scope (13.0657ms)
+✔ restored slot arguments compare identical Buffer/Uint8Array bytes without accepting changed values or ABI integer types (2.2229ms)
+✔ checkpoint recovery respects ABI integers, raw IDs and both historical byte encodings (0.7508ms)
+(node:442604) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ both remaining templates pass actual independent M4 reviews under one exact namespace policy (290.3573ms)
+✔ the isolated-case manifest totals 96 and negative reserve totals 4, preserving the approved 100 ceiling (11.2381ms)
+✔ retains the abandoned round identifier while preserving the actual100-attempt ceiling and case budget (2.0527ms)
+✔ a second deployment, different contract, old deployment and repeated negative case cannot spend scope (4.9308ms)
+✔ warm sessions are limited to exact small preparation rounds and end before every large proof or negative case (14.6282ms)
+✔ checkpoint continuation moves authority testing to the second instance and closes wallets before all five main proofs (0.5218ms)
+✔ fresh second-instance setup can admit its root slot before issuing the session without keeping a wallet across a main proof (0.3374ms)
+✔ slot-key probe keeps the historical k19 default and requires explicit k20 (11.3468ms)
+✔ slot-key probe rejects malformed, duplicate, unsafe or unbounded arguments (1.6485ms)
+✔ slot-key resource sampling returns numeric public counters only (1.0373ms)
+✔ slot-key resource parser rejects missing, duplicate and unsafe measurements (0.8656ms)
+✔ slot-key sampling stops at the RSS, historical high-water or shared-VM reserve boundary (0.343ms)
+✔ membership diagnostic refuses missing proof assets before local wallet startup (295.3265ms)
+✔ membership diagnostic cannot use assets outside its ignored local logs directory (220.6155ms)
+✔ confirmation timeout resolves exact finalized bytes with one broadcast (2.1696ms)
+✔ unknown, failed, partial, foreign or substituted observations never trigger another broadcast (20.1857ms)
+✔ either confirmed intent identifier resolves to the original bundle's final identifier (0.5169ms)
+✔ round-trips the three-hour window with a 1 ms clock fraction (42.8885ms)
+✔ round-trips the three-hour window with a 123 ms clock fraction (1.6677ms)
+✔ round-trips the three-hour window with a 999 ms clock fraction (2.2294ms)
+✔ the real ledger serializes the extended unproven intent and obeys the signed deadline (50.4707ms)
+✔ a cold wallet cannot turn near expiry into a false authorization rejection or extend the proved bytes (3.1545ms)
+✔ an insufficient signed window cannot be extended by the test harness (1.1619ms)
+✔ the TTL guard reads real ledger parameters and fails closed on an unknown representation (4.6855ms)
+✔ warm session permits only 25 ordered credential/slot/preparation calls and one exact submission each (44.2466ms)
+✔ warm session cannot deploy, execute the action, substitute a contract or skip a round (1.0223ms)
+✔ reconciled55 recovery permits only the remaining three preparations (0.8488ms)
+✔ a timeout followed by exact successful reconciliation closes the warm wallet before another call (1.985ms)
+✔ normal exact finality can retain the warm wallet and never causes an extra submission (0.7602ms)
+✔ unknown or substituted reconciliation stops the batch with one submission (3.8782ms)
+ℹ tests 142
+ℹ suites 0
+ℹ pass 142
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 199110.2888
+
+> permio@0.1.0 test:protocol
+> npm test --workspace @permio/protocol
+
+
+> @permio/protocol@0.1.0 test
+> node --test test/protocol.test.ts
+
+▶ @permio/protocol
+  ✔ matches the committed schema and purpose hash vectors (1.1813ms)
+  ✔ locks the EIP-712 field names, ordering, and type hash (0.237ms)
+  ✔ matches fixed length-delimited encoding vectors (0.6462ms)
+  ✔ distinguishes ambiguous concatenations and empty fields (0.5167ms)
+  ✔ keeps all commitment and nullifier domains pairwise distinct (0.129ms)
+  ✔ labels the deterministic holder secret as non-production test data (0.2361ms)
+✔ @permio/protocol (3.9195ms)
+ℹ tests 6
+ℹ suites 1
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 890.235
+
+> permio@0.1.0 test:scenario-domain
+> npm test --workspace @permio/scenario-domain
+
+
+> @permio/scenario-domain@0.1.0 test
+> node --test test/scenario-domain.test.ts
+
+▶ scenario template validation
+  ✔ parses open-ended context and action identifiers as data (2.3265ms)
+  ✔ rejects unknown and missing fields (0.6116ms)
+  ✔ rejects duplicate identifiers (0.4564ms)
+  ✔ rejects invalid and inconsistent references (0.4102ms)
+  ✔ rejects unreachable states and nondeterministic transitions (0.4429ms)
+  ✔ rejects namespace, template identity, and version violations (0.2599ms)
+  ✔ rejects accessors without invoking them (0.1506ms)
+  ✔ keeps the domain package independent of application scenario modules (6.2658ms)
+✔ scenario template validation (12.0208ms)
+▶ canonical scenario template encoding
+  ✔ is stable across object key order and Unicode composition (46.2707ms)
+  ✔ preserves meaningful array order in the hash (1.0296ms)
+✔ canonical scenario template encoding (47.5641ms)
+▶ scenario template version compatibility
+  ✔ allows prose-only patch revisions (1.3584ms)
+  ✔ requires a minor or major version for semantic changes (0.7349ms)
+  ✔ allows additive minor revisions but rejects changed existing definitions (0.9024ms)
+  ✔ allows valid breaking changes only under a major increment (0.5442ms)
+  ✔ rejects reused versions and changed template lineage (0.5013ms)
+✔ scenario template version compatibility (4.2542ms)
+ℹ tests 15
+ℹ suites 3
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 223.2749
+
+> permio@0.1.0 test:scenario-generator
+> npm test --workspace @permio/scenario-generator
+
+
+> @permio/scenario-generator@0.1.0 test
+> node --test test/scenario-generator.test.ts
+
+▶ deterministic scenario generation
+  ✔ produces byte-identical output for the same complete input (10.8392ms)
+  ✔ separates seeds while preserving generated schemas (3.0486ms)
+  ✔ separates a property-style sequence of explicit test seeds (51.2245ms)
+  ✔ derives different principal identifiers for the same slot in different contexts (1.6905ms)
+  ✔ generates only visibly synthetic instance values and explicit timestamps (1.0318ms)
+  ✔ classifies every generated sensitive field as private by default (1.7538ms)
+  ✔ matches and verifies the committed versioned private golden vector (7.0994ms)
+  ✔ rejects incomplete identities, wrong hashes, production-like seeds, and clock ambiguity (1.6699ms)
+  ✔ does not read random, current-time, environment, or application modules (6.6264ms)
+✔ deterministic scenario generation (87.2145ms)
+▶ public artifact privacy scanner
+  ✔ accepts the allowlisted public summary (4.9171ms)
+  ✔ finds raw private values in every supported public artifact class (3.7057ms)
+  ✔ finds escaped and encoded private values with locations (4.1974ms)
+  ✔ throws a structured error instead of exposing private values in its message (2.0569ms)
+  ✔ rejects a weakened or incomplete classification manifest before scanning (2.6644ms)
+✔ public artifact privacy scanner (17.88ms)
+ℹ tests 14
+ℹ suites 2
+ℹ pass 14
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 292.4551
+
+> permio@0.1.0 test:scenario-governance
+> npm test --workspace @permio/scenario-governance
+
+
+> @permio/scenario-governance@0.1.0 test
+> node --test test/scenario-governance.test.ts
+
+▶ namespace governance
+  ✔ requires separate explicit authority sets and a valid threshold (9.8785ms)
+  ✔ allows humans and Agents to draft but grants neither activation authority (4.7901ms)
+  ✔ rejects unauthorized authors and same-version content replacement (1.9948ms)
+  ✔ keeps author, governance, allocator, and emergency powers separate (4.9311ms)
+✔ namespace governance (22.7228ms)
+▶ lifecycle and validation boundary
+  ✔ models every lifecycle stage and marks validation as non-trusting (1.069ms)
+  ✔ rejects invalid and out-of-order transitions (0.9181ms)
+✔ lifecycle and validation boundary (2.1386ms)
+▶ reviewer attestations and activation
+  ✔ signs deterministically and binds namespace, ID, version, hash, and decision (1.5097ms)
+  ✔ rejects altered targets, ineligible signers, and duplicate reviewers (1.9602ms)
+  ✔ requires unique threshold approvals and a distinct governance actor (2.0476ms)
+  ✔ blocks activation after any eligible reviewer rejection (1.4032ms)
+✔ reviewer attestations and activation (7.1487ms)
+▶ immutable active versions and allocation
+  ✔ allows only an allocator and only for an exact active version/hash (1.9641ms)
+  ✔ rejects allocation before activation (0.872ms)
+  ✔ retirement blocks new instances without changing historical records (1.5768ms)
+  ✔ revocation is prospective and preserves immutable activation history (1.3928ms)
+  ✔ does not permit backdated retirement or revocation (2.3679ms)
+  ✔ does not expose mutable registry records (1.3438ms)
+✔ immutable active versions and allocation (9.7048ms)
+ℹ tests 16
+ℹ suites 4
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 247.74
+
+> permio@0.1.0 test:context-accounts
+> npm test --workspace @permio/context-accounts
+
+
+> @permio/context-accounts@0.1.0 test
+> node --test test/*.test.ts
+
+▶ M4 allocation and context-account boundaries
+  ✔ creates an instance only from an active exact M4 allocation (13.2672ms)
+  ✔ does not consume an old allocation after template retirement (3.4906ms)
+  ✔ supports all principal kinds without assigning a global business role (6.8258ms)
+  ✔ prevents context-account key reuse (4.0152ms)
+✔ M4 allocation and context-account boundaries (29.7295ms)
+▶ capability attenuation and authority
+  ✔ requires an explicit instance issuer and rejects unbounded delegation (3.2426ms)
+  ✔ permits strict child attenuation and rejects every expansion (4.8916ms)
+  ✔ requires each session to be a fresh, strict subset of its grant (3.9462ms)
+  ✔ enforces delegation depth and propagates ancestor revocation (3.7622ms)
+✔ capability attenuation and authority (16.2828ms)
+▶ signed action authorization
+  ✔ authorizes the exact declared subset and advances instance state (3.1547ms)
+  ✔ binds signatures to every action-intent field (3.1715ms)
+  ✔ returns a precise denial when one constrained dimension changes (25.3274ms)
+  ✔ checks session time, current state, and per-session replay (10.2252ms)
+  ✔ reports each revocation boundary without rewriting history (14.1874ms)
+✔ signed action authorization (56.408ms)
+▶ M5 follow-up: template-governed participant slots
+  ✔ allows creator slot setup before a future grant starts but rejects session issuance until the real parent window (19.0121ms)
+  ✔ requires a slot as well as a capability, without consuming denied intent state or nonce (9.9496ms)
+  ✔ uses only the actual instance creator, not an arbitrary allocator reference (4.6423ms)
+  ✔ resolves namespace governance from M4 policy and only where the slot permits it (5.3218ms)
+  ✔ does not collapse author.human into namespace slot governance (4.2247ms)
+  ✔ does not collapse reviewer.alpha into namespace slot governance (4.7345ms)
+  ✔ does not collapse allocator.service into namespace slot governance (3.6539ms)
+  ✔ does not collapse issuer.service into namespace slot governance (4.4119ms)
+  ✔ does not collapse emergency.council into namespace slot governance (4.3474ms)
+  ✔ does not collapse governance.other into namespace slot governance (5.1834ms)
+  ✔ does not collapse administrator into namespace slot governance (4.4366ms)
+  ✔ allows occupied-slot assignment only from a live same-context parent (5.0072ms)
+  ✔ rejects unoccupied and impersonated slot authorities (5.378ms)
+  ✔ rejects a parent slot not named by assignableBy (6.5319ms)
+  ✔ rejects cross-context and cross-instance subjects and assignment authorities (6.277ms)
+  ✔ does not share slot membership with another account in the same context (6.1937ms)
+  ✔ rejects unknown slots and slots excluded from a context (5.4846ms)
+  ✔ rejects altered assignment target namespace (4.4212ms)
+  ✔ rejects altered assignment target templateId (4.2647ms)
+  ✔ rejects altered assignment target templateVersion (4.3964ms)
+  ✔ rejects altered assignment target templateHash (3.826ms)
+  ✔ rejects duplicate IDs and duplicate active bindings without imposing singleton slots (3.9315ms)
+  ✔ keeps immutable assignment and revocation history; replacement requires a new ID (3.8401ms)
+  ✔ permits revocation only by an authority allowed to assign that slot now (4.3163ms)
+  ✔ invalidates descendants prospectively and never revives them by reassigning their parent (5.4982ms)
+  ✔ invalidates a subject and its assignment descendants on account revocation (4.1396ms)
+  ✔ invalidates membership at instance expiry or revocation (9.6449ms)
+  ✔ rejects invalid and backdated times and prevents authorization before a later revocation (4.4532ms)
+  ✔ does not move the mutation watermark on a denied action or failed assignment (4.1797ms)
+  ✔ authenticates signatures and exact intent routing before checking slots (4.4715ms)
+  ✔ does not let a slot override capability scope, session revocation or fresh-key checks (5.375ms)
+  ✔ keeps capability issuance separate from all slot assignment authorities (3.2969ms)
+  ✔ retains exact M4 allocation validation without leaving a partially created instance (4.0994ms)
+  ✔ supports every neutral principal kind without deriving slots from registration (5.4425ms)
+  ✔ preserves delegated-capability and session enforcement through the guarded API (8.6516ms)
+  ✔ does not allow backdated root, delegated or session grants through forwarding methods (5.7257ms)
+  ✔ takes a private template snapshot and cannot be changed by later caller mutation (4.6221ms)
+  ✔ returns defensive copies and does not store extra input properties (3.6711ms)
+✔ M5 follow-up: template-governed participant slots (209.4321ms)
+ℹ tests 51
+ℹ suites 4
+ℹ pass 51
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 458.8517
+
+> permio@0.1.0 test:scenario-packs
+> npm test --workspace @permio/scenario-packs
+
+
+> @permio/scenario-packs@0.1.0 test
+> node --test test/scenario-packs.test.ts
+
+(node:387268) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ M9 profiles against the authoritative M6 policy
+  ✔ clinical-referral-consent uses the common receipt without replacing its application claims (202.6023ms)
+  ✔ clinical-referral-consent versions the receipt correction without rewriting its v1 identity (5.7979ms)
+  ✔ professional-site-access uses the common receipt without replacing its application claims (78.5909ms)
+  ✔ professional-site-access versions the receipt correction without rewriting its v1 identity (1.491ms)
+  ✔ delegated-purchasing-agent uses the common receipt without replacing its application claims (57.724ms)
+  ✔ delegated-purchasing-agent versions the receipt correction without rewriting its v1 identity (1.9527ms)
+  ✔ selects a module that permits every declared state transition (739.9269ms)
+  ✔ binds every pack action to its exact M6 configuration and version (769.6032ms)
+✔ M9 profiles against the authoritative M6 policy (1861.9868ms)
+▶ M9 scenario-pack definitions
+  ✔ defines exactly the three required application-neutral families (1.8768ms)
+  ✔ keeps governance authority sets disjoint for every namespace (3.0649ms)
+  ✔ keeps domain literals out of the M2-M5 core implementations (5.0089ms)
+✔ M9 scenario-pack definitions (10.288ms)
+▶ deterministic generation and M5 authorization
+  ✔ clinical-referral-consent changes private values across declared seeds while preserving schema (503.865ms)
+  ✔ professional-site-access changes private values across declared seeds while preserving schema (320.3294ms)
+  ✔ delegated-purchasing-agent changes private values across declared seeds while preserving schema (295.2325ms)
+  ✔ clinical-referral-consent/treatment-referral authorizes one exact flow and executes every M5 denial (157.7539ms)
+  ✔ clinical-referral-consent/research-consent authorizes one exact flow and executes every M5 denial (130.1169ms)
+  ✔ clinical-referral-consent/emergency-access authorizes one exact flow and executes every M5 denial (144.956ms)
+  ✔ professional-site-access/qualification-site-access authorizes one exact flow and executes every M5 denial (106.8188ms)
+  ✔ delegated-purchasing-agent/bounded-purchase authorizes one exact flow and executes every M5 denial (101.5219ms)
+✔ deterministic generation and M5 authorization (1761.2478ms)
+▶ pack-specific privacy transformations
+  ✔ separates clinical treatment, research, and emergency authority (1.034ms)
+  ✔ discloses current qualification without unrelated professional history (129.853ms)
+  ✔ binds the Agent to counterparty, amount band, expiry, depth, and revocation (134.6894ms)
+✔ pack-specific privacy transformations (265.9332ms)
+▶ disclosure, upstream-fixture, and privacy evidence boundaries
+  ✔ creates complete human previews without claiming they are receipts (380.5854ms)
+  ✔ keeps every generated authorization window within its template duration (552.3168ms)
+  ✔ marks every M6-M8 expectation as non-live and pending authoritative codecs (322.4942ms)
+  ✔ scans receipts, indexer captures, gateway logs, EVM events, and documents (181.5061ms)
+✔ disclosure, upstream-fixture, and privacy evidence boundaries (1437.2688ms)
+ℹ tests 26
+ℹ suites 5
+ℹ pass 26
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 18210.7373
+
+> permio@0.1.0 test:midnight-authorization
+> npm test --workspace @permio/midnight-authorization
+
+
+> @permio/midnight-authorization@0.1.0 test
+> node --test test/*.test.ts
+
+(node:442752) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ issuance-certified active ancestry predicates
+  ✔ supports root, delegated, and complete depth-16 chains with all 35 current memberships (65730.0026ms)
+  ✔ supports repeated holder accounts without requiring duplicate status leaves (12291.6307ms)
+  ✔ rejects current revoked root, middle, terminal, account, and session status (51701.7092ms)
+  ✔ rejects omitted and substituted ancestry, wrong holder, namespace, context, and instance (9391.2007ms)
+  ✔ rejects expiry, future issuance, unsupported versions, depth and padding (7469.6819ms)
+  ✔ does not grant authority from valid membership of an empty status leaf (14580.4303ms)
+✔ issuance-certified active ancestry predicates (161172.0067ms)
+▶ private exact-action authorization predicate
+  ✔ checks holder-signed session, session-signed intent and both exact private scopes (17296.2975ms)
+  ✔ rejects legacy sessions that have no version-2 issuance certification (10483.0388ms)
+  ✔ rejects unauthorized holder/session keys and altered signed intent content (46502.3301ms)
+  ✔ rejects signed out-of-scope fields and swapped or altered membership paths (57695.042ms)
+✔ private exact-action authorization predicate (131977.6742ms)
+(node:293272) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ allocation-bound credential issuance (generated Compact, not node acceptance)
+  ✔ issues an exact allocated account and root, preserving immutable allocation (23416.7689ms)
+  ✔ rejects absent, altered, cross-instance and cross-template allocations before issuance (5206.002ms)
+  ✔ rejects legacy commands and altered allocation, state, sequence, or next-state hashes without mutation (4830.1633ms)
+  ✔ rejects substituted private state openings and zero, reused, or unsigned next nonces (8112.2211ms)
+  ✔ cryptographically binds a valid next-state change to the issuer's original signature (4658.1594ms)
+  ✔ keeps staging non-authorizing and rejects finalization after a competing credential mutation (12839.8236ms)
+  ✔ rejects a concurrent direct command without consuming its nonce or rewriting the winning state (2864.6518ms)
+  ✔ rejects a current namespace issuer not on this instance's exact issuer list (2284.7539ms)
+  ✔ rejects another empty slot even when it reconstructs the exact current root (4077.3775ms)
+  ✔ binds every direction bit to its physical status index (106.1092ms)
+  ✔ rejects expired and overlong proof windows, credential lifetime extension and pre-allocation accounts (3667.0813ms)
+  ✔ only the original issuer may revoke, even when a second issuer is allocated and signs correctly (12013.5356ms)
+  ✔ rejects legacy capability version and issuer substitution at certification begin and finalization (12525.2424ms)
+✔ allocation-bound credential issuance (generated Compact, not node acceptance) (96607.9878ms)
+▶ staged private participant slots (generated Compact, not node acceptance)
+  ✔ begins without granting a role, then atomically issues/revokes while retaining exact history (8539.9442ms)
+  ✔ keeps slot governance separately scoped rather than inheriting activation or issuer powers (10471.6957ms)
+  ✔ verifies exact occupied-slot ancestry before permitting finalization (8590.8927ms)
+  ✔ rejects duplicate active bindings, but permits a new exact ID after revocation without reviving old descendants (13240.3844ms)
+  ✔ invalidates staged descendant authority after ancestor revocation changes private state (9585.1336ms)
+  ✔ rejects wrong signatures, altered exact hashes, stale roots, wrong state and forged completion (7896.778ms)
+  ✔ cleans an expired verification session without consuming a nonce, granting a slot or advancing state (5425.5928ms)
+  ✔ cannot backdate a slot mutation before the committed instance watermark (7009.0335ms)
+  ✔ cannot finalize two different slot mutations from one state commitment and sequence (9237.0041ms)
+  ✔ invalidates staged authority after current account revocation advances the status root (10201.5251ms)
+  ✔ rejects credential backdating after a later slot mutation, without consuming either command nonce (7575.2737ms)
+  ✔ rejects slot backdating after a credential revocation advances the same private watermark (6479.2144ms)
+  ✔ rejects finalizing a fully staged capability against an intervening slot mutation (15016.6245ms)
+  ✔ keeps duplicate-binding identity stable when only the runtime credential commitment changes (5491.8687ms)
+✔ staged private participant slots (generated Compact, not node acceptance) (124764.9325ms)
+▶ private runtime instance allocation (generated Compact, not live acceptance)
+  ✔ binds the original M4/M5 allocation and initializes only public commitments (2279.4599ms)
+  ✔ rejects an allocator-signed arbitrary initial state and altered authenticated policy (2683.6555ms)
+  ✔ rejects replay, reusing a request for another instance, and reusing an instance with a different snapshot (2609.2812ms)
+  ✔ rejects ineligible signatures and governance/issuer privilege collapse (2105.7078ms)
+  ✔ rejects altered signed fields, stale roots, exact-hash substitution, and another deployment (2997.6523ms)
+  ✔ rejects expired/future submissions and malformed private allocation bounds (2812.6878ms)
+  ✔ blocks new allocation after template lifecycle 2 while preserving existing history (2511.0108ms)
+  ✔ blocks new allocation after template lifecycle 3 while preserving existing history (2966.7078ms)
+  ✔ requires both exact instance issuer membership and current namespace eligibility (1926.0955ms)
+  ✔ rejects M4/M5 mismatches, mutable snapshots, incomplete issuers, duplicate keys, and bad nonces in the adapter (1956.5727ms)
+✔ private runtime instance allocation (generated Compact, not live acceptance) (24850.1351ms)
+▶ M4 activation admission envelope
+  ✔ binds an active M4 record, exact M2 hash, module manifest, root, target, and nonce (54.671ms)
+  ✔ changes the envelope hash when any security-relevant binding changes (418.1696ms)
+  ✔ rejects unsupported signature profiles before Compact conversion rather than normalizing them (58.0518ms)
+  ✔ rejects unsupported registry protocol versions before Compact conversion rather than normalizing them (37.2151ms)
+  ✔ rejects malformed envelope hashes instead of truncating an otherwise valid prefix (35.9348ms)
+  ✔ rejects malformed module-binding hashes instead of truncating an otherwise valid prefix (60.9572ms)
+  ✔ rejects altered template content even when the claimed target hash is unchanged (3.6102ms)
+  ✔ rejects inactive M4 state, insufficient or duplicate approvals, and mismatched evidence (2.651ms)
+  ✔ requires one exact proof-module binding per template action (4.3712ms)
+  ✔ verifies only the governance-activator signature over the exact Compact envelope (1090.9152ms)
+  ✔ admits one exact activation under the current authority root and rejects replay (1504.5626ms)
+  ✔ rejects missing, altered, out-of-order, and duplicate staged bindings (3406.2632ms)
+  ✔ lazily removes expired sessions and releases their reserved nonce (1584.2504ms)
+  ✔ rejects stale roots, ineligible authority paths, wrong deployment targets, and altered hashes (2182.1418ms)
+  ✔ governs modules through unique review, approval, activation, deprecation, and revocation (1508.0327ms)
+  ✔ rotates authority roots by threshold and keeps template retirement separate (2428.5233ms)
+✔ M4 activation admission envelope (14382.3591ms)
+✔ rejects missing, stale, empty, duplicated and mismatched build assets before live startup (182.1105ms)
+(node:104856) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ private current-status shared-branch witness preparation
+  ✔ reconstructs exact Compact roots for sibling, odd, sparse, and boundary leaves (13390.2849ms)
+  ✔ shares branches for 35 membership leaves without claiming to verify a delegation chain (60259.0958ms)
+  ✔ rejects altered leaves, siblings, indices, order, and extra or missing siblings (1337.422ms)
+  ✔ rejects stale roots and stale sequences after prospective ancestor revocation (1365.6361ms)
+  ✔ rejects mixed snapshots, duplicate indices, wrong path positions, and invalid bounds (1007.8423ms)
+  ✔ copies private inputs and proves empty membership without granting active authority (493.3355ms)
+  ✔ isolates cached leaf bytes and rejects invalid entries before changing state (737.1316ms)
+✔ private current-status shared-branch witness preparation (78594.9348ms)
+▶ common decision receipt integrity and source boundary
+  ✔ requires exact finality and transaction provenance and emits only versioned public fields (10.748ms)
+  ✔ uses canonical absent state fields for a non-transitioning action (4.6333ms)
+  ✔ rejects pending, failed, foreign, substituted and latest-state observations (12.1715ms)
+  ✔ rejects extra private data, malformed layouts, unsupported versions and noncanonical integers (2.3029ms)
+  ✔ binds every schema field and target/version to the typed commitment (27.3865ms)
+  ✔ rejects a 32-byte hash where the pinned SDK uses a 33-byte transaction identifier (1.3139ms)
+  ✔ pins the requested source before awaiting an indexer read (9.2594ms)
+✔ common decision receipt integrity and source boundary (72.3345ms)
+✔ matches installed-runtime resource canonical Bytes<127> hashing (9.4503ms)
+✔ derives the resource signed identifier in the generated bridge circuit (1.4629ms)
+✔ matches installed-runtime recipient canonical Bytes<128> hashing (0.545ms)
+✔ derives the recipient signed identifier in the generated bridge circuit (0.7311ms)
+✔ matches installed-runtime intent-nonce canonical Bytes<131> hashing (0.4642ms)
+✔ derives the intent-nonce signed identifier in the generated bridge circuit (1.1122ms)
+✔ binds a bridge manifest to an exact nontransitioning DecisionReceipt v1 (14747.8656ms)
+✔ rejects ordinary-entry bypass of bridge semantics and bridge-entry use for ordinary actions (29887.2447ms)
+✔ rejects every opening substitution, selected type substitution and no receipt is created (26462.4669ms)
+✔ rejects coherently signed invalid bridge headers and selected aggregate outputs (89976.8195ms)
+✔ requires the freshly prepared binding resource in both capability and session exact scopes (37234.2993ms)
+✔ retains inherited bridge validity, module and slot revocation boundaries (31777.4088ms)
+✔ rejects freshly witnessed revoked bridge capability and session status at final execution (28457.2736ms)
+✔ v10 exposes one governance proof circuit and rejects unknown or mismatched operations (6825.0513ms)
+✔ survives a transient receipt HTTP failure while retaining serialized-call verification (1051.7367ms)
+✔ pins the observed Preprod indexer protocol while retaining finality/identity gates and rejecting unknown versions (16.2442ms)
+✔ the exact SDK reader preserves a sanitized transient finality-read category (0.5789ms)
+✔ pins a dedicated bridge source entry without admitting arbitrary entries (3.7047ms)
+✔ repeats the exact immutable receipt query after transient HTTP or fetch failures (43.0034ms)
+✔ bounds transient failures and never retries terminal HTTP, invalid JSON or GraphQL errors (2.883ms)
+✔ exhausted transient reads expose only a fixed typed retry category (1.3084ms)
+✔ rejects coherently signed unsupported module selections at the intended semantic gate for both action families (242753.7617ms)
+▶ staged ordinary action authorization and atomic outcome
+  ✔ preparation grants nothing; final execution changes state, consumes one nullifier and creates one exact receipt (15923.2232ms)
+  ✔ preserves the entire instance for a non-transitioning action while consuming the intent once (23095.1554ms)
+  ✔ verifies the complete depth-16 capability chain rather than just the terminal credential (34660.3162ms)
+  ✔ walks 34 slot ancestors independently of the capability depth (72966.6336ms)
+  ✔ rejects a freshly witnessed revoked distant slot ancestor outside the last 17 records (78160.4106ms)
+  ✔ rejects missing preparation, missing ancestors, incomplete evidence and forged completion (14445.8813ms)
+  ✔ rejects a skipped or substituted slot parent and the wrong required actor slot (13733.4229ms)
+  ✔ rejects context, resource, type, order and path substitutions in selected evidence (11561.7628ms)
+  ✔ binds selected payloads to the session-signed command, not just their type (9920.6768ms)
+  ✔ rejects current state changes, root changes and competing transitions after preparation (35114.0542ms)
+  ✔ rejects module revocation, unsupported schema/implementation references and revoked templates (57695.8482ms)
+  ✔ rejects altered command, intent, next-state opening and session signatures (17057.3986ms)
+  ✔ expired-session cleanup cannot grant authorization, consume a nonce or change state (6730.3846ms)
+✔ staged ordinary action authorization and atomic outcome (391076.7246ms)
+(node:152016) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ restores three actual pinned-SDK snapshots offline and does not fabricate synchronization or provider history (1551.1735ms)
+✔ a failing progress observer cannot skip disposal or reveal the underlying error (460.5253ms)
+✔ rejects wrong-account, mixed-account and wrong-network snapshots before any synchronization (1449.4285ms)
+✔ missing or corrupt snapshots and invalid derivation inputs fail closed without a fresh-wallet fallback (405.3238ms)
+✔ a restored scoped wallet is not a synchronized or funded wallet and closes after the awaited workflow (554.0793ms)
+✔ a failing scoped workflow is redacted and cannot leave its captured wallet usable (505.5306ms)
+✔ never persists an unsynchronized private rolling checkpoint and closes the wallet on rejection (552.628ms)
+✔ captures only a ready wallet checkpoint privately and still disposes it if persistence fails (764.156ms)
+✔ joins an unawaited initialization before cleanup and never starts a wallet after its workflow has closed (480.3272ms)
+✔ refuses checkpoint capture during an unawaited balance and joins it before disposal (542.045ms)
+✔ requires positive available DUST rather than a coin count, and starts only with automatic funding disabled (652.7039ms)
+✔ rechecks transaction readiness: wait-for-current-sync (445.5483ms)
+✔ rechecks transaction readiness: spent-dust (344.8699ms)
+✔ rechecks transaction readiness: close-while-waiting (203.7212ms)
+✔ waits for metadata before exposing submission and verifies the exact Preprod genesis (39.253ms)
+✔ bounds failed metadata initialization, closes the API and withholds private SDK errors (39.5052ms)
+✔ retries only metadata reads after verified socket cleanup and never retries a wrong genesis (0.9396ms)
+✔ preserves SDK Finalized results and prevents the next send until a stale disconnect flag settles (224.1287ms)
+✔ disconnect readiness has a deadline instead of accepting a stale connected flag (30.3167ms)
+✔ bounds a lost Finalized notification, releases the subscription and forbids another send until reconciliation (57.944ms)
+✔ fixes all RPC/indexer endpoints to Preprod while keeping the prover caller-controlled (1.7585ms)
+✔ does not expose credentials through JSON or ordinary object inspection or mutate another profile (0.6884ms)
+✔ rejects other network tokens and arbitrary prover destinations with fixed redacted errors (1.2985ms)
+✔ requires every restored SDK component to match Preprod and the derived wallet identity (0.44ms)
+✔ binds schema, network, provider, chain genesis, account and every exact component hash (1.3036ms)
+✔ rejects partial, extra, accessor and malformed checkpoint metadata without invoking getters (0.5934ms)
+(node:471008) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ rejects an unconfigured SDK signing network before constructing any providers (4.0034ms)
+✔ blocks the pinned SDK zero-fee empty-DUST shape before submission while allowing an absent section (25.6788ms)
+✔ wires the explicit Preprod SDK providers without network requests, wallet creation or implicit network changes (1.187ms)
+✔ rechecks profile/network drift before submission and after asynchronous balancing without retrying (1.0443ms)
+✔ requires the explicit Preprod signing network and never silently retargets a Local Dev process (0.257ms)
+✔ rejects mismatched wallet network, credentials, every endpoint and proof destination (1.1557ms)
+✔ redacts malformed wallet access errors rather than returning token-bearing provider exceptions (0.3741ms)
+✔ redacts underlying wallet failures and never automatically retries an uncertain submission (2.1882ms)
+✔ reports only fixed balancing stages and does not submit or copy private SDK errors (1.1904ms)
+✔ balance failure classification is bounded and does not invoke private accessors or serialize errors (2.0688ms)
+✔ finds safe balance categories through actual pinned dust-wallet and Effect cause wrappers (6.6572ms)
+✔ keeps safe submission diagnostics and phase labels while calling the wallet exactly once (1.1952ms)
+✔ retains public codes through the actual pinned SDK and Effect wrappers without copying transaction data (15.0276ms)
+✔ distinguishes node rejection, dropped/replaced transactions, transport failures and finality timeouts (0.5444ms)
+✔ does not execute accessors, serialize errors, inspect payloads, or traverse unbounded/cyclic causes (0.7045ms)
+✔ revalidates IPC diagnostics and copies only the public category and bounded numeric fields (0.3463ms)
+(node:14892) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ private authenticated sorted map (witness preparation, not slot authority)
+  ✔ matches the constant sentinel root and inserts full keys in any lexical order (3479.2654ms)
+  ✔ rejects duplicate keys, wrong predecessors, stale paths and wrong physical append positions (2073.5475ms)
+  ✔ replaces only an exact value without changing keys, successor links or count (2071.2913ms)
+  ✔ compares all 32 bytes and does not reuse the scope's 64-bit ordering key (447.4121ms)
+  ✔ isolates inputs and returned openings and rejects empty keys or values before mutation (537.9694ms)
+✔ private authenticated sorted map (witness preparation, not slot authority) (8613.2797ms)
+(node:230952) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ M6 Midnight runtime credential bindings
+  ✔ binds the exact M5 account, capability ancestry, session, and intent to Schnorr keys (2336.9987ms)
+  ✔ rejects an altered M5 intent before creating a Midnight runtime intent (1645.7559ms)
+  ✔ rejects a delegated capability with an altered parent-holder binding (420.2837ms)
+  ✔ binds signatures to the exact credential content (38.4021ms)
+  ✔ orders private scope hashes by the circuit's 64-bit limb and rejects limb collisions (51.6425ms)
+  ✔ reconstructs the exact private child scope and rejects values outside the parent (11633.6714ms)
+  ✔ activates a root capability only after exact staged scope completion (15865.5131ms)
+  ✔ rejects non-attenuated and out-of-parent delegated capability scopes (17804.5742ms)
+  ✔ advances the on-chain status root only for exact authorized empty-to-active and active-to-revoked leaves (2095.7194ms)
+  ✔ keeps independent sparse status indexes and rejects duplicate or altered replacements (732.3764ms)
+✔ M6 Midnight runtime credential bindings (52629.9378ms)
+(node:237668) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ complete private session-scope certification
+  ✔ activates only after all seven dimensions and exact finalization (15486.4242ms)
+  ✔ rejects the original parent {A}, session {A,B}, selected-A counterexample (2027.436ms)
+  ✔ checks every value even when child and parent counts are equal (9393.7174ms)
+  ✔ rejects a scope and time window identical to the parent (2466.8481ms)
+  ✔ rejects legacy session credential (2594.4415ms)
+  ✔ rejects wrong namespace (3051.892ms)
+  ✔ rejects wrong context (2633.358ms)
+  ✔ rejects wrong instance (2419.8276ms)
+  ✔ rejects wrong parent (3129.1015ms)
+  ✔ rejects wrong holder (4131.7589ms)
+  ✔ rejects reused holder key (2420.8533ms)
+  ✔ rejects invalid time window (2345.9377ms)
+  ✔ rejects unauthorized command and credential signers independently (3022.37ms)
+  ✔ rejects a legacy command and altered exact credential hash (3103.3219ms)
+  ✔ forbids direct session activation (4404.8506ms)
+  ✔ rejects duplicate, altered, and incomplete staging without advancing state (5411.4895ms)
+  ✔ rejects forged counts that do not reconstruct the signed roots (8709.9425ms)
+  ✔ rejects parent revocation during staging without activating the session (12360.0132ms)
+  ✔ rejects holder revocation during staging without activating the session (15140.8014ms)
+  ✔ cleans expired staging without activating or consuming the command nonce (3636.3218ms)
+✔ complete private session-scope certification (107896.1242ms)
+(node:19196) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ M5-P1 to M6 private slot-rule witness preparation (not chain authorization)
+  ✔ prepares both ordinary-user modes without mutating authorization state or granting trust (2778.4931ms)
+  ✔ uses exact M4 namespace governance only when the template explicitly permits it (1241.541ms)
+  ✔ retains the complete exact root-to-terminal occupied-slot provenance and rule openings (2569.9583ms)
+  ✔ preserves valid slot provenance longer than the separate 17-entry capability witness (3610.8253ms)
+  ✔ invalidates long-chain descendants when an ancestor outside the last 17 entries is revoked (1116.8081ms)
+  ✔ invalidates long-chain descendants when a distant ancestor account is revoked (1241.3212ms)
+  ✔ rejects altered template, holder, slot, context, instance, version and assigning authority (1545.9996ms)
+  ✔ rejects missing, revoked, expired and account-revoked assignments (2325.5581ms)
+  ✔ rejects a revoked parent and does not revive an old child with a new parent assignment (1050.0389ms)
+  ✔ rejects substituted parent holders and cyclic or incomplete provenance (1130.7988ms)
+  ✔ validates times and returns private defensive copies (1881.8695ms)
+  ✔ canonically commits exact M5 assignment evidence without authenticating its caller (728.8224ms)
+✔ M5-P1 to M6 private slot-rule witness preparation (not chain authorization) (21228.9456ms)
+(node:484512) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ Compact private shared-branch status program
+  ✔ reconstructs canonical roots for single, odd, shared and boundary paths (57736.9377ms)
+  ✔ supports all 35 required leaves, including dispersed depth-16 capacity (54081.5159ms)
+  ✔ uses the complete 588-step worst-case bound without requiring padding (34958.7081ms)
+  ✔ rejects altered leaves, duplicate indices, noncanonical order and padding (4728.2461ms)
+  ✔ rejects side-node substitution, invalid coordinates and stack-only bypasses (1186.0283ms)
+  ✔ requires every leaf, a complete depth-20 root and trailing canonical padding (8835.869ms)
+  ✔ rejects stale snapshots and copies private inputs without granting active authority (12744.9579ms)
+✔ Compact private shared-branch status program (174287.9953ms)
+(node:291140) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+▶ exact M2 runtime policy projection
+  ✔ derives deterministic configuration and exact M2 target without granting trust (532.4619ms)
+  ✔ rejects unsupported families, receipt profiles, versions and action substitutions (945.91ms)
+  ✔ rejects unknown M2 fields and ambiguous transitions before projection (282.3565ms)
+  ✔ authenticates every field, including data reserved for later action enforcement (450.6847ms)
+  ✔ binds slot rules and selected evidence types into policy v3 rather than accepting legacy policy (401.1564ms)
+  ✔ opens all three assigner kinds only in their exact template-permitted context and slot (382.7024ms)
+  ✔ rejects altered slot rule fields, paths, contexts, slots, versions and counts (171.5514ms)
+  ✔ keeps slot rule openings deterministic and isolates private copies (197.3816ms)
+  ✔ rejects excessive rule expansion before building a million-leaf tree (790.887ms)
+  ✔ rejects binding hash, module, profile, version, count and Merkle substitutions (162.8464ms)
+  ✔ requires the activated configuration and exact initial-state opening in the adapter (1175.6392ms)
+  ✔ does not invent transitions and rejects wrong state pairs or actions (183.821ms)
+  ✔ matches template intent dimensions without treating this predicate as authorization (190.09ms)
+  ✔ supports variable action lists, both family configurations and explicit same-state rows (750.2737ms)
+✔ exact M2 runtime policy projection (6625.7294ms)
+ℹ tests 223
+ℹ suites 15
+ℹ pass 223
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 413530.7735
+
+> permio@0.1.0 test:evidence-vault
+> npm test --workspace @permio/evidence-vault
+
+
+> @permio/evidence-vault@0.1.0 test
+> node --test test/*.test.ts
+
+✔ confirmed disclosure produces one signed ciphertext bundle and recipient-decryptable delivery (109.3785ms)
+✔ preview precedes encryption and caller mutations cannot change the confirmed disclosure (56.5045ms)
+✔ independent channel retries preserve ciphertext bytes and delivery identifiers without reauthorization (46.3363ms)
+✔ withdrawal and expiry block authorization or new channel delivery (646.9732ms)
+✔ current authorization is checked again before each channel and a revoked receipt never delivers (76.5113ms)
+✔ substituted signed payloads or denied receipt verification cannot cross either delivery boundary (63.2514ms)
+✔ withdrawal while the authorization request is in flight blocks late receipt delivery (25.7055ms)
+✔ private adapter diagnostics are excluded from signed-request and public-receipt channels (20.187ms)
+✔ withdrawal during channel preflight wins and concurrent sends do not duplicate a channel (34.6486ms)
+✔ a channel acknowledgement after withdrawal remains visible without allowing further disclosure (18.7434ms)
+✔ separate loopback HTTP channels retry identical wire bytes and recipient decrypts the received bundle (157.9817ms)
+✔ the local bridge proof adapter receives the exact private manifest opening without evidence bytes (17.1795ms)
+✔ selected evidence encrypts to the exact recipient and only decrypts after receipt verification (100.3005ms)
+✔ every explicit bridge scope field and selected record is committed (197.67ms)
+✔ tampering, wrong recipient, expiry and current authorization denial prevent plaintext release (454.9244ms)
+✔ authenticated encryption independently binds the purpose even if a fixture verifier accepts a changed envelope (72.3822ms)
+✔ actual Mera SDK protects only an encryption key with independent salts/namespaces (108.2122ms)
+✔ wrong credential, RP, namespace, salt, ciphertext and fingerprint fail closed (59.1589ms)
+(node:159108) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+(Use `node --trace-deprecation ...` to show where the warning was created)
+✔ finalized bridge verifier binds exact v1 receipt, generated output and recipient before decryption (201.6216ms)
+✔ a finalized unrelated or substituted receipt cannot authorize a manifest (336.0041ms)
+✔ finality, receipt windows, disclosure expiry and current revocation are enforced independently (23.7225ms)
+✔ bridge binding v2 preserves manifest v1 and uses the uncapped ordered manifest root (6.6398ms)
+(node:314308) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:314308) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+✔ authenticated ciphertext persists across service restart and decrypts only at the recipient (203.0452ms)
+✔ missing credentials, wrong operation and other binding reveal no ciphertext or listing (72.2903ms)
+✔ retry is idempotent and neither ciphertext nor receipt history can be overwritten (56.0684ms)
+✔ expiry, current revocation and verifier failure block retrieval without deleting immutable history (50.3478ms)
+✔ expiry during asynchronous verification prevents storage and plaintext never crosses the service (48.38ms)
+✔ the service bounds input and withholds internal authorization diagnostics (44.8792ms)
+ℹ tests 28
+ℹ suites 0
+ℹ pass 28
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 19048.799
+
+> permio@0.1.0 test:gateway
+> npm test --workspace @permio/gateway
+
+
+> @permio/gateway@0.1.0 test
+> node --test test/*.test.ts
+
+(node:277672) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ signed packet is durable before dispatch and survives outage, lost ack and restart unchanged (327.0517ms)
+✔ overlap reuses the old packet, verification cutoff appends a new epoch packet (176.3947ms)
+✔ forbidden historical signer fails closed without resigning (71.8299ms)
+✔ removed historical epoch fails its missing-key guard while the signer remains allowed (50.2457ms)
+✔ dispatch rechecks signer policy after awaiting signerFor (45.3548ms)
+✔ dispatch rechecks receipt expiry after awaiting signerFor while its key remains valid (45.2057ms)
+✔ different targets receive separately persisted domain-bound packets (176.5332ms)
+✔ modified receipt, unknown outbox identity and expired receipt never dispatch (27.2602ms)
+✔ tampered persisted packet cannot be silently resigned (rehash=false) (45.3599ms)
+✔ tampered persisted packet cannot be silently resigned (rehash=true) (47.3132ms)
+✔ concurrent delivery shares one signing boundary and rejects a changed source for the same key (37.036ms)
+(node:521572) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ finalized checkpoint and one unchanged receipt survive restart and duplicate discovery (55.9277ms)
+✔ downstream failure persists a fixed retry category and retries only after due time (37.461ms)
+✔ delivery crash after endpoint acceptance resumes with the same idempotency key (38.8956ms)
+✔ finalized checkpoint inconsistency is durable and prevents observation and delivery (73.6053ms)
+✔ pending sources, inactive historical registry entries and source failures never enter outbox (63.0736ms)
+✔ atomic observation rolls back all rows on conflicting finalized identity (25.4154ms)
+✔ exact template and module allowlist is required and binds every version and identity (27.7798ms)
+✔ a scan cannot inject a previously unseen event behind the durable finalized cursor (21.3823ms)
+✔ a long-running observer retries classified source outages and then resumes (34.0476ms)
+✔ expiry after durable capture is terminal and a mismatched acknowledgement is retried (30.1688ms)
+✔ restart after delivery claim and after acknowledgement preserves a single logical record (41.3631ms)
+✔ all receipts from distinct transactions in one finalized block commit atomically (27.9934ms)
+✔ a block boundary cannot include a receipt from another block or a fabricated event index (41.3424ms)
+✔ an expired exact replay after restart preserves the delivered receipt and can advance (42.7071ms)
+✔ catch-up records expired receipts without blocking valid receipts in the same block (34.2343ms)
+✔ checkpoint object key order cannot change finalized source identity (35.4274ms)
+✔ a restarted observer never dispatches a queued receipt removed from its exact allowlist (48.3752ms)
+✔ typed transient receipt-read outages retry in the same long-running observer (54.1148ms)
+✔ a source integrity error halts the store instead of becoming a retryable outage (42.1243ms)
+✔ historical semantic rejection is terminal and does not become a status outage (22.3212ms)
+(node:217356) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+▶ @permio/gateway M6-independent foundation
+  ✔ accepts only exact public source and receipt fields (3.8889ms)
+  ✔ binds the receipt hash to the exact observed bytes (0.9716ms)
+  ✔ matches sources only by exact network, contract, and receipt version (0.5988ms)
+  ✔ derives one domain-separated outbox key from every required dimension (3.223ms)
+  ✔ selects the newest active signing key during a rotation overlap (1.2936ms)
+  ✔ accepts old signatures only inside their signing and verification windows (0.3103ms)
+  ✔ rejects ambiguous or invalid key epoch configurations (0.3448ms)
+✔ @permio/gateway M6-independent foundation (23.0263ms)
+(node:442092) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ consecutive complete empty finalized blocks preserve exact cursor, parent and checkpoint hash (44.2531ms)
+✔ unknown source blocks return no work and changed persisted hashes are rejected (1.6754ms)
+✔ discovery rejects malformed, unknown-protocol, split-call and invalid serialized receipt sources (16.9016ms)
+✔ known failed or partial ordinary transactions never become receipt events (1.3484ms)
+✔ historical eligibility reads the recorded exact receipt-call state, including retired templates (745.1527ms)
+✔ historical eligibility rejects an unknown or unverified exact source and inactive module (486.1597ms)
+✔ SDK finality at the same height with a different block hash is an integrity failure (126.3868ms)
+✔ later substituted historical state cannot rewrite cached exact-call eligibility (244.4411ms)
+✔ terminal and transient source failures remain sanitized and distinct (1.3617ms)
+✔ recorded real receipt survives complete-block discovery, exact SDK reconciliation and historical eligibility (195.9136ms)
+✔ checkpoint verification uses validated metadata without refetching transaction bytes or states (30.3685ms)
+✔ reopened durable outbox recovers after a temporarily missing checkpoint block (126.7928ms)
+✔ SDK lookup wait is bounded and reuses its pending watch before late reconciliation (0xbbbb) (266.8581ms)
+✔ SDK lookup wait is bounded and reuses its pending watch before late reconciliation (0xdddd) (134.2186ms)
+✔ a rejected SDK lookup is cleared so a transient provider failure can recover (156.0453ms)
+✔ application transaction lookup timeout requires a positive supported timer duration (0.6202ms)
+✔ M6 ABI round trip preserves exact authoritative fields (transitioning=false) (34.9303ms)
+✔ M6 ABI round trip preserves exact authoritative fields (transitioning=true) (8.8775ms)
+✔ M6 encoding rejects truncated provenance, recipient casts and uncommitted changes (4.754ms)
+✔ M6 decoder rejects trailing ABI bytes, wrong source hash and state discriminator (7.3108ms)
+✔ source identity binds all 33 transaction bytes and exact ledger sequence (2.6373ms)
+(node:20256) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ fixture decoder -> durable observer -> signed loopback HTTP survives outage, lost ack and restart (422.1865ms)
+▶ authenticated gateway transport over unchanged public receipt bytes
+  ✔ round trips exact bytes, source and deterministic retry identity (99.8842ms)
+  ✔ rejects payload, source, outbox, key and target substitution (30.7665ms)
+  ✔ uses newest active key, retains overlap and enforces both cutoffs (68.3248ms)
+  ✔ refuses a signer assigned to governance, issuer, relayer or registry ownership (9.0903ms)
+  ✔ requires an exact acknowledgement and emits only fixed delivery categories (70.5991ms)
+  ✔ does not send authentication to insecure or credential-bearing endpoints (23.545ms)
+✔ authenticated gateway transport over unchanged public receipt bytes (306.3074ms)
+ℹ tests 66
+ℹ suites 2
+ℹ pass 66
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 9420.6106
+
+> permio@0.1.0 test:contracts
+> hardhat test nodejs
+
+No contracts to compile
+
+Running node:test tests
+
+  ExecutionRegistry M8 preparation
+    ✔ requires an explicit exact recipient binding even when low address bytes match (130ms)
+    ✔ restricts recipient binding, prevents replacement and checks disable at execution time
+    ✔ does not carry a recipient binding to another action or version (93ms)
+    ✔ requires six distinct initial authorities
+    ✔ accepts only deployed verifier and adapter contracts
+    ✔ keeps verifier, gateway epoch, and adapter registrations immutable
+    ✔ registers an exact public fixture receipt through an unprivileged relayer
+    ✔ emits every public field required to reconstruct the receipt
+    ✔ keeps every configured HyperIndex event selector aligned with the contract ABI
+    ✔ rejects every signed-field substitution (118ms)
+    ✔ rejects an unauthorized source even when the gateway signed it (76ms)
+    ✔ fails closed after an authorized source is removed
+    ✔ rejects an unauthorized signer and a signature outside its key epoch
+    ✔ accepts a pre-cutoff signature during the verification overlap (162ms)
+    ✔ rejects a captured signature at the verification cutoff before receipt expiry
+    ✔ rejects signatures made exactly at the signing cutoff
+    ✔ rejects gateway epochs with invalid signing and verification cutoff ordering
+    ✔ fails closed for disabled, missing, and future gateway keys
+    ✔ rejects invalid receipt windows, fields, and fixture targets
+    ✔ rejects non-canonical fixture bytes and unconfigured receipt versions
+    ✔ rejects reuse of a scoped nullifier across a second source transaction
+    ✔ rejects exact duplicate receipts before the scoped replay check
+    ✔ routes one receipt to the exact adapter and records the relayer separately
+    ✔ records downstream failure without revoking or rewriting authorization
+    ✔ captures an adapter revert rather than rolling back the receipt record
+    ✔ rejects a receipt whose named recipient is not the registered adapter
+    ✔ fails closed when the exact adapter is missing or disabled
+    ✔ prevents execution after revocation or expiry
+    ✔ rejects reads, execution, and revocation for missing records
+    ✔ keeps gateway signing separate from governance, adapters, and revocation
+    ✔ lets only the emergency authority pause registration and execution
+
+  M6 v1 lossless authenticated transport
+    ✔ accepts the real SDK-decoded M6 commitment through the shared TypeScript codec and transport signer (112ms)
+    ✔ stores the original ID, complete recipient, transaction and version strings and executes once
+    ✔ rejects wrong registry and chain signature domains
+    ✔ rejects signed fields changed after signing
+    ✔ rejects truncated/extended source transactions and network substitutions even if signed
+    ✔ rejects noncanonical ABI receipt and signature envelopes
+    ✔ rejects semantic version aliases and uint64 overflow
+
+  RecipientBoundAttestationRegistry
+    ✔ registers a valid recipient-bound attestation through a relayer
+    ✔ uses the exact protocol package EIP-712 type hash
+    ✔ rejects a recipient substitution after signing
+    ✔ rejects a second attestation that reuses the same scoped entitlement
+    ✔ rejects signatures from an unauthorized verifier
+    ✔ lets the original verifier revoke a registered attestation
+
+
+  44 passing (10236ms)
+
+
+
+> permio@0.1.0 dashboard:test
+> npm test --workspace @permio/execution-dashboard
+
+
+> @permio/execution-dashboard@0.1.0 test
+> node --test test/*.test.ts
+
+(node:423668) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ hosted deployment keeps health independent of Envio and requires secure account cookies (175.6638ms)
+✔ local accounts persist with salted hashes, not plaintext passwords or registration roles (203.147ms)
+✔ registration validation, case-insensitive uniqueness and invalid login fail closed (174.128ms)
+✔ simple local demo accounts accept alice / 1234 without weakening the default password policy (180.4554ms)
+✔ sessions expire, rotate, and revoke; password changes invalidate every device (170.7163ms)
+✔ accounts cannot enumerate, read, edit or claim another account's blueprints and receipts (64.5812ms)
+✔ five real accounts complete exact signed M4 review, activation, allocation and retirement through existing domains (106.9603ms)
+✔ review keys are public-only and cannot silently change devices (37.3006ms)
+✔ authentication attempt limits are persistent (1.4382ms)
+✔ account-scoped Envio queries and totals cannot include another user's public rows (1.2136ms)
+✔ HTTP registration, login, CSRF, cross-origin rejection, isolation and logout (131.8468ms)
+✔ front-end examples contain separate purchase and clinical contexts without manufactured chain outputs (4.5045ms)
+✔ demo state persists per signed-in account and returned models cannot mutate storage (1.6636ms)
+✔ permission previews bind an exact scope and retain unselected claims in the hidden view (3.242ms)
+✔ confirming consent consumes its preview without asserting proof verification or execution (1.154ms)
+✔ expired or stale previews cannot be confirmed (0.9671ms)
+✔ a second tab cannot overwrite a newer saved consent state (0.7892ms)
+✔ a regulatory preview requires explicit consent to the selected-record linkage (0.8741ms)
+✔ disclosure consent queues verification but never sends private records or creates a receipt (1.2789ms)
+✔ declined requests cannot be confirmed with an earlier preview (1.0531ms)
+✔ revoking one consent cancels its queued disclosure without changing other contexts (1.735ms)
+✔ expiry and verification requests have separate observable states (3.5122ms)
+✔ review authoring remains exactly rating and free-form text, with no claim of opinion truth (1.1825ms)
+✔ a storage failure rolls back a local change instead of presenting unsaved success (1.8722ms)
+✔ invalid saved state is not silently replaced with examples (0.4078ms)
+✔ the HTTP integration adapter propagates a missing backend without a demo fallback (0.8288ms)
+(node:457144) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ user-facing timestamps use the client Asia/Shanghai time zone (78.4345ms)
+✔ projects the real GraphQL shape and reports freshness without changing authority (5.4059ms)
+✔ marks an old progress block as aging while keeping the endpoint available (0.736ms)
+✔ returns an explicit unavailable state with empty rows and no fake fallback (1.1422ms)
+✔ derives activity metrics from returned execution outcomes (0.5904ms)
+✔ does not infer an execution outcome from a consumed receipt (0.2899ms)
+✔ combines case-insensitive receipt search with execution status (0.3362ms)
+✔ requires an explicit secret for any non-loopback GraphQL endpoint (0.5381ms)
+✔ dashboard requests and preserves lossless M6 public references (0.8599ms)
+✔ renders absent state explicitly only after the state projection is known (0.3543ms)
+✔ dashboard columns use only supplied account workflows and distinguish archived states (2.784ms)
+✔ attention counts only an outstanding reviewer action or approval ready for activation (0.6127ms)
+✔ open-run counts exclude expired, completed and revoked runs (0.2557ms)
+✔ workflow search and status filters combine without changing source data (0.3561ms)
+ℹ tests 40
+ℹ suites 0
+ℹ pass 40
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1716.5194

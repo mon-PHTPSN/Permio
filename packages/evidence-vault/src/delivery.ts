@@ -1,3 +1,4 @@
+import { publicReceipt } from "./receipt.ts";
 import type { ActionIntentPayload, SignedActionIntent } from "@permio/context-accounts";
 import type { DecisionReceipt } from "@permio/midnight-authorization";
 import {
@@ -91,22 +92,6 @@ function samePayload(actual: ActionIntentPayload, expected: ActionIntentPayload)
   const keys = Object.keys(expected) as (keyof ActionIntentPayload)[];
   return actual != null && Object.keys(actual).length === keys.length
     && keys.every(key => actual[key] === expected[key]);
-}
-function publicReceipt(receipt: DecisionReceipt): DecisionReceipt {
-  return structuredClone({
-    receiptVersion: receipt.receiptVersion, receiptId: receipt.receiptId,
-    proofModuleId: receipt.proofModuleId, proofModuleVersion: receipt.proofModuleVersion,
-    implementationHash: receipt.implementationHash, namespaceHash: receipt.namespaceHash,
-    templateIdHash: receipt.templateIdHash, semanticVersion: receipt.semanticVersion,
-    templateContentHash: receipt.templateContentHash, instanceCommitment: receipt.instanceCommitment,
-    previousStateCommitment: receipt.previousStateCommitment, nextStateCommitment: receipt.nextStateCommitment,
-    transitionSequence: receipt.transitionSequence, contextHash: receipt.contextHash,
-    actionSchemaId: receipt.actionSchemaId, purposeHash: receipt.purposeHash,
-    recipient: receipt.recipient, validAfter: receipt.validAfter, validBefore: receipt.validBefore,
-    scopedNullifier: receipt.scopedNullifier, outputCommitment: receipt.outputCommitment,
-    sourceNetwork: receipt.sourceNetwork, sourceContract: receipt.sourceContract,
-    sourceTransaction: receipt.sourceTransaction, sourceLedgerSequence: receipt.sourceLedgerSequence,
-  });
 }
 function assertReceiptWindow(receipt: DecisionReceipt, now: number): void {
   if (receipt.receiptVersion !== 1 || !/^(0|[1-9][0-9]*)$/.test(receipt.validAfter)

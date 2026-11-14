@@ -1,5 +1,6 @@
 import type { ActionIntentPayload } from "@permio/context-accounts";
 import type { DecisionReceipt } from "@permio/midnight-authorization";
+import { runtimeEvidenceBridgeBinding, type RuntimeEvidenceBridgeOpening } from "@permio/midnight-authorization/evidence-bridge";
 import {
   assertDigest, assertText, assertTime, canonical, deriveEvidenceKey, hex, importRecipientPublicKey,
   sha256, unhex, type Digest, type RecipientEncryptionKey, type RecipientPublicKey,
@@ -43,9 +44,9 @@ export interface EncryptedEvidenceBundle {
   readonly manifestRoot: Digest;
   readonly ciphertexts: readonly EvidenceCiphertext[];
 }
-/** No default verifier: the deployment supplies actual M6/M7 source validation. */
+/** No default verifier: the deployment authenticates the finalized bridge source. */
 export interface BridgeReceiptVerifier {
-  /** Must authenticate the exact finalized M6 v1 receipt (and M7 transport when
+  /** Must authenticate the exact finalized authorization receipt v1 (and gateway transport when
    * used), approved bridge module, complete binding, and current revocation.
    * Reject by throwing. A successful local hash check is not authorization. */
   verifyBridgeAuthorization(request: {
@@ -76,7 +77,7 @@ function validateEntries(entries: readonly { readonly recordCommitment: Digest }
 function encryptionBinding(scope: BridgeScope, fingerprint: Digest, entry: Omit<SelectedRecordManifestEntry, "ciphertextDigest">) {
   return canonical("permio:evidence-record-encryption:v1", [...scopeFields(scope), fingerprint, ...entryFields(entry)]);
 }
-async function ciphertextDigest(envelope: EvidenceCiphertext): Promise<Digest> {
+export async function ciphertextDigest(envelope: EvidenceCiphertext): Promise<Digest> {
   return sha256(canonical("permio:evidence-ciphertext:v1", [envelope.recordCommitment,
     envelope.ephemeralPublicKey, envelope.iv, envelope.ciphertext]));
 }
@@ -89,11 +90,27 @@ export async function selectedRecordManifestRoot(manifest: SelectedRecordManifes
   });
   return sha256(canonical("permio:selected-record-manifest:v1", [String(manifest.records.length), ...fields]));
 }
-export async function bridgeBindingCommitment(manifest: SelectedRecordManifest): Promise<Digest> {
-  return sha256(canonical("permio:cross-context-evidence-binding:v1", [...scopeFields(manifest),
-    manifest.recipientKeyFingerprint, await selectedRecordManifestRoot(manifest)]));
+/** Fixed typed bridge header; the ordered manifest root has no record-count cap.
+ * Manifest/ciphertext formats remain v1; only the bridge commitment is v2. */
+export async function createEvidenceBridgeOpening(manifest: SelectedRecordManifest): Promise<RuntimeEvidenceBridgeOpening> {
+  manifest = structuredClone(manifest);
+  scopeFields(manifest); assertDigest(manifest.recipientKeyFingerprint);
+  if (manifest.nonce === `0x${"00".repeat(32)}`) throw new TypeError("Bridge nonce must be nonzero");
+  return { bindingVersion: 2n,
+    sourceContextHash: unhex(manifest.sourceContextCommitment.slice(2)),
+    sourceInstanceCommitment: unhex(manifest.sourceInstanceCommitment.slice(2)),
+    destinationContextCommitment: unhex(manifest.destinationContextCommitment.slice(2)),
+    destinationCaseCommitment: unhex(manifest.destinationCaseCommitment.slice(2)),
+    purposeHash: unhex((await sha256(canonical("permio:runtime-purpose:v1", [manifest.purpose]))).slice(2)),
+    permittedUseHash: unhex((await sha256(canonical("permio:evidence-permitted-use:v2", [manifest.permittedUse]))).slice(2)),
+    expiresAt: BigInt(manifest.expiresAt), nonce: unhex(manifest.nonce.slice(2)),
+    recipientKeyFingerprint: unhex(manifest.recipientKeyFingerprint.slice(2)),
+    manifestRoot: unhex((await selectedRecordManifestRoot(manifest)).slice(2)) };
 }
-/** M5 already signs resource/purpose/recipient/nonce. The resource commits to
+export async function bridgeBindingCommitment(manifest: SelectedRecordManifest): Promise<Digest> {
+  return `0x${hex(runtimeEvidenceBridgeBinding(await createEvidenceBridgeOpening(manifest)))}`;
+}
+/** The action intent already signs resource/purpose/recipient/nonce. The resource commits to
  * every extra bridge value. This creates no new intent or receipt format. */
 export async function bindBridgeActionIntent(base: ActionIntentPayload, manifest: SelectedRecordManifest): Promise<ActionIntentPayload> {
   const snapshot = structuredClone(manifest);
