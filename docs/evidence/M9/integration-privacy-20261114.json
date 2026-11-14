@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "status": "PASSED",
+  "publicArtifacts": [
+    "docs/evidence/M9/m6-compatibility-20261114.json",
+    "docs/evidence/M9/recorded-m6-m7-m8-replay-20261114.json"
+  ],
+  "seedFlowCombinations": 10,
+  "privatePayloadsRecorded": false,
+  "liveEndToEnd": false
+}

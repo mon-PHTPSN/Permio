@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "milestone": "M9",
+  "observedAt": "2026-11-14",
+  "status": "INTEGRATION_TESTED_TEMPLATE_COMPATIBILITY_BLOCKED",
+  "m9Complete": false,
+  "preparationCommit": "13679ad",
+  "upstreamCommit": "33162c0a009db3611a7e195954885745110de64a",
+  "verification": {
+    "combinedCheck": {
+      "command": "npm run check",
+      "result": "PASSED",
+      "testsPassed": 620,
+      "failed": 0,
+      "skipped": 0,
+      "testCounts": [
+        142,
+        6,
+        15,
+        14,
+        16,
+        51,
+        17,
+        209,
+        66,
+        40
+      ],
+      "hardhatLocalEvmTests": 44,
+      "logSha256": "577a912d589e68b0dcaae5a0cf48cbf589753923b4ccd097af9e8b8003c59afc"
+    },
+    "diagnosticTypecheck": {
+      "command": "npm run typecheck",
+      "result": "PASSED"
+    },
+    "m9M6Compatibility": {
+      "command": "node scripts/integration/check-m9-m6-compatibility.ts docs/evidence/M9/m6-compatibility-20261114.json",
+      "exitCode": 1,
+      "result": "BLOCKED_UNSUPPORTED_PROOF_REQUIREMENT",
+      "combinationsRejected": 10,
+      "combinationsAccepted": 0,
+      "report": "docs/evidence/M9/m6-compatibility-20261114.json"
+    },
+    "recordedReceiptReplay": {
+      "command": "node scripts/integration/replay-recorded-m6.ts packages/gateway/test/fixtures/recorded-preprod-public-receipts.json docs/evidence/M9/recorded-m6-m7-m8-replay-20261114.json",
+      "result": "PASSED",
+      "receipts": 3,
+      "registrationsPerReceipt": 1,
+      "executionsPerReceipt": 1,
+      "deliveryAttemptsPerReceipt": 2,
+      "identicalPacketAfterRestart": true,
+      "sourceDiscoveryVerified": false
+    },
+    "envio": {
+      "result": "PASSED",
+      "environment": "isolated Ubuntu-24.04 WSL copy; Node 22.23.2; npm 10.9.8",
+      "envio": "3.14.0",
+      "commands": [
+        "npm run codegen",
+        "npm run typecheck",
+        "npm test"
+      ],
+      "handlerTestsPassed": 6,
+      "liveGraphqlServiceRun": false
+    },
+    "privacy": {
+      "result": "PASSED",
+      "seedFlowCombinations": 10,
+      "publicArtifactsScanned": 2,
+      "report": "docs/evidence/M9/integration-privacy-20261114.json"
+    }
+  },
+  "blocker": {
+    "m9PublicOutputSchemas": [
+      "treatment-referral-output-v1",
+      "research-consent-output-v1",
+      "emergency-access-output-v1",
+      "current-qualification-v1",
+      "bounded-purchase-authorization-v1"
+    ],
+    "m6RequiredPublicOutputSchema": "decision-receipt-v1",
+    "source": "packages/midnight-authorization/src/template-policy.ts",
+    "failure": "UNSUPPORTED_PROOF_REQUIREMENT",
+    "requiredNextWork": "Map every M9 proof semantic onto approved reusable M6 modules, then version any changed templates and regenerate hashes and governance inputs. Changing only the output schema does not establish semantic coverage.",
+    "templatesChanged": false,
+    "m6GateWeakened": false
+  },
+  "evidenceBoundary": {
+    "liveM9EndToEnd": false,
+    "newMidnightSubmissions": 0,
+    "newRemoteProofRequests": 0,
+    "ecsUsed": false,
+    "dockerServicesStarted": false,
+    "independentHumanReview": "OPEN"
+  }
+}
