@@ -101,3 +101,45 @@ it("requires all current, bounded-value and audit predicates in their exact conf
   assert.doesNotThrow(() => f.execute());
   assert.equal(f.view().decisionReceipts.size(), 1n);
 });
+
+it("rejects otherwise valid signed predicates from different active roots without advancing action state", () => {
+  const f = businessActionFixture({ predicateKinds: [1, 1], differentRootOnSecondPredicate: true });
+  f.finishPreparation(); f.proveBusiness();
+  assert.equal(f.businessProgress.nextPredicateIndex, 1n);
+  assert.deepEqual(f.businessProgress.rootCapabilityCommitment,
+    pure.runtimeCapabilityCredentialCommitment(f.ancestry.capabilities[0]!));
+  const args = f.businessArgs(), first = args[13], second = args[14];
+  assert.equal(args[11].inputIndex, 1n);
+  assert.notDeepEqual(first.record.rootCapabilityCommitment, f.businessProgress.rootCapabilityCommitment);
+  assert.deepEqual(first.record.rootCapabilityCommitment, pure.runtimeCapabilityCredentialCommitment(f.alternateBusinessRoot!));
+  assert.deepEqual(first.record.issuerAuthorityCommitment, f.businessProgress.rootIssuerAuthorityCommitment);
+  const authority = f.view().authorityRoots.lookup(f.target.namespaceHash);
+  const currentStatus = f.view().credentialStatusRoots.lookup(f.target.namespaceHash);
+  assert.doesNotThrow(() => f.contract.circuits.verifyRuntimeBusinessPredicate(f.context(), {
+    target: f.intent.target, instanceCommitment: f.intent.instanceCommitment, contextHash: f.intent.contextHash,
+    subjectAccountCredentialCommitment: f.ancestry.session.subjectAccountCredentialCommitment,
+    rootCapabilityCommitment: first.record.rootCapabilityCommitment,
+    rootIssuerAuthorityCommitment: first.record.issuerAuthorityCommitment,
+    resourceHash: f.intent.resourceHash, purposeHash: f.intent.purposeHash, recipientHash: f.intent.recipientHash,
+    effectiveAt: f.command.effectiveAt, validBefore: f.command.validBefore, intentCommitment: f.command.intentCommitment,
+    selectedInputsCommitment: f.command.selectedInputsCommitment, selectedOutputsCommitment: f.command.selectedOutputsCommitment,
+    inputCount: f.projection.policy.inputRecordTypeCount, outputCount: f.projection.policy.outputClaimTypeCount,
+    authorityRoot: authority.root, issuerRoot: f.allocation.capabilityIssuersRoot,
+    issuerCount: f.allocation.capabilityIssuerCount, statusRoot: currentStatus.root,
+    governancePolicyHash: authority.governancePolicyHash,
+  }, args[11], first, second, args[15], args[16], args[17], args[18]));
+
+  const key = pure.runtimeActionCommandCommitment(f.command);
+  const pendingBusiness = f.view().runtimeBusinessActionSessions.lookup(key);
+  const pendingAction = f.view().runtimeActionSessions.lookup(key);
+  const progress = structuredClone(f.businessProgress);
+  assert.throws(() => f.contract.circuits.prepareRuntimeBusinessPredicate(f.context(), ...args),
+    /Business predicates cross their original root capability or issuer/);
+  assert.deepEqual(f.businessProgress, progress);
+  assert.deepEqual(f.view().runtimeBusinessActionSessions.lookup(key), pendingBusiness);
+  assert.deepEqual(f.view().runtimeActionSessions.lookup(key), pendingAction);
+  assert.throws(() => f.execute(), /Business predicate completion/);
+  assert.equal(f.view().decisionReceipts.size(), 0n);
+  assert.equal(f.view().usedRuntimeActionNullifiers.size(), 0n);
+  assert.deepEqual(f.view().runtimeInstances.lookup(f.intent.instanceCommitment), f.instanceRecord);
+});

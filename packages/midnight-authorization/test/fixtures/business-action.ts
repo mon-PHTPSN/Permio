@@ -26,12 +26,15 @@ const hex = (value: Uint8Array) => `0x${Buffer.from(value).toString("hex")}` as 
 /** Crypto-valid synthetic genesis; no M4 review, chain issuance or finality claim. */
 export function businessActionFixture(options: { slots?: number; capabilities?: number;
   revokedSlot?: number; transitioning?: boolean; preservedStatusLeaves?: boolean;
-  predicateKinds?: readonly (1 | 2 | 3)[] } = {}) {
+  predicateKinds?: readonly (1 | 2 | 3)[]; differentRootOnSecondPredicate?: boolean } = {}) {
   const slotCount = options.slots ?? 1, capabilityCount = options.capabilities ?? 1;
   const transitioning = options.transitioning ?? true;
   const statusOffset=options.preservedStatusLeaves ? 10 : 0;
   const kinds = options.predicateKinds ?? [1];
-  const inputTypes = kinds.includes(2) ? ["record-one", "record-two"] : ["record-one"];
+  if (options.differentRootOnSecondPredicate && (kinds.length !== 2 || kinds.some(kind => kind !== 1))) {
+    throw new TypeError("Different-root fixture requires exactly two current-record predicates");
+  }
+  const inputTypes = kinds.includes(2) || options.differentRootOnSecondPredicate ? ["record-one", "record-two"] : ["record-one"];
   const outputTypes = kinds.map((_, index) => index === 0 ? "claim-one" : `claim-${index + 1}`);
   const template = parseScenarioTemplate({ schemaVersion: 2, namespace: "test.ordinary", templateId: "test.ordinary/action",
     version: "1.0.0", displayName: "Synthetic action", description: "Generated-code authorization fixture.",
@@ -49,7 +52,7 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
     proofProfiles: [{ id: "action-proof", circuitId: "private-state-transition-predicates-v1",
       publicOutputSchemaId: "decision-receipt-v1", predicates: kinds.map((kind, index) => ({
         kind: kind === 1 ? "current-record-v1" : kind === 2 ? "bounded-value-v1" : "audit-acknowledgment-v1",
-        inputRecordType: "record-one", outputClaimType: outputTypes[index]!,
+        inputRecordType: options.differentRootOnSecondPredicate ? inputTypes[index]! : "record-one", outputClaimType: outputTypes[index]!,
         ...(kind === 2 ? { ceilingRecordType: "record-two" } : {}),
       })) }], executionAdapters: [],
     privacyInvariants: [{ id: "private-witness", description: "No private payload appears in the receipt." }],
@@ -78,6 +81,9 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
     namespaceIssuerAuthorityCommitment: pure.governanceActivatorLeafCommitment(issuer), scopeRoots: scope.roots,
     scopeCounts: counts, notBefore: BigInt(110 + index), expiresAt: BigInt(1600 - index),
     delegationDepth: BigInt(index), maxDelegationDepth: 16n, statusIndex: BigInt(statusOffset + index * 2 + 1), issuedAt: BigInt(110 + index) });
+  const alternateBusinessRoot = options.differentRootOnSecondPredicate ? {
+    ...capabilities[0]!, grantIdHash: testBytes(239), m5GrantCommitment: testBytes(240), statusIndex: 100n,
+  } : undefined;
   const terminal = accounts.at(-1)!;
   const session: RuntimeSessionCredential = { ...common, credentialVersion: 2n, sessionIdHash: testBytes(130), m5SessionCommitment: testBytes(131),
     subjectAccountCredentialCommitment: accountHashes.at(-1)!, capabilityCredentialCommitment: pure.runtimeCapabilityCredentialCommitment(capabilities.at(-1)!),
@@ -91,6 +97,9 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
   capabilities.forEach(capability => status.issue({ namespace: template.namespace, kind: "capability", statusIndex: capability.statusIndex,
     credentialCommitment: pure.runtimeCapabilityCredentialCommitment(capability),
     revocationAuthorityAccountCredentialCommitment: capability.issuerAccountCredentialCommitment }));
+  if (alternateBusinessRoot) status.issue({ namespace: template.namespace, kind: "capability", statusIndex: alternateBusinessRoot.statusIndex,
+    credentialCommitment: pure.runtimeCapabilityCredentialCommitment(alternateBusinessRoot),
+    revocationAuthorityAccountCredentialCommitment: alternateBusinessRoot.issuerAccountCredentialCommitment });
   status.issue({ namespace: template.namespace, kind: "session", statusIndex: session.statusIndex,
     credentialCommitment: pure.runtimeSessionCredentialCommitment(session), revocationAuthorityAccountCredentialCommitment: accountHashes.at(-1)! });
   const assignments = new RuntimePrivateMap(), bindings = new RuntimePrivateMap();
@@ -159,7 +168,9 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
   const signedBusinessRecord = signBusiness(businessRecord, 171n);
   const selectedInputs = inputTypes.map((_, index) => {
     const record = index === 0 ? businessRecord : { ...businessRecord,
-      typeHash: projection.inputRecords.at(index).typeHash, nonce: testBytes(43 + index) };
+      typeHash: projection.inputRecords.at(index).typeHash, nonce: testBytes(43 + index),
+      rootCapabilityCommitment: alternateBusinessRoot && index === 1
+        ? pure.runtimeCapabilityCredentialCommitment(alternateBusinessRoot) : businessRecord.rootCapabilityCommitment };
     return { signed: index === 0 ? signedBusinessRecord : signBusiness(record, 172n + BigInt(index)),
       payloadCommitment: pure.runtimeBusinessRecordCommitment(record), nonce: testBytes(191 + index) };
   });
@@ -169,8 +180,8 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
     const predicate = projection.predicateAt(index);
     const first = kind === 3 ? signBusiness({ ...businessRecord, typeHash: predicate.outputTypeHash,
       referenceCommitment: pure.runtimeBusinessAuditReference(pure.runtimeActionIntentCommitment(intent), provisional.selectedInputsCommitment),
-      nonce: testBytes(220 + index) }, 180n + BigInt(index)) : signedBusinessRecord;
-    const second = kind === 2 ? selectedInputs[1]!.signed : first;
+      nonce: testBytes(220 + index) }, 180n + BigInt(index)) : selectedInputs[Number(predicate.inputIndex)]!.signed;
+    const second = kind === 2 ? selectedInputs[Number(predicate.ceilingIndex)]!.signed : first;
     return { first, second, payloadCommitment: kind === 3 ? pure.runtimeBusinessRecordCommitment(first.record)
       : pure.runtimeBusinessClaimCommitment(predicate, pure.runtimeBusinessRecordCommitment(first.record),
         kind === 2 ? pure.runtimeBusinessRecordCommitment(second.record) : testBytes(0)), nonce: testBytes(205 + index) };
@@ -249,10 +260,13 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
   function businessArgs() {
     const index = Number(businessProgress.nextPredicateIndex);
     const witness = businessWitnesses[index]!;
+    const root = alternateBusinessRoot && index === 1 ? alternateBusinessRoot : capabilities[0]!;
+    const selectedRootStatus = root === capabilities[0] ? rootStatusLeaf : { ...rootStatusLeaf,
+      credentialCommitment: pure.runtimeCapabilityCredentialCommitment(root), statusIndex: root.statusIndex };
     return [command, signature, intent, session, allocation, state, projection.policy, binding, tree.pathFor(0),
       progress, businessProgress, projection.predicateAt(index), projection.predicatePathAt(index),
       witness.first, witness.second, selectedVector(evidence.inputs), selectedVector(evidence.outputs),
-      rootStatusLeaf, status.pathFor(capabilities[0]!.statusIndex)] as const;
+      selectedRootStatus, status.pathFor(root.statusIndex)] as const;
   }
   function proveBusiness() {
     const predicate = projection.predicateAt(Number(businessProgress.nextPredicateIndex));
@@ -276,7 +290,7 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
   }
   return { template, target, projection, binding, tree, moduleKey, moduleRecord, templateKey, templateRecord,
     instanceRecord, state, allocation, command, intent, ancestry, status, issuer, evidence, prepared, slotSteps,
-    businessRecord, signedBusinessRecord, businessArgs, proveBusiness, rootStatusLeaf,
+    businessRecord, signedBusinessRecord, businessArgs, proveBusiness, rootStatusLeaf, alternateBusinessRoot,
     contract, context, prep, prepareArgs, finishPreparation, executeArgs, execute,
     get current(): StateValue | ChargedState { return current; },
     set current(value: StateValue | ChargedState) { current = value; },
