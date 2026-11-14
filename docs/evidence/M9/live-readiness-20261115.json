@@ -1,0 +1,269 @@
+{
+  "schemaVersion": 1,
+  "recordedAtUtc": "2026-11-14T16:59:53.687Z",
+  "status": "BLOCKED_BEFORE_M9_LIVE_ACTIVATION",
+  "source": {
+    "commit": "30f3f361b63b08492b37e9272a59ceb4151d05cd",
+    "branch": "feat/m8-execution-registry",
+    "applicationCodeChanged": false
+  },
+  "acceptance": {
+    "spec": "docs/DETERMINISTIC_MILESTONES.md",
+    "required": "Each pack completes a live local M6 transaction and deployed local M8 execution through M7; unsupported proof semantics must fail activation.",
+    "m9Complete": false
+  },
+  "localInfrastructure": {
+    "dockerEngine": "29.8.0",
+    "startupRecovery": "Documented stale AF_UNIX socket recovery completed using preserved backups; no factory reset, data deletion, toolchain upgrade or memory-limit change.",
+    "node": "midnight-node:1.0.0",
+    "indexer": "indexer-standalone:4.3.3",
+    "proofServer": "proof-server:8.1.0",
+    "containerHealth": "All three healthy",
+    "hostBindings": "127.0.0.1 only on 9944, 8088, 6300",
+    "probes": [
+      {
+        "service": "node",
+        "endpoint": "http://127.0.0.1:9944",
+        "httpStatus": 200,
+        "response": {
+          "jsonrpc": "2.0",
+          "id": 1,
+          "result": {
+            "peers": 0,
+            "isSyncing": false,
+            "shouldHavePeers": false
+          }
+        }
+      },
+      {
+        "service": "indexer",
+        "endpoint": "http://127.0.0.1:8088/api/v4/graphql",
+        "httpStatus": 200,
+        "response": {
+          "data": {
+            "block": {
+              "height": 90437,
+              "hash": "7df549a69f8ac6459413dc854ebb233c33a23665a162a90c2bfc1cdcb02dae25"
+            }
+          }
+        }
+      },
+      {
+        "service": "proofServer",
+        "endpoint": "http://127.0.0.1:6300/version",
+        "httpStatus": 200,
+        "response": "8.1.0"
+      }
+    ]
+  },
+  "provingAssets": {
+    "status": "VERIFIED",
+    "origin": "Preserved M6 delivery checkout; source not modified.",
+    "currentContractBindingsByteExact": true,
+    "currentCompilerMetadataByteExact": true,
+    "compactSourcesEqualAfterLineEndingNormalization": true,
+    "filesRestored": 57,
+    "restoredFilesIgnored": true,
+    "manifestSha256": "6fa751ffd6d1d60d216426e4772c35ef9d9f714ea2af1e5d87c0868cca9f0ecb",
+    "contractSha256": "21afd7ea01ad0727a5c8c8d865d7f557eebd4e276a10471ca3122fb14c751d53",
+    "verificationCommand": "node --input-type=module -e \"import {verifyPermioAuthorizationAssets} from './packages/midnight-authorization/src/compiled-assets.ts'; await verifyPermioAuthorizationAssets('./packages/midnight-authorization/contracts/managed/permio-authorization');\""
+  },
+  "verified": {
+    "scenarioPackTests": {
+      "command": "npm run test:scenario-packs",
+      "exitCode": 0,
+      "passed": 26,
+      "failed": 0,
+      "skipped": 0
+    },
+    "policyCompatibility": {
+      "command": "node scripts/integration/check-m9-m6-compatibility.ts <report.json>",
+      "total": 10,
+      "accepted": 10,
+      "rejected": 0,
+      "status": "POLICY_COMPATIBLE_LIVE_NOT_VERIFIED",
+      "proofSemanticsVerified": false
+    }
+  },
+  "blockers": [
+    {
+      "id": "REQUIRED_BUSINESS_PREDICATES_NOT_IMPLEMENTED",
+      "stage": "before module selection and activation",
+      "affected": [
+        "professional-site-access/qualification-site-access",
+        "delegated-purchasing-agent/bounded-purchase",
+        "clinical-referral-consent/emergency-access"
+      ],
+      "examples": [
+        "Qualification credential validity and its issuer-backed private record are not established by generic account/session validity.",
+        "No private amount and maximum comparison establishes amount-ceiling. An approved amount-band resource string is a scope label.",
+        "An audit-required claim commitment does not enforce an audit obligation."
+      ],
+      "evidence": [
+        {
+          "path": "packages/scenario-packs/src/templates.ts",
+          "lines": [
+            80,
+            155,
+            193
+          ]
+        },
+        {
+          "path": "packages/midnight-authorization/src/action-execution.ts",
+          "lines": [
+            29,
+            34,
+            46
+          ]
+        },
+        {
+          "path": "packages/midnight-authorization/contracts/runtime-action-execution.compact",
+          "lines": [
+            304,
+            319
+          ]
+        }
+      ],
+      "finding": "M9 requiredProofSemantics are retained as fixture expectations. The existing compatibility runner verifies policy/state shape only; it is not a semantic capability gate.",
+      "requiredOutcome": "Use approved reusable M6 predicates with exact versioned bindings. Unsupported predicates must prevent live activation. No fallback to generic typed commitments as semantic proof."
+    },
+    {
+      "id": "LIVE_GENERATED_WITNESS_ADAPTER_MISSING",
+      "stage": "before private credential issuance and action submission",
+      "affected": "All three packs",
+      "finding": "Current fixtures are deterministic M2-M5 material using fixed future profiles and millisecond values. The M6 conversion carries integer timestamps directly into second-based ledger values. No pack-specific live workflow currently bridges generated M5 state, slots, records, delegated ancestry and exact real proof-module bindings.",
+      "evidence": [
+        {
+          "path": "packages/scenario-packs/src/templates.ts",
+          "lines": [
+            14,
+            23,
+            32
+          ]
+        },
+        {
+          "path": "packages/scenario-packs/src/fixture.ts",
+          "lines": [
+            178,
+            417,
+            441
+          ]
+        },
+        {
+          "path": "packages/midnight-authorization/src/runtime-credentials.ts",
+          "lines": [
+            447,
+            448,
+            567
+          ]
+        },
+        {
+          "path": "packages/scenario-packs/src/model.ts",
+          "lines": [
+            60,
+            71,
+            76,
+            80
+          ]
+        }
+      ],
+      "requiredOutcome": "Keep deterministic fixtures reproducible. Add an explicit live run input adapter with recorded current anchor time, consistent seconds, generated private witnesses and authoritative M6-M8 outputs; never change a node clock or relabel historical receipts."
+    }
+  ],
+  "packReadiness": [
+    {
+      "packId": "clinical-referral-consent",
+      "templateVersion": "2.0.0",
+      "flows": [
+        {
+          "flowId": "treatment-referral",
+          "requiredProofSemantics": [
+            "credential-control",
+            "selected-record-integrity"
+          ],
+          "liveEvidence": false
+        },
+        {
+          "flowId": "research-consent",
+          "requiredProofSemantics": [
+            "credential-control",
+            "purpose-bound-consent"
+          ],
+          "liveEvidence": false
+        },
+        {
+          "flowId": "emergency-access",
+          "requiredProofSemantics": [
+            "selected-record-manifest",
+            "short-validity",
+            "audit-obligation"
+          ],
+          "liveEvidence": false
+        }
+      ],
+      "localM6Transaction": "NOT_RUN",
+      "localM8Execution": "NOT_RUN"
+    },
+    {
+      "packId": "professional-site-access",
+      "templateVersion": "2.0.0",
+      "flows": [
+        {
+          "flowId": "qualification-site-access",
+          "requiredProofSemantics": [
+            "credential-current",
+            "site-task-shift-binding"
+          ],
+          "liveEvidence": false
+        }
+      ],
+      "localM6Transaction": "NOT_RUN",
+      "localM8Execution": "NOT_RUN"
+    },
+    {
+      "packId": "delegated-purchasing-agent",
+      "templateVersion": "2.0.0",
+      "flows": [
+        {
+          "flowId": "bounded-purchase",
+          "requiredProofSemantics": [
+            "delegation-ancestry",
+            "amount-ceiling",
+            "revocation-current"
+          ],
+          "liveEvidence": false
+        }
+      ],
+      "localM6Transaction": "NOT_RUN",
+      "localM8Execution": "NOT_RUN"
+    }
+  ],
+  "decision": {
+    "status": "USER_SCOPE_DECISION_PENDING",
+    "recommended": "Implement the missing predicates in the shared reusable M6 module library, with tests and versioned governance bindings, then add the generated live witness adapter and resume M9 local acceptance.",
+    "alternative": "Protocol-only execution evidence remains a limited test tier and cannot complete M9 acceptance."
+  },
+  "boundaries": {
+    "walletInitialized": false,
+    "newMidnightSubmissions": 0,
+    "newProofRequests": 0,
+    "newEvmDeployments": 0,
+    "ecsUsed": false,
+    "liveEndToEnd": false,
+    "proofSemanticsVerified": false,
+    "independentHumanSecurityPrivacyReview": "OPEN",
+    "activationAttempted": false
+  },
+  "sourceSha256": {
+    "packages/scenario-packs/src/templates.ts": "0c5575c940268882c542f74a23bedcd0b2d98557b50a4e055e117be1bdef5e1f",
+    "packages/scenario-packs/src/fixture.ts": "8a9357b2c17bd5a78110682b09aa23c5003db95cc02b77af1b58bb509e4a9e08",
+    "packages/midnight-authorization/src/action-execution.ts": "c402dcde5e30504c6dc46ba755afef47ca072416eab4df365f37f36e7849ad91",
+    "packages/midnight-authorization/src/runtime-credentials.ts": "4d939623e0084d820b4cbb2b260cee266f33511359d8a1d2dfaeb7ee81eb8e2d",
+    "packages/midnight-authorization/contracts/runtime-action-execution.compact": "39a96a0a41e91738dc43062d4de724819aa8d72fcb071e33d6c63daf49770002"
+  },
+  "privacy": {
+    "status": "PASSED",
+    "seedFlowCombinations": 10,
+    "privatePayloadsRecorded": false
+  }
+}
