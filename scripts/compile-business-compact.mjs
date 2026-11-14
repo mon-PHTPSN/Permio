@@ -9,17 +9,18 @@ import { fileURLToPath } from "node:url";
 import { boundedKeyLimits as limits, boundedKeyStopReason, readNumericCounters, verifyBoundedKeyCgroup } from "./m6-bounded-key-policy.mjs";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const source = "packages/midnight-authorization/contracts/permio-authorization-v11.compact";
-const assets = "packages/midnight-authorization/contracts/managed/permio-authorization-v11";
+const contractVersion = process.argv.includes("--v12") ? 12 : 11;
+const source = `packages/midnight-authorization/contracts/permio-authorization-v${contractVersion}.compact`;
+const assets = `packages/midnight-authorization/contracts/managed/permio-authorization-v${contractVersion}`;
 const compiler = path.join(os.homedir(), ".compact/versions/0.31.1/x86_64-unknown-linux-musl/zkir");
 const threads = { RAYON_NUM_THREADS: "1", TOKIO_WORKER_THREADS: "1" };
 const env = { ...process.env, ...threads };
 const compile = { command: "compact", args: ["compile", "+0.31.1", "--skip-zk", source, assets] };
-const usage = "usage: --skip-zk | --measure --run | --keys --run; add --plan for read-only inspection";
+const usage = "usage: --skip-zk | --measure --run | --keys --run; add --plan for read-only inspection, --v12 for activation dispatch";
 const diskReserveBytes = 1024 ** 3;
 
 export function orderedCircuitNames(names) {
-  const priority = name => name === "prepareRuntimeBusinessPredicate" ? 0 : name === "executeRuntimeAction" ? 1 : 2;
+  const priority = name => name === "manageM4Activation" ? -1 : name === "prepareRuntimeBusinessPredicate" ? 0 : name === "executeRuntimeAction" ? 1 : 2;
   return names.slice().sort((left, right) => priority(left) - priority(right) || left.localeCompare(right));
 }
 
@@ -40,9 +41,9 @@ async function checkDiskSpace(k) {
 
 function options(args) {
   assert(new Set(args).size === args.length, `duplicate controls; ${usage}`);
-  assert(args.every(value => ["--plan", "--skip-zk", "--measure", "--keys", "--run"].includes(value)), `unsupported control; ${usage}`);
+  assert(args.every(value => ["--plan", "--skip-zk", "--measure", "--keys", "--run", "--v12"].includes(value)), `unsupported control; ${usage}`);
   const modes = args.filter(value => ["--skip-zk", "--measure", "--keys"].includes(value));
-  assert(modes.length === 1 || (modes.length === 0 && args.length === 1 && args[0] === "--plan"), `select one mode; ${usage}`);
+  assert(modes.length === 1 || (modes.length === 0 && args.includes("--plan") && args.every(a => ["--plan", "--v12"].includes(a))), `select one mode; ${usage}`);
   const mode = modes[0] === "--keys" ? "bounded-keys" : modes[0] === "--measure" ? "bounded-measure" : "metadata-only";
   const plan = args.includes("--plan");
   assert(plan || mode === "metadata-only" || args.includes("--run"), "Explicit --run is required for measurement or keys");
@@ -177,13 +178,13 @@ async function run(selected) {
   const assetPath = path.join(root, assets);
   await mkdir(assetPath, { recursive: true });
   const lock = path.join(assetPath, ".business-build.lock");
-  await writeFile(lock, "owned v11 build\n", { flag: "wx", mode: 0o600 });
+  await writeFile(lock, `owned v${contractVersion} build\n`, { flag: "wx", mode: 0o600 });
   let directory, report;
   try {
     const keys = path.join(assetPath, "keys");
     if (await present(keys)) {
       assert(!(await readdir(keys)).some(file => /\.(?:prover|verifier)$/.test(file) || file === "build-manifest.json"),
-        "Existing v11 keys must be preserved and reviewed, not overwritten or reused");
+        `Existing v${contractVersion} keys must be preserved and reviewed, not overwritten or reused`);
     }
     const compiled = spawnSync(compile.command, compile.args, { cwd: root, env, stdio: "inherit" });
     assert(!compiled.error && compiled.status === 0, "Pinned metadata compilation failed");
@@ -241,7 +242,7 @@ async function run(selected) {
       for (const entry of report.circuits) {
         assert.equal(await hash(path.join(assetPath, "zkir", `${entry.name}.bzkir`)), entry.binaryProgramSha256);
       }
-      await json(path.join(keys, "build-manifest.json"), { manifestVersion: 2, mode: "real-bounded-v11-keys",
+      await json(path.join(keys, "build-manifest.json"), { manifestVersion: 2, mode: `real-bounded-v${contractVersion}-keys`,
         compilerVersion: "0.31.1", runtimeVersion: "0.16.0", generatedAtUtc: new Date().toISOString(),
         contractSha256: before["contract/index.js"], compilerInfoSha256: before["compiler/contract-info.json"], circuits: report.circuits }, "wx");
       report.keysReady = true;
@@ -257,7 +258,7 @@ async function run(selected) {
 
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) try {
   const selected = options(process.argv.slice(2));
-  if (selected.plan) process.stdout.write(`${JSON.stringify({ ...selected, source, assets, compilerVersion: "0.31.1", runtimeVersion: "0.16.0", compile,
+  if (selected.plan) process.stdout.write(`${JSON.stringify({ ...selected, source, assets, contractVersion, compilerVersion: "0.31.1", runtimeVersion: "0.16.0", compile,
     threads, limits, requiresAppliedCgroup: selected.mode !== "metadata-only", maximumConcurrentCompilers: 1,
     provisionsSwap: false, relaxesLimits: false, keyReuse: "disabled", keysReady: false, activation: false })}\n`);
   else { process.umask(0o077); await run(selected); }

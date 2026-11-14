@@ -1,5 +1,6 @@
 export * from "./canonical.ts";
 export * from "./compiled-assets.ts";
+export * from "./activation-lifecycle.ts";
 export * from "./compact-crypto.ts";
 export * from "./authority-root.ts";
 export * from "./binding-manifest.ts";

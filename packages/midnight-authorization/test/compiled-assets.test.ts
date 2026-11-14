@@ -89,6 +89,27 @@ async function businessAssetsFixture(names = ["prepareRuntimeBusinessPredicate",
   return { directory, manifest, save };
 }
 
+it("v12 integrity requires the complete consolidated activation inventory and its own profile", async () => {
+  const sdk = await import(new URL("../src/compiled-assets.ts", import.meta.url).href);
+  assert.equal(typeof sdk.verifyActivationAuthorizationAssets, "function", "v12 integrity verifier is missing");
+  const names = ["allocateRuntimeInstance", "manageRuntimeParticipantSlots", "prepareRuntimeBusinessPredicate",
+    "prepareRuntimeAction", "executeRuntimeAction", "governAuthorization", "terminateTemplate", "manageM4Activation",
+    "stageM4ActivationBinding", "updateRuntimeCredentialStatus"];
+  for (const inventory of [names, names.filter(name => name !== "manageM4Activation"),
+    [...names.filter(name => name !== "manageM4Activation"), "beginM4Activation", "finalizeM4Activation"]]) {
+    const f = await businessAssetsFixture(inventory);
+    try {
+      await f.save({ ...f.manifest, mode: "real-bounded-v12-keys" });
+      if (inventory === names) {
+        await sdk.verifyActivationAuthorizationAssets(f.directory);
+        await assert.rejects(verifyBusinessAuthorizationAssets(f.directory), /current real-key build manifest/);
+        await f.save();
+        await assert.rejects(sdk.verifyActivationAuthorizationAssets(f.directory), /current real-key build manifest/);
+      } else await assert.rejects(sdk.verifyActivationAuthorizationAssets(f.directory), /business authorization proof circuits/);
+    } finally { await rm(f.directory, { recursive: true, force: true }); }
+  }
+});
+
 // Synthetic file bytes exercise profile isolation and integrity, not proof validity.
 it("keeps legacy and business authorization real-key profiles separate", async () => {
   const { directory, manifest, save } = await businessAssetsFixture();

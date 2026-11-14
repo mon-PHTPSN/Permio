@@ -21,6 +21,13 @@ function plan(args: string[]) {
 }
 
 describe("isolated bounded business Compact build command", () => {
+  it("selects the fixed v12 activation target without changing the v11 default", () => {
+    const output = plan(["--skip-zk", "--v12"]);
+    assert.equal(output.source, "packages/midnight-authorization/contracts/permio-authorization-v12.compact");
+    assert.equal(output.assets, "packages/midnight-authorization/contracts/managed/permio-authorization-v12");
+    assert.equal(output.contractVersion, 12);
+    assert.equal(plan(["--skip-zk"]).source, source);
+  });
   it("prioritizes changed predicate/action measurements and refuses insufficient next-pair disk space", async () => {
     const moduleUrl = new URL("../compile-business-compact.mjs", import.meta.url);
     const helpers = await import(moduleUrl.href);

@@ -7,6 +7,7 @@ import { getNetworkId } from "@midnight-ntwrk/midnight-js-network-id";
 import type { PublicDataProvider } from "@midnight-ntwrk/midnight-js-types";
 import { ledger } from "../contracts/managed/permio-authorization/contract/index.js";
 import { ledger as businessLedger } from "../contracts/managed/permio-authorization-v11/contract/index.js";
+import { ledger as activationLedger } from "../contracts/managed/permio-authorization-v12/contract/index.js";
 import { runtimeDecisionReceiptAlignedValue, runtimeDecisionReceiptId,
   type DecisionReceiptSourceReader, type RuntimeDecisionReceiptBody } from "./decision-receipt.ts";
 import type { Hex32 } from "./model.ts";
@@ -28,9 +29,14 @@ export function assertV11DecisionReceiptInsertion(program: readonly Op<AlignedVa
   assertDecisionReceiptInsertion(program, body, [1n, 12n], "v11");
 }
 
+/** v12 preserves the measured v11 ledger layout and DecisionReceipt v1. */
+export function assertV12DecisionReceiptInsertion(program: readonly Op<AlignedValue>[], body: RuntimeDecisionReceiptBody): void {
+  assertDecisionReceiptInsertion(program, body, [1n, 12n], "v12");
+}
+
 function assertDecisionReceiptInsertion(
   program: readonly Op<AlignedValue>[], body: RuntimeDecisionReceiptBody,
-  indices: readonly bigint[], version: "v9" | "v11",
+  indices: readonly bigint[], version: "v9" | "v11" | "v12",
 ): void {
   const receiptId = Uint8Array.from(Buffer.from(runtimeDecisionReceiptId(body).slice(2), "hex"));
   const path = indices.map(value => ({ tag: "value" as const, value: alignedIndex(value) }));
@@ -83,6 +89,11 @@ export function createIndexedDecisionReceiptReader(input: IndexedDecisionReceipt
 /** Explicit v11 source adapter; never guesses a contract version from receipt data. */
 export function createIndexedBusinessDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
   return createIndexedReceiptReader(input, { decodeLedger: businessLedger, assertInsertion: assertV11DecisionReceiptInsertion });
+}
+
+/** Explicit v12 source adapter; never infers deployment ABI from receipt data. */
+export function createIndexedActivationDecisionReceiptReader(input: IndexedDecisionReceiptReaderInput): DecisionReceiptSourceReader {
+  return createIndexedReceiptReader(input, { decodeLedger: activationLedger, assertInsertion: assertV12DecisionReceiptInsertion });
 }
 
 function createIndexedReceiptReader(input: IndexedDecisionReceiptReaderInput, layout: ReceiptLayout): DecisionReceiptSourceReader {

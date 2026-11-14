@@ -26,7 +26,9 @@ const hex = (value: Uint8Array) => `0x${Buffer.from(value).toString("hex")}` as 
 /** Crypto-valid synthetic genesis; no M4 review, chain issuance or finality claim. */
 export function businessActionFixture(options: { slots?: number; capabilities?: number;
   revokedSlot?: number; transitioning?: boolean; preservedStatusLeaves?: boolean;
-  predicateKinds?: readonly (1 | 2 | 3)[]; differentRootOnSecondPredicate?: boolean } = {}) {
+  predicateKinds?: readonly (1 | 2 | 3)[]; differentRootOnSecondPredicate?: boolean;
+  contract?: Pick<Contract<undefined>, "initialState"> & { circuits: Pick<Contract<undefined>["circuits"],
+    "prepareRuntimeAction" | "prepareRuntimeBusinessPredicate" | "executeRuntimeAction" | "verifyRuntimeBusinessPredicate"> } } = {}) {
   const slotCount = options.slots ?? 1, capabilityCount = options.capabilities ?? 1;
   const transitioning = options.transitioning ?? true;
   const statusOffset=options.preservedStatusLeaves ? 10 : 0;
@@ -196,7 +198,7 @@ export function businessActionFixture(options: { slots?: number; capabilities?: 
     effectiveAt: 500n, validBefore: 900n });
   const command = prepared.command, signature = signRuntimeActionCommand(command, 131n, 151n);
   const ancestry = prepareRuntimeActiveAncestry({ accounts, capabilities, session, statusTree: status, now: 500n });
-  const contract = new Contract(permioAuthorizationWitnesses);
+  const contract = options.contract ?? new Contract(permioAuthorizationWitnesses);
   const initial = contract.initialState(createConstructorContext(undefined, "00".repeat(32)), network,
     target.namespaceHash, testBytes(0), authority.root, 1n, 1n, status.root, 2n, 2n, 2n);
   const targetSchema = generatedInfo.ledger.find((entry: any) => entry.name === "activeTemplates").value.elements

@@ -26,8 +26,18 @@ export async function verifyBusinessAuthorizationAssets(assets: string): Promise
     ["prepareRuntimeBusinessPredicate", "executeRuntimeAction"]);
 }
 
+/** v12 uses one activation entry and retains both predicate/action preparations. */
+export async function verifyActivationAuthorizationAssets(assets: string): Promise<void> {
+  return verifyAuthorizationAssets(assets, ["real-bounded-v12-keys"], [
+    "allocateRuntimeInstance", "manageRuntimeParticipantSlots", "prepareRuntimeBusinessPredicate",
+    "prepareRuntimeAction", "executeRuntimeAction", "governAuthorization", "terminateTemplate",
+    "manageM4Activation", "stageM4ActivationBinding", "updateRuntimeCredentialStatus",
+  ], true);
+}
+
 async function verifyAuthorizationAssets(
   assets: string, acceptedModes: readonly string[], requiredProofCircuits: readonly string[] = [],
+  exactProofInventory = false,
 ): Promise<void> {
   const manifest = JSON.parse(await readFile(path.join(assets, "keys/build-manifest.json"), "utf8")) as {
     manifestVersion: number; compilerVersion: string; runtimeVersion: string; mode: string;
@@ -48,7 +58,8 @@ async function verifyAuthorizationAssets(
   const expectedNames = info.circuits.filter((circuit) => circuit.proof).map((circuit) => circuit.name).sort();
   assert(expectedNames.length > 0 && expectedNames.every((name) => /^[A-Za-z][A-Za-z0-9_]*$/.test(name)),
     "Invalid compiled circuit inventory");
-  assert(requiredProofCircuits.every(name => expectedNames.includes(name)),
+  assert(requiredProofCircuits.every(name => expectedNames.includes(name)) &&
+    (!exactProofInventory || expectedNames.length === requiredProofCircuits.length),
     "Compact assets require the business authorization proof circuits");
   assert(Array.isArray(manifest.circuits) && manifest.circuits.length === expectedNames.length &&
     JSON.stringify(manifest.circuits.map((entry) => entry.name).sort()) === JSON.stringify(expectedNames),

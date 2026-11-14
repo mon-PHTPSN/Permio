@@ -6,11 +6,12 @@ import { readFile, mkdir, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { ApiPromise } from "@polkadot/api";
-import { verifyBusinessAuthorizationAssets } from "../packages/midnight-authorization/src/compiled-assets.ts";
+import { verifyBusinessAuthorizationAssets, verifyActivationAuthorizationAssets } from "../packages/midnight-authorization/src/compiled-assets.ts";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
-const assets = path.join(root, "packages/midnight-authorization/contracts/managed/permio-authorization-v11");
-const output = path.join(root, "logs/business-v11-constructor-cost.json");
+const version = process.argv.includes("--v12") ? 12 : 11;
+const assets = path.join(root, `packages/midnight-authorization/contracts/managed/permio-authorization-v${version}`);
+const output = path.join(root, `logs/business-v${version}-constructor-cost.json`);
 const nodeUrl = "ws://127.0.0.1:9944";
 const expectedGenesis = "0xe72f7a21a0397844563b4206f887b779ffa0d937c2d1b2339441faa1f08b9846";
 const expectedNormalMax = 1_299_891_843_000n;
@@ -19,17 +20,20 @@ const balancingReserve = 18_000_000_000n;
 /** The real integrity verifier must finish before constructor or node code runs. */
 export async function withVerifiedBusinessConstructorAssets<T>(
   directory: string, inspect: (inventory: { circuitCount: number; manifestSha256: string }) => Promise<T>,
+  contractVersion: 11 | 12 = 11,
 ): Promise<T> {
-  await verifyBusinessAuthorizationAssets(directory);
+  assert(contractVersion === 11 || contractVersion === 12, "Unsupported constructor version");
+  await (contractVersion === 12 ? verifyActivationAuthorizationAssets : verifyBusinessAuthorizationAssets)(directory);
   const manifest = await readFile(path.join(directory, "keys/build-manifest.json"));
   const inventory = JSON.parse(manifest.toString("utf8")) as { circuits: { name: string }[] };
-  assert.equal(inventory.circuits.length, 11, "The exact v11 constructor requires all eleven genuine circuit assets");
+  assert.equal(inventory.circuits.length, contractVersion === 12 ? 10 : 11,
+    `The exact v${contractVersion} constructor requires its complete genuine circuit assets`);
   return inspect({ circuitCount: inventory.circuits.length, manifestSha256: createHash("sha256").update(manifest).digest("hex") });
 }
 
 export function summarizeBusinessConstructorWeight(input: {
   ledgerCost: bigint; nodeOverhead: bigint; normalMaxExtrinsicRefTime: bigint;
-}) {
+}, contractVersion: 11 | 12 = 11) {
   const { ledgerCost, nodeOverhead, normalMaxExtrinsicRefTime: maximum } = input;
   assert(typeof ledgerCost === "bigint" && ledgerCost >= 0n && typeof nodeOverhead === "bigint" && nodeOverhead >= 0n &&
     typeof maximum === "bigint" && maximum > 0n, "Invalid constructor weight observation");
@@ -38,7 +42,7 @@ export function summarizeBusinessConstructorWeight(input: {
     normalMaxExtrinsicRefTime: String(maximum), headroomPercent: Number((maximum - weight) * 10000n / maximum) / 100,
     reserveAdjustedHeadroomPercent: Number((maximum - weight - balancingReserve) * 10000n / maximum) / 100,
     walletBalancingCostReserve: String(balancingReserve), minimumFinalHeadroomPercent: 5,
-    balancingReserveClassification: "historical-assumption-not-v11-measurement",
+    balancingReserveClassification: `historical-assumption-not-v${contractVersion}-measurement`,
     balancingReserveSource: "scripts/check-m6-ordinary-node-cost.ts (prior same-wallet v9 estimate: 8.96 billion; reserve: 18 billion)",
     weightWithinLimit: weight < maximum, practicalHeadroomPassed: (weight + balancingReserve) * 100n <= maximum * 95n,
     exactBalancedValidationRequired: true };
@@ -70,7 +74,8 @@ async function main() {
     process.stdout.write(`${JSON.stringify(report)}\n`);
   };
   try {
-    assert.deepEqual(process.argv.slice(2), ["--check"], "Usage: node scripts/check-business-deployment-cost.ts --check");
+    assert.deepEqual(process.argv.slice(2), version === 12 ? ["--check", "--v12"] : ["--check"],
+      "Usage: node scripts/check-business-deployment-cost.ts --check [--v12]");
     assert.equal(Number(process.versions.node.split(".")[0]), 22, "Use the pinned Node 22 environment");
     stage = "genuine-asset-preflight";
     await withVerifiedBusinessConstructorAssets(assets, async inventory => {
@@ -84,12 +89,13 @@ async function main() {
         import("@midnight-ntwrk/midnight-js-protocol/ledger"),
         import("@midnight-ntwrk/midnight-js-protocol/compact-runtime"),
         import("@midnight-ntwrk/midnight-js-network-id"),
-        import("../packages/midnight-authorization/contracts/managed/permio-authorization-v11/contract/index.js"),
+        version === 12 ? import("../packages/midnight-authorization/contracts/managed/permio-authorization-v12/contract/index.js") :
+          import("../packages/midnight-authorization/contracts/managed/permio-authorization-v11/contract/index.js"),
         import("../packages/midnight-authorization/src/canonical.ts"),
       ]);
       setNetworkId("undeployed");
       const forbidden = () => { throw new Error("Constructor cost inspection forbids application witnesses or proofs"); };
-      const compiledContract = CompiledContract.make<InstanceType<typeof generated.Contract<undefined>>>("permio-authorization-v11", generated.Contract)
+      const compiledContract = CompiledContract.make<InstanceType<typeof generated.Contract<undefined>>>(`permio-authorization-v${version}`, generated.Contract)
         .pipe(CompiledContract.withWitnesses({ getSchnorrReduction: forbidden }), CompiledContract.withCompiledFileAssets(assets));
       const publicHash = (kind: "network-id" | "namespace", value: string) => Uint8Array.from(Buffer.from(hashProtocolIdentifier(kind, value).slice(2), "hex"));
       const publicRoot = { field: BigInt(`0x${"12".repeat(31)}`) };
@@ -117,18 +123,18 @@ async function main() {
       const overhead = (await timed(queries.configurableTransactionSizeWeight())).toJSON() as { refTime: unknown };
       const normalMax = unsigned(weights.perClass.normal.maxExtrinsic.refTime);
       assert.equal(normalMax, expectedNormalMax, "Local node normal extrinsic boundary changed");
-      const summary = summarizeBusinessConstructorWeight({ ledgerCost: unsigned(costJson.ok), nodeOverhead: unsigned(overhead.refTime), normalMaxExtrinsicRefTime: normalMax });
-      await save({ kind: "v11-genuine-constructor-actual-local-node-cost", observedAtUtc: new Date().toISOString(),
-        contractAbiVersion: 11, compilerVersion: "0.31.1", runtimeVersion: "0.16.0", nodeVersion, genesisHash: expectedGenesis,
+      const summary = summarizeBusinessConstructorWeight({ ledgerCost: unsigned(costJson.ok), nodeOverhead: unsigned(overhead.refTime), normalMaxExtrinsicRefTime: normalMax }, version);
+      await save({ kind: `v${version}-genuine-constructor-actual-local-node-cost`, observedAtUtc: new Date().toISOString(),
+        contractAbiVersion: version, compilerVersion: "0.31.1", runtimeVersion: "0.16.0", nodeVersion, genesisHash: expectedGenesis,
         provableEntries: inventory.circuitCount, genuineKeysVerified: true, inventoryManifestSha256: inventory.manifestSha256,
         nativeBytes: bytes.length, nativeSha256: createHash("sha256").update(bytes).digest("hex"), ...summary, nodeAccessed, ...safety });
       if (!summary.practicalHeadroomPassed) process.exitCode = 2;
-    });
+    }, version);
   } catch {
     // SDK errors can embed ephemeral maintenance-key material. Only fixed
     // stage names, never error objects or candidate/private fields, may escape.
-    await save({ kind: "v11-constructor-cost-unavailable", observedAtUtc: new Date().toISOString(), stage,
-      genuineKeysVerified, requiredProvableEntries: 11, nodeAccessed,
+    await save({ kind: `v${version}-constructor-cost-unavailable`, observedAtUtc: new Date().toISOString(), stage,
+      genuineKeysVerified, requiredProvableEntries: version === 12 ? 10 : 11, nodeAccessed,
       detailsWithheld: true, ...safety });
     process.exitCode = 1;
   } finally { await api?.disconnect().catch(() => {}); }
