@@ -50,6 +50,13 @@ function bounded(value: unknown, min: number, max: number, label: string): numbe
 }
 const slug = (value: string) => value.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "action";
 export function buildBlueprint(input: Record<string, unknown>, namespace: string, templateId?: string): ScenarioTemplate {
+  if (input.template !== undefined) {
+    const template = parseScenarioTemplate(input.template);
+    if (templateId && (template.namespace !== namespace || template.templateId !== templateId)) {
+      throw new ApplicationError(400, "The template namespace and identity must match the stored draft.");
+    }
+    return parseScenarioTemplate({ ...template, namespace, templateId: templateId ?? `${namespace}/definition` });
+  }
   const name = text(input.name, "workflow name", 100);
   const description = text(input.description, "description", 1000);
   const contextName = text(input.context, "context", 100);
@@ -277,6 +284,15 @@ export class ApplicationStore {
     return this.transaction(() => {
       const blueprint = this.raw(blueprintId); this.accessible(user, blueprint);
       const registry = this.registry(blueprint), now = this.now(), requestId = id(), instanceId = id();
+      const target = this.target(blueprint);
+      if (input.target !== undefined) {
+        const supplied = input.target as Partial<TemplateTarget> | null;
+        if (!supplied || typeof supplied !== "object" ||
+          Object.keys(supplied).sort().join(",") !== "namespace,templateHash,templateId,templateVersion" ||
+          (Object.keys(target) as (keyof TemplateTarget)[]).some((key) => supplied[key] !== target[key])) {
+          throw new ApplicationError(409, "The template target has changed. Refresh and select the exact version again.");
+        }
+      }
       const name = text(input.name, "run name", 100);
       const duration = bounded(input.duration, 300, 604800, "run duration");
       const names = text(input.participants, "participants", 500).split(",").map((value) => value.trim());
@@ -285,7 +301,9 @@ export class ApplicationStore {
       const issuer = this.findUser(input.issuer);
       const system = new ContextAccountSystem(registry);
       const instance = system.createScenarioInstance({ template: blueprint.template, instanceId, instantiationRequestId: requestId, expiresAt: now+duration, capabilityIssuers: [{ principalId: issuer.id, kind: "human" }] }, now);
-      const document = { id: instanceId, name, blueprintId, blueprintName: blueprint.template.displayName, managerId: user.id, issuerId: issuer.id, participants, state: instance.state, createdAt: now, expiresAt: instance.expiresAt };
+      const document = { id: instanceId, name, blueprintId, blueprintName: blueprint.template.displayName,
+        template: structuredClone(blueprint.template), target,
+        managerId: user.id, issuerId: issuer.id, participants, state: instance.state, createdAt: now, expiresAt: instance.expiresAt };
       blueprint.events.push({ type: "allocate", actor: user.id, at: now, data: { requestId } });
       this.save(blueprint);
       this.db.prepare("INSERT INTO instances VALUES(?,?,?)").run(instanceId, blueprintId, JSON.stringify(document));

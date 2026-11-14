@@ -3,6 +3,7 @@ import { createServer, type IncomingMessage, type ServerResponse } from "node:ht
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ApplicationError, ApplicationStore, type Account } from "./application.ts";
+import { ScenarioTemplateValidationError } from "@permio/scenario-domain";
 
 export const LOCAL_CHAIN_ID = 31_337;
 export const LOCAL_REGISTRY_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
@@ -426,6 +427,7 @@ export function createDashboardServer(config: DashboardConfig) {
       response.writeHead(405, { allow: "GET" }).end();
     } catch (error) {
       if (error instanceof ApplicationError) writeJson(response, error.status, { error: error.message });
+      else if (error instanceof ScenarioTemplateValidationError) writeJson(response, 400, { error: error.message });
       else if (error && typeof error === "object" && "code" in error && /^(UNAUTHORIZED|THRESHOLD_NOT_MET|REVIEW_REJECTED|NOT_ACTIVE|RETIRED|REVOKED|INVALID_STATE|INVALID_TIME|INVALID_ATTESTATION|TARGET_MISMATCH|DUPLICATE_REVIEW|INVALID_POLICY|DUPLICATE_ID|INVALID_INPUT)$/.test(String(error.code))) {
         const messages: Record<string,string> = { UNAUTHORIZED:"You do not have permission to perform this action.", THRESHOLD_NOT_MET:"An independent review is required before activation.", REVIEW_REJECTED:"A reviewer rejected this version. Create a revised workflow before resubmitting.", NOT_ACTIVE:"Activate this workflow before starting a run.", RETIRED:"This workflow has been retired. New runs cannot be started.", REVOKED:"This workflow has been revoked.", INVALID_STATE:"This action is not available in the workflow’s current state.", INVALID_TIME:"This request has expired or is not yet valid.", INVALID_ATTESTATION:"The review signature could not be verified.", TARGET_MISMATCH:"The workflow version has changed. Refresh and review it again.", DUPLICATE_REVIEW:"You have already reviewed this version." };
         writeJson(response, 409, { error: messages[String(error.code)] ?? "This operation is not permitted." });
