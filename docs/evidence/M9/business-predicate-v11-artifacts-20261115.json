@@ -1,0 +1,616 @@
+{
+  "formatVersion": 1,
+  "observedAtUtc": "2026-11-14T20:06:10.359839+00:00",
+  "sourceBaseRevision": "3b1b22d217a1feddfe5925951463c309c36bbab9",
+  "sourceState": "committed implementation; exact file hashes verified after commit",
+  "compilerVersion": "0.31.1",
+  "runtimeVersion": "0.16.0",
+  "contractVersion": 11,
+  "moduleId": "private-state-transition-predicates",
+  "moduleVersion": "1.0.0",
+  "moduleIdHash": "0x36611c301ca9e7d09332e467f11bbb60ba83bf9b7b0a86f7d23b56046b3a1409",
+  "inputSchemaHash": "0x8bf3d9b759e4d71961b4b47c73cfafe89c632c21134c42fe575b67852527f570",
+  "configurationSchemaHash": "0xbf6b564a610bf71a76f3e1ae16a7367f895559a7eada115e80248399f3ec5f6f",
+  "receiptSchemaHash": "0xfe737dd204b44ecdab7e2c5a46c85d03899f628eea21ab14a2944b1b58957da8",
+  "compilerProfileHash": "0xba9b9708f82831c89b8b77ff57c4cd940610238f0055ece0e4f717da54aa1305",
+  "files": {
+    "packages/midnight-authorization/contracts/permio-authorization-v11.compact": "6ea4427720fb38005a50695f084a3410f31bd0511f06080d9924e804fc80e698",
+    "packages/midnight-authorization/contracts/runtime-action-execution-v11.compact": "bea664f317bb2db7187e5879a7d947928bf622317c5bd13e57aa93cb9c3304b3",
+    "packages/midnight-authorization/contracts/runtime-business-predicates.compact": "5c9b64a5c2c95dfa75a0df21350f6b157b0dbb28c2b06ca471ab140b4de73400",
+    "packages/midnight-authorization/contracts/runtime-template-policy-v4.compact": "73d19269912d2718195f8abdde9e8b76f711307e34db3140250f79e90475b877",
+    "packages/midnight-authorization/contracts/managed/permio-authorization-v11/contract/index.js": "b8720747322b812756e92412d495eda5a0e1ead2236d200873cb3af6a6c2a373",
+    "packages/midnight-authorization/contracts/managed/permio-authorization-v11/contract/index.d.ts": "f02abd67c03ec52b3bdb3129fb55ad4328f43332dadc0b2f074ec5dbf38a1e0f",
+    "packages/midnight-authorization/contracts/managed/permio-authorization-v11/contract/index.js.map": "e3870d8a882577d7f4965d1f8500cf2844e986fc70b926bd8a0462e3b1afad00",
+    "packages/midnight-authorization/contracts/managed/permio-authorization-v11/compiler/contract-info.json": "cb1fd82f80aea565b6862f929a8f23c864afd09995ca48bf8edd88c19ad79159"
+  },
+  "programs": [
+    {
+      "name": "allocateRuntimeInstance",
+      "sha256": "2991aa1d4bb7c7a5ad7928800d234662e673d9970511758381f238d417971e47",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "beginM4Activation",
+      "sha256": "f7c8e8e503317f9a0e37e56138589b2ca1363fd572d72122ab1d6621af9b7a50",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "executeRuntimeAction",
+      "sha256": "adcd74a239c1084adb74548c4d91985289e0b388ae5dbf5cbc7c112ad3c6e961",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "finalizeM4Activation",
+      "sha256": "05d64e5f3fd9e36c8c23edfb0af1443123bf7ac4e3e9c330265a75769c2aebfb",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "governAuthorization",
+      "sha256": "f0c63c69f0db8a23bee4d77af583aac1ea9314d8295fc987071dc671d19fd04c",
+      "byteIdenticalToV10": true
+    },
+    {
+      "name": "manageRuntimeParticipantSlots",
+      "sha256": "82b7f01b0087a9e5a532fd25cc42be0c2ae931975727a3763a5e1613083e0c62",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "prepareRuntimeAction",
+      "sha256": "9a1a047799137f213a11dcd764812369870ca247a3bce9a8e6b4830b59e6ecd8",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "prepareRuntimeBusinessPredicate",
+      "sha256": "0979b9150c97b568ec5258bace26986be407702e5d73b4a2accbf8138db17ada",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "stageM4ActivationBinding",
+      "sha256": "89100e1a3ac966c470e12917438753015bcce141808888ea035668627c5635cf",
+      "byteIdenticalToV10": true
+    },
+    {
+      "name": "terminateTemplate",
+      "sha256": "4b6fe6bc883c5be2dd28b2a53388827a207bdb533dff130e528749529d48ebb4",
+      "byteIdenticalToV10": false
+    },
+    {
+      "name": "updateRuntimeCredentialStatus",
+      "sha256": "b925f95b547ca639478999ae5ddc34405fefdae984a155673df070b2c38e4e17",
+      "byteIdenticalToV10": false
+    }
+  ],
+  "packs": [
+    {
+      "id": "clinical-referral-consent",
+      "version": "3.0.0",
+      "schemaVersion": 2,
+      "templateHash": "0x0435aee3811874bdca3cf9194a7815a4b27496b3b1e3fc97ede14284d1967d64",
+      "actions": [
+        {
+          "actionId": "authorize-treatment-referral",
+          "configurationHash": "0xb3b9c3a79f4aebda8981afdcea0e708633335c94d4e33828a363ecf8ff6d3e97",
+          "predicateCount": 1
+        },
+        {
+          "actionId": "authorize-research-consent",
+          "configurationHash": "0xe6ee1345484a430a6960820469f1dac070fcbeeec713aae282e0383df46d0d0a",
+          "predicateCount": 1
+        },
+        {
+          "actionId": "authorize-emergency-access",
+          "configurationHash": "0x8ab759c73e01ea8c92643a24faaac353079525970c036457da18a6561ff06fff",
+          "predicateCount": 2
+        }
+      ]
+    },
+    {
+      "id": "professional-site-access",
+      "version": "3.0.0",
+      "schemaVersion": 2,
+      "templateHash": "0xd0f1186fb8e8c9c9c53d6dfff73a05f00a6fb5fb9a845febca133b1df8e6e76d",
+      "actions": [
+        {
+          "actionId": "prove-qualification-for-shift",
+          "configurationHash": "0x5d857c6a7e478de31132b3fca5122bb2df9acc6606d8a23b086c1ed7b5829e55",
+          "predicateCount": 2
+        }
+      ]
+    },
+    {
+      "id": "delegated-purchasing-agent",
+      "version": "3.0.0",
+      "schemaVersion": 2,
+      "templateHash": "0xd03928bc9d0bd3460a58183bf14d3bf887f7d2010ca30adfa3f80d268b17d6b0",
+      "actions": [
+        {
+          "actionId": "execute-bounded-purchase",
+          "configurationHash": "0x26df6684b1cc380e8c524ef7c50c7179d93f96e390d40dccc4d8fca81f0a0004",
+          "predicateCount": 2
+        }
+      ]
+    }
+  ],
+  "humanReviewApproved": false,
+  "protocolGovernanceApproved": false,
+  "activated": false,
+  "nativeAcceptance": false,
+  "implementationRevision": "fc20a768f24024875b7e70ba703d6687fee7e1c5",
+  "review": {
+    "status": "complete",
+    "runId": "20261115-020115-56167a83",
+    "retainedFindings": 0,
+    "fixedOriginalFindings": 4,
+    "reviewFullDiffSha256": "23a95031418a42c3ca4797828ed3047f63df335fea207b2432351638e5384f1a",
+    "humanApproval": false
+  },
+  "verification": {
+    "windowsNodeVersion": "24.13.1",
+    "wslNodeVersion": "22.23.2",
+    "fullNodeRunnerCases": 690,
+    "fullNodePassed": 689,
+    "fullNodeFailed": 0,
+    "windowsPosixOnlySkipped": 1,
+    "posixFocusedPassed": 24,
+    "posixFocusedSkipped": 0,
+    "solidityPassed": 44,
+    "cloudCleanupPassed": 5,
+    "constructorPreflightPassed": 2,
+    "postCommitActionExecutionPassed": 7,
+    "crossActiveRootRegressionPassed": true,
+    "legacyV10CurrentSchema2CasesRejected": 10,
+    "fullTestLog": "logs/business-full-test-20261115-post-cross-root.log",
+    "legacyV10GenuineAssetsVerifiedAfterBuild": true
+  },
+  "keys": {
+    "status": "complete",
+    "requiredCircuits": 11,
+    "verifiedCompletePairs": 11,
+    "verifiedPairs": [
+      {
+        "name": "governAuthorization",
+        "programSha256": "f0c63c69f0db8a23bee4d77af583aac1ea9314d8295fc987071dc671d19fd04c",
+        "source": "exact-byte-identical-v10-program-and-verified-real-keys",
+        "proverBytes": 169461117,
+        "proverSha256": "dd66a68c44f1c1743c0ce2abecb8b874d15c0df50353778be8ffd72ee82e708c",
+        "verifierBytes": 2311,
+        "verifierSha256": "f6fe2cbf8d950482bba0c0f63ff4166c54c2783763c1f4f115c21277215c0d0f",
+        "binaryProgramBytes": 31634,
+        "binaryProgramSha256": "46c4482c7ab0becebe7792d34518cdb2993101d1bf72998a19409369082dbef6"
+      },
+      {
+        "name": "stageM4ActivationBinding",
+        "programSha256": "89100e1a3ac966c470e12917438753015bcce141808888ea035668627c5635cf",
+        "source": "exact-byte-identical-v10-program-and-verified-real-keys",
+        "proverBytes": 9970641,
+        "proverSha256": "6d949c317d8775095d3c6d04a3813531b189242787e3f23dfd2ef8189fccdf74",
+        "verifierBytes": 2119,
+        "verifierSha256": "d4f8defa77ada55e03fae60ec3f496612f7a487ac39704e4653a7489e109f218",
+        "binaryProgramBytes": 3882,
+        "binaryProgramSha256": "c915adaa7bf7170626a508996d2b70dbd7ac014fbad886d52a22d658ea82bbec"
+      },
+      {
+        "name": "allocateRuntimeInstance",
+        "programSha256": "2991aa1d4bb7c7a5ad7928800d234662e673d9970511758381f238d417971e47",
+        "proverBytes": 42810090,
+        "proverSha256": "7b2dd94f5de7f6cc163f77658a55ff006fab59d8b5aa33f2f8f84524aa42ad98",
+        "verifierBytes": 2311,
+        "verifierSha256": "65baf3c35d09cd3c5b59b9a8ad5a8eee13a2aa8e07fe881fe99f312413786ab0",
+        "binaryProgramBytes": 5492,
+        "binaryProgramSha256": "c64ebd418f20bbc8e9a1a7eb8762ca86c101a4a6fc4b501d1e0fbc0c3208506c",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "beginM4Activation",
+        "programSha256": "f7c8e8e503317f9a0e37e56138589b2ca1363fd572d72122ab1d6621af9b7a50",
+        "proverBytes": 21585899,
+        "proverSha256": "189086bb018cf41dcbc81ca3289a8f0d2196da56d830b3c7e8d6aae116d74839",
+        "verifierBytes": 2311,
+        "verifierSha256": "c0a9439a1f14d1ff8e8d972ca23092b3e23c69b8d36fcb93a53f0ed63cb0c185",
+        "binaryProgramBytes": 3875,
+        "binaryProgramSha256": "dd98fcef4d680678f73b8c5ad5587557360e683772f3b040cda5c17526274096",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "executeRuntimeAction",
+        "programSha256": "adcd74a239c1084adb74548c4d91985289e0b388ae5dbf5cbc7c112ad3c6e961",
+        "proverBytes": 678012676,
+        "proverSha256": "89e268fe76b86bc59fc4411c9bfc496cc3bf2b410082f64fffab8fab8754e68a",
+        "verifierBytes": 2311,
+        "verifierSha256": "22e291d8528c74cde18bea2ef53c0b42c71ded07e02807f80b8dc1bd8fae8e66",
+        "binaryProgramBytes": 852908,
+        "binaryProgramSha256": "5a151174a8ad9d2da95168c777a1edb94445f5da340bcb5de71a0d1a52aaa814",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "finalizeM4Activation",
+        "programSha256": "05d64e5f3fd9e36c8c23edfb0af1443123bf7ac4e3e9c330265a75769c2aebfb",
+        "proverBytes": 21586737,
+        "proverSha256": "04af0f5f04c421727484d92b9bac0b21fd5d4287bbd626c0d97ae9ac7e3cda53",
+        "verifierBytes": 2311,
+        "verifierSha256": "d82e78b7d6ab834b5892d21cec620bf40be27e19b8778e6b05dfaf4746c747d9",
+        "binaryProgramBytes": 5120,
+        "binaryProgramSha256": "3eafba3add4eccae58ca619a999cdee8e41cbd847705e72dcec28768f40732b8",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "manageRuntimeParticipantSlots",
+        "programSha256": "82b7f01b0087a9e5a532fd25cc42be0c2ae931975727a3763a5e1613083e0c62",
+        "proverBytes": 339021162,
+        "proverSha256": "376e8cba147e51bd1d93cec66d264bca59b04a065ee486a82ff3d2c26a35ba37",
+        "verifierBytes": 2311,
+        "verifierSha256": "6f7d68494ccab92ba43d652a2b6e3752de3c4c0c6d8c74a7f90853babb17936b",
+        "binaryProgramBytes": 84103,
+        "binaryProgramSha256": "1b3be7110717233f62976142e4c598b62bf7978aec2cab77e63ec98e5337d66e",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "prepareRuntimeBusinessPredicate",
+        "programSha256": "0979b9150c97b568ec5258bace26986be407702e5d73b4a2accbf8138db17ada",
+        "proverSha256": "540b7bf3c3ccb31aad8832e2ee84800aff67c22933168014961dd365ac41cac5",
+        "verifierSha256": "1f216c84561531faa458ac560f67eccb3aeae2849f720c6985566ce4ef0c8df4",
+        "proverBytes": 338219651,
+        "verifierBytes": 2311,
+        "binaryProgramSha256": "cae2632ca81562bea424654e9cb0215b6a04ff3ee3d3ab8395626acabbbf9eb0",
+        "binaryProgramBytes": 21621,
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "prepareRuntimeAction",
+        "programSha256": "9a1a047799137f213a11dcd764812369870ca247a3bce9a8e6b4830b59e6ecd8",
+        "proverBytes": 338426484,
+        "proverSha256": "7be763acc496b27dc75bb4245ec51197394a7f5bb3280f9884ae515ed3228d7f",
+        "verifierBytes": 2311,
+        "verifierSha256": "955c039f25992b2981509d0c17a65627e3e8a2f03b186a2c1d04bf86337783c7",
+        "binaryProgramBytes": 31820,
+        "binaryProgramSha256": "b3f74299daad8b1ae0c6979aca5a7abcb081f67041a771e210fa9658e2792b80",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "terminateTemplate",
+        "programSha256": "4b6fe6bc883c5be2dd28b2a53388827a207bdb533dff130e528749529d48ebb4",
+        "proverBytes": 21647555,
+        "proverSha256": "d5ac84e5a682d2638ec51eebfea6906de7decb45f65857cee9f73f4bd0f76a52",
+        "verifierBytes": 2311,
+        "verifierSha256": "b9db361f0e3c2bf1a5bfdb7acd24f5d5bb195b61210d794a3fd340f710990b41",
+        "binaryProgramBytes": 7687,
+        "binaryProgramSha256": "74fdc6179b9ffc0d7cff06443d760394bf885347893c38d2293ebde428873771",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      },
+      {
+        "name": "updateRuntimeCredentialStatus",
+        "programSha256": "b925f95b547ca639478999ae5ddc34405fefdae984a155673df070b2c38e4e17",
+        "proverBytes": 169894056,
+        "proverSha256": "5723cb109d5045bb964789f5c521313875d3c72164a54e7a7383055665ae04f8",
+        "verifierBytes": 2311,
+        "verifierSha256": "70cd19e128b0267ab98abaa54ed32913a0f1da7ebe641d1b05c53e77dfc9ea0e",
+        "binaryProgramBytes": 28176,
+        "binaryProgramSha256": "3b5acacb02bc60c51f5a7c8d352382d705864a395617c71ded94faa768b0d238",
+        "source": "genuine-pinned-zkir-ecs-build-with-exact-hash-verified-transfer"
+      }
+    ],
+    "nativeApplicationProofGenerated": false,
+    "sdkIntegrityVerified": true,
+    "manifestSha256": "938838cdd66ea27b2d51f0ca297020eb9fa091fe538fd34599fc1b214554c130",
+    "totalProverBytes": 2150636068
+  },
+  "sourceDependencies": {
+    "packages/midnight-authorization/contracts/permio-authorization-v11.compact": "6ea4427720fb38005a50695f084a3410f31bd0511f06080d9924e804fc80e698",
+    "packages/midnight-authorization/contracts/permio-authorization.compact": "37944e24fa08a4bdbe8bf7aa259611e47c9993d42eb5ae871b28092e49114bac",
+    "packages/midnight-authorization/contracts/runtime-action-authorization.compact": "9c0f75b57c84b7cc92ec795d7a8d2c443d01c06b5d9594ba08137b6153efaf22",
+    "packages/midnight-authorization/contracts/runtime-action-execution-v11.compact": "bea664f317bb2db7187e5879a7d947928bf622317c5bd13e57aa93cb9c3304b3",
+    "packages/midnight-authorization/contracts/runtime-action-execution.compact": "39a96a0a41e91738dc43062d4de724819aa8d72fcb071e33d6c63daf49770002",
+    "packages/midnight-authorization/contracts/runtime-action-outcome.compact": "86eaa0640b011d408b761d22625853cd59542389f1dda023875306c91d533783",
+    "packages/midnight-authorization/contracts/runtime-active-ancestry.compact": "fe5ab6ac1173ad1c81573e3ec668e14df52308ece4137d55c00c6cc4458245c9",
+    "packages/midnight-authorization/contracts/runtime-business-predicates.compact": "5c9b64a5c2c95dfa75a0df21350f6b157b0dbb28c2b06ca471ab140b4de73400",
+    "packages/midnight-authorization/contracts/runtime-instance-allocation.compact": "cc2ffc24c2213ca1236762dc00aa8086c893fd1cee8b55c57c353e37b58177a2",
+    "packages/midnight-authorization/contracts/runtime-participant-slots.compact": "7594f1cbe76a1e3b0db1aea87a7c9855028d28db1d7c0f136380a63de585e2cf",
+    "packages/midnight-authorization/contracts/runtime-private-map.compact": "d280864c6807405c5b3787344dede581473a9b9ccf39363f6a3f846f89015dbc",
+    "packages/midnight-authorization/contracts/runtime-status-multiproof.compact": "fb2f949e97ba5099bafa625418a125d8817d8049312f72c787b07b8ea7201d8e",
+    "packages/midnight-authorization/contracts/runtime-template-policy-v4.compact": "73d19269912d2718195f8abdde9e8b76f711307e34db3140250f79e90475b877",
+    "packages/midnight-authorization/contracts/runtime-template-policy.compact": "b16b8a3cd31807f832eb73c21497cb648870fd02824b57edd6496271bc3f4f95",
+    "packages/midnight-authorization/contracts/schnorr.compact": "8f4c77755ae0170191a543c732aac04b5d8d688b9dc9663b00593bf089ad0506"
+  },
+  "toolchain": {
+    "compactCompilerVersion": "0.31.1",
+    "compactRuntimeVersion": "0.16.0",
+    "zkirVersion": "2.1.0",
+    "zkirExecutableSha256": "5443f87db07b7f19cc273380c224b77b4b7ca124deac6d54f7a165628fc5e1fc",
+    "lockfileSha256": "0de32c3ed00cb0bedca178974df27802bc6ea429ff8fbf92fe26b92689d787b9",
+    "k20ParametersSha256": "1cc62978558fdc1e445cd70cfd9a86ec3c2e2151b6d74811232d37faf9133ff1",
+    "k21ParametersSha256": "9cf1644a87f0f027ae5fc6278f91d823a6334ff3e338a29e2f2ef57d071ed64d"
+  },
+  "supplementalCodeReview": {
+    "status": "complete",
+    "runId": "20261115-032031-6cde7e93",
+    "reviewedCodeFiles": 4,
+    "retainedFindings": 0,
+    "diffSha256": "b398bad03566c9155b208b0107b34d5cb697c2415ed2e3528287b58a4c1083cf",
+    "focusedCasesPassed": 9,
+    "humanApproval": false
+  },
+  "reviewPacketSourceHashes": {
+    "docs/superpowers/specs/2026-11-15-runtime-business-predicates-design.md": "7c1271d4860dfc270101dd729c172538e72a524b0771c0c76ffd26b318903cc3",
+    "packages/scenario-domain/src/model.ts": "f53a9da2f77f6f6f3297485256492e1fed3252139776fdb636558bedc9e66902",
+    "packages/scenario-domain/src/validation.ts": "3de2dc7d4876d31a51e264e831a05ae56f1538b87053cc2462b70e4b546b7dd5",
+    "packages/midnight-authorization/src/business-predicates.ts": "0cc9f540ca195de5dd2d61115298548ab48e50c1ab7cb1ac0df8c9b790886df4",
+    "packages/midnight-authorization/src/business-template-policy.ts": "d211332962f8d5181b22bac9d5b81763a08b62555d1113b68e3c9390acd583a6",
+    "packages/midnight-authorization/src/business-action-execution.ts": "00c5db621c93bf71fb8f7cb003a49c268da7bb948947e8c9a73c47c6797153d2",
+    "packages/midnight-authorization/src/decision-receipt.ts": "ed518072fad0680b9a5c0a91d8c893eab3726f4d6b6fbbf6389266eb077c8943",
+    "packages/scenario-packs/src/live-business-witnesses.ts": "f5efc6fa089fdec78eafc6f601d8e055796c681e067b1ede7f448b323d5e7edb",
+    "packages/scenario-packs/src/templates.ts": "eebfadf3ec7d9df39ad0a3a6f08cabbdea45fe47d16d9d5cdc2de120599dedeb"
+  },
+  "constructorNodePreflight": {
+    "observedAtUtc": "2026-11-14T19:36:24Z",
+    "runtimeEnvironment": "existing WSL Node22",
+    "endpoint": "ws://127.0.0.1:9944",
+    "nodeVersion": "1.0.0-8af7d08a",
+    "genesisHash": "0xe72f7a21a0397844563b4206f887b779ffa0d937c2d1b2339441faa1f08b9846",
+    "readOnlyLoopbackVerified": true,
+    "walletInitialized": false,
+    "transactionsSubmitted": 0
+  },
+  "preflightAndRegressionRevision": "bcd55aa088c28859075a5a64e0ffa7997dff737b",
+  "buildObservations": [
+    {
+      "name": "allocateRuntimeInstance",
+      "k": 17,
+      "rows": 125646,
+      "ownedJobDurationSeconds": 51.10405265600002,
+      "memoryPeakBytes": 1334104064,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "beginM4Activation",
+      "k": 16,
+      "rows": 36419,
+      "ownedJobDurationSeconds": 21.04280906999975,
+      "memoryPeakBytes": 669016064,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "executeRuntimeAction",
+      "k": 21,
+      "rows": 1982062,
+      "ownedJobDurationSeconds": 1281.3383834119995,
+      "memoryPeakBytes": 14495776768,
+      "sampledSwapPeakBytes": 6810845184,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "finalizeM4Activation",
+      "k": 16,
+      "rows": 36883,
+      "ownedJobDurationSeconds": 24.055192099000124,
+      "memoryPeakBytes": 656633856,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "manageRuntimeParticipantSlots",
+      "k": 20,
+      "rows": 828489,
+      "ownedJobDurationSeconds": 565.1590043549995,
+      "memoryPeakBytes": 10446598144,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "prepareRuntimeBusinessPredicate",
+      "k": 20,
+      "rows": 565028,
+      "ownedJobDurationSeconds": 496.0431000529999,
+      "memoryPeakBytes": 10444992512,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "prepareRuntimeAction",
+      "k": 20,
+      "rows": 649618,
+      "ownedJobDurationSeconds": 502.02707586499946,
+      "memoryPeakBytes": 10445537280,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "terminateTemplate",
+      "k": 16,
+      "rows": 55032,
+      "ownedJobDurationSeconds": 24.05311342299956,
+      "memoryPeakBytes": 656465920,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    },
+    {
+      "name": "updateRuntimeCredentialStatus",
+      "k": 19,
+      "rows": 462645,
+      "ownedJobDurationSeconds": 210.42330599999968,
+      "memoryPeakBytes": 5326032896,
+      "sampledSwapPeakBytes": 0,
+      "oomCounterMaximum": 0,
+      "oomKillCounterMaximum": 0,
+      "ownedJobStopped": true,
+      "originalSwapStateRestored": true,
+      "originalSwappinessRestored": true
+    }
+  ],
+  "buildProvenance": {
+    "sourceBaselineRevision": "3b1b22d217a1feddfe5925951463c309c36bbab9",
+    "sourcePatchSha256": "3b7eea62fc94f29b3c2dbdf91e5390494fe94994cc1f81ecafa1031a8ed63f8d",
+    "initialPublicArchiveSha256": "6807b2a0a5c2cd3cfcd0cdaaa4617de6d7db630a298aa0d686ddf49cdc2e81ee",
+    "initialPreparationControllerSha256": "42afdae6bb4205dbba76a01b4951687cc59a98476abd1151d5c176697c0549e6",
+    "reviewedControllerSha256": "782d5a4a5df34f35cdf0cb6a9534cf392f2a668f77af14754e0dfb7fb35233e7",
+    "reviewedRemoteInputsSha256": "1cda9685c79c39da2b046ad322879d72817ca9caaad14c5bae782d0c0bbbfc5e",
+    "publicInputsOnly": true,
+    "newSwapCreated": false,
+    "transactionsSubmitted": 0
+  },
+  "constructorCost": {
+    "kind": "v11-genuine-constructor-actual-local-node-cost",
+    "observedAtUtc": "2026-11-14T20:03:37.641Z",
+    "contractAbiVersion": 11,
+    "compilerVersion": "0.31.1",
+    "runtimeVersion": "0.16.0",
+    "nodeVersion": "1.0.0-8af7d08a",
+    "genesisHash": "0xe72f7a21a0397844563b4206f887b779ffa0d937c2d1b2339441faa1f08b9846",
+    "provableEntries": 11,
+    "genuineKeysVerified": true,
+    "inventoryManifestSha256": "938838cdd66ea27b2d51f0ca297020eb9fa091fe538fd34599fc1b214554c130",
+    "nativeBytes": 27518,
+    "nativeSha256": "ef83822fb1f63434c07fcf312c4ca7ca3f38d771280e912887b467d49b9423c1",
+    "ledgerCost": "1289760000001",
+    "nodeOverhead": "20000000000",
+    "estimatedDispatchWeight": "1309760000001",
+    "normalMaxExtrinsicRefTime": "1299891843000",
+    "headroomPercent": -0.75,
+    "reserveAdjustedHeadroomPercent": -2.14,
+    "walletBalancingCostReserve": "18000000000",
+    "minimumFinalHeadroomPercent": 5,
+    "balancingReserveClassification": "historical-assumption-not-v11-measurement",
+    "balancingReserveSource": "scripts/check-m6-ordinary-node-cost.ts (prior same-wallet v9 estimate: 8.96 billion; reserve: 18 billion)",
+    "weightWithinLimit": false,
+    "practicalHeadroomPassed": false,
+    "exactBalancedValidationRequired": true,
+    "nodeAccessed": true,
+    "walletInitialized": false,
+    "applicationProofGenerated": false,
+    "signed": false,
+    "candidateBalanced": false,
+    "balanced": false,
+    "transactionsSubmitted": 0,
+    "nativeAcceptance": false,
+    "syntheticPublicConstructorArguments": true,
+    "ephemeralMaintenanceKeyLogged": false,
+    "weightExcessBeforeBalancing": "9868157001",
+    "chainValidationPerformed": false
+  },
+  "cloudBuildCompletion": {
+    "owner": "permio-business-predicates-20261115",
+    "state": "finished",
+    "instanceId": "i-t4ni11rkjyzgi0vlb68d",
+    "region": "ap-southeast-1",
+    "instanceStatusAtFinish": "Running",
+    "instanceAndDisksPreserved": true,
+    "automaticDeletionDeadlineEmpty": true,
+    "economicalStopExecutionId": "exec-82378c77946144aaa1a8",
+    "economicalStopDeadlineShanghai": "2026-11-15T06:04:07+08:00",
+    "economicalStopMode": "StopCharging",
+    "forceStop": false,
+    "timerStatusAtFinish": "Waiting",
+    "exactTemplateVerified": true,
+    "temporaryRestartOverrideRemoved": true,
+    "originalSwapInactive": true,
+    "originalSwappiness": 0,
+    "existingEightGiBSwapPreserved": true,
+    "allOwnedJobsQuiescent": true,
+    "publicParametersCache": [
+      {
+        "name": "bls_midnight_2p15",
+        "bytes": 6291844,
+        "sha256": "724c7c3d779148bb113c7ee9c034b2f27db16e6bdf315fde90105a9bad00b1de"
+      },
+      {
+        "name": "bls_midnight_2p16",
+        "bytes": 12583300,
+        "sha256": "09c877216d6589b370263e18af40a030a901b41a7a7c37ef58c9901db41f05c6"
+      },
+      {
+        "name": "bls_midnight_2p17",
+        "bytes": 25166212,
+        "sha256": "4a9ef6c7c0619aab74eede44b13e753e3ba54508a02dd3b7106a949aabb73b74"
+      },
+      {
+        "name": "bls_midnight_2p19",
+        "bytes": 100663684,
+        "sha256": "8e8dc15c4362f05c912f1e770559a3945db3e58a374def416ed5d3e65ad5b10e"
+      },
+      {
+        "name": "bls_midnight_2p20",
+        "bytes": 201326980,
+        "sha256": "1cc62978558fdc1e445cd70cfd9a86ec3c2e2151b6d74811232d37faf9133ff1"
+      },
+      {
+        "name": "bls_midnight_2p21",
+        "bytes": 402653572,
+        "sha256": "9cf1644a87f0f027ae5fc6278f91d823a6334ff3e338a29e2f2ef57d071ed64d"
+      },
+      {
+        "name": "bls_midnight_2p22",
+        "bytes": 805306756,
+        "sha256": "e8ad5eed936d657a0fb59d2a55ba19f81a3083bb3554ef88f464f5377e9b2c2f"
+      }
+    ],
+    "cleanupEvidenceSha256": "e6c6540741b575a64744b66007510bec28affa0cd7295329dca0116a2a89e42a",
+    "finalStatusRecheck": {
+      "observedAtUtc": "2026-11-14T20:13:34.501416+00:00",
+      "operation": "status-no-renewal",
+      "activeOwners": [],
+      "instanceStatus": "Running",
+      "timerActualStatus": "Waiting",
+      "actualNextScheduleTime": "2026-11-14T22:04:07Z",
+      "exactTemplateVerified": true
+    }
+  },
+  "acceptanceStatus": "BLOCKED_DEPLOYMENT_WEIGHT_AND_HUMAN_PROTOCOL_APPROVAL",
+  "architectureDecisionRequired": true,
+  "architectureDecision": {
+    "status": "awaiting-user-direction-no-option-implemented",
+    "recommendedEvaluation": "versioned-begin-finalize-activation-dispatcher",
+    "separateBindingStagingPreserved": true,
+    "existingActivationRows": [
+      36419,
+      36883
+    ],
+    "alternative": "versioned-typed-business-preparation-dispatcher",
+    "existingPreparationRows": [
+      649618,
+      565028
+    ],
+    "resultingCircuitSizeMeasured": false,
+    "genuineKeyReuseRequiresExactCompiledByteComparison": true,
+    "preserveBranchSpecificAuthorityAndStaleSessionCleanupOrdering": true,
+    "historicalV10Preserved": true,
+    "maximumUnbalancedDispatchWeightWithAssumedReserveAndFivePercentHeadroom": "1216897250850",
+    "minimumRequiredDispatchWeightReduction": "92862749151",
+    "newGenuineConstructorMeasurementRequired": true,
+    "sourceDecision": "docs/evidence/M6/deployment-weight-architecture-decision-v1.md",
+    "independentAgentReviewOnly": true,
+    "humanApproval": false
+  }
+}

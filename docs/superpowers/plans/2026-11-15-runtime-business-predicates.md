@@ -73,9 +73,10 @@
 **Files:** reproducible build/integration commands and `docs/evidence/M9/` reports.
 **Dependencies:** U3, U4; actual activation approval additionally gates live activation.
 
-- [ ] Measure and build exact new proving keys within the existing resource profile; verify hashes before requesting proofs. Preserve old assets.
-- [ ] Run typecheck, full local checks, focused adversarial review and protocol-upgrade artifact verification.
-- [ ] If the required human/protocol approvals are absent, prepare the complete review packet and stop before activation; report native acceptance as OPEN.
+- [x] Measure and build exact new proving keys within the existing resource profile; verify hashes before requesting proofs. Preserve old assets.
+- [x] Run typecheck, full local checks, focused adversarial review and protocol-upgrade artifact verification.
+- [x] If the required human/protocol approvals are absent, prepare the complete review packet and stop before activation; report native acceptance as OPEN.
+- [ ] Resolve the measured eleven-entry constructor weight blocker under a separately approved architecture; repeat actual cost/headroom and exact balanced validation. Evidence: `docs/evidence/M9/business-predicates-extension-20261115.md`.
 - [ ] Once the activation boundary is satisfied, generate one fresh local authorization receipt per pack, use unchanged gateway transport and deployed execution registry, verify indexing/recovery/replay, and privacy-scan the actual captures. Never replace this evidence with historical receipts.
 
 ## 中文译文
@@ -112,9 +113,13 @@ U4：生成真实运行私有见证，依赖 U3。
 执行全部种子／流程正负向用例并扫描公开产物。
 
 U5：证明与本地验收证据，依赖 U3 和 U4；真实激活另依赖实际批准。
-在现有资源配置内测量并构建精确密钥，先核验哈希再请求证明，保留旧资源。
-执行类型检查、完整本地检查、对抗审查和协议升级产物核验。
-若缺少所需批准，先准备完整审查包，停在激活之前，原生验收保持未通过。
-批准后每个包生成一份新本地授权回执，使用既有网关和已部署执行注册表，验证索引、恢复和重放，
-并扫描真实捕获；不得用旧回执替代。
+已完成：在现有资源配置内测量并构建精确新证明密钥，请求证明前核验哈希，并保留旧资产。
+已完成：类型检查、完整本地检查、聚焦对抗审查及协议升级产物核验。
+已完成：缺少所需人工／协议批准时准备完整审查包，停在激活之前；原生验收保持 OPEN。
+待完成：按单独批准的架构解决实测十一个入口的构造函数权重阻碍；实际估计调度权重为
+1,309,760,000,001，高于节点上限 1,299,891,843,000，超出 9,868,157,001；
+重新测量实际成本／余量，并验证精确的已平衡候选交易。证据：
+`docs/evidence/M9/business-predicates-extension-20261115.md`。
+待完成：满足激活边界后，每个场景包生成一份全新本地授权收据，使用不变的网关传输及
+已部署执行注册表，验证索引／恢复／重放，并扫描真实捕获中的私有材料。不得用历史收据替代。
 ```
