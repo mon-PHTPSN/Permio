@@ -3,8 +3,13 @@ import { readFileSync } from "node:fs";
 import { describe, it } from "node:test";
 
 import { ACTION_DENIAL_REASONS } from "@permio/context-accounts";
-import { hashScenarioTemplate, parseScenarioTemplate } from "@permio/scenario-domain";
+import { assertTemplateRevision, hashScenarioTemplate, parseScenarioTemplate } from "@permio/scenario-domain";
 import { ArtifactPrivacyError, serializeGeneratedScenario } from "@permio/scenario-generator";
+import {
+  buildProofModuleBindingTree, createRuntimePolicyBindingManifest,
+  createRuntimeTemplateActionPolicy, orderProofModuleBindings,
+} from "@permio/midnight-authorization";
+import { pureCircuits as pure } from "../../midnight-authorization/contracts/managed/permio-authorization/contract/index.js";
 
 import {
   SCENARIO_PACKS,
@@ -17,6 +22,96 @@ import {
 } from "../src/index.ts";
 
 const packIds = Object.keys(SCENARIO_PACKS) as ScenarioPackId[];
+
+const legacyProfiles = {
+  "clinical-referral-consent": {
+    hash: "0x6d09c96c4b594d2353106d664b6732a964c2c627f6cbdb3c3d3d972587b63d40",
+    outputs: ["treatment-referral-output-v1", "research-consent-output-v1", "emergency-access-output-v1"],
+  },
+  "professional-site-access": {
+    hash: "0x520a462caa4ccb48b8857176c752479726880004ffd04fa3fecf81cb6edf9cb9",
+    outputs: ["current-qualification-v1"],
+  },
+  "delegated-purchasing-agent": {
+    hash: "0xf607177a5323742a55fbad07d124d66034bee68a85765434ea9867e9f7610e8a",
+    outputs: ["bounded-purchase-authorization-v1"],
+  },
+};
+
+describe("M9 profiles against the authoritative M6 policy", () => {
+  for (const packId of packIds) {
+    it(`${packId} uses the common receipt without replacing its application claims`, () => {
+      const pack = getScenarioPack(packId);
+      for (const flow of pack.flows) {
+        const action = pack.template.actions.find(row => row.id === flow.actionId)!;
+        const profile = pack.template.proofProfiles.find(row => row.id === action.proofProfileId)!;
+        assert.equal(profile.publicOutputSchemaId, "decision-receipt-v1");
+        assert.deepEqual(action.outputClaimTypes, flow.disclosedClaims);
+        const projection = createRuntimeTemplateActionPolicy(pack.template, action.id);
+        assert.equal(projection.policy.outputClaimTypeCount, BigInt(flow.disclosedClaims.length));
+        assert.equal(`0x${Buffer.from(projection.policy.target.templateContentHash).toString("hex")}`,
+          hashScenarioTemplate(pack.template).value);
+      }
+    });
+
+    it(`${packId} versions the receipt correction without rewriting its v1 identity`, () => {
+      const pack = getScenarioPack(packId);
+      const legacy = structuredClone(pack.template);
+      const previous = legacyProfiles[packId];
+      const oldTemplate = { ...legacy, version: "1.0.0", proofProfiles: legacy.proofProfiles.map((profile, index) => ({
+        ...profile, publicOutputSchemaId: previous.outputs[index]!,
+        circuitId: packId === "delegated-purchasing-agent" ? "delegated-capability-action-v1" : profile.circuitId,
+      })) };
+      assert.equal(hashScenarioTemplate(oldTemplate).value, previous.hash);
+      assert.equal(pack.version, "2.0.0");
+      assert.equal(pack.template.version, pack.version);
+      assert.equal(assertTemplateRevision(oldTemplate, pack.template).kind, "major");
+      assert.notEqual(hashScenarioTemplate(pack.template).value, previous.hash);
+    });
+  }
+
+  it("selects a module that permits every declared state transition", () => {
+    for (const packId of packIds) {
+      const pack = getScenarioPack(packId);
+      for (const flow of pack.flows) {
+        const projection = createRuntimeTemplateActionPolicy(pack.template, flow.actionId);
+        const transition = projection.transitionAt(0);
+        const state = {
+          stateVersion: 2n, instanceCommitment: new Uint8Array(32).fill(1), lastMutationAt: 100n,
+          slotAssignmentsRoot: pure.runtimePrivateMapEmptyRoot(), slotAssignmentCount: 1n,
+          slotBindingsRoot: pure.runtimePrivateMapEmptyRoot(), slotBindingCount: 1n,
+          stateIdHash: transition.fromStateIdHash, nonce: new Uint8Array(32).fill(2),
+        };
+        pure.assertRuntimeTemplateTransition(projection.policy, transition, projection.transitionPathAt(0),
+          transition.fromStateIdHash, transition.toStateIdHash);
+        const next = pure.runtimeActionNextState(state, transition.toStateIdHash,
+          new Uint8Array(32).fill(3), 101n, projection.moduleId === "private-state-transition");
+        assert.deepEqual(next.stateIdHash, transition.toStateIdHash);
+      }
+    }
+  });
+
+  it("binds every pack action to its exact M6 configuration and version", () => {
+    for (const packId of packIds) {
+      const pack = getScenarioPack(packId);
+      // Synthetic module identities exercise the binding contract, not live activation.
+      const manifest = createRuntimePolicyBindingManifest(pack.template, pack.template.actions.map(action => ({
+        actionId: action.id, proofProfileId: action.proofProfileId,
+        moduleId: "private-state-transition", moduleVersion: "1.0.0",
+        implementationHash: `0x${"11".repeat(32)}`,
+        receiptSchemaHash: `0x${"33".repeat(32)}`,
+      })));
+      const ordered = orderProofModuleBindings(pack.template, manifest);
+      const tree = buildProofModuleBindingTree(ordered);
+      for (const [index, binding] of ordered.entries()) {
+        const projection = createRuntimeTemplateActionPolicy(pack.template, binding.actionId);
+        pure.assertRuntimeTemplatePolicyBinding(projection.policy.target, projection.policy,
+          tree.compactBindingAt(index), tree.pathFor(index), tree.root, BigInt(ordered.length));
+        assert.equal(binding.configurationHash, projection.configurationHash);
+      }
+    }
+  });
+});
 
 describe("M9 scenario-pack definitions", () => {
   it("defines exactly the three required application-neutral families", () => {
@@ -160,6 +255,18 @@ describe("disclosure, upstream-fixture, and privacy evidence boundaries", () => 
       assert.ok(preview.disclosedClaims.length > 0);
       assert.ok(preview.newlyCreatedLinkages.length > 0);
       assert.ok(preview.remainsPrivate.length > 0);
+    }
+  });
+
+  it("keeps every generated authorization window within its template duration", () => {
+    for (const packId of packIds) {
+      const pack = getScenarioPack(packId);
+      for (const flow of pack.flows) {
+        const fixture = createScenarioPackFixture(packId, pack.seeds[0], flow.id);
+        const rule = pack.template.capabilityRules.find(row => row.actionIds.includes(flow.actionId))!;
+        assert.ok(fixture.disclosurePreview.validBefore - fixture.disclosurePreview.validAfter <=
+          rule.validForSeconds * 1000, `${packId}/${flow.id} exceeds the activated duration`);
+      }
     }
   });
 

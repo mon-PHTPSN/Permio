@@ -184,11 +184,12 @@ function createRuntime(
   const childGrantId = `grant.delegated.${token}`;
   const sessionId = `session.${token}`;
   const issuerId = `issuer.${token}`;
+  const rule = pack.template.capabilityRules.find((candidate) => candidate.actionIds.includes(flow.actionId))!;
   const instanceExpiresAt = baseTime + 900_000;
   const grantNotBefore = baseTime + 10_000;
-  const grantExpiresAt = baseTime + 700_000;
+  const grantExpiresAt = Math.min(baseTime + 700_000, grantNotBefore + rule.validForSeconds * 1000);
   const sessionNotBefore = baseTime + 20_000;
-  const sessionExpiresAt = baseTime + 600_000;
+  const sessionExpiresAt = Math.min(baseTime + 600_000, grantExpiresAt);
   const authorizedAt = baseTime + 30_000;
   const delegatorKeys = deterministicKeys(`${pack.id}:${seed}:${flow.id}:delegator-account`);
   const actorKeys = deterministicKeys(`${pack.id}:${seed}:${flow.id}:actor-account`);
@@ -218,7 +219,6 @@ function createRuntime(
     resources: [flow.resource, `${flow.resource}.alternate`],
     recipients: [flow.recipient, `${flow.recipient}.alternate`],
   };
-  const rule = pack.template.capabilityRules.find((candidate) => candidate.actionIds.includes(flow.actionId))!;
   system.issueRootCapability(
     issuerId,
     { grantId: rootGrantId, instanceId, contextId: flow.contextId, subjectAccountId: delegatorAccountId, scope: parentScope, notBefore: grantNotBefore, expiresAt: grantExpiresAt, maxDelegationDepth: rule.maxDelegationDepth },

@@ -1,0 +1,14 @@
+{
+  "schemaVersion": 1,
+  "status": "PASSED",
+  "templateVersion": "2.0.0",
+  "seedFlowCombinations": 10,
+  "negativeVectors": 210,
+  "publicArtifacts": [
+    "docs/evidence/M9/profile-fix-compatibility-20261114.json",
+    "docs/evidence/M9/profile-fix-privacy-20261114.json",
+    "docs/evidence/M9/profile-fix-verification-20261114.json"
+  ],
+  "privatePayloadsRecorded": false,
+  "liveEndToEnd": false
+}

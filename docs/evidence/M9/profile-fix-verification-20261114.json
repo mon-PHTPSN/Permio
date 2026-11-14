@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 1,
+  "status": "LOCAL_POLICY_FIX_VERIFIED_LIVE_M9_ACCEPTANCE_OPEN",
+  "recordedAt": "2026-11-14T07:55:26.209330+00:00",
+  "source": {
+    "branch": "feat/m8-execution-registry",
+    "integrationBaseline": "1b6050642a59f7490862139b378ad0f092da6ea8",
+    "preFixHead": "fa826b561c370b7ecc74af8602f2a9514dfb7204",
+    "interveningChanges": "Committed documentation only; M9 and M6 sources unchanged before this fix."
+  },
+  "rootCauses": [
+    {
+      "problem": "Application claim identifiers were placed in publicOutputSchemaId; the authoritative M6 policy accepts decision-receipt-v1.",
+      "fix": "Use the common receipt schema and retain application claims in action.outputClaimTypes and its M6 policy commitment.",
+      "regression": "All three profiles project through the unchanged M6 policy; exact application claim lists and counts are preserved."
+    },
+    {
+      "problem": "The purchasing template declares a state transition but selected the non-transitioning delegated-capability-action module.",
+      "fix": "Select the existing private-state-transition-v1 family, which also enforces delegated authorization.",
+      "regression": "The compiled M6 runtimeActionNextState rejected the previous module and accepts every corrected template transition."
+    },
+    {
+      "problem": "The emergency fixture issued a 690-second root capability against a 300-second template limit.",
+      "fix": "Cap generated root capability lifetime at the template rule and cap its session expiry accordingly.",
+      "regression": "Every generated flow window stays within its template duration; the emergency root lifetime is 300 seconds."
+    }
+  ],
+  "versioning": {
+    "templateAndPackVersion": "2.0.0",
+    "reason": "Proof profile changes require a major template revision.",
+    "legacyV1TemplateHashesPreservedInRegressionTests": true,
+    "fixtureFormatVersion": 1,
+    "generatorProfileVersionsChanged": false
+  },
+  "verification": {
+    "fullCheck": {
+      "command": "npm run check",
+      "exitCode": 0,
+      "docsFreshness": "PASSED",
+      "solidityBuild": "PASSED",
+      "typecheck": "PASSED",
+      "suites": {
+        "diagnostics": 142,
+        "protocol": 6,
+        "scenario-domain": 15,
+        "scenario-generator": 14,
+        "scenario-governance": 16,
+        "context-accounts": 51,
+        "scenario-packs": 26,
+        "midnight-authorization": 209,
+        "gateway": 66,
+        "execution-dashboard": 40,
+        "contracts": 44
+      },
+      "passed": 629,
+      "failed": 0,
+      "skipped": 0,
+      "cancelled": 0,
+      "log": "cache/m9-integration-20261114/profile-fix-full-check.log",
+      "logSha256": "3c25b6003d2add2b4055974ab80aa8e8d4e72e6f77a6f253aecc41b339b5758b"
+    },
+    "compatibility": {
+      "command": "node scripts/integration/check-m9-m6-compatibility.ts docs/evidence/M9/profile-fix-compatibility-20261114.json",
+      "before": {
+        "accepted": 0,
+        "rejected": 10,
+        "report": "docs/evidence/M9/m6-compatibility-20261114.json"
+      },
+      "after": {
+        "accepted": 10,
+        "rejected": 0,
+        "report": "docs/evidence/M9/profile-fix-compatibility-20261114.json"
+      },
+      "scope": "Generated M5 allow decisions plus authoritative M6 policy projections, transition predicates, module state behavior, and duration bounds."
+    },
+    "privacyAndNegatives": {
+      "schemaVersion": 1,
+      "status": "PASSED",
+      "templateVersion": "2.0.0",
+      "seedFlowCombinations": 10,
+      "negativeVectors": 210,
+      "publicArtifacts": [
+        "docs/evidence/M9/profile-fix-compatibility-20261114.json",
+        "docs/evidence/M9/profile-fix-privacy-20261114.json",
+        "docs/evidence/M9/profile-fix-verification-20261114.json"
+      ],
+      "privatePayloadsRecorded": false,
+      "liveEndToEnd": false
+    },
+    "regressionProgression": [
+      {
+        "stage": "original profiles",
+        "tests": 24,
+        "passed": 17,
+        "failed": 7
+      },
+      {
+        "stage": "schema and version corrected",
+        "tests": 24,
+        "passed": 23,
+        "failed": 1,
+        "remainingFailure": "Non-transitioning action must preserve the entire private state"
+      },
+      {
+        "stage": "duration regression added before fixture correction",
+        "tests": 25,
+        "passed": 24,
+        "failed": 1,
+        "remainingFailure": "emergency-access exceeds the activated duration"
+      },
+      {
+        "stage": "all corrections and exact M6 binding test",
+        "tests": 26,
+        "passed": 26,
+        "failed": 0
+      }
+    ],
+    "review": {
+      "status": "complete",
+      "scope": "Seven changed source, test, runner, and dependency files",
+      "lenses": [
+        "parent correctness review",
+        "independently dispatched same-family adversarial review"
+      ],
+      "actionableFindings": 0,
+      "crossProviderReview": false,
+      "humanSecurityPrivacyApproval": false
+    },
+    "simplification": "No broad refactor: narrow profile and fixture corrections retained."
+  },
+  "boundaries": {
+    "m6CoreChanged": false,
+    "gatewayChanged": false,
+    "registryChanged": false,
+    "liveEndToEnd": false,
+    "proofSemanticsVerified": false,
+    "newMidnightSubmissions": 0,
+    "newProofRequests": 0,
+    "ecsUsed": false,
+    "openAcceptance": [
+      "Real M9 execution through authoritative M6 receipts, M7 transport, and M8 results.",
+      "Business claim truth, issuer qualification, purchase amount semantics, and audit obligations are not established by policy projection or typed payload commitments.",
+      "Required independent human security and privacy approval."
+    ],
+    "earlierEvidence": "Historical recorded M6 receipts replayed through M7/M8 in the prior integration test; that evidence is not live M9 execution."
+  }
+}

@@ -2,6 +2,9 @@ import type { ScenarioTemplate } from "@permio/scenario-domain";
 import type { GeneratorPolicyProfile } from "@permio/scenario-generator";
 
 import type { ScenarioPackDefinition, ScenarioPackFlow, ScenarioPackId } from "./model.ts";
+import { SCENARIO_PACK_VERSION } from "./model.ts";
+
+const PUBLIC_RECEIPT_SCHEMA_ID = "decision-receipt-v1";
 
 const profiles: Readonly<Record<ScenarioPackId, GeneratorPolicyProfile>> = {
   "clinical-referral-consent": {
@@ -82,7 +85,7 @@ const clinicalTemplate: ScenarioTemplate = {
   schemaVersion: 1,
   namespace: "permio.clinical",
   templateId: "permio.clinical/referral-consent",
-  version: "1.0.0",
+  version: SCENARIO_PACK_VERSION,
   displayName: "Clinical referral and research consent",
   description: "Purpose-separated treatment, research, and optional emergency authorization.",
   participantSlots: [
@@ -128,7 +131,7 @@ const clinicalTemplate: ScenarioTemplate = {
     disclosurePolicyId: flow.disclosurePolicyId,
     revocable: true,
   })),
-  proofProfiles: clinicalFlows.map((flow) => ({ id: `${flow.id}-proof`, circuitId: "private-state-transition-v1", publicOutputSchemaId: `${flow.id}-output-v1` })),
+  proofProfiles: clinicalFlows.map((flow) => ({ id: `${flow.id}-proof`, circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID })),
   executionAdapters: [{ id: "clinical-disclosure-adapter-v1", kind: "application", schemaId: "clinical-disclosure-v1" }],
   privacyInvariants: [
     { id: "clinical-purpose-separation", description: "Treatment, research, and emergency authority are never interchangeable." },
@@ -156,7 +159,7 @@ const professionalTemplate: ScenarioTemplate = {
   schemaVersion: 1,
   namespace: "permio.professional",
   templateId: "permio.professional/temporary-site-access",
-  version: "1.0.0",
+  version: SCENARIO_PACK_VERSION,
   displayName: "Professional qualification and temporary site access",
   description: "Current-qualification proof for one site, task, and shift.",
   participantSlots: [
@@ -169,7 +172,7 @@ const professionalTemplate: ScenarioTemplate = {
   actions: [{ id: professionalFlow.actionId, description: "Prove a current qualification for one scheduled shift.", contextId: professionalFlow.contextId, actorSlotId: "professional", inputRecordTypes: ["qualification-record", "shift-assignment"], outputClaimTypes: [...professionalFlow.disclosedClaims], purpose: professionalFlow.purpose, recipientKind: professionalFlow.recipientKind, capabilityRuleId: "shift-access-capability", proofProfileId: "current-qualification-proof", executionAdapterId: "temporary-site-access-adapter-v1" }],
   transitions: [{ id: "authorize-shift-access", fromState: "scheduled", actionId: professionalFlow.actionId, toState: "access-authorized" }],
   capabilityRules: [{ id: "shift-access-capability", description: "Expire access at the exact shift boundary.", actionIds: [professionalFlow.actionId], resourceSelector: professionalFlow.resourceSelector, purpose: professionalFlow.purpose, recipientConstraint: professionalFlow.recipientKind, validForSeconds: 28_800, maxDelegationDepth: 1, disclosurePolicyId: professionalFlow.disclosurePolicyId, revocable: true }],
-  proofProfiles: [{ id: "current-qualification-proof", circuitId: "private-state-transition-v1", publicOutputSchemaId: "current-qualification-v1" }],
+  proofProfiles: [{ id: "current-qualification-proof", circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID }],
   executionAdapters: [{ id: "temporary-site-access-adapter-v1", kind: "contract", schemaId: "temporary-site-access-v1" }],
   privacyInvariants: [{ id: "qualification-minimization", description: "No transcript or unrelated history is disclosed." }, { id: "shift-and-site-isolation", description: "Access cannot cross a site or shift boundary." }],
 };
@@ -194,7 +197,7 @@ const agentTemplate: ScenarioTemplate = {
   schemaVersion: 1,
   namespace: "permio.procurement",
   templateId: "permio.procurement/delegated-purchasing-agent",
-  version: "1.0.0",
+  version: SCENARIO_PACK_VERSION,
   displayName: "Delegated financial or purchasing Agent",
   description: "Attenuated Agent authority for one bounded counterparty operation.",
   participantSlots: [
@@ -208,15 +211,15 @@ const agentTemplate: ScenarioTemplate = {
   actions: [{ id: agentFlow.actionId, description: "Execute one purchase inside the delegated mandate.", contextId: agentFlow.contextId, actorSlotId: "agent", inputRecordTypes: ["purchase-mandate", "purchase-request"], outputClaimTypes: [...agentFlow.disclosedClaims], purpose: agentFlow.purpose, recipientKind: agentFlow.recipientKind, capabilityRuleId: "bounded-purchase-capability", proofProfileId: "delegated-purchase-proof", executionAdapterId: "bounded-purchase-adapter-v1" }],
   transitions: [{ id: "record-bounded-purchase", fromState: "mandate-active", actionId: agentFlow.actionId, toState: "purchase-executed" }],
   capabilityRules: [{ id: "bounded-purchase-capability", description: "Bind counterparty, operation, amount band, purpose, lifetime, and delegation depth.", actionIds: [agentFlow.actionId], resourceSelector: agentFlow.resourceSelector, purpose: agentFlow.purpose, recipientConstraint: agentFlow.recipientKind, validForSeconds: 1_800, maxDelegationDepth: 2, disclosurePolicyId: agentFlow.disclosurePolicyId, revocable: true }],
-  proofProfiles: [{ id: "delegated-purchase-proof", circuitId: "delegated-capability-action-v1", publicOutputSchemaId: "bounded-purchase-authorization-v1" }],
+  proofProfiles: [{ id: "delegated-purchase-proof", circuitId: "private-state-transition-v1", publicOutputSchemaId: PUBLIC_RECEIPT_SCHEMA_ID }],
   executionAdapters: [{ id: "bounded-purchase-adapter-v1", kind: "contract", schemaId: "bounded-purchase-execution-v1" }],
   privacyInvariants: [{ id: "agent-attenuation", description: "Agent authority cannot exceed the exact delegated mandate." }, { id: "agent-history-isolation", description: "The Agent cannot read unrelated account or purchase history." }],
 };
 
 export const SCENARIO_PACKS: Readonly<Record<ScenarioPackId, ScenarioPackDefinition>> = {
-  "clinical-referral-consent": { formatVersion: 1, id: "clinical-referral-consent", version: "1.0.0", template: clinicalTemplate, generatorPolicyProfile: profiles["clinical-referral-consent"], seeds: ["test:m9-clinical-primary-v1", "test:m9-clinical-variant-v1"], flows: clinicalFlows },
-  "professional-site-access": { formatVersion: 1, id: "professional-site-access", version: "1.0.0", template: professionalTemplate, generatorPolicyProfile: profiles["professional-site-access"], seeds: ["test:m9-professional-primary-v1", "test:m9-professional-variant-v1"], flows: [professionalFlow] },
-  "delegated-purchasing-agent": { formatVersion: 1, id: "delegated-purchasing-agent", version: "1.0.0", template: agentTemplate, generatorPolicyProfile: profiles["delegated-purchasing-agent"], seeds: ["test:m9-delegated-agent-primary-v1", "test:m9-delegated-agent-variant-v1"], flows: [agentFlow] },
+  "clinical-referral-consent": { formatVersion: 1, id: "clinical-referral-consent", version: SCENARIO_PACK_VERSION, template: clinicalTemplate, generatorPolicyProfile: profiles["clinical-referral-consent"], seeds: ["test:m9-clinical-primary-v1", "test:m9-clinical-variant-v1"], flows: clinicalFlows },
+  "professional-site-access": { formatVersion: 1, id: "professional-site-access", version: SCENARIO_PACK_VERSION, template: professionalTemplate, generatorPolicyProfile: profiles["professional-site-access"], seeds: ["test:m9-professional-primary-v1", "test:m9-professional-variant-v1"], flows: [professionalFlow] },
+  "delegated-purchasing-agent": { formatVersion: 1, id: "delegated-purchasing-agent", version: SCENARIO_PACK_VERSION, template: agentTemplate, generatorPolicyProfile: profiles["delegated-purchasing-agent"], seeds: ["test:m9-delegated-agent-primary-v1", "test:m9-delegated-agent-variant-v1"], flows: [agentFlow] },
 };
 
 export function getScenarioPack(id: ScenarioPackId): ScenarioPackDefinition {
