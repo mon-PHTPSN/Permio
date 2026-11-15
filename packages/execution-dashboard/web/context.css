@@ -292,3 +292,7 @@ dialog[open] { transition:opacity .2s ease-out,transform .2s ease-out; }
   .context-orbit, dialog[open] { transition:none; }
   @starting-style { dialog[open] { opacity:1; transform:none; } }
 }
+
+.inference-status, .inference-selection { margin-bottom: 24px; padding: 24px; }
+.inference-status dd, .inference-selection dd { overflow-wrap: anywhere; }
+.inference-value { white-space: pre-wrap; overflow-wrap: anywhere; }

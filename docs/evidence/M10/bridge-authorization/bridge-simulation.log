@@ -1,0 +1,15 @@
+✔ binds a bridge manifest to an exact nontransitioning DecisionReceipt v1 (11219.8908ms)
+✔ rejects ordinary-entry bypass of bridge semantics and bridge-entry use for ordinary actions (14247.6138ms)
+✔ rejects every opening substitution, selected type substitution and no receipt is created (13555.1776ms)
+✔ rejects coherently signed invalid bridge headers and selected aggregate outputs (66268.2854ms)
+✔ requires the freshly prepared binding resource in both capability and session exact scopes (23334.3109ms)
+✔ retains inherited bridge validity, module and slot revocation boundaries (27792.0903ms)
+✔ rejects freshly witnessed revoked bridge capability and session status at final execution (22191.3488ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 7
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 180316.8616

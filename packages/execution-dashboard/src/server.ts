@@ -4,6 +4,8 @@ import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { ApplicationError, ApplicationStore, type Account } from "./application.ts";
 import { ScenarioTemplateValidationError } from "@permio/scenario-domain";
+import { InferenceWorkflow, type InferenceAuthorizationReader, type PrivateInferenceProvider } from "./inference.ts";
+import { nearAiProvider } from "./near-ai.ts";
 
 export const LOCAL_CHAIN_ID = 31_337;
 export const LOCAL_REGISTRY_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3";
@@ -110,6 +112,10 @@ interface GraphQlResponse {
 }
 
 export interface DashboardConfig {
+  readonly inference?: {
+    readonly authorization?: InferenceAuthorizationReader;
+    readonly provider?: PrivateInferenceProvider;
+  };
   readonly graphqlUrl: string;
   readonly graphqlAdminSecret?: string;
   readonly freshnessSeconds: number;
@@ -184,6 +190,7 @@ export function readDashboardConfig(
   }
 
   return {
+    inference: overrides.inference ?? { provider: nearAiProvider(environment) },
     graphqlUrl,
     graphqlAdminSecret,
     freshnessSeconds,
@@ -363,6 +370,20 @@ async function serveStatic(pathname: string, response: ServerResponse): Promise<
 
 export function createDashboardServer(config: DashboardConfig) {
   const store = new ApplicationStore(config.databasePath ?? ":memory:", () => Math.floor(config.now().valueOf()/1000), config.localDemo ? 4 : 10);
+  const inference = new InferenceWorkflow(
+    config.inference?.provider ?? nearAiProvider({}),
+    config.inference?.authorization,
+    () => Math.floor(config.now().valueOf()/1000),
+    (session) => store.activeSession(session),
+  );
+  const inferenceInstance = (user: Account, instanceId: string) => {
+    const instance = store.inferenceInstances(user).find((item) => item.id === instanceId);
+    if (!instance) throw new ApplicationError(404, "Run not found.");
+    if (instance.expiresAt <= Math.floor(config.now().valueOf()/1000)) {
+      throw new ApplicationError(403, "This run has expired.");
+    }
+    return instance;
+  };
   const server = createServer(async (request: IncomingMessage, response: ServerResponse) => {
     response.setHeader("x-content-type-options", "nosniff");
     response.setHeader("referrer-policy", "no-referrer");
@@ -405,6 +426,36 @@ export function createDashboardServer(config: DashboardConfig) {
         if (request.method === "GET" && url.pathname === "/api/m8/read-model") {
           try { writeJson(response, 200, await fetchDashboardReadModel(config, store.receiptIds(user))); }
           catch (error) { writeJson(response, 503, { ...createUnavailableReadModel(config, error), detail: undefined, message: "Activity is temporarily unavailable. Please try again." }); }
+          return;
+        }
+        if (request.method === "GET" && url.pathname === "/api/inference") {
+          writeJson(response, 200, { ...inference.status(), instances: store.inferenceInstances(user) });
+          return;
+        }
+        if (request.method === "POST" && ["/api/inference/scope", "/api/inference/preview"].includes(url.pathname)) {
+          const input = await readBody(request);
+          if (typeof input.instanceId !== "string" || typeof input.contextId !== "string") {
+            throw new ApplicationError(400, "Select a run and context.");
+          }
+          const instance = inferenceInstance(user, input.instanceId);
+          if (!instance.contexts.some((context) => context.id === input.contextId)) {
+            throw new ApplicationError(403, "This context does not belong to the selected run.");
+          }
+          const result = url.pathname.endsWith("/scope")
+            ? await inference.available(user, input.instanceId, input.contextId)
+            : await inference.prepare(session!, input.instanceId, input.contextId, input.inputIds);
+          writeJson(response, 200, result);
+          return;
+        }
+        const inferenceAction = /^\/api\/inference\/([^/]+)\/(consent|revoke|run)$/.exec(url.pathname);
+        if (request.method === "POST" && inferenceAction) {
+          const [, previewId, operation] = inferenceAction;
+          const result = operation === "consent"
+            ? await inference.consent(session!, previewId)
+            : operation === "revoke"
+              ? inference.revoke(session!, previewId)
+              : await inference.run(session!, previewId);
+          writeJson(response, 200, result);
           return;
         }
         if (request.method === "POST" && url.pathname === "/api/account/profile") { writeJson(response, 200, { account: store.profile(user, await readBody(request)) }); return; }

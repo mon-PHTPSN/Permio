@@ -11,6 +11,7 @@ const controller = source.slice(0, bootstrap).replace(/^import .+\r?\n/gm, "");
 
 function browserHost() {
   const elements = new Map<string, any>(), listeners = new Map<string, () => void>();
+  const inferenceViews: (() => boolean)[] = [];
   const element = (id: string) => {
     if (!elements.has(id)) elements.set(id, {
       open: false, hidden: false, innerHTML: "", textContent: "",
@@ -34,6 +35,7 @@ function browserHost() {
     enableActivity() {}, setInterval() {}, clearTimeout() {}, setTimeout() {},
     html: (value: unknown) => String(value ?? ""), filterWorkflows: (items: unknown) => items,
     libraryCards: () => "<p>Library</p>", testWorkspace: data,
+    mountInference(_root: unknown, _api: unknown, active: () => boolean) { inferenceViews.push(active); },
   });
   vm.runInContext(controller, context);
   vm.runInContext("session={account:{id:'author'},csrf:'synthetic'}; workspace=testWorkspace; renderPage();", context);
@@ -41,6 +43,8 @@ function browserHost() {
     element, start: () => vm.runInContext("perform(()=>chooseContextTemplate())", context) as Promise<void>,
     navigate(hash: string) { location.hash = hash; listeners.get("hashchange")!(); },
     finish: () => finishFirst(data), currentTitle: () => context.document.title,
+    render(hash: string) { location.hash = hash; vm.runInContext("renderPage()", context); },
+    inferenceViews,
   };
 }
 
@@ -48,6 +52,17 @@ test("current-view context selection opens after workspace loading", async () =>
   const host = browserHost(), pending = host.start(); host.finish(); await pending;
   assert.equal(host.element("product-dialog").open, true);
   assert.equal(host.element("product-dialog-title").textContent, "New context");
+});
+
+test("remounting private inference invalidates callbacks from its previous visit", () => {
+  const host = browserHost();
+  host.render("#inference");
+  const previous = host.inferenceViews[0];
+  assert.equal(previous(), true);
+  host.render("#account");
+  host.render("#inference");
+  assert.equal(previous(), false, "An old response must not regain access after returning to the route");
+  assert.equal(host.inferenceViews[1](), true);
 });
 
 for (const returnToOrigin of [false, true]) test(`late context picker is discarded after navigation${returnToOrigin ? " away and back" : ""}`, async () => {

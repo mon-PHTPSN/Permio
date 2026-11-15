@@ -1,0 +1,107 @@
+{
+  "date": "2026-11-15",
+  "baseline": "8d08ece2271ca5eb291b2d88b4436c8045ba8938",
+  "branch": "feat/m10-encrypted-evidence",
+  "decision": "User approved extending the Midnight authorization package with an evidence-bridge proof module and circuit-verifiable binding while preserving DecisionReceipt v1.",
+  "versions": {
+    "receipt": 1,
+    "manifest": 1,
+    "bridgeBinding": 2,
+    "compiler": "0.31.1",
+    "runtime": "0.16.0",
+    "windowsNode": "24.13.1"
+  },
+  "compile": {
+    "exitCode": 0,
+    "mode": "--skip-zk",
+    "independentPrimaryCompile": true,
+    "realKeysGenerated": false,
+    "command": "wsl.exe -d Ubuntu-24.04 -u root -- /root/.compact/versions/0.31.1/x86_64-unknown-linux-musl/compactc --skip-zk /mnt/c/Users/GEB/.codex/worktrees/permio-m10-evidence-vault/Permio-m8-execution-registry/packages/midnight-authorization/contracts/permio-authorization.compact /mnt/c/Users/GEB/.codex/worktrees/permio-m10-evidence-vault/Permio-m8-execution-registry/packages/midnight-authorization/contracts/managed/permio-authorization"
+  },
+  "focused": {
+    "command": "npm test --workspace @permio/evidence-vault",
+    "tests": 28,
+    "passed": 28,
+    "failed": 0,
+    "skipped": 0
+  },
+  "fullSuite": {
+    "command": "npm test",
+    "exitCode": 0,
+    "nodeTests": 627,
+    "evmTests": 44,
+    "passed": 671,
+    "failed": 0,
+    "skipped": 0,
+    "authorizationTests": 223,
+    "log": "storage-bridge-full-regression.log",
+    "logSha256": "66408270028393e9ffb43e6e95f31f94800d6d4816089ba648179ef55e45923c"
+  },
+  "checks": {
+    "projectTypecheck": "passed",
+    "documentation": "passed",
+    "diffWhitespace": "passed",
+    "workerSourceHashes": "all 13 matched before review",
+    "privateOverride": "ignored and untracked"
+  },
+  "deploymentAssetGuard": {
+    "accepted": false,
+    "reason": "Real-key manifest or required asset absent",
+    "exitCode": 0,
+    "note": "Negative probe expects rejection; no manifest or proving keys fabricated."
+  },
+  "proofFirst": {
+    "storage": "ERR_MODULE_NOT_FOUND before service implementation",
+    "vaultVerifier": "ERR_PACKAGE_PATH_NOT_EXPORTED before bridge subpath integration",
+    "contract": "See bridge-authorization/verification.json for missing helpers, unsupported bridge family, and reader red/green evidence."
+  },
+  "actualComponents": [
+    "WebCrypto encryption and recipient decryption",
+    "Node HTTP and durable SQLite restart/isolation",
+    "Random per-binding scoped private access credentials",
+    "Pinned compiler-generated Compact execution and ledger",
+    "Existing capability/session scope and current-status/slot/module/nullifier guards",
+    "Typed v1 receipt hashing and authoritative decoder",
+    "Generated browser-safe bridge commitment helpers"
+  ],
+  "fixtures": [
+    "Crypto-valid synthetic contract genesis",
+    "Finality observations in vault verifier tests",
+    "Current private credential authorization callbacks in vault/service tests",
+    "Software authenticator for Mera tests"
+  ],
+  "notEstablished": [
+    "Real proving keys and zero-knowledge proof for changed contract",
+    "Bridge deployment/activation and finalized chain execution",
+    "Production identity-to-recipient credential provisioning",
+    "Production current-status integration",
+    "Browser disclosure UI and outbox recovery",
+    "Real supported synchronized-passkey/device recovery"
+  ],
+  "navigation": {
+    "note": "Connected codebase index targets another checkout; current worktree verified through exact local source, tests and compilation. No unrelated index modified."
+  },
+  "simplification": {
+    "storage": "Five inline lenses; no changes",
+    "bridgeIntegration": "Five inline lenses; independent reuse attempt could not establish worktree access; no changes",
+    "notIndependent": true,
+    "proofTestsUnchanged": true
+  },
+  "review": {
+    "status": "complete",
+    "verdict": "Ready to merge",
+    "runId": "20261115-050859-8ba43e71",
+    "reviewers": 9,
+    "actionableFindings": 0,
+    "testingGaps": [
+      "The dedicated indexed bridge-reader test uses deliberately invalid raw transaction bytes and therefore exercises fixed-entry metadata rejection only through the serialized-call-and-state boundary. Exact receipt insertion is tested separately against generated bridge execution, and the concrete verifier uses labeled source observations. A valid serialized bridge transaction/state fixture passing through createIndexedEvidenceBridgeDecisionReceiptReader, plus wrong serialized entry/module and missing insertion variants, would cover the remaining local handoff between those checks (packages/midnight-authorization/test/indexed-decision-receipt.test.ts:71-98; packages/midnight-authorization/test/evidence-bridge.test.ts:10-25; packages/evidence-vault/test/midnight-verifier.test.ts:44-59). No receipt-authenticity bypass was established."
+    ],
+    "residualRisks": [
+      "Production access still depends on trusted host provisioning of per-binding/per-recipient credentials, the pinned finalized-source adapter, and the mandatory authenticated assertCurrentAuthorization callback. The local HTTP/SQLite and generated-circuit checks do not establish those deployed identity/status/network boundaries (packages/evidence-vault/src/server.ts:43-48,112-114; packages/evidence-vault/src/midnight-verifier.ts:23-32,55-72). These remain explicitly documented integration gates, not established code defects.",
+      "The changed contract has generated execution bindings but no current keys/build-manifest.json or executeRuntimeEvidenceBridge proving/verifier assets. The unchanged verifyPermioAuthorizationAssets check is still called before deploy/connect and fails closed; real proof, deployment, activation and finalized live acceptance remain unverified (packages/midnight-authorization/src/compiled-assets.ts:19-54; packages/midnight-authorization/src/midnight-contract.ts:107-137; docs/evidence/M10/finalized-bridge-development.md:65-71)."
+    ],
+    "coverage": "Nine independent local lenses; no external peer; generated source/ABI representatives plus authoritative full suite.",
+    "implementedFixes": 0
+  },
+  "completion": "Approved local bridge/storage unit complete. Full live encrypted-evidence acceptance remains in progress."
+}

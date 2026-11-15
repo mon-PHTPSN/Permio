@@ -1,0 +1,18 @@
+✔ matches installed-runtime resource canonical Bytes<127> hashing (11.3527ms)
+✔ derives the resource signed identifier in the generated bridge circuit (1.5279ms)
+✔ matches installed-runtime recipient canonical Bytes<128> hashing (3.991ms)
+✔ derives the recipient signed identifier in the generated bridge circuit (0.9742ms)
+✔ matches installed-runtime intent-nonce canonical Bytes<131> hashing (2.457ms)
+✔ derives the intent-nonce signed identifier in the generated bridge circuit (0.9536ms)
+✔ survives a transient receipt HTTP failure while retaining serialized-call verification (1078.3948ms)
+✔ pins the observed Preprod indexer protocol while retaining finality/identity gates and rejecting unknown versions (26.1536ms)
+✔ the exact SDK reader preserves a sanitized transient finality-read category (0.7226ms)
+✔ pins a dedicated bridge source entry without admitting arbitrary entries (4.5303ms)
+ℹ tests 10
+ℹ suites 0
+ℹ pass 10
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3655.1597

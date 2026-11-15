@@ -157,6 +157,11 @@ export class ApplicationStore {
     const row = this.db.prepare("SELECT * FROM sessions WHERE tokenHash=? AND expiresAt>?").get(digest(token), this.now());
     return row ? { account: this.account(String(row.accountId)), csrf: String(row.csrf), expiresAt: Number(row.expiresAt), tokenHash: String(row.tokenHash) } : null;
   }
+  activeSession(session: Session): boolean {
+    return Boolean(this.db
+      .prepare("SELECT 1 FROM sessions WHERE tokenHash=? AND accountId=? AND expiresAt>?")
+      .get(session.tokenHash, session.account.id, this.now()));
+  }
   logout(token: string): void { this.db.prepare("DELETE FROM sessions WHERE tokenHash=?").run(digest(token)); }
   profile(user: Account, input: Record<string, unknown>): Account {
     const displayName = text(input.displayName, "display name", 80);
@@ -310,6 +315,17 @@ export class ApplicationStore {
       for (const accountId of new Set([user.id, issuer.id, ...participants])) this.log(accountId, `${name} added to your workspace`);
       return document;
     });
+  }
+  inferenceInstances(user: Account): {
+    id: string; name: string; expiresAt: number;
+    contexts: { id: string; description: string }[];
+  }[] {
+    return this.workspace(user).instances.map((instance) => ({
+      id: instance.id,
+      name: instance.name,
+      expiresAt: instance.expiresAt,
+      contexts: this.raw(instance.blueprintId).template.contexts.map(({ id, description }) => ({ id, description })),
+    }));
   }
   // Only a reviewed M6/M7 integration may establish these private bindings.
   // There is deliberately no client endpoint for claiming an arbitrary receipt.

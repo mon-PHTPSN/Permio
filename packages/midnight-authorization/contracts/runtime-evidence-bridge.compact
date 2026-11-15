@@ -1,0 +1,128 @@
+// Versioned typed bridge opening. The ordered SHA-256 manifest is recomputed
+// from all records by the recipient/service; this circuit binds its root only.
+export struct RuntimeEvidenceBridgeOpening {
+    bindingVersion: Uint<16>;
+    sourceContextHash: Bytes<32>;
+    sourceInstanceCommitment: Bytes<32>;
+    destinationContextCommitment: Bytes<32>;
+    destinationCaseCommitment: Bytes<32>;
+    purposeHash: Bytes<32>;
+    permittedUseHash: Bytes<32>;
+    expiresAt: Uint<64>;
+    nonce: Bytes<32>;
+    recipientKeyFingerprint: Bytes<32>;
+    manifestRoot: Bytes<32>;
+}
+
+struct RuntimeEvidenceBridgeBindingInput {
+    domain: Bytes<32>;
+    opening: RuntimeEvidenceBridgeOpening;
+}
+
+export pure circuit runtimeEvidenceBridgeBinding(opening: RuntimeEvidenceBridgeOpening): Bytes<32> {
+    return persistentHash<RuntimeEvidenceBridgeBindingInput>(RuntimeEvidenceBridgeBindingInput{
+        domain: pad(32, "permio:evidence-bridge:v2"), opening: opening
+    });
+}
+
+// No opaque string witnesses: derive the existing M5 canonical lowercase 0x
+// identifier preimage inside the circuit. Bytes<N> hashing is characterized
+// against the installed runtime and hashRuntimeIdentifier by golden tests.
+pure circuit runtimeEvidenceBridgeHexDigit(nibble: Uint<4>): Uint<8> {
+    return nibble < 10 ? (48 + nibble) as Uint<8> : (87 + nibble) as Uint<8>;
+}
+
+pure circuit runtimeEvidenceBridgeByteHex(value: Uint<8>): Vector<2, Uint<8>> {
+    const r128 = (value - (value >= 128 ? 128 : 0)) as Uint<7>;
+    const r64 = (r128 - (r128 >= 64 ? 64 : 0)) as Uint<6>;
+    const r32 = (r64 - (r64 >= 32 ? 32 : 0)) as Uint<5>;
+    const high = ((value >= 128 ? 8 : 0) + (r128 >= 64 ? 4 : 0) +
+        (r64 >= 32 ? 2 : 0) + (r32 >= 16 ? 1 : 0)) as Uint<4>;
+    const low = (value - high * 16) as Uint<4>;
+    return [runtimeEvidenceBridgeHexDigit(high), runtimeEvidenceBridgeHexDigit(low)];
+}
+
+pure circuit runtimeEvidenceBridgeHex(value: Bytes<32>): Bytes<66> {
+    const pairs = map(runtimeEvidenceBridgeByteHex, value as Vector<32, Uint<8>>);
+    return [48, 120,
+        ...pairs[0], ...pairs[1], ...pairs[2], ...pairs[3],
+        ...pairs[4], ...pairs[5], ...pairs[6], ...pairs[7],
+        ...pairs[8], ...pairs[9], ...pairs[10], ...pairs[11],
+        ...pairs[12], ...pairs[13], ...pairs[14], ...pairs[15],
+        ...pairs[16], ...pairs[17], ...pairs[18], ...pairs[19],
+        ...pairs[20], ...pairs[21], ...pairs[22], ...pairs[23],
+        ...pairs[24], ...pairs[25], ...pairs[26], ...pairs[27],
+        ...pairs[28], ...pairs[29], ...pairs[30], ...pairs[31]
+    ] as Bytes<66>;
+}
+
+export pure circuit runtimeEvidenceBridgeResourceHash(value: Bytes<32>): Bytes<32> {
+    const preimage = [0,0,0,3,0,0,0,19,112,101,114,109,105,111,58,99,97,110,111,110,105,99,97,108,58,118,49,0,0,0,26,112,101,114,109,105,111,58,114,117,110,116,105,109,101,45,114,101,115,111,117,114,99,101,58,118,49,0,0,0,66,
+        ...runtimeEvidenceBridgeHex(value)] as Bytes<127>;
+    return persistentHash<Bytes<127>>(preimage);
+}
+
+export pure circuit runtimeEvidenceBridgeRecipientHash(value: Bytes<32>): Bytes<32> {
+    const preimage = [0,0,0,3,0,0,0,19,112,101,114,109,105,111,58,99,97,110,111,110,105,99,97,108,58,118,49,0,0,0,27,112,101,114,109,105,111,58,114,117,110,116,105,109,101,45,114,101,99,105,112,105,101,110,116,58,118,49,0,0,0,66,
+        ...runtimeEvidenceBridgeHex(value)] as Bytes<128>;
+    return persistentHash<Bytes<128>>(preimage);
+}
+
+export pure circuit runtimeEvidenceBridgeNonceHash(value: Bytes<32>): Bytes<32> {
+    const preimage = [0,0,0,3,0,0,0,19,112,101,114,109,105,111,58,99,97,110,111,110,105,99,97,108,58,118,49,0,0,0,30,112,101,114,109,105,111,58,114,117,110,116,105,109,101,45,105,110,116,101,110,116,45,110,111,110,99,101,58,118,49,0,0,0,66,
+        ...runtimeEvidenceBridgeHex(value)] as Bytes<131>;
+    return persistentHash<Bytes<131>>(preimage);
+}
+
+export pure circuit runtimeEvidenceBridgeSelectedOutput(
+    opening: RuntimeEvidenceBridgeOpening, outputTypeHash: Bytes<32>
+): RuntimeSelectedActionValue {
+    const binding = runtimeEvidenceBridgeBinding(opening);
+    return RuntimeSelectedActionValue{
+        valueVersion: 1, typeHash: outputTypeHash, contextHash: opening.sourceContextHash,
+        resourceHash: runtimeEvidenceBridgeResourceHash(binding), payloadCommitment: binding, nonce: opening.nonce
+    };
+}
+
+export pure circuit runtimeEvidenceBridgeOutputCommitment(
+    opening: RuntimeEvidenceBridgeOpening, outputTypeHash: Bytes<32>
+): Bytes<32> {
+    return runtimeSelectedActionValueStep(default<Bytes<32>>, 0,
+        runtimeEvidenceBridgeSelectedOutput(opening, outputTypeHash), true);
+}
+
+export pure circuit runtimeEvidenceBridgeModuleId(): Bytes<32> {
+    return [125,174,96,68,121,113,7,178,114,200,110,160,217,134,124,215,107,153,25,192,5,159,110,16,220,74,128,74,79,116,28,135] as Bytes<32>;
+}
+
+export pure circuit runtimeEvidenceBridgeInputSchemaHash(): Bytes<32> {
+    return persistentHash<Bytes<32>>(pad(32, "permio:evidence-bridge-input:v2"));
+}
+
+export pure circuit runtimeEvidenceBridgeImplementationReference(
+    network: Bytes<32>, deployment: Bytes<32>, moduleIdHash: Bytes<32>
+): Bytes<32> {
+    return persistentHash<RuntimeActionImplementationReference>(RuntimeActionImplementationReference{
+        domain: pad(32, "permio:implementation:v1"), network: network, deployment: deployment,
+        contractVersion: 10, entryPoint: pad(32, "executeRuntimeEvidenceBridge"), moduleIdHash: moduleIdHash
+    });
+}
+
+pure circuit assertRuntimeEvidenceBridgeOpening(
+    command: RuntimeActionCommand, intent: RuntimeActionIntent, policy: RuntimeTemplateActionPolicy,
+    opening: RuntimeEvidenceBridgeOpening, outputTypeHash: Bytes<32>
+): [] {
+    assert(opening.bindingVersion == 2 && opening.nonce != default<Bytes<32>> &&
+        opening.sourceContextHash == intent.contextHash &&
+        opening.sourceInstanceCommitment == intent.instanceCommitment &&
+        opening.purposeHash == intent.purposeHash && command.validBefore <= opening.expiresAt,
+        "Evidence bridge opening substitutes its version, source, purpose, nonce or expiry");
+    const binding = runtimeEvidenceBridgeBinding(opening);
+    assert(intent.resourceHash == runtimeEvidenceBridgeResourceHash(binding) &&
+        intent.recipientHash == runtimeEvidenceBridgeRecipientHash(opening.recipientKeyFingerprint) &&
+        intent.nonceHash == runtimeEvidenceBridgeNonceHash(opening.nonce),
+        "Evidence bridge opening does not match its exact signed resource, recipient or nonce identifiers");
+    assert(policy.outputClaimTypeCount == 1 && command.selectedOutputsCommitment ==
+        runtimeEvidenceBridgeOutputCommitment(opening, outputTypeHash),
+        "Evidence bridge requires exactly one typed aggregate output bound to its manifest opening");
+}

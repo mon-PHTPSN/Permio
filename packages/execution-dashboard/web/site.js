@@ -2,6 +2,7 @@ import { initializeActivity, enableActivity, setActivityPage, loadDashboard, for
 import { summarizeWorkspace, filterWorkflows } from "./workspace.js";
 import { ContextInterface } from "./context-ui.js";
 import { escapeText as html, libraryCards, templateDefinition, instanceCards, instanceDefinition, newTemplateDefinition } from "./context-library.js";
+import { mountInference } from "./inference-ui.js";
 const $ = (id) => document.getElementById(id);
 const values = (form) => Object.fromEntries(new FormData(form));
 let session = null, workspace = null, registerMode = false, busy = false, selected = null, noticeTimer, minimumPasswordLength = 4;
@@ -9,6 +10,7 @@ let workflowQuery = "", workflowState = "all";
 let contextView = null;
 let librarySelectionQuery = "";
 let navigationRevision = 0;
+let pageRevision = 0;
 async function api(path, method = "GET", body) {
   let response;
   try { response = await fetch(path, { method, cache: "no-store", headers: { ...(body ? { "content-type": "application/json" } : {}), ...(session ? { "x-csrf-token": session.csrf } : {}) }, body: body ? JSON.stringify(body) : undefined }); }
@@ -30,6 +32,7 @@ function setAuthMode(register) {
   $("auth-error").hidden = true;
 }
 function showAuth() {
+  pageRevision++;
   contextView?.dispose(); contextView = null;
   session = null; workspace = null; selected = null; workflowQuery = ""; workflowState = "all"; enableActivity(false);
   $("application").hidden = true; $("auth-page").hidden = false; $("boot-panel").hidden = true;
@@ -46,7 +49,7 @@ async function enter(next) {
   contextView = new ContextInterface({account:session.account,root:$("product-page"),openDialog,notify,run:perform,
     onCreateContext:chooseContextTemplate,getInstances:() => workspace.instances});
   if (["#blueprints","#workflows"].includes(location.hash)) history.replaceState(null, "", "#library");
-  if (!["#overview", "#library", "#workspace", "#permissions", "#disclosures", "#verification", "#policies", "#reviews", "#activity", "#reports", "#account"].includes(location.hash) && !location.hash.startsWith("#context/") && !location.hash.startsWith("#instance/")) history.replaceState(null, "", "#overview");
+  if (!["#inference", "#overview", "#library", "#workspace", "#permissions", "#disclosures", "#verification", "#policies", "#reviews", "#activity", "#reports", "#account"].includes(location.hash) && !location.hash.startsWith("#context/") && !location.hash.startsWith("#instance/")) history.replaceState(null, "", "#overview");
   renderPage();
 }
 async function refresh() {
@@ -65,6 +68,7 @@ function renderWorkflowResults() {
   $("workflow-results").innerHTML = libraryCards(items);
 }
 function renderPage() {
+  const revision = ++pageRevision;
   if (!session || !workspace) return;
   const page = location.hash.slice(1) || "overview";
   const activity = ["activity", "reports"].includes(page);
@@ -72,10 +76,15 @@ function renderPage() {
   $("update-status").hidden = !activity; $("refresh-button").hidden = !activity;
   enableActivity(activity);
   document.querySelectorAll("[data-page]").forEach((link) => { const active = link.dataset.page === page || ((page.startsWith("context/") || page.startsWith("instance/") || page === "workspace") && link.dataset.page === "overview") || (["policies","workflows"].includes(page) && link.dataset.page === "library") || (page === "reports" && link.dataset.page === "activity"); link.classList.toggle("active", active); if (active) link.setAttribute("aria-current", "page"); else link.removeAttribute("aria-current"); });
-  const label = { overview: "Contexts", library:"Context library", permissions:"Permissions",disclosures:"Disclosures",verification:"Verification",policies:"Context library",workspace:"Contexts",reviews:"Policy reviews",account:"Account",activity:"On-chain history",reports:"Reports" }[page] ?? "Context";
+  const label = { inference:"Private inference", overview: "Contexts", library:"Context library", permissions:"Permissions",disclosures:"Disclosures",verification:"Verification",policies:"Context library",workspace:"Contexts",reviews:"Policy reviews",account:"Account",activity:"On-chain history",reports:"Reports" }[page] ?? "Context";
   $("section-name").textContent = label; document.title = `${label} · Permio`;
   $("main-content").setAttribute("aria-busy", "false");
   if (activity) { setActivityPage(); loadDashboard(); return; }
+  if (page === "inference") {
+    const accountId = session.account.id;
+    mountInference($("product-page"), api, () => revision === pageRevision && session?.account.id === accountId && location.hash === "#inference");
+    return;
+  }
   if (page === "account") { renderAccount(); return; }
   if (page.startsWith("instance/")) {
     const item = workspace.instances.find((candidate) => candidate.id === page.slice(9));
